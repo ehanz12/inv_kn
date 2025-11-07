@@ -19,19 +19,24 @@ class Customer extends CI_Controller
 	}
 
 	public function add()
-	{
-		$data['kode_customer'] = $this->input->post('kode_customer', TRUE);
-		$data['nama_customer'] = $this->input->post('nama_customer', TRUE);
-		$data['negara'] = $this->input->post('negara', TRUE);
-		$data['alamat'] = $this->input->post('alamat', TRUE);
-		$respon = $this->M_customer->add($data);
+{
+    $data = [
+        'kode_customer' => $this->input->post('kode_customer', TRUE),
+        'nama_customer' => $this->input->post('nama_customer', TRUE),
+        'negara'        => $this->input->post('negara', TRUE),
+        'alamat'        => $this->input->post('alamat', TRUE),
+        'id_user'       => $this->session->userdata('id_user'), // otomatis
+    ];
 
-		if ($respon) {
-			header('location:' . base_url('Marketing/master/Customer') . '?alert=success&msg=Selamat anda berhasil menambah Customer');
-		} else {
-			header('location:' . base_url('Marketing/master/Customer') . '?alert=error&msg=Maaf anda gagal menambah Customer');
-		}
-	}
+    $respon = $this->M_customer->add($data);
+
+    if ($respon) {
+        redirect('Marketing/master/Customer?alert=success&msg=Selamat anda berhasil menambah Customer');
+    } else {
+        redirect('Marketing/master/Customer?alert=error&msg=Maaf anda gagal menambah Customer');
+    }
+}
+
 	public function update()
 	{
 		$data['id_customer'] = $this->input->post('id_customer', TRUE);

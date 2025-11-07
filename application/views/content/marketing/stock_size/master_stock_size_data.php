@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,7 +45,8 @@
     /* Content area */
     .content {
       flex: 1;
-      margin-left: 250px; /* Sesuaikan dengan lebar sidebar */
+      margin-left: 250px;
+      /* Sesuaikan dengan lebar sidebar */
       padding: 20px;
       width: calc(100% - 250px);
     }
@@ -144,17 +146,17 @@
       .sidebar {
         width: 70px;
       }
-      
+
       .content {
         margin-left: 70px;
         width: calc(100% - 70px);
         padding: 15px;
       }
-      
+
       .card-header {
         padding: 15px 20px;
       }
-      
+
       .form-control {
         padding: 8px 12px;
       }
@@ -166,17 +168,18 @@
         width: 100%;
         padding: 10px;
       }
-      
+
       .sidebar {
         transform: translateX(-100%);
       }
-      
+
       .sidebar.active {
         transform: translateX(0);
       }
     }
   </style>
 </head>
+
 <body>
   <div class="main-container">
     <!-- Sidebar Template (Sesuaikan dengan template Anda) -->
@@ -262,10 +265,8 @@
                           </div>
                           <div class="col-md-3">
                             <label class="form-label fw-semibold">Tahun Stock</label>
-                            <input type="number" name="tahun_stok" class="form-control" 
-                                  min="2020" max="2030" 
-                                  value="2024" 
-                                  placeholder="Tahun" required>
+                            <input type="number" name="tahun_stok" class="form-control" min="2020" max="2030"
+                              value="2024" placeholder="Tahun" required>
                           </div>
                           <div class="col-md-3">
                             <label class="form-label fw-semibold text-white">.</label>
@@ -317,37 +318,32 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Form validation dan simulasi
-    document.getElementById('stockForm').addEventListener('submit', function(e) {
+    document.getElementById('stockForm').addEventListener('submit', function (e) {
       e.preventDefault();
-      
+
       const stokBulan = this.querySelector('[name="stok_bulan"]').value;
       const tahunStok = this.querySelector('[name="tahun_stok"]').value;
-      
+
       if (!stokBulan || !tahunStok) {
         document.getElementById('errorAlert').classList.remove('d-none');
-        document.getElementById('errorAlert').querySelector('.alert-message').textContent = 'Harap lengkapi semua field!';
+        document.querySelector('#errorAlert .alert-message').textContent = 'Harap lengkapi semua field!';
         return;
       }
 
-      // Simulasi sukses
-      document.getElementById('successAlert').classList.remove('d-none');
-      this.reset();
-      
-      // Auto-hide alert setelah 5 detik
-      setTimeout(function() {
-        document.getElementById('successAlert').classList.add('d-none');
-      }, 5000);
+      // kirim pakai AJAX
+      fetch('<?= base_url("Marketing/master/Master_stock/add") ?>', {
+        method: 'POST',
+        body: new FormData(this)
+      })
+        .then(res => res.text())
+        .then(res => {
+          document.getElementById('successAlert').classList.remove('d-none');
+          this.reset();
+        })
+        .catch(err => console.error(err));
     });
-
-    // Auto-hide alert
-    setTimeout(function() {
-      const alerts = document.querySelectorAll('.alert');
-      alerts.forEach(alert => {
-        const bsAlert = new bootstrap.Alert(alert);
-        bsAlert.close();
-      });
-    }, 5000);
   </script>
+
 </body>
+
 </html>

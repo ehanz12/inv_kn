@@ -23,12 +23,14 @@ class M_customer extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO `tb_mkt_master_customer`( `kode_customer`, `nama_customer`, `negara`, `alamat`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
-        VALUES ('$data[kode_customer]','$data[nama_customer]','$data[negara]','$data[alamat]',NOW(),'$id_user','0000-00-00 00:00:00','','0')
+        INSERT INTO `tb_mkt_master_customer`( `kode_customer`, `id_user`, `nama_customer`, `negara`, `alamat`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
+        VALUES ('$data[kode_customer]',$data[id_user],'$data[nama_customer]','$data[negara]','$data[alamat]',NOW(),'$id_user','0000-00-00 00:00:00','','0')
         ";
 
         return $this->db->query($sql);
     }
+
+    
    public function update($data)
     {
         $id_user = $this->id_user();
