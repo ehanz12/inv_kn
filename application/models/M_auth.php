@@ -10,13 +10,13 @@ class M_auth extends CI_Model {
     }
     public function check($data){
         // $kode_user = $this->kode_user();
-        $sql = "SELECT COUNT(id_user) AS c FROM tb_user WHERE username='$data[username]' AND password='$data[password]'";
+        $sql = "SELECT COUNT(id_user) AS c FROM tb_user WHERE nip='$data[nip]' AND password='$data[password]'";
 
         return $this->db->query($sql);
     }
     public function data($data){
         // $kode_user = $this->kode_user();
-        $sql = "SELECT * FROM tb_user WHERE username='$data[username]' AND password='$data[password]'";
+        $sql = "SELECT * FROM tb_user WHERE nip='$data[nip]' AND password='$data[password]'";
         return $this->db->query($sql);
     }
 

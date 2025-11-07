@@ -23,8 +23,8 @@ class M_users extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO `tb_user`(`username`, `password`, `nama_operator`, `level`,`jabatan`,`alamat`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
-        VALUES ('$data[username]','$data[password]','$data[nama_operator]','$data[level]','$data[jabatan]','$data[alamat]',NOW(),'$id_user','0000-00-00 00:00:00','','0')
+        INSERT INTO `tb_user`(`nip`, `password`, `nama_operator`, `departement`,`jabatan`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
+        VALUES ('$data[nip]','$data[password]','$data[nama_operator]','$data[departement]','$data[jabatan]',NOW(),'$id_user','0000-00-00 00:00:00','','0')
         ";
 
         return $this->db->query($sql);
@@ -35,11 +35,10 @@ class M_users extends CI_Model
         $sql = "
 
             UPDATE `tb_user` SET 
-            `username`='$data[username]',
+            `nip`='$data[nip]',
             `password`='$data[password]',
             `nama_operator`='$data[nama_operator]',
-            `alamat`='$data[alamat]',
-            `level`='$data[level]',
+            `departement`='$data[departement]',
             `jabatan`='$data[jabatan]',
             `updated_at`= NOW(),
             `updated_by`='$id_user' 

@@ -47,7 +47,7 @@
                     <h3 class="mb-4">Login</h3>
                     <form method="POST" action="<?=base_url()?>auth/psignin">
                         <div class="input-group mb-3">
-                            <input type="text" name="username" class="form-control" placeholder="Username">
+                            <input type="text" name="nip" class="form-control" placeholder="Nip">
                         </div>
                         <div class="input-group mb-4">
                             <input type="password" id="password" name="password" class="form-control" placeholder="password">

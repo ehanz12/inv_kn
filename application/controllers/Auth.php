@@ -17,7 +17,7 @@ class Auth extends CI_Controller
     }
     public function psignin()
     {
-        $data['username'] = $this->input->post('username', TRUE);
+        $data['nip'] = $this->input->post('nip', TRUE);
         $data['password'] = md5($this->input->post('password', TRUE));
         $row = $this->M_auth->check($data)->row_array();
 
@@ -26,10 +26,9 @@ class Auth extends CI_Controller
             $d = $this->M_auth->data($data)->row_array();
             $newdata = array(
                 'id_user'  => $d['id_user'],
-                'username'  => $d['username'],
+                'nip'  => $d['nip'],
                 'nama_operator'     => $d['nama_operator'],
-                'alamat'     => $d['alamat'],
-                'level'     => $d['level'],
+                'departement'     => $d['departement'],
                 'jabatan'     => $d['jabatan'],
                 'logged_in' => TRUE
             );

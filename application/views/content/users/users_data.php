@@ -46,9 +46,8 @@
                           <tr>
                             <th>#</th>
                             <th>Nama </th>
-                            <th>Username</th>
-                            <th>Alamat</th>
-                            <th>Level</th>
+                            <th>Nip</th>
+                            <th>Departement</th>
                             <th>Jabatan</th>
                             <th class="text-center">Aksi</th>
                           </tr>
@@ -61,13 +60,12 @@
                             <tr>
                               <th scope="row"><?= $no++ ?></th>
                               <td><?= $k['nama_operator'] ?></td>
-                              <td><?= $k['username'] ?></td>
-                              <td><?= $k['alamat'] ?></td>
-                              <td><?= $k['level'] ?></td>
+                              <td><?= $k['nip'] ?></td>
+                              <td><?= $k['departement'] ?></td>
                               <td><?= $k['jabatan'] ?></td>
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#edit" data-id_user="<?= $k['id_user'] ?>" data-nama_operator="<?= $k['nama_operator'] ?>" data-username="<?= $k['username'] ?>" data-password="<?= $k['password'] ?>" data-level="<?= $k['level'] ?>" data-jabatan="<?= $k['jabatan'] ?>" data-alamat="<?= $k['alamat'] ?>">
+                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#edit" data-id_user="<?= $k['id_user'] ?>" data-nama_operator="<?= $k['nama_operator'] ?>" data-username="<?= $k['nip'] ?>" data-password="<?= $k['password'] ?>" data-level="<?= $k['departement'] ?>" data-jabatan="<?= $k['jabatan'] ?>">
                                     <i class="feather icon-edit-2"></i>Edit
                                   </button>
                                 </div>
@@ -116,8 +114,8 @@
             <input type="text" class="form-control" id="nama_operator" name="nama_operator" placeholder="Ketik nama operator anda" maxlength="100" autocomplete="off" required>
           </div>
           <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="ketik username" maxlength="100" autocomplete="off" required>
+            <label for="username">NIP</label>
+            <input type="text" class="form-control" id="username" name="nip" placeholder="ketik nip" maxlength="100" autocomplete="off" required>
           </div>
           <div class="form-group">
             <label for="password">Password</label>
@@ -126,12 +124,13 @@
               </div>
           </div>
           <div class="form-group">
-            <label for="level">Level</label>
-            <select class="form-control chosen-select" id="level" name="level" autocomplete="off" required>
-              <option value="" disabled selected hidden> - Pilih Level - </option>
+            <label for="level">Departement</label>
+            <select class="form-control chosen-select" id="level" name="departement" autocomplete="off" required>
+              <option value="" disabled selected hidden> - Pilih Departement - </option>
               <option value="admin">Admin</option>
               <option value="accounting">Accounting</option>
-              <option value="gudang">Gudang</option>
+              <option value="gudang_bahan_baku">Gudang Bahan Baku</option>
+              <option value="gudang_distribusi">Gudang Distribusi</option>
               <option value="lab">Lab</option>
               <option value="melting">Melting</option>
               <option value="marketing">Marketing</option>
@@ -147,11 +146,10 @@
               <option value="admin">Admin</option>
               <option value="operator">Operator</option>
               <option value="supervisor">Supervisor</option>
+              <option value="manager">Manager</option>
+              <option value="plant_manager">Plant Manager</option>
+              <option value="direktur">Direktur</option>
             </select>
-          </div>
-          <div class="form-group">
-            <label for="alamat">Alamat</label>
-            <textarea class="form-control" id="alamat" name="alamat" rows="3" autocomplete="off"></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -181,36 +179,35 @@
             <input type="text" class="form-control" id="e_nama_operator" name="nama_operator" placeholder="Nama" maxlength="100" required>
           </div>
           <div class="form-group">
-            <label for="e_username">Username</label>
-            <input type="text" class="form-control" id="e_username" name="username" placeholder="Username" maxlength="100" required>
+            <label for="e_username">Nip</label>
+            <input type="text" class="form-control" id="e_username" name="nip" placeholder="Nip" maxlength="100" required>
           </div>
           <div class="form-group">
-            <label for="e_level">Level</label>
-            <select class="form-control chosen-select" id="e_level" name="level" required>
+            <label for="e_level">Departement</label>
+            <select class="form-control chosen-select" id="e_level" name="departement" required>
               <option value="admin">Admin</option>
               <option value="accounting">Accounting</option>
-              <option value="gudang">Gudang</option>
+              <option value="gudang_bahan_baku">Gudang Bahan Baku</option>
+              <option value="gudang_distribusi">Gudang Distribusi</option>
               <option value="lab">Lab</option>
               <option value="melting">Melting</option>
               <option value="marketing">Marketing</option>
               <option value="packing">Packing</option>
               <option value="utility">Utility</option>
+              <option value="stockkeeper">Stock Keeper</option>
             </select>
           </div>
           <div class="form-group">
             <label for="e_jabatan">Jabatan</label>
             <select class="form-control chosen-select" id="e_jabatan" name="jabatan" required>
+              <option value="" disabled selected hidden> - Pilih Jabatan - </option>
               <option value="admin">Admin</option>
               <option value="operator">Operator</option>
               <option value="supervisor">Supervisor</option>
               <option value="manager">Manager</option>
-              <option value="pm">Plant Manager</option>
+              <option value="plant_manager">Plant Manager</option>
               <option value="direktur">Direktur</option>
             </select>
-          </div>
-          <div class="form-group">
-            <label for="e_alamat">Alamat</label>
-            <textarea class="form-control" id="e_alamat" name="alamat" rows="3"></textarea>
           </div>
         </div>
         <div class="modal-footer">

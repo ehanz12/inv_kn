@@ -22,12 +22,11 @@ class Users extends CI_Controller
 
     public function add()
     {
-        $data['username'] = $this->input->post('username', TRUE);
+        $data['nip'] = $this->input->post('nip', TRUE);
         $data['password'] = md5($this->input->post('password', TRUE));
         $data['nama_operator'] = $this->input->post('nama_operator', TRUE);
-        $data['level'] = $this->input->post('level', TRUE);
+        $data['departement'] = $this->input->post('departement', TRUE);
         $data['jabatan'] = $this->input->post('jabatan', TRUE);
-        $data['alamat'] = $this->input->post('alamat', TRUE);
         $respon = $this->M_users->add($data);
 
         if ($respon) {
@@ -39,12 +38,11 @@ class Users extends CI_Controller
     public function update()
     {
         $data['id_user'] = $this->input->post('id_user', TRUE);
-        $data['username'] = $this->input->post('username', TRUE);
+        $data['nip'] = $this->input->post('nip', TRUE);
         $data['password'] = md5($this->input->post('password', TRUE));
         $data['nama_operator'] = $this->input->post('nama_operator', TRUE);
-        $data['level'] = $this->input->post('level', TRUE);
+        $data['departement'] = $this->input->post('departement', TRUE);
         $data['jabatan'] = $this->input->post('jabatan', TRUE);
-        $data['alamat'] = $this->input->post('alamat', TRUE);
         $respon = $this->M_users->update($data);
         // echo $respon;
         if ($respon) {

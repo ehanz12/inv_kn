@@ -25,7 +25,7 @@
         <div class="navbar-content scroll-div">
             <?php
             $uri = $this->uri->segment(1);
-            $level = $this->session->userdata('level'); ?>
+            $level = $this->session->userdata('departement'); ?>
             <!-- Side Bar Admin -->
             <ul class="nav pcoded-inner-navbar" style="list-style: none;">
                 <li class="nav-item pcoded-menu-caption">
