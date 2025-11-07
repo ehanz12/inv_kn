@@ -1,3 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Print</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #008cffff;
+            --secondary: #1b39beff;
+            --success: #4cc9f0;
+            --info: #4895ef;
+            --warning: #ae4976ff;
+            --danger: #e63946;
+            --light: #a1cbf5ff;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            /* background-color: #f5f7fb; */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .page-header {
+            margin-bottom: 25px;
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .page-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .breadcrumb {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 0;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--gray);
+        }
+        
+        .card {
+            width: 100%;
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 25px;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .card:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-header h5 {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 8px 16px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: none;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            /* color: white; */
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(160, 19, 172, 0.3);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #4895ef, #3a86ff);
+            /* color: white; */
+        }
+        
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(72, 149, 239, 0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #d00000);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(230, 57, 70, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--gray), #495057);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .table-responsive {
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            overflow: hidden;
+        }
+        
+        .table {
+            margin-bottom: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+        
+        .table thead th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+        
+        .table tbody td {
+            padding: 12px 15px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--light-gray);
+            white-space: nowrap;
+            font-size: 14px;
+        }
+        
+        .table tbody tr {
+            transition: var(--transition);
+        }
+        
+        .table tbody tr:hover {
+            background-color: rgba(50, 205, 50, 0.05);
+            transform: translateY(-1px);
+        }
+        
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .no-data {
+            padding: 40px !important;
+            color: #6c757d;
+            font-style: italic;
+            background-color: #469bf0ff;
+            text-align: center;
+        }
+        
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            border-radius: 12px;
+            background-color: #58f135ff;
+            border-color: #3ab831e1;
+            color: #ffffffff;
+        }
+        
+        .alert-danger {
+            border-radius: 12px;
+            background-color: #f8d7da;
+            border-color: #464141ff;
+            color: #721c24;
+        }
+        
+        .form-control {
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            padding: 10px 15px;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(205, 50, 50, 0.25);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+        
+        .modal-title {
+            font-weight: 700;
+        }
+        
+        .modal-content {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .close {
+            /* color: white; */
+            opacity: 0.8;
+        }
+        
+        .close:hover {
+            /* color: white; */
+            opacity: 1;
+        }
+        
+        .badge {
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        
+        .badge-primary {
+            background-color: rgba(222, 76, 76, 0.15);
+            color: #7e1e1eff;
+            border: 1px solid rgba(205, 70, 70, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .card-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .btn-group {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .table-responsive {
+                font-size: 12px;
+            }
+            
+            .table thead th {
+                padding: 8px 10px;
+            }
+            
+            .table tbody td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body></body>
+
 <!-- [ Main Content ] start -->
 <section class="pcoded-main-container">
   <div class="pcoded-wrapper">
@@ -30,7 +358,7 @@
               <div class="col-xl-12">
                 <div class="card">
                   <div class="card-header">
-                    <h5>Data Master Stock Size</h5>
+                    <h5 style="color: white;">Data Master Stock Size</h5>
 
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal"
@@ -90,7 +418,7 @@
                                 <th scope="row"><?= $no++ ?></th>
                                 <td><span class="badge badge-primary"><?= $bulanName ?></span></td>
                                 <td><span class="badge badge-info"><?= $k['tahun_stok'] ?></span></td>
-                                <td><?= date('d/m/Y H:i', strtotime($k['created_at'])) ?></td>
+                                <td><?= date('d/m/Y', strtotime($k['created_at'])) ?></td>
                                 <td class="text-center">
                                   <?php if ($level === "admin") { ?>
                                     <div class="btn-group" role="group" aria-label="Basic example">

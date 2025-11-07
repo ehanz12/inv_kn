@@ -15,9 +15,9 @@ class M_tambah_schedule extends CI_Model
     {
         $sql = "
         SELECT a.*,b.kode_warna_cap,b.warna_cap,c.kode_warna_body,c.warna_body,d.nama_customer,d.negara FROM tb_mkt_schedulemarketing a
-            LEFT JOIN tb_mlt_kw_cap b ON a.id_kw_cap = b.id_kw_cap
-            LEFT JOIN tb_mlt_kw_body c ON a.id_kw_body = c.id_kw_body
-            LEFT JOIN tb_mkt_customer d ON a.id_customer = d.id_customer
+            LEFT JOIN tb_mkt_master_kw_cap b ON a.id_kw_cap = b.id_master_kw_cap
+            LEFT JOIN tb_mkt_master_kw_body c ON a.id_kw_body = c.id_master_kw_body
+            LEFT JOIN tb_mkt_master_customer d ON a.id_customer = d.id_customer
             WHERE a.is_deleted = 0 ORDER BY a.created_at ASC";
         return $this->db->query($sql);
     }

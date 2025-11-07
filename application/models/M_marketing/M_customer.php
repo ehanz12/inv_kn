@@ -23,7 +23,7 @@ class M_customer extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO `tb_mkt_master_customer`( `kode_customer`, `id_user`, `nama_customer`, `negara`, `alamat`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
+        INSERT INTO tb_mkt_master_customer( kode_customer, id_user, nama_customer, negara, alamat, created_at, created_by, updated_at, updated_by, is_deleted) 
         VALUES ('$data[kode_customer]',$data[id_user],'$data[nama_customer]','$data[negara]','$data[alamat]',NOW(),'$id_user','0000-00-00 00:00:00','','0')
         ";
 
@@ -35,14 +35,14 @@ class M_customer extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-            UPDATE `tb_mkt_master_customer` 
-            SET `kode_customer`='$data[kode_customer]',
-                `nama_customer`='$data[nama_customer]',
-                `negara`='$data[negara]',
-                `alamat`='$data[alamat]',
-                `updated_at`=NOW(),
-                `updated_by`='$id_user' 
-            WHERE `id_customer`='$data[id_customer]'
+            UPDATE tb_mkt_master_customer 
+            SET kode_customer='$data[kode_customer]',
+                nama_customer='$data[nama_customer]',
+                negara='$data[negara]',
+                alamat='$data[alamat]',
+                updated_at=NOW(),
+                updated_by='$id_user' 
+            WHERE id_customer='$data[id_customer]'
         ";
         return $this->db->query($sql);
     }
@@ -52,8 +52,8 @@ class M_customer extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        DELETE FROM `tb_mkt_master_customer`
-        WHERE `id_customer`='$data[id_customer]'
+        DELETE FROM tb_mkt_master_customer
+        WHERE id_customer='$data[id_customer]'
         ";
         return $this->db->query($sql);
     }

@@ -70,7 +70,7 @@
                         </thead>
                         <tbody>
                           <?php
-                          $level = $this->session->userdata('level');
+                          $level = $this->session->userdata('departement');
                           $no = 1;
                           foreach ($result as $k) {
                             $tgl_sch =  explode('-', $k['tgl_sch'])[2] . "/" . explode('-', $k['tgl_sch'])[1] . "/" . explode('-', $k['tgl_sch'])[0];
