@@ -70,9 +70,9 @@
                                         <a href="<?= base_url('Marketing/master/Kode_warna') ?>">Kode Warna</a>
                                     </li>
                                     <li class="nav-item <?= $uri == 'Printing' ? 'active' : '' ?>">
-                                        <a href="<?= base_url('Qa/Doc/Doc_printing/Printing') ?>">Master Print</a>
+                                        <a href="<?= base_url('Marketing/master/master_print') ?>">Master Print</a>
                                     </li>
-                                    <li class="nav-item <?= $uri == 'Stok Size' ? 'active' : '' ?>">
+                                    <li class="nav-item <?= $uri == 'Stok Size' ? 'awctive' : '' ?>">
                                         <a href="<?= base_url('Marketing/master/Master_stock') ?>">Stok Size</a>
                                     </li>
                                 </ul>

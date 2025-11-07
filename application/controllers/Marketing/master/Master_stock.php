@@ -1,62 +1,72 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Master_stock extends CI_Controller {
+class Master_stock extends CI_Controller
+{
 
-    public function __construct() {
+    function __construct()
+    {
         parent::__construct();
+        // check_not_login();
         $this->load->model('M_marketing/M_master_stok');
     }
 
-    public function index() {
-        $data['stok'] = $this->M_master_stok->get_all();
-        $data['title'] = 'Master Stock Size';
-        
-        // Cara 1: Jika template library membutuhkan parameter berbeda
+    public function index()
+    {
+        $data['result'] = $this->M_master_stok->get()->result_array();
         $this->template->load('template', 'content/marketing/stock_size/master_stock_size_data', $data);
-        
-        // Atau Cara 2: Jika menggunakan cara standard CI
-        // $this->load->view('content/marketing/stock_size/master_stock_size_data', $data);
     }
 
-    public function tambah() {
-        if ($this->input->post()) {
-            // Validasi input
-            $this->form_validation->set_rules('stok_bulan', 'Stok Bulan', 'required|numeric');
-            $this->form_validation->set_rules('tahun_stok', 'Tahun Stok', 'required|numeric');
-            
-            if ($this->form_validation->run() == TRUE) {
-                $data = [
-                    'stok_bulan' => $this->input->post('stok_bulan'),
-                    'tahun_stok' => $this->input->post('tahun_stok'),
-                    'id_user' => $this->session->userdata('id_user') ?? 1,
-                    'created_by' => $this->session->userdata('id_user') ?? 1,
-                    'created_at' => date('Y-m-d H:i:s')
-                ];
-                
-                // Cek duplikat data
-                if (!$this->M_master_stok->check_duplicate($data['stok_bulan'], $data['tahun_stok'])) {
-                    if ($this->M_master_stok->insert($data)) {
-                        $this->session->set_flashdata('success', 'Data berhasil ditambahkan!');
-                    } else {
-                        $this->session->set_flashdata('error', 'Gagal menambahkan data!');
-                    }
-                } else {
-                    $this->session->set_flashdata('error', 'Data untuk bulan dan tahun tersebut sudah ada!');
-                }
-            } else {
-                $this->session->set_flashdata('error', validation_errors());
-            }
-        }
-        redirect('marketing/master/master_stock');
+    public function add()
+    {
+
+        $stok_bulan = $this->input->post('stok_bulan', TRUE);
+        $tahun_stok = $this->input->post('tahun_stok', TRUE);
+
+        if(empty($tahun_stok) || $tahun_stok < 2020 || $tahun_stok > 2030) {
+        redirect('Marketing/master/Master_stock?alert=error&msg=Tahun tidak valid');
+        return;
     }
 
-    public function hapus($id) {
-        if ($this->M_master_stok->delete($id)) {
-            $this->session->set_flashdata('success', 'Data berhasil dihapus!');
+        $data = [
+            'stok_bulan' => $stok_bulan,
+            'tahun_stok' => $tahun_stok,
+            'id_user' => $this->session->userdata('id_user'),
+        ];
+
+        $respon = $this->M_master_stok->add($data);
+
+        if ($respon) {
+            redirect('Marketing/master/Master_stock?alert=success&msg=Selamat anda berhasil menambah Stock Size');
         } else {
-            $this->session->set_flashdata('error', 'Gagal menghapus data!');
+            redirect('Marketing/master/Master_stock?alert=error&msg=Maaf anda gagal menambah Stock Size');
         }
-        redirect('marketing/master/master_stock');
+    }
+
+    public function update()
+    {
+        $data['id_master_stok_size'] = $this->input->post('id_master_stok_size', TRUE);
+        $data['stok_bulan'] = $this->input->post('stok_bulan', TRUE);
+        $data['tahun_stok'] = $this->input->post('tahun_stok', TRUE);
+        
+        $respon = $this->M_master_stok->update($data);
+        
+        if ($respon) {
+            redirect('Marketing/master/Master_stock?alert=success&msg=Selamat anda berhasil meng-update Stock Size');
+        } else {
+            redirect('Marketing/master/Master_stock?alert=error&msg=Maaf anda gagal meng-update Stock Size');
+        }
+    }
+
+    public function delete($id_master_stok_size)
+    {
+        $data['id_master_stok_size'] = $id_master_stok_size;
+        $respon = $this->M_master_stok->delete($data);
+
+        if ($respon) {
+            redirect('Marketing/master/Master_stock?alert=success&msg=Selamat anda berhasil menghapus Stock Size');
+        } else {
+            redirect('Marketing/master/Master_stock?alert=error&msg=Maaf anda gagal menghapus Stock Size');
+        }
     }
 }
