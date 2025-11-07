@@ -1,185 +1,178 @@
-<!--[ Main Content ] start -->
+<!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
-    <div class="pcoded-wrapper">
-        <div class="pcoded-content">
-            <div class="pcoded-inner-content">
-                <!-- [ breadcrumb ] start -->
-
-                <!-- [ breadcrumb ] end -->
-                <div class="main-body">
-                    <div class="page-wrapper">
-                        <!-- [ Main Content ] start -->
-                        <div class="row">
-                            <!--[social-media section] start-->
-                            <div class="col-md-12 col-xl-4">
-                                <div class="card card-social">
-                                    <div class="card-block border-bottom">
-                                        <div class="row align-items-center justify-content-center">
-                                            <div class="col-auto">
-                                                <i class="fas fa-box text-success f-36"></i>
-                                            </div>
-                                            <div class="col text-right">
-                                                <h3><?= $tot_barang_masuk ?> Batch</h3>
-                                                <h5 class="text-c-green mb-0">Total Barang Masuk <span class="text-muted">Hari ini</span></h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-xl-4">
-                                <div class="card card-social">
-                                    <div class="card-block border-bottom">
-                                        <div class="row align-items-center justify-content-center">
-                                            <div class="col-auto">
-                                                <i class="fas fa-file text-primary f-36"></i>
-                                            </div>
-                                            <div class="col text-right">
-                                                <h3><?= $tot_transfer_slip ?> Transfer Slip</h3>
-                                                <h5 class="text-c-green mb-0 pl-3">Total Transfer Slip <span class="text-muted">Hari ini</span></h5>
-                                                <!-- <h5 class="text-c-green mb-0">Total Transfer Slip <span class="text-muted">Hari ini </span></h5> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-xl-4">
-                                <div class="card card-social">
-                                    <div class="card-block border-bottom">
-                                        <div class="row align-items-center justify-content-center">
-                                            <div class="col-auto">
-                                                <i class="fas fa-box-open text-danger f-36"></i>
-                                            </div>
-                                            <div class="col text-right">
-                                                <h3><?= $tot_permintaan_barang ?> Batch</h3>
-                                                <h5 class="text-c-green mb-0">Total Barang Keluar <span class="text-muted">Hari ini </span></h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 col-xl-4">
-                                <div class="row">
-                                    <div class="col-md-6 col-xl-12">
-                                        <div class="card daily-sales">
-                                            <div class="card-block">
-                                                <h6 class="mb-4">Total Surat Jalan</h6>
-                                                <div class="row d-flex align-items-center">
-                                                    <div class="col-9">
-                                                        <h3 class="f-w-300 d-flex align-items-center m-b-0"><i class="fas fa-file text-primary f-36 m-r-10 "></i><?= $tot_barang_masuk ?></h3>
-                                                    </div>
-
-                                                    <div class="col-3 text-right">
-                                                        <p class="m-b-0">Surat Jalan</p>
-                                                    </div>
-                                                </div>
-                                                <!-- <div class="progress m-t-30" style="height: 7px;">
-                                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-xl-12">
-                                        <div class="card daily-sales">
-                                            <div class="card-block">
-                                                <h6 class="mb-4">Total Barang</h6>
-                                                <div class="row d-flex align-items-center">
-                                                    <div class="col-9">
-                                                        <h3 class="f-w-300 d-flex align-items-center m-b-0"><i class="feather icon-box text-c-yellow f-30 m-r-10"></i><?= $tot_barang ?></h3>
-                                                    </div>
-
-                                                    <div class="col-3 text-right" style="padding-right: 1%;">
-                                                        <p class="m-b-0">Barang</p>
-                                                    </div>
-                                                </div>
-                                                <!-- <div class="progress m-t-30" style="height: 7px;">
-                                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-xl-12">
-                                        <div class="card daily-sales">
-                                            <div class="card-block">
-                                                <h6 class="mb-4">Total Supplier</h6>
-                                                <div class="row d-flex align-items-center">
-                                                    <div class="col-9">
-                                                        <h3 class="f-w-300 d-flex align-items-center m-b-0"><i class="feather icon-download text-c-green f-30 m-r-10"></i><?= $tot_supplier ?></h3>
-                                                    </div>
-
-                                                    <div class="col-3 text-right" style="padding-right: 1%;">
-                                                        <p class="m-b-0">Supplier</p>
-                                                    </div>
-                                                </div>
-                                                <!-- <div class="progress m-t-30" style="height: 7px;">
-                                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-xl-8">
-                                <div class="row">
-                                    <!--[ Recent Users ] start-->
-                                    <?php if ($this->session->userdata('level') == 'admin') { ?>
-                                        <div class="col-xl-12 col-md-12">
-                                            <div class="card Recent-Users">
-                                                <div class="card-header">
-                                                    <h5>Users</h5>
-                                                </div>
-                                                <div class="card-block px-0 py-3">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-hover">
-                                                            <tbody>
-                                                                <?php
-                                                                foreach ($users as $key) {
-                                                                    if ($key['level'] === 'admin') {
-                                                                        $level = '<a href="#!" class="label theme-bg text-white f-12">Admin</a>';
-                                                                        // $o = 'green';
-                                                                    }
-                                                                    if ($key['level'] === 'lab') {
-                                                                        $level = '<a href="#!" class="label theme-bg2 text-white f-12">Lab</a>';
-                                                                        // $o = 'blue';
-                                                                    }
-                                                                    if ($key['level'] === 'gudang') {
-                                                                        $level = '<a href="#!" class="label theme-bg2 text-white f-12">Gudang</a>';
-                                                                        // $o = 'blue';
-                                                                    }
-                                                                ?>
-                                                                    <tr class="unread">
-                                                                        <td><img class="rounded-circle" style="width:40px;" src="assets/images/user/avatar-1.jpg" alt="activity-user"></td>
-                                                                        <td>
-                                                                            <h6 class="mb-1"><?= $key['nama_operator'] ?></h6>
-                                                                            <p class="m-0">Username : <?= $key['username'] ?></p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <h6 class="text-muted"></i><?= $key['alamat'] ?></h6>
-                                                                        </td>
-                                                                        <td><?= $key['level'] ?></td>
-                                                                    </tr>
-                                                                <?php
-                                                                }
-                                                                ?>
-                                                            <?php
-                                                        }
-                                                            ?>
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--[ Recent Users ] end-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <div class="page-body">
+              <!-- ======= REAL TIME PRODUKSI SECTION ======= -->
+              <div class="container-fluid py-4">
+                <!-- Header -->
+                <div class="text-center mb-4">
+                  <h2 class="fw-bold text-uppercase text-primary">REAL TIME PRODUKSI</h2>
+                  <h5 class="text-muted">Akumulasi Bulan Berjalan</h5>
                 </div>
+
+                <!-- Info Section -->
+                <div class="row justify-content-center mb-4">
+                  <div class="col-md-2 col-6 mb-3">
+                    <div class="card shadow-sm border-0 text-center">
+                      <div class="card-body">
+                        <h6 class="text-muted mb-1">Tanggal</h6>
+                        <h5 id="tanggal" class="fw-bold mb-0">03/11/2025</h5>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 col-6 mb-3">
+                    <div class="card shadow-sm border-0 text-center">
+                      <div class="card-body">
+                        <h6 class="text-muted mb-1">Hari</h6>
+                        <h5 id="hari" class="fw-bold mb-0">Senin</h5>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 col-6 mb-3">
+                    <div class="card shadow-sm border-0 text-center">
+                      <div class="card-body">
+                        <h6 class="text-muted mb-1">Bulan</h6>
+                        <h5 id="bulan" class="fw-bold mb-0">November</h5>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 col-6 mb-3">
+                    <div class="card shadow-sm border-0 text-center">
+                      <div class="card-body">
+                        <h6 class="text-muted mb-1">Tahun</h6>
+                        <h5 id="tahun" class="fw-bold mb-0">2025</h5>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 col-6 mb-3">
+                    <div class="card shadow-sm border-0 text-center bg-primary">
+                      <div class="card-body">
+                        <h6 class="mb-1" style="color: white;">Jam</h6>
+                        <h5 id="jam" class="fw-bold mb-0" style="color: white;">10:05:35</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tabel Produksi -->
+                <div class="card shadow-lg border-0">
+                  <div class="card-body">
+                    <h5 class="fw-bold text-center text-primary mb-3">Data Produksi Realtime</h5>
+                    <div class="table-responsive">
+                      <table class="table table-hover align-middle text-center">
+                        <thead class="table-primary text-uppercase">
+                          <tr>
+                            <th>Proses</th>
+                            <th>Release</th>
+                            <th>Reject</th>
+                            <th>% RJK</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><strong>Forming</strong></td>
+                            <td>20,179,204</td>
+                            <td> (FR) 780,630</td>
+                            <td class="text-danger fw-bold">3.72%</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Sortir</strong></td>
+                            <td>16,983,107</td>
+                            <td> (SR) 443,037</td>
+                            <td class="text-warning fw-bold">2.54%</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Printing</strong></td>
+                            <td>3,458,152</td>
+                            <td> (PR) 41,580</td>
+                            <td class="text-success fw-bold">1.18%</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Packing</strong></td>
+                            <td>5,425,000</td>
+                            <td> (PR) 1,265,247</td>
+                            <td class="text-danger fw-bold">2.33%</td>
+                          </tr>
+                          <tr>
+                            <td><strong>MKT</strong></td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td class="text-muted fw-bold">0.00%</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- ===== END REAL TIME PRODUKSI ===== -->
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-<!-- [ Main Content ] end
+<!-- [ Main Content ] end -->
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const jam = now.toLocaleTimeString('id-ID', { hour12: false });
+    const tanggal = now.getDate().toString().padStart(2, '0');
+    const bulan = now.toLocaleString('id-ID', { month: 'long' });
+    const tahun = now.getFullYear();
+    const hariList = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const hari = hariList[now.getDay()];
+
+    document.getElementById('jam').textContent = jam;
+    document.getElementById('tanggal').textContent = `${tanggal}/${now.getMonth()+1}/${tahun}`;
+    document.getElementById('bulan').textContent = bulan.charAt(0).toUpperCase() + bulan.slice(1);
+    document.getElementById('tahun').textContent = tahun;
+    document.getElementById('hari').textContent = hari;
+  }
+
+  setInterval(updateClock, 1000);
+  updateClock();
+</script>
+
+<style>
+  .card {
+    border-radius: 12px;
+  }
+
+  .card-body {
+    padding: 1rem 1rem;
+  }
+
+  .table th {
+    font-weight: 700;
+    letter-spacing: .5px;
+  }
+
+  .table td {
+    vertical-align: middle;
+  }
+
+  .table thead {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .container-fluid {
+    max-width: 1200px; /* biar gak melebar ke kanan */
+    margin: 0 auto;
+  }
+
+  body {
+    background-color: #f8f9fc !important;
+  }
+</style>
