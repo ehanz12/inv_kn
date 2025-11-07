@@ -55,7 +55,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                    $level = $this->session->userdata('level');
+                                                    $level = $this->session->userdata('departement');
                                                     $no = 1;
                                                     foreach ($result as $k) {
                                                     ?>
