@@ -21,16 +21,18 @@ class Master_stock extends CI_Controller
     {
 
         $stok_bulan = $this->input->post('stok_bulan', TRUE);
-        $tahun_stok = $this->input->post('tahun_stok', TRUE);
+        $stok_tahun = $this->input->post('stok_tahun', TRUE);
+        $stok_master = $this->input->post('stok_master', TRUE);
 
-        if(empty($tahun_stok) || $tahun_stok < 2020 || $tahun_stok > 2030) {
+        if(empty($stok_tahun) || $stok_tahun < 2020 || $stok_tahun > 2030) {
         redirect('Marketing/master/Master_stock?alert=error&msg=Tahun tidak valid');
         return;
     }
 
         $data = [
             'stok_bulan' => $stok_bulan,
-            'tahun_stok' => $tahun_stok,
+            'stok_tahun' => $stok_tahun,
+            'stok_master' => $stok_master,
             'id_user' => $this->session->userdata('id_user'),
         ];
 
@@ -47,7 +49,8 @@ class Master_stock extends CI_Controller
     {
         $data['id_master_stok_size'] = $this->input->post('id_master_stok_size', TRUE);
         $data['stok_bulan'] = $this->input->post('stok_bulan', TRUE);
-        $data['tahun_stok'] = $this->input->post('tahun_stok', TRUE);
+        $data['stok_tahun'] = $this->input->post('stok_tahun', TRUE);
+         $data['stok_master'] = $this->input->post('stok_master', TRUE);
         
         $respon = $this->M_master_stok->update($data);
         

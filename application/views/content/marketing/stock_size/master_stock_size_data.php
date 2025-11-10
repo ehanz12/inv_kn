@@ -386,6 +386,7 @@
                         <thead>
                           <tr>
                             <th>#</th>
+                            <th>Master Stock</th>
                             <th>Bulan Stock</th>
                             <th>Tahun Stock</th>
                             <th>Dibuat Pada</th>
@@ -416,15 +417,16 @@
                               ?>
                               <tr>
                                 <th scope="row"><?= $no++ ?></th>
+                                <td><span class="badge badge-info"><?= $k['stok_master'] ?></span></td>
                                 <td><span class="badge badge-primary"><?= $bulanName ?></span></td>
-                                <td><span class="badge badge-info"><?= $k['tahun_stok'] ?></span></td>
+                                <td><span class="badge badge-info"><?= $k['stok_tahun'] ?></span></td>
                                 <td><?= date('d/m/Y', strtotime($k['created_at'])) ?></td>
                                 <td class="text-center">
                                   <?php if ($level === "admin") { ?>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                       <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal"
                                         data-target="#edit" data-id_master_stok_size="<?= $k['id_master_stok_size'] ?>"
-                                        data-stok_bulan="<?= $k['stok_bulan'] ?>" data-tahun_stok="<?= $k['tahun_stok'] ?>">
+                                        data-stok_bulan="<?= $k['stok_bulan'] ?>" data-stok_tahun="<?= $k['stok_tahun'] ?>">
                                         <i class="feather icon-edit-2"></i> Edit
                                       </button>
                                     </div>
@@ -472,6 +474,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      
       <form method="post" action="<?= base_url() ?>Marketing/master/Master_stock/add">
         <div class="modal-body">
           <div class="form-group">
@@ -493,8 +496,13 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="tahun_stok">Tahun Stock</label>
-            <input type="number" class="form-control" id="tahun_stok" name="tahun_stok" min="2020" max="2030"
+                        <label for="logo_print" class="form-label">Master Stok</label>
+                        <input type="text" class="form-control text-uppercase" id="stok_master" name="stok_master" autocomplete="off" placeholder="stok master" required>
+                    </div>
+              
+          <div class="form-group">
+            <label for="stok_tahun">Tahun Stock</label>
+            <input type="number" class="form-control" id="stok_tahun" name="stok_tahun" min="2020" max="2030"
               value="<?= date('Y') ?>" placeholder="Tahun Stock" required>
           </div>
         </div>
@@ -539,8 +547,8 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="tahun_stok">Tahun Stock</label>
-            <input type="number" class="form-control" id="tahun_stok" name="tahun_stok" min="2020" max="2030"
+            <label for="stok_tahun">Tahun Stock</label>
+            <input type="number" class="form-control" id="stok_tahun" name="stok_tahun" min="2020" max="2030"
               value="<?= date('Y') ?>" placeholder="Tahun Stock" required>
           </div>
         </div>
@@ -560,12 +568,14 @@
       var button = $(event.relatedTarget);
       var id_master_stok_size = button.data('id_master_stok_size');
       var stok_bulan = button.data('stok_bulan');
-      var tahun_stok = button.data('tahun_stok');
+      var stok_tahun = button.data('stok_tahun');
+      var stok_master = button.data('stok_master');
 
       var modal = $(this);
       modal.find('#e_id_master_stok_size').val(id_master_stok_size);
       modal.find('#e_stok_bulan').val(stok_bulan);
-      modal.find('#e_tahun_stok').val(tahun_stok);
+      modal.find('#e_stok_tahun').val(stok_tahun);
+      modal.find('#e_stok_master').val(stok_master);
     });
 
     // Auto-hide alert setelah 5 detik

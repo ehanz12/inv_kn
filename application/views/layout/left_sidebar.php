@@ -63,6 +63,7 @@
                                 </a>
 
                                 <ul class="pcoded-submenu">
+                                    
                                     <li class="nav-item <?= $uri == 'Customer' ? 'active' : '' ?>">
                                         <a href="<?= base_url('Marketing/master/Customer') ?>">Customer</a>
                                     </li>
@@ -79,6 +80,9 @@
                             </li>
 
                             <!-- Submenu: Lain-lain -->
+                             <li class="nav-item <?= $uri == 'Customer' ? 'active' : '' ?>">
+                                        <a href="<?= base_url('Marketing/konfirmasi_pesanan') ?>">Konfirmasi Pesanan</a>
+                                    </li>
                             <li class="nav-item <?= $uri == 'Capsule_request' ? 'active' : '' ?>">
                                 <a href="<?= base_url('Marketing/Capsule_request/Marketing_cr') ?>">Capsule Request</a>
                             </li>

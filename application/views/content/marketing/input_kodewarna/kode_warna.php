@@ -365,7 +365,7 @@
               <div class="col-xl-12">
                 <div class="card">
                   <div class="card-header">
-                    <h5><i class="fas fa-palette me-2"></i>Data Kode Warna</h5>
+                    <h5 style="color: white;"><i class="fas fa-palette me-2"></i>Data Kode Warna</h5>
 
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-light btn-sm float-right" data-toggle="modal" data-target="#add">
@@ -407,7 +407,9 @@
                                 <span class="badge badge-primary" data-toggle="modal" data-target="#view" 
                                   data-id_master_kw_cap="<?= $k['id_master_kw_cap'] ?>" 
                                   data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>" 
+                                 
                                   data-warna_cap="<?= $k['warna_cap'] ?>" 
+                                  data-short_name="<?= $k['short_name'] ?>" 
                                   data-ti02="<?= $k['f_ti02'] ?>" 
                                   data-r1="<?= $k['f_r1'] ?>" 
                                   data-r3="<?= $k['f_r3'] ?>" 
@@ -426,6 +428,7 @@
                                       data-id_master_kw_cap="<?= $k['id_master_kw_cap'] ?>" 
                                       data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>" 
                                       data-warna_cap="<?= $k['warna_cap'] ?>" 
+                                       data-short_name="<?= $k['short_name'] ?>" 
                                       data-ti02="<?= $k['f_ti02'] ?>" 
                                       data-r1="<?= $k['f_r1'] ?>" 
                                       data-r3="<?= $k['f_r3'] ?>" 
@@ -487,6 +490,16 @@
               </div>
             </div>
           </div>
+
+           <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="short_name" class="form-label">Short Name</label>
+                <input type="text" class="form-control text-uppercase" id="short_name" name="short_name" placeholder="Short name" autocomplete="off" required>
+              </div>
+            </div>
+          </div>
+          
 
           <center><label for="formula_warna" class="font-weight-bold mt-3 form-label">Komposisi Formula</label></center>
           <div class="row">
@@ -798,6 +811,7 @@
     // Uppercase function
     uppercase('#kode_warna');
     uppercase('#warna');
+     uppercase('#short');
     
     // Reset form ketika modal tambah ditutup
     $('#add').on('hidden.bs.modal', function() {
@@ -859,6 +873,7 @@
       var id_kw_cap = button.data('id_master_kw_cap');
       var kode_warna = button.data('kode_warna_cap');
       var warna = button.data('warna_cap');
+      var short = button.data('short_name');
       var ti02 = button.data('ti02');
       var r1 = button.data('r1');
       var r3 = button.data('r3');
@@ -869,6 +884,7 @@
 
       $(this).find('#v-kode_warna').val(kode_warna);
       $(this).find('#v-warna').val(warna);
+       $(this).find('#v-warna').val(short_name);
       $(this).find('#v-ti02').val(ti02 + " %");
       $(this).find('#v-r1').val(r1 + " ml");
       $(this).find('#v-r3').val(r3 + " ml");
@@ -889,6 +905,7 @@
       var id_kw_cap = button.attr('data-id_master_kw_cap') || button.data('id_master_kw_cap');
       var kode_warna = button.attr('data-kode_warna_cap') || button.data('kode_warna_cap');
       var warna = button.attr('data-warna_cap') || button.data('warna_cap');
+      var short = button.attr('data-short_name') || button.data('short_name');
       var ti02 = button.attr('data-ti02') || button.data('ti02');
       var r1 = button.attr('data-r1') || button.data('r1');
       var r3 = button.attr('data-r3') || button.data('r3');
@@ -906,6 +923,7 @@
       $(this).find('#e-id_master_kw_cap').val(id_kw_cap);
       $(this).find('#e-id_master_kw_body').val(id_kw_cap); // Jika body pakai ID yang sama
       $(this).find('#e-kode_warna').val(kode_warna);
+      $(this).find('#e-short_name').val(short_name);
       $(this).find('#e-warna').val(warna);
       $(this).find('#e-ti02').val(ti02);
       $(this).find('#e-r1').val(r1);

@@ -20,24 +20,51 @@ class Kode_warna extends CI_Controller
 
 	public function add()
 {
-    $data['id_master_kw_cap'] = $this->input->post('id_kw_cap', TRUE);
-    $data['id_master_kw_body'] = $this->input->post('id_kw_body', TRUE);
-    $data['kode_warna'] = $this->input->post('kode_warna', TRUE);
-    $data['warna'] = $this->input->post('warna', TRUE);
-    
-    // PERBAIKAN: Ambil data dari form tanpa f_
-    $data['ti02'] = $this->input->post('ti02', TRUE);
-    $data['r1'] = $this->input->post('r1', TRUE);
-    $data['r3'] = $this->input->post('r3', TRUE);
-    $data['y5'] = $this->input->post('y5', TRUE);
-    $data['b1'] = $this->input->post('b1', TRUE);
-    $data['y10'] = $this->input->post('y10', TRUE);
-    $data['sf'] = $this->input->post('sf', TRUE);
-    
-    // Debug untuk memeriksa data
-    echo "<pre>Data yang akan disimpan:";
-    print_r($data);
+    // Debug data POST
+    echo "<pre>=== DEBUG DATA POST ===";
+    print_r($_POST);
     echo "</pre>";
+    
+    $data = array(
+        'id_master_kw_cap' => $this->input->post('id_kw_cap', TRUE),
+        'id_master_kw_body' => $this->input->post('id_kw_body', TRUE),
+        'kode_warna' => $this->input->post('kode_warna', TRUE),
+        'warna' => $this->input->post('warna', TRUE),
+        'short_name' => $this->input->post('short_name', TRUE), // PERBAIKAN: nama field harus sesuai
+        'ti02' => $this->input->post('ti02', TRUE),
+        'r1' => $this->input->post('r1', TRUE),
+        'r3' => $this->input->post('r3', TRUE),
+        'y5' => $this->input->post('y5', TRUE),
+        'b1' => $this->input->post('b1', TRUE),
+        'y10' => $this->input->post('y10', TRUE),
+        'sf' => $this->input->post('sf', TRUE)
+    );
+    
+    // Validasi data sebelum insert
+   if (empty($data['short_name'])) {
+    $warna = trim($data['warna']);
+    $length = strlen($warna);
+    
+    if ($length >= 3) {
+        // Ambil huruf pertama
+        $first = substr($warna, 0, 1);
+        // Ambil huruf tengah
+        $middle = substr($warna, floor($length / 2), 1);
+        // Ambil huruf terakhir
+        $last = substr($warna, -1);
+        
+        $data['short_name'] = strtoupper($first . $middle . $last);
+    } else if ($length == 2) {
+        // Jika hanya 2 huruf, gunakan kedua huruf + huruf pertama lagi
+        $data['short_name'] = strtoupper(substr($warna, 0, 2) . substr($warna, 0, 1));
+    } else if ($length == 1) {
+        // Jika hanya 1 huruf, ulangi 3 kali
+        $data['short_name'] = strtoupper(str_repeat($warna, 3));
+    } else {
+        // Fallback
+        $data['short_name'] = 'DEF';
+    }
+}
     
     $respon_cap = $this->M_kode_warna->add_cap($data);
     $respon_body = $this->M_kode_warna->add_body($data);
@@ -45,6 +72,9 @@ class Kode_warna extends CI_Controller
     if ($respon_cap && $respon_body) {
         header('location:' . base_url('Marketing/master/Kode_warna') . '?alert=success&msg=Selamat anda berhasil menambah Kode Warna');
     } else {
+        // Debug error database
+        echo "Error CAP: " . $this->db->error()['message'] . "<br>";
+        echo "Error BODY: " . $this->db->error()['message'] . "<br>";
         header('location:' . base_url('Marketing/master/Kode_warna') . '?alert=error&msg=Maaf anda gagal menambah Kode Warna');
     }
 }
