@@ -180,15 +180,15 @@
                             </li> -->
                             <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds"
                                 class="nav-item pcoded-hasmenu">
-                                <a href="javascript:" class="nav-link "><span class="pcoded-mitext">PPB Master
-                                        Barang</span></a>
+                                <a href="javascript:" class="nav-link "><span class="pcoded-mitext"> Master
+                                        </span></a>
                                 <ul class="pcoded-submenu">
                                     <li class="nav-item <?= $uri == 'prc_ppb_masterbarang' ? 'active' : '' ?>"><a
                                             href="<?= base_url('Purchasing/prc_ppb/Prc_ppb_masterbarang') ?>"
-                                            class="">Master Barang</a></li>
+                                            class="">Master Barang GBB</a></li>
                                     <li class="nav-item <?= $uri == 'Supplier' ? 'active' : '' ?>"><a
                                             href="<?= base_url('Purchasing/prc_ppb/Po_supplier/Prc_po_supplier') ?>"
-                                            class="">Supplier</a></li>
+                                            class="">Master Supplier</a></li>
 
                                 </ul>
                             </li>
