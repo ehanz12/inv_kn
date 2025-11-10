@@ -38,6 +38,7 @@ class M_kode_warna extends CI_Model
             'id_master_kw_cap' => $data['id_master_kw_cap'],
             'kode_warna_cap' => $data['kode_warna'],
             'warna_cap' => $data['warna'],
+            'short_name' => $data['short_name'],
             'f_ti02' => $data['ti02'],  
             'f_r1' => $data['r1'],    
             'f_r3' => $data['r3'],    
@@ -64,6 +65,7 @@ class M_kode_warna extends CI_Model
             'id_master_kw_body' => $data['id_master_kw_body'],
             'kode_warna_body' => $data['kode_warna'],
             'warna_body' => $data['warna'],
+            'short_name' => $data['short_name'],
             'f_ti02' => $data['ti02'],  // PERBAIKAN: f_t02 bukan f_ti02  
             'f_r1' => $data['r1'],    
             'f_r3' => $data['r3'],    
@@ -88,6 +90,7 @@ class M_kode_warna extends CI_Model
         $update_data = array(
             'kode_warna_cap' => $data['kode_warna'],
             'warna_cap' => $data['warna'],
+            'short_name' => $data['short_name'],
             'f_ti02' => $data['ti02'],  
             'f_r1' => $data['r1'],    
             'f_r3' => $data['r3'],    
@@ -111,6 +114,7 @@ class M_kode_warna extends CI_Model
         $update_data = array(
             'kode_warna_body' => $data['kode_warna'],
             'warna_body' => $data['warna'],
+            'short_name' => $data['short_name'],
             'f_ti02' => $data['ti02'],  
             'f_r1' => $data['r1'],    
             'f_r3' => $data['r3'],    

@@ -355,7 +355,7 @@
                             <div class="col-xl-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5><i class="fas fa-users me-2"></i>Data Customer</h5>
+                                        <h5 style="color: white;"><i class="fas fa-users me-2"></i>Data Customer</h5>
 
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-light btn-sm float-right" data-toggle="modal" data-target="#add">

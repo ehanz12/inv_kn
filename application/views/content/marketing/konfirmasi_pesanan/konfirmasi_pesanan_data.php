@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfirmasi Pesanan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" rel="stylesheet">
+    <!-- Tambahkan link Bootstrap Datepicker -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <style>
+        /* CSS tetap sama seperti sebelumnya */
+        :root {
+            --primary: #4361ee;
+            --barang: #436;
+            --upd: #f72585;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --info: #4895ef;
+            --warning: #ae4976ff;
+            --danger: #e63946;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        .barang-container {
+            padding: 20px;
+            background-color: #f5f7fb;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .page-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .breadcrumb {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 0;
+        }
+
+        .breadcrumb-item a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .card {
+            width: 100%;
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 25px;
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid var(--light-gray);
+            padding: 15px 15px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header h5 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 8px 16px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), var(--info));
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(76, 201, 240, 0.3);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info), #3a86ff);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #b5179e);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #d00000);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--gray), #495057);
+            color: white;
+        }
+
+        /* PERBAIKAN: Tambahkan scroll horizontal */
+        .table-responsive {
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            overflow: hidden;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table {
+            margin-bottom: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            min-width: 1200px; /* Lebar minimum untuk scroll */
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 13px 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            padding: 10px 8px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--light-gray);
+            white-space: nowrap;
+            font-size: 13px;
+        }
+
+        .table tbody tr {
+            transition: var(--transition);
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Style untuk scrollbar */
+        .table-responsive::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        .badge {
+            padding: 6px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        .badge-success {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: var(--success);
+        }
+
+        .badge-primary {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+
+        .badge-warning {
+            background-color: rgba(247, 37, 133, 0.1);
+            color: var(--warning);
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            padding: 20px 25px;
+        }
+
+        .modal-up {
+            background: linear-gradient(135deg, var(--upd), var(--warning));
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            padding: 20px 25px;
+        }
+
+        .modal-barang {
+            background: linear-gradient(135deg, var(--barang), var(--secondary));
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            padding: 20px 25px;
+        }
+
+        .modal-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+        }
+
+        .close {
+            color: white;
+            opacity: 0.8;
+        }
+
+        .close:hover {
+            color: white;
+            opacity: 1;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            padding: 10px 15px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-label i {
+            color: var(--primary);
+            font-size: 14px;
+            width: 16px;
+        }
+
+        .invalid-feedback {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            flex-wrap: nowrap;
+        }
+
+        .table .btn-sm {
+            padding: 4px 8px;
+            font-size: 11px;
+            line-height: 1.5;
+            white-space: nowrap;
+        }
+
+        .table .btn i {
+            font-size: 10px;
+            margin-right: 2px;
+        }
+
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 25px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 180px;
+            margin-bottom: 0;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .filter-actions .btn {
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        /* Chosen Select Styling */
+        .chosen-container {
+            width: 100% !important;
+        }
+
+        .chosen-container-single .chosen-single {
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            padding: 10px 15px;
+            height: auto;
+            background: white;
+            box-shadow: none;
+        }
+
+        .chosen-container-active.chosen-with-drop .chosen-single {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+        }
+
+        /* Datepicker Styling */
+        .datepicker {
+            z-index: 9999 !important;
+        }
+
+        .datepicker-dropdown {
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border: none;
+        }
+
+        .datepicker table tr td.active.active,
+        .datepicker table tr td.active:hover.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+            border-color: var(--primary) !important;
+        }
+
+        .datepicker table tr td.today {
+            background-color: var(--light-gray) !important;
+        }
+
+        .datepicker table tr td.today:hover {
+            background-color: var(--gray) !important;
+        }
+
+        @media (max-width: 768px) {
+            .card-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .btn-group {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .filter-row {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .filter-actions {
+                width: 100%;
+                justify-content: stretch;
+                margin-top: 10px;
+            }
+
+            .filter-actions .btn {
+                flex: 1;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 3px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- [ Main Content ] start -->
+    <section class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+                    <div class="page-header">
+                        <div class="page-block">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <ul class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="<?= base_url() ?>"><i
+                                                    class="fas fa-home"></i></a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Marketing</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Konfirmasi Pesanan</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ breadcrumb ] end -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+
+                            <!-- Filter Section -->
+                            <div class="filter-section">
+                                <div class="filter-row">
+                                    <div class="filter-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-user"></i>
+                                            <span>Customer</span>
+                                        </label>
+                                        <select class="form-control chosen-select" id="filter_customer"
+                                            name="filter_customer">
+                                            <option value="" selected>- Pilih Customer -</option>
+                                            <?php foreach ($res_customer as $rc) { ?>
+                                                <option value="<?= $rc['nama_customer'] ?>"
+                                                    <?= $nama_customer === $rc['nama_customer'] ? 'selected' : '' ?>>
+                                                    <?= $rc['nama_customer'] ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="filter-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Dari Tanggal</span>
+                                        </label>
+                                        <input type="text" id="filter_tgl" value="<?= $tgl ? $tgl : '' ?>"
+                                            class="form-control datepicker" placeholder="Pilih tanggal"
+                                            autocomplete="off">
+                                    </div>
+
+                                    <div class="filter-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Sampai Tanggal</span>
+                                        </label>
+                                        <input type="text" id="filter_tgl2" value="<?= $tgl2 ? $tgl2 : '' ?>"
+                                            class="form-control datepicker" placeholder="Pilih tanggal"
+                                            autocomplete="off">
+                                    </div>
+
+                                    <div class="filter-actions">
+                                        <button class="btn btn-info" id="lihat" type="button">
+                                            <i class="fas fa-search"></i> Filter
+                                        </button>
+                                        <button class="btn btn-success" id="export" type="button">
+                                            <i class="fas fa-print"></i> Cetak
+                                        </button>
+                                        <a href="<?= base_url() ?>marketing/konfirmasi_pesanan" class="btn btn-warning"
+                                            id="reset" type="button">
+                                            <i class="fas fa-refresh"></i> Reset
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5><i class="fas fa-list"></i> Data Konfirmasi Pesanan</h5>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#add">
+                                                <i class="fas fa-plus-circle"></i> Tambah Konfirmasi Pesanan
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-block table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table datatable table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Tgl KP</th>
+                                                        <th>No KP</th>
+                                                        <th>Customer</th>
+                                                        <th>Kode Customer</th>
+                                                        <th>Spesifikasi Kapsul</th>
+                                                        <th>Kode Print</th>
+                                                        <!-- <th>Kode Warna Cap</th>
+                                                        <th>Kode Warna Body</th> -->
+                                                        <th>Jumlah KP</th>
+                                                        <th>Harga KP</th>
+                                                       
+                                                        <th class="text-center">Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $level = $this->session->userdata('level');
+                                                    $no = 1;
+                                                    if (isset($result) && is_array($result) && count($result) > 0) {
+                                                        foreach ($result as $k) {
+                                                            // Format tanggal yang aman
+                                                            $tgl_kp = isset($k['tgl_kp']) && !empty($k['tgl_kp']) ? date('d/m/Y', strtotime($k['tgl_kp'])) : '';
+                                                            $tgl_po = isset($k['tgl_po']) && !empty($k['tgl_po']) ? date('d/m/Y', strtotime($k['tgl_po'])) : '';
+                                                            $tgl_kirim = isset($k['tgl_kirim']) && !empty($k['tgl_kirim']) ? date('d/m/Y', strtotime($k['tgl_kirim'])) : '';
+
+                                                            // Default values untuk field yang mungkin kosong
+                                                            $id_mkt_kp = isset($k['Id_mkt_kp']) ? $k['Id_mkt_kp'] : '';
+                                                            $no_kp = isset($k['no_kp']) ? $k['no_kp'] : '';
+                                                            $id_customer = isset($k['id_customer']) ? $k['id_customer'] : '';
+                                                            $nama_customer = isset($k['nama_customer']) ? $k['nama_customer'] : '';
+                                                            $kode_customer = isset($k['kode_customer']) ? $k['kode_customer'] : '';
+                                                            $spek_kapsul = isset($k['spek_kapsul']) ? $k['spek_kapsul'] : '';
+                                                            $kode_print = isset($k['kode_print']) ? $k['kode_print'] : '';
+                                                            $logo_print = isset($k['logo_print']) ? $k['logo_print'] : '';
+                                                            $stok_master = isset($k['stok_master']) ? $k['stok_master'] : '';
+                                                            $kode_warna_cap = isset($k['kode_warna_cap']) ? $k['kode_warna_cap'] : '';
+                                                            $kode_warna_body = isset($k['kode_warna_body']) ? $k['kode_warna_body'] : '';
+                                                            $jumlah_kp = isset($k['jumlah_kp']) ? $k['jumlah_kp'] : 0;
+                                                            $harga_kp = isset($k['harga_kp']) ? $k['harga_kp'] : 0;
+                                                            $no_po = isset($k['no_po']) ? $k['no_po'] : '';
+                                                            $jenis_pack = isset($k['jenis_pack']) ? $k['jenis_pack'] : '';
+                                                            $ket_kp = isset($k['ket_kp']) ? $k['ket_kp'] : '';
+                                                            $created_by = isset($k['created_by']) ? $k['created_by'] : '';
+                                                            
+                                                            
+                                                            ?>
+                                                            <tr>
+                                                                <th scope="row"><?= $no++ ?></th>
+                                                                <td><?= $tgl_kp ?></td>
+                                                                <td>
+                                                                    <span style="cursor: pointer;" class="badge badge-primary"
+                                                                        data-toggle="modal" data-target="#detail"
+                                                                        data-id_mkt_kp="<?= $id_mkt_kp ?>"
+                                                                        data-no_kp="<?= $no_kp ?>" 
+                                                                        data-tgl_kp="<?= $tgl_kp ?>"
+                                                                        data-id_customer="<?= $id_customer ?>"
+                                                                        data-nama_customer="<?= $nama_customer ?>"
+                                                                        data-kode_customer="<?= $kode_customer ?>"
+                                                                        data-spek_kapsul="<?= $spek_kapsul ?>"
+                                                                        data-kode_print="<?= $kode_print ?>"
+                                                                        data-logo_print="<?= $logo_print ?>"
+                                                                        data-stok_master="<?= $stok_master ?>"
+                                                                        data-kode_warna_cap="<?= $kode_warna_cap ?>"
+                                                                        data-kode_warna_body="<?= $kode_warna_body ?>"
+                                                                        data-jumlah_kp="<?= $jumlah_kp ?>"
+                                                                        data-harga_kp="<?= $harga_kp ?>"
+                                                                        data-no_po="<?= $no_po ?>" 
+                                                                        data-tgl_po="<?= $tgl_po ?>"
+                                                                        data-jenis_pack="<?= $jenis_pack ?>"
+                                                                        data-tgl_kirim="<?= $tgl_kirim ?>"
+                                                                        data-ket_kp="<?= $ket_kp ?>"
+                                                                        data-created_by="<?= $created_by ?>">
+                                                                       
+                                                                        
+                                                                        <?= $k['no_kp'] ?>
+                                                                        <!-- <?= $no_kp ?> -->
+                                                                    </span>
+                                                                </td>
+                                                                <td><?= $nama_customer ?></td>
+                                                                <td><?= $kode_customer ?></td>
+                                                                <td><?= $spek_kapsul ?></td>
+                                                                <td><?= $kode_print ?></td>
+                                                                <!-- <td><?= $kode_warna_cap ?></td>
+                                                                <td><?= $kode_warna_body ?></td> -->
+                                                                <td class="text-right">
+                                                                    <?= number_format($jumlah_kp, 0, ",", ".") ?> pcs
+                                                                </td>
+                                                                <td class="text-right">Rp
+                                                                    <?= number_format($harga_kp, 0, ",", ".") ?>
+                                                                </td>
+                                                                
+                                                                <td class="text-center">
+                                                                    <div class="action-buttons">
+                                                                        <?php if ($level === "0" || $level == "marketing") { ?>
+                                                                            <button type="button"
+                                                                                class="btn btn-warning btn-sm btn-action"
+                                                                                data-toggle="modal" data-target="#edit"
+                                                                                data-id_mkt_kp="<?= $id_mkt_kp ?>"
+                                                                                data-no_kp="<?= $no_kp ?>"
+                                                                                data-tgl_kp="<?= $tgl_kp ?>"
+                                                                                data-id_customer="<?= $id_customer ?>"
+                                                                                data-nama_customer="<?= $nama_customer ?>"
+                                                                                data-kode_customer="<?= $kode_customer ?>"
+                                                                                data-spek_kapsul="<?= $spek_kapsul ?>"
+                                                                                data-kode_print="<?= $kode_print ?>"
+                                                                                data-kode_warna_cap="<?= $kode_warna_cap ?>"
+                                                                                data-kode_warna_body="<?= $kode_warna_body ?>"
+                                                                                data-jumlah_kp="<?= $jumlah_kp ?>"
+                                                                                data-harga_kp="<?= $harga_kp ?>"
+                                                                                data-no_po="<?= $no_po ?>"
+                                                                                data-tgl_po="<?= $tgl_po ?>"
+                                                                                data-jenis_pack="<?= $jenis_pack ?>"
+                                                                                data-tgl_kirim="<?= $tgl_kirim ?>"
+                                                                                data-ket_kp="<?= $ket_kp ?>"
+                                                                                data-created_by="<?= $created_by ?>"
+                                                                                data-stok_master="<?= $stok_master ?>">
+                                                                                <i class="fas fa-edit"></i> Edit
+                                                                            </button>
+                                                                            <a href="<?= base_url() ?>marketing/konfirmasi_pesanan/delete/<?= $id_mkt_kp ?>"
+                                                                                class="btn btn-danger btn-sm btn-action"
+                                                                                onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
+                                                                                <i class="fas fa-trash"></i> Hapus
+                                                                            </a>
+                                                                        <?php } ?>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <?php
+                                                        }
+                                                    } else {
+                                                        echo '<tr><td colspan="14" class="text-center">Tidak ada data</td></tr>';
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Tambah -->
+    <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-barang">
+                    <h5 class="modal-title"><i class="fas fa-plus-circle"></i> Tambah Konfirmasi Pesanan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="<?= base_url() ?>marketing/konfirmasi_pesanan/add">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">No KP</label>
+                                    <input type="text" class="form-control" id="no_kp" name="no_kp" placeholder="No KP"
+                                        autocomplete="off" style="text-transform:uppercase"
+                                        onkeyup="this.value = this.value.toUpperCase()" required>
+                                    <div id="validationServer03Feedback" class="invalid-feedback">
+                                        Maaf No KP sudah ada.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Tanggal KP</label>
+                                    <input type="text" class="form-control datepicker" id="tgl_kp" name="tgl_kp"
+                                        placeholder="Tanggal KP" autocomplete="off" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Customer</label>
+                                    <select class="form-control chosen-select" id="id_customer" name="id_customer"
+                                        autocomplete="off" required>
+                                        <option value="">- Pilih Customer -</option>
+                                        <?php foreach ($res_customer as $c) { ?>
+                                            <option value="<?= $c['id_customer'] ?>"><?= $c['nama_customer'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Spek Kapsul</label>
+                                    <select class="form-control chosen-select" id="spek_kapsul" name="spek_kapsul"
+                                        autocomplete="off" required>
+                                        <option value="">- Pilih Spek Kapsul -</option>
+                                        <option value="Minyak">Minyak</option>
+                                        <option value="Non Minyak">Non Minyak</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Kode Print dengan dropdown -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Kode Print</label>
+                                    <select class="form-control chosen-select" id="id_master_print"
+                                        name="id_master_print" autocomplete="off">
+                                        <option value="">- Pilih Kode Print -</option>
+                                    </select>
+                                    <input type="hidden" id="kode_print" name="kode_print">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Logo Print</label>
+                                    <input type="text" class="form-control" id="logo_print" name="logo_print"
+                                        placeholder="Logo Print" autocomplete="off" readonly>
+                                </div>
+                            </div>
+
+                            <!-- TAMBAHKAN STOK SIZE DI MODAL TAMBAH -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-boxes"></i>
+                                        <span>Stok Size</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="stok_master" name="stok_master"
+                                        placeholder="Masukkan jumlah stok" autocomplete="off" required>
+                                    <small class="form-text text-muted" id="stok-info"></small>
+                                </div>
+                            </div>
+
+                            <!-- Kode Warna Cap - langsung dari master -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Kode Warna Cap</label>
+                                    <select class="form-control chosen-select" id="id_master_kw_cap"
+                                        name="id_master_kw_cap" autocomplete="off">
+                                        <option value="">- Pilih Kode Warna Cap -</option>
+                                        <?php foreach ($res_warna_cap as $warna) { ?>
+                                            <option value="<?= $warna['id_master_kw_cap'] ?>"
+                                                data-kode="<?= $warna['kode_warna_cap'] ?>">
+                                                <?= $warna['kode_warna_cap'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                    <input type="hidden" id="kode_warna_cap" name="kode_warna_cap">
+                                </div>
+                            </div>
+
+                            <!-- Kode Warna Body - langsung dari master -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Kode Warna Body</label>
+                                    <select class="form-control chosen-select" id="id_master_kw_body"
+                                        name="id_master_kw_body" autocomplete="off">
+                                        <option value="">- Pilih Kode Warna Body -</option>
+                                        <?php foreach ($res_warna_body as $warna) { ?>
+                                            <option value="<?= $warna['id_master_kw_body'] ?>"
+                                                data-kode="<?= $warna['kode_warna_body'] ?>">
+                                                <?= $warna['kode_warna_body'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                    <input type="hidden" id="kode_warna_body" name="kode_warna_body">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Jumlah KP</label>
+                                    <input type="text" class="form-control" id="jumlah_kp" name="jumlah_kp"
+                                        placeholder="Jumlah KP" autocomplete="off" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Harga KP</label>
+                                    <input type="text" class="form-control" id="harga_kp" name="harga_kp"
+                                        placeholder="Harga KP" autocomplete="off" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Total Harga</label>
+                                    <input type="text" class="form-control" id="total_harga" name="total_harga"
+                                        placeholder="Total Harga" readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">No PO</label>
+                                    <input type="text" class="form-control" id="no_po" name="no_po" placeholder="No PO"
+                                        autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Tanggal PO</label>
+                                    <input type="text" class="form-control datepicker" id="tgl_po" name="tgl_po"
+                                        placeholder="Tanggal PO" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Jenis Packing</label>
+                                    <select class="form-control chosen-select" id="jenis_pack" name="jenis_pack"
+                                        autocomplete="off">
+                                        <option value="">- Pilih Jenis Packing -</option>
+                                        <option value="Polos">Polos</option>
+                                        <option value="Bratako">Bratako</option>
+                                        <option value="Loss">Loss</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Tanggal Kirim</label>
+                                    <input type="text" class="form-control datepicker" id="tgl_kirim" name="tgl_kirim"
+                                        placeholder="Tanggal Kirim" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Keterangan</label>
+                                    <textarea class="form-control" id="ket_kp" name="ket_kp" placeholder="Keterangan"
+                                        rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Created By</label>
+                                    <input type="text" class="form-control" id="created_by" name="created_by"
+                                        value="<?= $this->session->userdata('nama') ?>" autocomplete="off" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" id="simpan" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detail -->
+    <div class="modal fade" id="detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-eye"></i> Detail Konfirmasi Pesanan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="v-id_mkt_kp" name="id_mkt_kp">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">No KP</label>
+                                <input type="text" class="form-control" id="v-no_kp" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Tanggal KP</label>
+                                <input type="text" class="form-control" id="v-tgl_kp" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Customer</label>
+                                <input type="text" class="form-control" id="v-nama_customer" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Kode Customer</label>
+                                <input type="text" class="form-control" id="v-kode_customer" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Spesifikasi Kapsul</label>
+                                <input type="text" class="form-control" id="v-spek_kapsul" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Kode Print</label>
+                                <input type="text" class="form-control" id="v-kode_print" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Logo Print</label>
+                                <input type="text" class="form-control" id="v-logo_print" readonly>
+                            </div>
+                        </div>
+
+                        <!-- TAMBAHKAN STOK SIZE DI MODAL DETAIL -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Stok Size</label>
+                                <input type="text" class="form-control" id="v-stok_master" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Kode Warna Cap</label>
+                                <input type="text" class="form-control" id="v-kode_warna_cap" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Kode Warna Body</label>
+                                <input type="text" class="form-control" id="v-kode_warna_body" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Jumlah KP</label>
+                                <input type="text" class="form-control" id="v-jumlah_kp" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Harga KP</label>
+                                <input type="text" class="form-control" id="v-harga_kp" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Total Harga</label>
+                                <input type="text" class="form-control" id="v-total_harga" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">No PO</label>
+                                <input type="text" class="form-control" id="v-no_po" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Tanggal PO</label>
+                                <input type="text" class="form-control" id="v-tgl_po" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Jenis Packing</label>
+                                <input type="text" class="form-control" id="v-jenis_pack" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Tanggal Kirim</label>
+                                <input type="text" class="form-control" id="v-tgl_kirim" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Keterangan</label>
+                                <textarea class="form-control" id="v-ket_kp" readonly rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Created By</label>
+                                <input type="text" class="form-control" id="v-created_by" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit - DIPERBAIKI -->
+    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-up">
+                    <h5 class="modal-title"><i class="fas fa-edit"></i> Edit Konfirmasi Pesanan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="<?= base_url() ?>marketing/konfirmasi_pesanan/update">
+                    <input type="hidden" id="e-id_mkt_kp" name="id_mkt_kp">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">No KP</label>
+                                    <input type="text" class="form-control" id="e-no_kp" name="no_kp"
+                                        placeholder="No KP" autocomplete="off" style="text-transform:uppercase"
+                                        onkeyup="this.value = this.value.toUpperCase()" required>
+                                    <div id="validationServer03Feedback" class="invalid-feedback">
+                                        Maaf No KP sudah ada.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Tanggal KP</label>
+                                    <input type="text" class="form-control datepicker" id="e-tgl_kp" name="tgl_kp"
+                                        placeholder="Tanggal KP" autocomplete="off" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Customer</label>
+                                    <select class="form-control chosen-select" id="e-id_customer" name="id_customer"
+                                        autocomplete="off" required>
+                                        <option value="">- Pilih Customer -</option>
+                                        <?php foreach ($res_customer as $c) { ?>
+                                            <option value="<?= $c['id_customer'] ?>"><?= $c['nama_customer'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- PERBAIKAN: Ganti input text menjadi select seperti di modal tambah -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Spek Kapsul</label>
+                                    <select class="form-control chosen-select" id="e-spek_kapsul" name="spek_kapsul"
+                                        autocomplete="off" required>
+                                        <option value="">- Pilih Spek Kapsul -</option>
+                                        <option value="Minyak">Minyak</option>
+                                        <option value="Non Minyak">Non Minyak</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Kode Print dengan dropdown -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Kode Print</label>
+                                    <select class="form-control chosen-select" id="e-id_master_print"
+                                        name="id_master_print" autocomplete="off">
+                                        <option value="">- Pilih Kode Print -</option>
+                                    </select>
+                                    <input type="hidden" id="e-kode_print" name="kode_print">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Logo Print</label>
+                                    <input type="text" class="form-control" id="e-logo_print" name="logo_print"
+                                        placeholder="Logo Print" autocomplete="off" readonly>
+                                </div>
+                            </div>
+
+                            <!-- TAMBAHKAN STOK SIZE DI MODAL EDIT -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-boxes"></i>
+                                        <span>Stok Size</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="e-stok_master" name="stok_master"
+                                        placeholder="Masukkan jumlah stok" autocomplete="off" required>
+                                    <small class="form-text text-muted" id="e-stok-info"></small>
+                                </div>
+                            </div>
+
+                            <!-- Kode Warna Cap - langsung dari master -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Kode Warna Cap</label>
+                                    <select class="form-control chosen-select" id="e-id_master_kw_cap"
+                                        name="id_master_kw_cap" autocomplete="off">
+                                        <option value="">- Pilih Kode Warna Cap -</option>
+                                        <?php foreach ($res_warna_cap as $warna) { ?>
+                                            <option value="<?= $warna['id_master_kw_cap'] ?>"
+                                                data-kode="<?= $warna['kode_warna_cap'] ?>">
+                                                <?= $warna['kode_warna_cap'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                    <input type="hidden" id="e-kode_warna_cap" name="kode_warna_cap">
+                                </div>
+                            </div>
+
+                            <!-- Kode Warna Body - langsung dari master -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Kode Warna Body</label>
+                                    <select class="form-control chosen-select" id="e-id_master_kw_body"
+                                        name="id_master_kw_body" autocomplete="off">
+                                        <option value="">- Pilih Kode Warna Body -</option>
+                                        <?php foreach ($res_warna_body as $warna) { ?>
+                                            <option value="<?= $warna['id_master_kw_body'] ?>"
+                                                data-kode="<?= $warna['kode_warna_body'] ?>">
+                                                <?= $warna['kode_warna_body'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                    <input type="hidden" id="e-kode_warna_body" name="kode_warna_body">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Jumlah KP</label>
+                                    <input type="text" class="form-control" id="e-jumlah_kp" name="jumlah_kp"
+                                        placeholder="Jumlah KP" autocomplete="off" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Harga KP</label>
+                                    <input type="text" class="form-control" id="e-harga_kp" name="harga_kp"
+                                        placeholder="Harga KP" autocomplete="off" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Total Harga</label>
+                                    <input type="text" class="form-control" id="e-total_harga" name="total_harga"
+                                        placeholder="Total Harga" readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">No PO</label>
+                                    <input type="text" class="form-control" id="e-no_po" name="no_po"
+                                        placeholder="No PO" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Tanggal PO</label>
+                                    <input type="text" class="form-control datepicker" id="e-tgl_po" name="tgl_po"
+                                        placeholder="Tanggal PO" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Jenis Packing</label>
+                                    <select class="form-control chosen-select" id="e-jenis_pack" name="jenis_pack"
+                                        autocomplete="off">
+                                        <option value="">- Pilih Jenis Packing -</option>
+                                        <option value="Polos">Polos</option>
+                                        <option value="Bratako">Bratako</option>
+                                        <option value="Loss">Loss</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Tanggal Kirim</label>
+                                    <input type="text" class="form-control datepicker" id="e-tgl_kirim" name="tgl_kirim"
+                                        placeholder="Tanggal Kirim" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Keterangan</label>
+                                    <textarea class="form-control" id="e-ket_kp" name="ket_kp" placeholder="Keterangan"
+                                        rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Updated By</label>
+                                    <input type="text" class="form-control" id="e-updated_by" name="updated_by"
+                                        value="<?= $this->session->userdata('nama') ?>" autocomplete="off" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" id="simpan" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.id.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Variabel global untuk menyimpan stok master
+        var currentStokMaster = 0;
+        var currentStokMasterEdit = 0;
+
+        // Initialize chosen select
+        $('.chosen-select').chosen({
+            width: '100%',
+            search_contains: true
+        });
+
+        // Initialize Datepicker
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true,
+            todayHighlight: true,
+            language: 'id',
+            orientation: 'bottom auto'
+        });
+
+        // Format Rupiah
+        function formatRupiah(angka) {
+            if (!angka) return '0';
+            angka = angka.toString().replace(/[^,\d]/g, '');
+            let split = angka.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+            if (ribuan) {
+                let separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            return split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        }
+
+        function unformatRupiah(angka) {
+            if (!angka) return 0;
+            return parseInt(angka.toString().replace(/\./g, '').replace(/[^0-9]/g, ''), 10);
+        }
+
+        // Hitung total harga
+        function hitungTotal() {
+            let jumlah = unformatRupiah($('#jumlah_kp').val());
+            let harga = unformatRupiah($('#harga_kp').val());
+            let total = jumlah * harga;
+            $('#total_harga').val(formatRupiah(total));
+        }
+
+        // Format input angka
+        $('#jumlah_kp, #harga_kp').on('input', function () {
+            let value = this.value.replace(/\D/g, '');
+            this.value = new Intl.NumberFormat('id-ID').format(value);
+            hitungTotal();
+        });
+
+        // ========== VALIDASI STOK MASTER ==========
+
+        // Tampilkan info stok master saat modal tambah dibuka
+        $('#add').on('show.bs.modal', function() {
+            getCurrentStok('');
+        });
+
+        // Tampilkan info stok master saat modal edit dibuka
+        $('#edit').on('show.bs.modal', function(event) {
+            getCurrentStok('e-');
+            
+            // Tunggu sebentar sampai modal fully loaded
+            setTimeout(function() {
+                var button = $(event.relatedTarget);
+                var stok_master = button.data('stok_master');
+                if (stok_master) {
+                    $('#e-stok_master').val(formatRupiah(stok_master.toString()));
+                    validateStokMaster('e-', $('#e-stok_master').val());
+                }
+            }, 300);
+        });
+
+        // Fungsi get stok master saat ini
+        function getCurrentStok(prefix) {
+            $.ajax({
+                url: "<?= base_url() ?>marketing/konfirmasi_pesanan/get_current_stok",
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    if (prefix === '') {
+                        currentStokMaster = response.stok_master;
+                    } else {
+                        currentStokMasterEdit = response.stok_master;
+                    }
+                    $('#' + prefix + 'stok-info').text('Stok master tersedia: ' + formatRupiah(response.stok_master));
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error loading current stok: " + error);
+                }
+            });
+        }
+
+        // Validasi input stok master untuk tambah
+        $('#stok_master').on('input', function() {
+            validateStokMaster('', $(this).val());
+        });
+
+        // Validasi input stok master untuk edit
+        $('#e-stok_master').on('input', function() {
+            validateStokMaster('e-', $(this).val());
+        });
+
+        // Fungsi validasi stok master
+        function validateStokMaster(prefix, stokInput) {
+            var stokValue = unformatRupiah(stokInput) || 0;
+            var stokInfo = $('#' + prefix + 'stok-info');
+            var simpanBtn = $('#simpan');
+            var currentStok = prefix === '' ? currentStokMaster : currentStokMasterEdit;
+
+            if (stokValue > 0) {
+                if (stokValue > currentStok) {
+                    // Jika melebihi stok master
+                    stokInfo.addClass('text-danger');
+                    stokInfo.text('Melebihi stok master! Stok tersedia: ' + formatRupiah(currentStok));
+                    
+                    // Disable tombol simpan
+                    if (simpanBtn.length) {
+                        simpanBtn.attr('disabled', 'disabled');
+                    }
+                } else {
+                    // Jika stok mencukupi
+                    stokInfo.removeClass('text-danger');
+                    stokInfo.text('Stok mencukupi. Stok master: ' + formatRupiah(currentStok));
+                    
+                    // Enable tombol simpan
+                    if (simpanBtn.length) {
+                        simpanBtn.removeAttr('disabled');
+                    }
+                }
+            } else {
+                stokInfo.text('Masukkan jumlah stok. Stok master: ' + formatRupiah(currentStok));
+                stokInfo.removeClass('text-danger');
+                
+                // Disable tombol simpan jika kosong
+                if (simpanBtn.length && stokValue === 0) {
+                    simpanBtn.attr('disabled', 'disabled');
+                }
+            }
+        }
+
+        // ========== END VALIDASI STOK MASTER ==========
+
+        // Load data kode print berdasarkan customer (Tambah)
+        $('#id_customer').change(function () {
+            var id_customer = $(this).val();
+            loadPrintsByCustomer(id_customer, '');
+        });
+
+        // Load data kode print berdasarkan customer (Edit)
+        $('#e-id_customer').change(function () {
+            var id_customer = $(this).val();
+            loadPrintsByCustomer(id_customer, 'e-');
+        });
+
+        // Load kode print berdasarkan customer
+        function loadPrintsByCustomer(id_customer, prefix) {
+            if (id_customer) {
+                $.ajax({
+                    url: "<?= base_url() ?>marketing/konfirmasi_pesanan/get_prints_by_customer",
+                    type: "POST",
+                    data: { id_customer: id_customer },
+                    dataType: "json",
+                    success: function (response) {
+                        var printSelect = $('#' + prefix + 'id_master_print');
+                        printSelect.empty().append('<option value="">- Pilih Kode Print -</option>');
+
+                        if (response && response.length > 0) {
+                            $.each(response, function (index, print) {
+                                printSelect.append('<option value="' + print.id_master_print + '" data-kode="' + print.kode_print + '" data-logo="' + (print.logo_print || '') + '">' + print.kode_print + '</option>');
+                            });
+                        }
+                        printSelect.trigger("chosen:updated");
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Error loading prints data: " + error);
+                    }
+                });
+            }
+        }
+
+        // Handle perubahan kode print (Tambah)
+        $('#id_master_print').change(function () {
+            var selectedOption = $(this).find('option:selected');
+            var kodePrint = selectedOption.data('kode');
+            var logoPrint = selectedOption.data('logo');
+
+            $('#kode_print').val(kodePrint);
+            $('#logo_print').val(logoPrint);
+        });
+
+        // Handle perubahan kode print (Edit)
+        $('#e-id_master_print').change(function () {
+            var selectedOption = $(this).find('option:selected');
+            var kodePrint = selectedOption.data('kode');
+            var logoPrint = selectedOption.data('logo');
+
+            $('#e-kode_print').val(kodePrint);
+            $('#e-logo_print').val(logoPrint);
+        });
+
+        // Handle perubahan kode warna cap (Tambah)
+        $('#id_master_kw_cap').change(function () {
+            var selectedOption = $(this).find('option:selected');
+            var kodeWarna = selectedOption.data('kode');
+            $('#kode_warna_cap').val(kodeWarna);
+        });
+
+        // Handle perubahan kode warna cap (Edit)
+        $('#e-id_master_kw_cap').change(function () {
+            var selectedOption = $(this).find('option:selected');
+            var kodeWarna = selectedOption.data('kode');
+            $('#e-kode_warna_cap').val(kodeWarna);
+        });
+
+        // Handle perubahan kode warna body (Tambah)
+        $('#id_master_kw_body').change(function () {
+            var selectedOption = $(this).find('option:selected');
+            var kodeWarna = selectedOption.data('kode');
+            $('#kode_warna_body').val(kodeWarna);
+        });
+
+        // Handle perubahan kode warna body (Edit)
+        $('#e-id_master_kw_body').change(function () {
+            var selectedOption = $(this).find('option:selected');
+            var kodeWarna = selectedOption.data('kode');
+            $('#e-kode_warna_body').val(kodeWarna);
+        });
+
+        // Filter functionality
+        $('#lihat').click(function () {
+            var filter_customer = $('#filter_customer').find(':selected').val();
+            var filter_tgl = $('#filter_tgl').val();
+            var filter_tgl2 = $('#filter_tgl2').val();
+
+            if (filter_tgl == '' && filter_tgl2 != '') {
+                alert('Dari tanggal belum diisi');
+            } else if (filter_tgl != '' && filter_tgl2 == '') {
+                alert('Sampai tanggal belum diisi');
+            } else {
+                const query = new URLSearchParams({
+                    nama_customer: filter_customer,
+                    date_from: filter_tgl,
+                    date_until: filter_tgl2
+                })
+                window.location = "<?= base_url() ?>marketing/konfirmasi_pesanan/index?" + query.toString()
+            }
+        });
+
+        // Detail modal functionality
+        $('#detail').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id_mkt_kp = button.data('id_mkt_kp');
+            var no_kp = button.data('no_kp');
+            var tgl_kp = button.data('tgl_kp');
+            var nama_customer = button.data('nama_customer');
+            var kode_customer = button.data('kode_customer');
+            var spek_kapsul = button.data('spek_kapsul');
+            var kode_print = button.data('kode_print');
+            var kode_warna_cap = button.data('kode_warna_cap');
+            var kode_warna_body = button.data('kode_warna_body');
+            var jumlah_kp = button.data('jumlah_kp');
+            var harga_kp = button.data('harga_kp');
+            var no_po = button.data('no_po');
+            var stok_master = button.data('stok_master');
+            var tgl_po = button.data('tgl_po');
+            var jenis_pack = button.data('jenis_pack');
+            var tgl_kirim = button.data('tgl_kirim');
+            var ket_kp = button.data('ket_kp');
+            var created_by = button.data('created_by');
+
+            var modal = $(this);
+            modal.find('#v-id_mkt_kp').val(id_mkt_kp);
+            modal.find('#v-no_kp').val(no_kp);
+            modal.find('#v-tgl_kp').val(tgl_kp);
+            modal.find('#v-nama_customer').val(nama_customer);
+            modal.find('#v-kode_customer').val(kode_customer);
+            modal.find('#v-spek_kapsul').val(spek_kapsul);
+            modal.find('#v-kode_print').val(kode_print);
+            modal.find('#v-logo_print').val(button.data('logo_print') || '-');
+            modal.find('#v-stok_master').val(formatRupiah(stok_master.toString()));
+            modal.find('#v-kode_warna_cap').val(kode_warna_cap);
+            modal.find('#v-kode_warna_body').val(kode_warna_body);
+            modal.find('#v-jumlah_kp').val(formatRupiah(jumlah_kp.toString()));
+            modal.find('#v-harga_kp').val(formatRupiah(harga_kp.toString()));
+            modal.find('#v-no_po').val(no_po);
+            modal.find('#v-tgl_po').val(tgl_po);
+            modal.find('#v-jenis_pack').val(jenis_pack);
+            modal.find('#v-tgl_kirim').val(tgl_kirim);
+            modal.find('#v-ket_kp').val(ket_kp);
+            modal.find('#v-created_by').val(created_by);
+
+            let total = parseInt(jumlah_kp) * parseInt(harga_kp);
+            modal.find('#v-total_harga').val(formatRupiah(total.toString()));
+        });
+
+        // Edit modal functionality - DIPERBAIKI
+        $('#edit').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id_mkt_kp = button.data('id_mkt_kp');
+            var no_kp = button.data('no_kp');
+            var tgl_kp = button.data('tgl_kp');
+            var id_customer = button.data('id_customer');
+            var nama_customer = button.data('nama_customer');
+            var kode_customer = button.data('kode_customer');
+            var spek_kapsul = button.data('spek_kapsul');
+            var kode_print = button.data('kode_print');
+            var kode_warna_cap = button.data('kode_warna_cap');
+            var kode_warna_body = button.data('kode_warna_body');
+            var jumlah_kp = button.data('jumlah_kp');
+            var harga_kp = button.data('harga_kp');
+            var no_po = button.data('no_po');
+            var tgl_po = button.data('tgl_po');
+            var jenis_pack = button.data('jenis_pack');
+            var tgl_kirim = button.data('tgl_kirim');
+            var ket_kp = button.data('ket_kp');
+            var created_by = button.data('created_by');
+            var stok_master = button.data('stok_master');
+
+            var modal = $(this);
+            modal.find('#e-id_mkt_kp').val(id_mkt_kp);
+            modal.find('#e-no_kp').val(no_kp);
+            modal.find('#e-tgl_kp').val(tgl_kp);
+            modal.find('#e-id_customer').val(id_customer).trigger("chosen:updated");
+            
+            // PERBAIKAN: Set spek kapsul sebagai select
+            modal.find('#e-spek_kapsul').val(spek_kapsul).trigger("chosen:updated");
+            
+            modal.find('#e-kode_print').val(kode_print);
+            modal.find('#e-kode_warna_cap').val(kode_warna_cap);
+            modal.find('#e-kode_warna_body').val(kode_warna_body);
+            modal.find('#e-jumlah_kp').val(jumlah_kp);
+            modal.find('#e-harga_kp').val(harga_kp);
+            modal.find('#e-no_po').val(no_po);
+            modal.find('#e-tgl_po').val(tgl_po);
+            modal.find('#e-jenis_pack').val(jenis_pack).trigger("chosen:updated");
+            modal.find('#e-tgl_kirim').val(tgl_kirim);
+            modal.find('#e-ket_kp').val(ket_kp);
+            modal.find('#e-updated_by').val(created_by);
+
+            // Set nilai stok master untuk edit
+            if (stok_master) {
+                $('#e-stok_master').val(formatRupiah(stok_master.toString()));
+            }
+
+            let total = (parseFloat(jumlah_kp) || 0) * (parseFloat(harga_kp) || 0);
+            modal.find('#e-total_harga').val(formatRupiah(total));
+
+            // Load data kode print untuk edit
+            loadPrintsByCustomer(id_customer, 'e-');
+
+            // Hitung total saat edit
+            function hitungTotalEdit() {
+                let jumlah = unformatRupiah($('#e-jumlah_kp').val());
+                let harga = unformatRupiah($('#e-harga_kp').val());
+                let total = jumlah * harga;
+                $('#e-total_harga').val(formatRupiah(total));
+            }
+
+            $('#e-jumlah_kp, #e-harga_kp').on('input', function () {
+                let value = this.value.replace(/\D/g, '');
+                this.value = new Intl.NumberFormat('id-ID').format(value);
+                hitungTotalEdit();
+            });
+        });
+
+        // Cek No KP untuk tambah
+        $("#no_kp").keyup(function () {
+            var no_kp = $("#no_kp").val();
+            jQuery.ajax({
+                url: "<?= base_url() ?>marketing/konfirmasi_pesanan/cek_no_kp",
+                dataType: 'text',
+                type: "post",
+                data: { no_kp: no_kp },
+                success: function (response) {
+                    if (response == "true") {
+                        $("#no_kp").addClass("is-invalid");
+                        $("#simpan").attr("disabled", "disabled");
+                    } else {
+                        $("#no_kp").removeClass("is-invalid");
+                        $("#simpan").removeAttr("disabled");
+                    }
+                }
+            });
+        });
+
+        // Cek No KP untuk edit
+        $("#e-no_kp").keyup(function () {
+            var no_kp = $("#e-no_kp").val();
+            jQuery.ajax({
+                url: "<?= base_url() ?>marketing/konfirmasi_pesanan/cek_no_kp",
+                dataType: 'text',
+                type: "post",
+                data: { no_kp: no_kp },
+                success: function (response) {
+                    if (response == "true") {
+                        $("#e-no_kp").addClass("is-invalid");
+                        $("#simpan").attr("disabled", "disabled");
+                    } else {
+                        $("#e-no_kp").removeClass("is-invalid");
+                        $("#simpan").removeAttr("disabled");
+                    }
+                }
+            });
+        });
+
+        // Reset form saat modal tambah ditutup
+        $('#add').on('hidden.bs.modal', function () {
+            $(this).find('form')[0].reset();
+            $('.chosen-select').trigger('chosen:updated');
+            $('#stok-info').text('').removeClass('text-danger');
+            $('#simpan').removeAttr('disabled');
+            currentStokMaster = 0;
+        });
+
+        // Reset form saat modal edit ditutup
+        $('#edit').on('hidden.bs.modal', function () {
+            $('#e-stok-info').text('').removeClass('text-danger');
+            $('#simpan').removeAttr('disabled');
+            currentStokMasterEdit = 0;
+        });
+
+        // Format input stok master otomatis
+        $('#stok_master, #e-stok_master').on('input', function() {
+            let value = this.value.replace(/\D/g, '');
+            this.value = new Intl.NumberFormat('id-ID').format(value);
+        });
+    });
+</script>
+</body>
+
+</html>
