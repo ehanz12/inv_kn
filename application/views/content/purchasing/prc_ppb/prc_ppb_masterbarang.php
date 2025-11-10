@@ -1,3 +1,8 @@
+<style>
+  #mesh_container, #bloom_container { display: none; }
+  #e-mesh_container, #e-bloom_container { display: none; }
+</style>
+
 <!-- [ Main Content ] start -->
 <section class="pcoded-main-container">
   <div class="pcoded-wrapper">
@@ -74,7 +79,7 @@
                         </thead>
                         <tbody>
                           <?php
-                          $level = $this->session->userdata('level');
+                          $level = $this->session->userdata('departement');
                           $jabatan = $this->session->userdata('jabatan');
                           $no = 1;
                           foreach ($result as $k) {
@@ -87,11 +92,22 @@
                               <td><?= $k['tipe_barang'] ?></td>
                               <td><?= $k['spek'] ?></td>
                               <td><?= $k['satuan'] ?></td>
-                              <td><?= $k['nama_po_supplier'] ?></td>
+                              <td><?= $k['nama_supplier'] ?></td>
                               <td class="text-center">
                                 <?php if ($level === "admin" || $jabatan === "supervisor") { ?>
                                   <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" data-id_prc_master_barang="<?= $k['id_prc_master_barang'] ?>" data-kode_barang="<?= $k['kode_barang'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-jenis_barang="<?= $k['jenis_barang'] ?>" data-tipe_barang="<?= $k['tipe_barang'] ?>" data-spek="<?= $k['spek'] ?>" data-satuan="<?= $k['satuan'] ?>">
+                                    <button type="button" class="btn btn-primary btn-square btn-sm"
+                                    data-toggle="modal" 
+                                    data-target="#edit" 
+                                    data-id_prc_master_barang="<?= $k['id_prc_master_barang'] ?>" 
+                                    data-kode_barang="<?= $k['kode_barang'] ?>" 
+                                    data-nama_barang="<?= $k['nama_barang'] ?>" 
+                                    data-jenis_barang="<?= $k['jenis_barang'] ?>"
+                                    data-id_prc_master_supplier="<?=$k['id_prc_master_supplier']?>" 
+                                    data-mesh="<?=$k['mesh']?>" data-bloom="<?=$k['bloom']?>" 
+                                    data-tipe_barang="<?= $k['tipe_barang'] ?>"
+                                    data-spek="<?= $k['spek'] ?>" 
+                                    data-satuan="<?= $k['satuan'] ?>">
                                       <i class="feather icon-edit-2"></i>Edit
                                     </button>
                                   </div>
@@ -184,17 +200,46 @@
 
             <div class="col-md-6">
               <div class="form-group">
+                <label for="jenis_barang">Jenis Barang</label>
+                <select class="form-control chosen-select" id="jenis_barang" name="jenis_barang" required>
+                  <option value="" disabled selected hidden>- Pilih Jenis Barang -</option>
+                  <option value="Bahan Baku">Bahan Baku</option>
+                  <option value="Bahan Tambahan">Bahan Tambahan</option>
+                  <option value="Bahan Kemas">Bahan Kemas</option>
+                  <option value="Pewarna">Pewarna</option>
+                  <option value="Printing">Printing</option>
+                  <option value="Bahan Pembantu">Bahan Pembantu</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
                 <label for="nama_barang">Nama Barang</label>
                 <input type="text" class="form-control" id="nama_barang" name="nama_barang" placeholder="Nama Barang" autocomplete="off">
               </div>
             </div>
+
+            <div class="col-md-3" id="mesh_container">
+              <div class="form-group">
+                <label for="mesh">Mesh</label>
+                <input type="text"  class="form-control" id="mesh" name="mesh" placeholder="Mesh" autocomplete="off">
+              </div>
+            </div>
+            <div class="col-md-3" id="bloom_container">
+              <div class="form-group">
+                <label for="Bloom">Bloom</label>
+                <input type="text"  class="form-control" id="bloom" name="bloom" placeholder="Bloom" autocomplete="off">
+              </div>
+            </div>
+
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="id_prc_ppb_supplier">Nama Supplier</label>
                     <select class="form-control chosen-select" id="id_prc_ppb_supplier" name="id_prc_ppb_supplier" required>
                         <option value="" disabled selected hidden>- Pilih Nama Supplier -</option>
                         <?php foreach ($res_supp as $k): ?>
-                            <option value="<?= $k['id_prc_ppb_supplier'] ?>"><?= $k['nama_po_supplier'] ?></option>
+                            <option value="<?= $k['id_prc_master_supplier'] ?>"><?= $k['nama_supplier'] ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -218,22 +263,17 @@
                   <option value="Mtr">Meter</option>
                   <option value="Klg">Kaleng</option>
                   <option value="Ltr">Liter</option>
+                  <option value="Kg">Kg</option>
+                  <option value="Grm">Gram</option>
+                  <option value="Cm">Centimeter</option>
+                  <option value="Cc">Cubic Centimeter</option>
+                  <option value="bks">Bungkus</option>
+                  <option value="Pack">Package</option>
+                  <option value="lbr">Lembar</option> 
                 </select>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="jenis_barang">Jenis Barang</label>
-                <select class="form-control chosen-select" id="jenis_barang" name="jenis_barang" required>
-                  <option value="" disabled selected hidden>- Pilih Jenis Barang -</option>
-                  <option value="Bahan Baku">Bahan Baku</option>
-                  <option value="Bahan Tambahan">Bahan Tambahan</option>
-                  <option value="Bahan Kemas">Bahan Kemas</option>
-                  <option value="Sparepart">Sparepart</option>
-                  <option value="Atk">Atk</option>
-                </select>
-              </div>
-            </div>
+            
             <div class="col-md-6">
               <div class="form-group">
                 <label for="tipe_barang">Tipe Barang</label>
@@ -278,7 +318,39 @@
                 }
             });
         })
-  } );
+
+        // 🔹 Logic untuk show/hide input Mesh & Bloom
+        function toggleMeshBloom() {
+          let jenis = $('#jenis_barang').val();
+          if (jenis === 'Bahan Baku') {
+            $('#mesh_container').slideDown(200);
+            $('#bloom_container').slideDown(200);
+            $('#mesh').prop('required', true);
+            $('#Bloom').prop('required', true);
+          } else {
+            $('#mesh_container').slideUp(200);
+            $('#bloom_container').slideUp(200);
+            $('#mesh').prop('required', false);
+            $('#Bloom').prop('required', false);
+            $('#mesh').val('');
+            $('#Bloom').val('');
+          }
+        }
+
+         $('#mesh').on('input', function() {
+            this.value = this.value.replace(/[^0-9+]/g, ''); // hanya boleh angka & +
+        });
+
+         $('#bloom').on('input', function() {
+            this.value = this.value.replace(/[^0-9+]/g, ''); // hanya boleh angka & +
+        });
+
+        // Jalankan saat dropdown berubah
+        $('#jenis_barang').on('change', toggleMeshBloom);
+
+        // Jalankan sekali saat awal (misal kalau edit)
+        toggleMeshBloom();
+  });
 </script>
 
 < <!-- Modal Edit-->
@@ -301,24 +373,6 @@
                 <input type="text" class="form-control" id="e-kode_barang" name="kode_barang" placeholder="Kode Barang" autocomplete="off" required>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="nama_barang">Nama Barang</label>
-                <input type="text" class="form-control" id="e-nama_barang" name="nama_barang" placeholder="Nama Barang" autocomplete="off" required>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="e-id_prc_ppb_supplier">Nama Supplier</label>
-                    <select class="form-control chosen-select" id="e-id_prc_ppb_supplier" name="id_prc_ppb_supplier" required>
-                        <option value="" disabled selected hidden>- Pilih Nama Supplier -</option>
-                        <?php foreach ($res_supp as $k): ?>
-                            <option value="<?= $k['id_prc_ppb_supplier'] ?>"><?= $k['nama_po_supplier'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-            </div>
 
             <div class="col-md-6">
               <div class="form-group">
@@ -328,11 +382,48 @@
                   <option value="Bahan Baku">Bahan Baku</option>
                   <option value="Bahan Tambahan">Bahan Tambahan</option>
                   <option value="Bahan Kemas">Bahan Kemas</option>
-                  <option value="Sparepart">Sparepart</option>
-                  <option value="Atk">Atk</option>
+                  <option value="Pewarna">Pewarna</option>
+                  <option value="Printing">Printing</option>
+                  <option value="Bahan Pembantu">Bahan Pembantu</option>
                 </select>
               </div>
             </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="nama_barang">Nama Barang</label>
+                <input type="text" class="form-control" id="e-nama_barang" name="nama_barang" placeholder="Nama Barang" autocomplete="off" required>
+              </div>
+            </div>
+
+            <!-- Tambahkan ini -->
+            <div class="col-md-3" id="e-mesh_container">
+              <div class="form-group">
+                <label for="e-mesh">Mesh</label>
+                <input type="text" class="form-control" id="e-mesh" name="mesh" placeholder="Mesh" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="col-md-3" id="e-bloom_container">
+              <div class="form-group">
+                <label for="e-bloom">Bloom</label>
+                <input type="text" class="form-control" id="e-bloom" name="bloom" placeholder="Bloom" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="e-id_prc_ppb_supplier">Nama Supplier</label>
+                    <select class="form-control chosen-select" id="e-id_prc_ppb_supplier" name="id_prc_master_supplier" required>
+                        <option value="" disabled selected hidden>- Pilih Nama Supplier -</option>
+                        <?php foreach ($res_supp as $k): ?>
+                            <option value="<?= $k['id_prc_master_supplier'] ?>"><?= $k['nama_supplier'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            
             <div class="col-md-6">
               <div class="form-group">
                 <label for="tipe_barang">Tipe Barang</label>
@@ -361,6 +452,13 @@
                   <option value="Mtr">Meter</option>
                   <option value="Klg">Kaleng</option>
                   <option value="Ltr">Liter</option>
+                  <option value="Kg">Kg</option>
+                  <option value="Grm">Gram</option>
+                  <option value="Cm">Centimeter</option>
+                  <option value="Cc">Cubic Centimeter</option>
+                  <option value="bks">Bungkus</option>
+                  <option value="Pack">Package</option>
+                  <option value="lbr">Lembar</option>
                 </select>
               </div>
             </div>
@@ -377,30 +475,69 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
+
+    // 🔹 Saat modal edit ditampilkan
     $('#edit').on('show.bs.modal', function(event) {
-      var id_prc_master_barang = $(event.relatedTarget).data('id_prc_master_barang');
-      var id_prc_ppb_supplier = $(event.relatedTarget).data('id_prc_ppb_supplier');
-      var kode_barang = $(event.relatedTarget).data('kode_barang');
-      var nama_barang = $(event.relatedTarget).data('nama_barang');
-      var jenis_barang = $(event.relatedTarget).data('jenis_barang');
-      var tipe_barang = $(event.relatedTarget).data('tipe_barang');
-      var spek = $(event.relatedTarget).data('spek');
-      var satuan = $(event.relatedTarget).data('satuan');
-      // var nama_po_supplier = $(event.relatedTarget).data('nama_po_supplier');
-      
-      $(this).find('#e-id_prc_master_barang').val(id_prc_master_barang);
-      $(this).find('#e-id_prc_ppb_supplier').val(id_prc_ppb_supplier);
-      $(this).find('#e-kode_barang').val(kode_barang);
-      $(this).find('#e-nama_barang').val(nama_barang);
-      $(this).find('#e-jenis_barang').val(jenis_barang);
-      $(this).find('#e-tipe_barang').val(tipe_barang);
-      $(this).find('#e-spek').val(spek);
-      $(this).find('#e-satuan').val(satuan);
-      // $(this).find('#e-nama_po_supplier').val(nama_po_supplier);
-      $(this).find('#e-id_prc_ppb_supplier').trigger("chosen:updated");
-      $(this).find('#e-satuan').trigger("chosen:updated");
-      $(this).find('#e-jenis_barang').trigger("chosen:updated");
-      $(this).find('#e-tipe_barang').trigger("chosen:updated");
+      var button = $(event.relatedTarget);
+      var id_prc_master_barang = button.data('id_prc_master_barang');
+      var id_prc_ppb_supplier = button.data('id_prc_master_supplier');
+      var kode_barang = button.data('kode_barang');
+      var nama_barang = button.data('nama_barang');
+      var jenis_barang = button.data('jenis_barang');
+      var tipe_barang = button.data('tipe_barang');
+      var spek = button.data('spek');
+      var satuan = button.data('satuan');
+      var mesh = button.data('mesh');
+      var bloom = button.data('bloom');
+
+      var modal = $(this);
+      modal.find('#e-id_prc_master_barang').val(id_prc_master_barang);
+      modal.find('#e-id_prc_ppb_supplier').val(id_prc_ppb_supplier);
+      modal.find('#e-kode_barang').val(kode_barang);
+      modal.find('#e-nama_barang').val(nama_barang);
+      modal.find('#e-jenis_barang').val(jenis_barang);
+      modal.find('#e-tipe_barang').val(tipe_barang);
+      modal.find('#e-spek').val(spek);
+      modal.find('#e-satuan').val(satuan);
+      modal.find('#e-mesh').val(mesh);
+      modal.find('#e-bloom').val(bloom);
+
+      modal.find('#e-id_prc_ppb_supplier').trigger("chosen:updated");
+      modal.find('#e-satuan').trigger("chosen:updated");
+      modal.find('#e-jenis_barang').trigger("chosen:updated");
+      modal.find('#e-tipe_barang').trigger("chosen:updated");
+
+       $('#e-mesh').on('input', function() {
+            this.value = this.value.replace(/[^0-9+]/g, ''); // hanya boleh angka & +
+        });
+
+       $('#e-bloom').on('input', function() {
+            this.value = this.value.replace(/[^0-9+]/g, ''); // hanya boleh angka & +
+        });
+
+      // 🔹 Jalankan toggle logic saat modal dibuka
+      toggleEditMeshBloom();
     });
+
+    // 🔹 Function untuk show/hide mesh & bloom
+    function toggleEditMeshBloom() {
+      let jenis = $('#e-jenis_barang').val();
+      if (jenis === 'Bahan Baku') {
+        $('#e-mesh_container').slideDown(200);
+        $('#e-bloom_container').slideDown(200);
+        $('#e-mesh').prop('required', true);
+        $('#e-bloom').prop('required', true);
+      } else {
+        $('#e-mesh_container').slideUp(200);
+        $('#e-bloom_container').slideUp(200);
+        $('#e-mesh').prop('required', false);
+        $('#e-bloom').prop('required', false);
+        $('#e-mesh').val('');
+        $('#e-bloom').val('');
+      }
+    }
+
+    // 🔹 Jalankan ketika dropdown jenis barang diubah
+    $('#e-jenis_barang').on('change', toggleEditMeshBloom);
   });
 </script>
