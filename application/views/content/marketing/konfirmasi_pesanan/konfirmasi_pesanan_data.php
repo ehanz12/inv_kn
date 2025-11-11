@@ -570,7 +570,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                    $level = $this->session->userdata('level');
+                                                    $level = $this->session->userdata('departement');
                                                     $no = 1;
                                                     if (isset($result) && is_array($result) && count($result) > 0) {
                                                         foreach ($result as $k) {
@@ -647,7 +647,7 @@
                                                                 
                                                                 <td class="text-center">
                                                                     <div class="action-buttons">
-                                                                        <?php if ($level === "0" || $level == "marketing") { ?>
+                                                                        <?php if ($level === "admin" || $level == "marketing") { ?>
                                                                             <button type="button"
                                                                                 class="btn btn-warning btn-sm btn-action"
                                                                                 data-toggle="modal" data-target="#edit"
