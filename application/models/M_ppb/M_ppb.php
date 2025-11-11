@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_permintaan_barang_melting extends CI_Model
+class M_ppb extends CI_Model
 {
     function __construct()
     {
@@ -101,4 +101,28 @@ class M_permintaan_barang_melting extends CI_Model
             WHERE a.is_deleted = 0 AND a.no_transfer_slip = '$no_transfer_slip' ORDER BY a.created_at DESC";
         return $this->db->query($sql);
     }
+
+
+     
+public function data_ppb_barang($no_ppb)
+    {
+        $sql = "
+            SELECT a.*, b.nama_barang, b.kode_barang, b.spek, b.satuan
+            FROM tb_prc_ppb a
+            LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
+            WHERE a.no_ppb = '$no_ppb' ORDER BY a.id_prc_ppb ASC";
+        return $this->db->query($sql);
+    }
+
+    public function delete_barang_ppb($no_ppb)
+{
+    $this->db->where('no_ppb', $no_ppb);
+    return $this->db->delete('tb_prc_ppb'); // ganti sesuai nama tabelmu
+}
+
+public function add_permintaan_barang($data)
+{
+    return $this->db->insert('tb_prc_ppb', $data);
+}
+
 }

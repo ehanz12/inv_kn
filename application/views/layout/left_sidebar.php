@@ -288,7 +288,7 @@
                                             Stok</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item  <?= $uri == 'PPB' ? 'active' : '' ?>"><a href="<?= base_url('Ppb/PPB') ?>"
+                            <li class="nav-item  <?= $uri == 'PPB' ? 'active' : '' ?>"><a href="<?= base_url('gudang_bahanbaku/gudang_bahan_baku_ppb') ?>"
                                     class="">PPB</a></li>
                         </ul>
                     </li>
