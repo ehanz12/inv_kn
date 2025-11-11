@@ -151,8 +151,6 @@
             color: white;
         }
 
-        
-        
         .btn-secondary:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
@@ -392,6 +390,7 @@
                             <th>#</th>
                             <th>Kode Warna</th>
                             <th>Nama Warna</th>
+                            <th>Short Name</th>
                             <th class="text-center">Aksi</th>
                           </tr>
                         </thead>
@@ -407,7 +406,6 @@
                                 <span class="badge badge-primary" data-toggle="modal" data-target="#view" 
                                   data-id_master_kw_cap="<?= $k['id_master_kw_cap'] ?>" 
                                   data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>" 
-                                 
                                   data-warna_cap="<?= $k['warna_cap'] ?>" 
                                   data-short_name="<?= $k['short_name'] ?>" 
                                   data-ti02="<?= $k['f_ti02'] ?>" 
@@ -421,6 +419,7 @@
                                 </span>
                               </td>
                               <td><?= $k['warna_cap'] ?></td>
+                              <td><?= $k['short_name'] ?></td>
                               <td class="text-center">
                                 <?php if ($level === "admin") { ?>
                                   <div class="btn-group" role="group">
@@ -428,7 +427,7 @@
                                       data-id_master_kw_cap="<?= $k['id_master_kw_cap'] ?>" 
                                       data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>" 
                                       data-warna_cap="<?= $k['warna_cap'] ?>" 
-                                       data-short_name="<?= $k['short_name'] ?>" 
+                                      data-short_name="<?= $k['short_name'] ?>" 
                                       data-ti02="<?= $k['f_ti02'] ?>" 
                                       data-r1="<?= $k['f_r1'] ?>" 
                                       data-r3="<?= $k['f_r3'] ?>" 
@@ -491,15 +490,15 @@
             </div>
           </div>
 
-           <div class="row">
+          <div class="row">
             <div class="col-md-6">
               <div class="form-group">
                 <label for="short_name" class="form-label">Short Name</label>
-                <input type="text" class="form-control text-uppercase" id="short_name" name="short_name" placeholder="Short name" autocomplete="off" required>
+                <input type="text" class="form-control text-uppercase" id="short_name" name="short_name" placeholder="Short name" autocomplete="off">
+                <small class="form-text text-muted">Kosongkan untuk generate otomatis</small>
               </div>
             </div>
           </div>
-          
 
           <center><label for="formula_warna" class="font-weight-bold mt-3 form-label">Komposisi Formula</label></center>
           <div class="row">
@@ -623,6 +622,15 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="short_name" class="form-label">Short Name</label>
+              <input type="text" class="form-control" id="v-short_name" name="short_name" placeholder="Short Name" readonly>
+            </div>
+          </div>
+        </div>
+
         <center><label for="formula_warna" class="font-weight-bold mt-3 form-label">Komposisi Formula</label></center>
         <div class="row">
           <div class="col-md-6">
@@ -705,6 +713,15 @@
               <div class="form-group">
                 <label for="warna" class="form-label">Nama Warna</label>
                 <input type="text" class="form-control" id="e-warna" name="warna" placeholder="Nama Warna" autocomplete="off" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="short_name" class="form-label">Short Name</label>
+                <input type="text" class="form-control text-uppercase" id="e-short_name" name="short_name" placeholder="Short name" autocomplete="off" required>
               </div>
             </div>
           </div>
@@ -811,7 +828,8 @@
     // Uppercase function
     uppercase('#kode_warna');
     uppercase('#warna');
-     uppercase('#short');
+    uppercase('#short_name');
+    uppercase('#e-short_name');
     
     // Reset form ketika modal tambah ditutup
     $('#add').on('hidden.bs.modal', function() {
@@ -873,7 +891,7 @@
       var id_kw_cap = button.data('id_master_kw_cap');
       var kode_warna = button.data('kode_warna_cap');
       var warna = button.data('warna_cap');
-      var short = button.data('short_name');
+      var short_name = button.data('short_name');
       var ti02 = button.data('ti02');
       var r1 = button.data('r1');
       var r3 = button.data('r3');
@@ -884,7 +902,7 @@
 
       $(this).find('#v-kode_warna').val(kode_warna);
       $(this).find('#v-warna').val(warna);
-       $(this).find('#v-warna').val(short_name);
+      $(this).find('#v-short_name').val(short_name);
       $(this).find('#v-ti02').val(ti02 + " %");
       $(this).find('#v-r1').val(r1 + " ml");
       $(this).find('#v-r3').val(r3 + " ml");
@@ -894,18 +912,15 @@
       $(this).find('#v-sf').val(sf + " ml");
     });
 
-    // Modal Edit - FIXED VERSION
+    // Modal Edit
     $('#edit').on('show.bs.modal', function(event) {
       var button = $(event.relatedTarget);
-      
-      // Debug di console
-      console.log('All data attributes:', button.data());
       
       // Ambil data dengan cara yang lebih reliable
       var id_kw_cap = button.attr('data-id_master_kw_cap') || button.data('id_master_kw_cap');
       var kode_warna = button.attr('data-kode_warna_cap') || button.data('kode_warna_cap');
       var warna = button.attr('data-warna_cap') || button.data('warna_cap');
-      var short = button.attr('data-short_name') || button.data('short_name');
+      var short_name = button.attr('data-short_name') || button.data('short_name');
       var ti02 = button.attr('data-ti02') || button.data('ti02');
       var r1 = button.attr('data-r1') || button.data('r1');
       var r3 = button.attr('data-r3') || button.data('r3');
@@ -914,17 +929,12 @@
       var y10 = button.attr('data-y10') || button.data('y10');
       var sf = button.attr('data-sf') || button.data('sf');
 
-      // Debug individual values
-      console.log('ID:', id_kw_cap);
-      console.log('ti02:', ti02);
-      console.log('r1:', r1);
-
       // Set values ke form edit
       $(this).find('#e-id_master_kw_cap').val(id_kw_cap);
-      $(this).find('#e-id_master_kw_body').val(id_kw_cap); // Jika body pakai ID yang sama
+      $(this).find('#e-id_master_kw_body').val(id_kw_cap);
       $(this).find('#e-kode_warna').val(kode_warna);
-      $(this).find('#e-short_name').val(short_name);
       $(this).find('#e-warna').val(warna);
+      $(this).find('#e-short_name').val(short_name);
       $(this).find('#e-ti02').val(ti02);
       $(this).find('#e-r1').val(r1);
       $(this).find('#e-r3').val(r3);

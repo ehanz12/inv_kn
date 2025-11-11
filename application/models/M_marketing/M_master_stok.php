@@ -31,10 +31,11 @@ class M_master_stok extends CI_Model
     $current_time = date('Y-m-d H:i:s');
     
     $sql = "
-    INSERT INTO `tb_mkt_master_stok`(`stok_bulan`, `id_user`, `stok_tahun`, `stok_master` ,`created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
+    INSERT INTO `tb_mkt_master_stok`(`stok_bulan`, `id_user`, `stok_tahun`, `size_machine` ,`stok_master` ,`created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
     VALUES ('".$this->db->escape_str($data['stok_bulan'])."',  
             '".$this->db->escape_str($data['id_user'])."', 
             '".$this->db->escape_str($data['stok_tahun'])."', 
+            '".$this->db->escape_str($data['size_machine'])."',
             '".$this->db->escape_str($data['stok_master'])."',
             '".$current_time."', 
             '".$id_user."', 
@@ -52,7 +53,8 @@ class M_master_stok extends CI_Model
         $sql = "
             UPDATE `tb_mkt_master_stok` 
             SET `stok_bulan` = '$data[stok_bulan]',
-                `stok_master` = '$data[stok_tahun]',
+                `stok_tahun` = '$data[stok_tahun]',
+                `size_machine` = '$data[size_machine]',
                 `stok_master` = '$data[stok_master]',
                 `updated_at` = NOW(),
                 `updated_by` = '$id_user' 

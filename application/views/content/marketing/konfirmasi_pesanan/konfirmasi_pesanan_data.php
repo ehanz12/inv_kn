@@ -417,6 +417,25 @@
             background-color: var(--gray) !important;
         }
 
+        /* Style untuk checkbox */
+        .form-check {
+            margin-bottom: 15px;
+        }
+
+        .form-check-input {
+            margin-right: 8px;
+        }
+
+        .form-check-label {
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        .print-section {
+            transition: all 0.3s ease;
+        }
+
         @media (max-width: 768px) {
             .card-header {
                 flex-direction: column;
@@ -557,9 +576,9 @@
                                                         <th>Tgl KP</th>
                                                         <th>No KP</th>
                                                         <th>Customer</th>
-                                                        <th>Kode Customer</th>
+                                                        <!-- <th>Kode Customer</th>
                                                         <th>Spesifikasi Kapsul</th>
-                                                        <th>Kode Print</th>
+                                                        <th>Kode Print</th> -->
                                                         <!-- <th>Kode Warna Cap</th>
                                                         <th>Kode Warna Body</th> -->
                                                         <th>Jumlah KP</th>
@@ -633,9 +652,9 @@
                                                                     </span>
                                                                 </td>
                                                                 <td><?= $nama_customer ?></td>
-                                                                <td><?= $kode_customer ?></td>
+                                                                <!-- <td><?= $kode_customer ?></td>
                                                                 <td><?= $spek_kapsul ?></td>
-                                                                <td><?= $kode_print ?></td>
+                                                                <td><?= $kode_print ?></td> -->
                                                                 <!-- <td><?= $kode_warna_cap ?></td>
                                                                 <td><?= $kode_warna_body ?></td> -->
                                                                 <td class="text-right">
@@ -710,7 +729,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="<?= base_url() ?>marketing/konfirmasi_pesanan/add">
+                <form method="post" action="<?= base_url() ?>marketing/konfirmasi_pesanan/add" id="form-add">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -758,8 +777,20 @@
                                 </div>
                             </div>
 
-                            <!-- Kode Print dengan dropdown -->
-                            <div class="col-md-6">
+                            <!-- Checkbox untuk kode print -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="use_print" name="use_print">
+                                        <label class="form-check-label" for="use_print">
+                                            <i class="fas fa-print"></i> Gunakan Kode Print
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Kode Print dengan dropdown - Awalnya tersembunyi -->
+                            <div class="col-md-6 print-section" style="display: none;">
                                 <div class="form-group">
                                     <label class="form-label">Kode Print</label>
                                     <select class="form-control chosen-select" id="id_master_print"
@@ -770,11 +801,31 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 print-section" style="display: none;">
                                 <div class="form-group">
                                     <label class="form-label">Logo Print</label>
                                     <input type="text" class="form-control" id="logo_print" name="logo_print"
                                         placeholder="Logo Print" autocomplete="off" readonly>
+                                </div>
+                            </div>
+
+                            <!-- DROPDOWN BULAN STOK -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>Bulan Stok</span>
+                                    </label>
+                                    <select class="form-control chosen-select" id="id_bulan_stok" name="id_bulan_stok"
+                                        autocomplete="off" required>
+                                        <option value="">- Pilih Bulan Stok -</option>
+                                        <?php foreach ($res_bulan_stok as $bulan) { ?>
+                                            <option value="<?= $bulan['id_master_stok_size'] ?>" 
+                                                data-stok="<?= $bulan['stok_master'] ?>">
+                                                <?= $bulan['stok_bulan'] ?> - <?= $bulan['stok_tahun'] ?> - <?= $bulan['size_machine'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                             </div>
 
@@ -786,13 +837,15 @@
                                         <span>Stok Size</span>
                                     </label>
                                     <input type="text" class="form-control" id="stok_master" name="stok_master"
-                                        placeholder="Masukkan jumlah stok" autocomplete="off" required>
+                                        placeholder="Stok akan terisi " autocomplete="off" readonly required>
                                     <small class="form-text text-muted" id="stok-info"></small>
                                 </div>
                             </div>
 
+                            
+
                             <!-- Kode Warna Cap - langsung dari master -->
-                            <div class="col-md-6">
+                            <div class="col-3">
                                 <div class="form-group">
                                     <label class="form-label">Kode Warna Cap</label>
                                     <select class="form-control chosen-select" id="id_master_kw_cap"
@@ -801,7 +854,7 @@
                                         <?php foreach ($res_warna_cap as $warna) { ?>
                                             <option value="<?= $warna['id_master_kw_cap'] ?>"
                                                 data-kode="<?= $warna['kode_warna_cap'] ?>">
-                                                <?= $warna['kode_warna_cap'] ?>
+                                                <?= $warna['kode_warna_cap'] ?> | <?= $warna['warna_cap'] ?>
                                             </option>
                                         <?php } ?>
                                     </select>
@@ -810,7 +863,7 @@
                             </div>
 
                             <!-- Kode Warna Body - langsung dari master -->
-                            <div class="col-md-6">
+                            <div class="col-3">
                                 <div class="form-group">
                                     <label class="form-label">Kode Warna Body</label>
                                     <select class="form-control chosen-select" id="id_master_kw_body"
@@ -819,7 +872,7 @@
                                         <?php foreach ($res_warna_body as $warna) { ?>
                                             <option value="<?= $warna['id_master_kw_body'] ?>"
                                                 data-kode="<?= $warna['kode_warna_body'] ?>">
-                                                <?= $warna['kode_warna_body'] ?>
+                                                <?= $warna['kode_warna_body'] ?> | <?= $warna['warna_body'] ?>
                                             </option>
                                         <?php } ?>
                                     </select>
@@ -843,13 +896,13 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Total Harga</label>
                                     <input type="text" class="form-control" id="total_harga" name="total_harga"
                                         placeholder="Total Harga" readonly>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -964,6 +1017,7 @@
                             </div>
                         </div>
 
+                        <!-- Section Kode Print di Detail -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Kode Print</label>
@@ -981,7 +1035,7 @@
                         <!-- TAMBAHKAN STOK SIZE DI MODAL DETAIL -->
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Stok Size</label>
+                                <label class="form-label">Outstanding</label>
                                 <input type="text" class="form-control" id="v-stok_master" readonly>
                             </div>
                         </div>
@@ -1014,12 +1068,12 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Total Harga</label>
                                 <input type="text" class="form-control" id="v-total_harga" readonly>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="col-md-6">
                             <div class="form-group">
@@ -1081,7 +1135,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="<?= base_url() ?>marketing/konfirmasi_pesanan/update">
+                <form method="post" action="<?= base_url() ?>marketing/konfirmasi_pesanan/update" id="form-edit">
                     <input type="hidden" id="e-id_mkt_kp" name="id_mkt_kp">
                     <div class="modal-body">
                         <div class="row">
@@ -1131,8 +1185,20 @@
                                 </div>
                             </div>
 
-                            <!-- Kode Print dengan dropdown -->
-                            <div class="col-md-6">
+                            <!-- Checkbox untuk kode print di Edit -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="e-use_print" name="use_print">
+                                        <label class="form-check-label" for="e-use_print">
+                                            <i class="fas fa-print"></i> Gunakan Kode Print
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Kode Print dengan dropdown di Edit - Awalnya tersembunyi -->
+                            <div class="col-md-6 e-print-section" style="display: none;">
                                 <div class="form-group">
                                     <label class="form-label">Kode Print</label>
                                     <select class="form-control chosen-select" id="e-id_master_print"
@@ -1143,11 +1209,31 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 e-print-section" style="display: none;">
                                 <div class="form-group">
                                     <label class="form-label">Logo Print</label>
                                     <input type="text" class="form-control" id="e-logo_print" name="logo_print"
                                         placeholder="Logo Print" autocomplete="off" readonly>
+                                </div>
+                            </div>
+
+                            <!-- DROPDOWN BULAN STOK DI EDIT -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>Bulan Stok</span>
+                                    </label>
+                                    <select class="form-control chosen-select" id="e-id_bulan_stok" name="id_bulan_stok"
+                                        autocomplete="off" required>
+                                        <option value="">- Pilih Bulan Stok -</option>
+                                        <?php foreach ($res_bulan_stok as $bulan) { ?>
+                                            <option value="<?= $bulan['id_master_stok_size'] ?>" 
+                                                data-stok="<?= $bulan['stok_master'] ?>">
+                                                <?= $bulan['stok_bulan'] ?> - <?= $bulan['stok_tahun'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                             </div>
 
@@ -1159,7 +1245,7 @@
                                         <span>Stok Size</span>
                                     </label>
                                     <input type="text" class="form-control" id="e-stok_master" name="stok_master"
-                                        placeholder="Masukkan jumlah stok" autocomplete="off" required>
+                                        placeholder="Stok akan terisi otomatis" autocomplete="off" readonly required>
                                     <small class="form-text text-muted" id="e-stok-info"></small>
                                 </div>
                             </div>
@@ -1216,13 +1302,13 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Total Harga</label>
                                     <input type="text" class="form-control" id="e-total_harga" name="total_harga"
                                         placeholder="Total Harga" readonly>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -1316,102 +1402,154 @@
             orientation: 'bottom auto'
         });
 
-        // Format Rupiah
+        // ========== FUNGSI CHECKBOX KODE PRINT ==========
+
+        // Toggle kode print section untuk tambah
+        $('#use_print').change(function() {
+            if ($(this).is(':checked')) {
+                $('.print-section').slideDown(300);
+                // Load data kode print jika customer sudah dipilih
+                var id_customer = $('#id_customer').val();
+                if (id_customer) {
+                    loadPrintsByCustomer(id_customer, '');
+                }
+            } else {
+                $('.print-section').slideUp(300);
+                // Reset nilai kode print dan logo print
+                $('#id_master_print').val('').trigger('chosen:updated');
+                $('#kode_print').val('');
+                $('#logo_print').val('');
+            }
+        });
+
+        // Toggle kode print section untuk edit
+        $('#e-use_print').change(function() {
+            if ($(this).is(':checked')) {
+                $('.e-print-section').slideDown(300);
+                // Load data kode print jika customer sudah dipilih
+                var id_customer = $('#e-id_customer').val();
+                if (id_customer) {
+                    loadPrintsByCustomer(id_customer, 'e-');
+                }
+            } else {
+                $('.e-print-section').slideUp(300);
+                // Reset nilai kode print dan logo print
+                $('#e-id_master_print').val('').trigger('chosen:updated');
+                $('#e-kode_print').val('');
+                $('#e-logo_print').val('');
+            }
+        });
+
+        // Format Rupiah yang benar
         function formatRupiah(angka) {
             if (!angka) return '0';
-            angka = angka.toString().replace(/[^,\d]/g, '');
-            let split = angka.split(','),
-                sisa = split[0].length % 3,
-                rupiah = split[0].substr(0, sisa),
-                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-            if (ribuan) {
-                let separator = sisa ? '.' : '';
-                rupiah += separator + ribuan.join('.');
-            }
-            return split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            // Hapus semua karakter non-digit
+            let number_string = angka.toString().replace(/[^,\d]/g, '');
+            // Jika kosong, return 0
+            if (number_string === '') return '0';
+            // Konversi ke number
+            let number = parseInt(number_string);
+            // Format dengan separator ribuan
+            return number.toLocaleString('id-ID');
         }
 
         function unformatRupiah(angka) {
             if (!angka) return 0;
-            return parseInt(angka.toString().replace(/\./g, '').replace(/[^0-9]/g, ''), 10);
+            // Hapus semua karakter non-digit dan konversi ke number
+            return parseInt(angka.toString().replace(/[^0-9]/g, ''));
         }
 
         // Hitung total harga
-        function hitungTotal() {
-            let jumlah = unformatRupiah($('#jumlah_kp').val());
-            let harga = unformatRupiah($('#harga_kp').val());
-            let total = jumlah * harga;
-            $('#total_harga').val(formatRupiah(total));
-        }
+        // function hitungTotal() {
+        //     let jumlah = unformatRupiah($('#jumlah_kp').val());
+        //     let harga = unformatRupiah($('#harga_kp').val());
+        //     let total = jumlah * harga;
+        //     $('#total_harga').val(formatRupiah(total));
+        // }
 
-        // Format input angka
+        // Format input angka dengan benar
         $('#jumlah_kp, #harga_kp').on('input', function () {
-            let value = this.value.replace(/\D/g, '');
-            this.value = new Intl.NumberFormat('id-ID').format(value);
+            let value = this.value.replace(/[^0-9]/g, '');
+            this.value = formatRupiah(value);
             hitungTotal();
+        });
+
+        // ========== FUNGSI BULAN STOK ==========
+
+        // Handle perubahan bulan stok untuk tambah
+        $('#id_bulan_stok').change(function() {
+            var selectedOption = $(this).find('option:selected');
+            var stok = selectedOption.data('stok');
+            
+            if (stok) {
+                $('#stok_master').val(formatRupiah(stok));
+                currentStokMaster = unformatRupiah(stok);
+                validateStokMaster('', $('#jumlah_kp').val());
+            } else {
+                $('#stok_master').val('');
+                currentStokMaster = 0;
+            }
+        });
+
+        // Handle perubahan bulan stok untuk edit
+        $('#e-id_bulan_stok').change(function() {
+            var selectedOption = $(this).find('option:selected');
+            var stok = selectedOption.data('stok');
+            
+            if (stok) {
+                $('#e-stok_master').val(formatRupiah(stok));
+                currentStokMasterEdit = unformatRupiah(stok);
+                validateStokMaster('e-', $('#e-jumlah_kp').val());
+            } else {
+                $('#e-stok_master').val('');
+                currentStokMasterEdit = 0;
+            }
         });
 
         // ========== VALIDASI STOK MASTER ==========
 
         // Tampilkan info stok master saat modal tambah dibuka
         $('#add').on('show.bs.modal', function() {
-            getCurrentStok('');
+            // Reset current stok
+            currentStokMaster = 0;
+            $('#stok-info').text('Pilih Bulan Stok terlebih dahulu').removeClass('text-danger');
         });
 
         // Tampilkan info stok master saat modal edit dibuka
         $('#edit').on('show.bs.modal', function(event) {
-            getCurrentStok('e-');
-            
-            // Tunggu sebentar sampai modal fully loaded
-            setTimeout(function() {
-                var button = $(event.relatedTarget);
-                var stok_master = button.data('stok_master');
-                if (stok_master) {
-                    $('#e-stok_master').val(formatRupiah(stok_master.toString()));
-                    validateStokMaster('e-', $('#e-stok_master').val());
-                }
-            }, 300);
+            // Reset current stok
+            currentStokMasterEdit = 0;
+            $('#e-stok-info').text('Pilih Bulan Stok terlebih dahulu').removeClass('text-danger');
         });
 
-        // Fungsi get stok master saat ini
-        function getCurrentStok(prefix) {
-            $.ajax({
-                url: "<?= base_url() ?>marketing/konfirmasi_pesanan/get_current_stok",
-                type: "GET",
-                dataType: "json",
-                success: function(response) {
-                    if (prefix === '') {
-                        currentStokMaster = response.stok_master;
-                    } else {
-                        currentStokMasterEdit = response.stok_master;
-                    }
-                    $('#' + prefix + 'stok-info').text('Stok master tersedia: ' + formatRupiah(response.stok_master));
-                },
-                error: function(xhr, status, error) {
-                    console.log("Error loading current stok: " + error);
-                }
-            });
-        }
-
-        // Validasi input stok master untuk tambah
-        $('#stok_master').on('input', function() {
+        // Validasi input jumlah KP untuk tambah
+        $('#jumlah_kp').on('input', function() {
             validateStokMaster('', $(this).val());
         });
 
-        // Validasi input stok master untuk edit
-        $('#e-stok_master').on('input', function() {
+        // Validasi input jumlah KP untuk edit
+        $('#e-jumlah_kp').on('input', function() {
             validateStokMaster('e-', $(this).val());
         });
 
         // Fungsi validasi stok master
-        function validateStokMaster(prefix, stokInput) {
-            var stokValue = unformatRupiah(stokInput) || 0;
+        function validateStokMaster(prefix, jumlahInput) {
+            var jumlahValue = unformatRupiah(jumlahInput) || 0;
             var stokInfo = $('#' + prefix + 'stok-info');
-            var simpanBtn = $('#simpan');
+            var simpanBtn = $('#' + prefix + 'simpan');
             var currentStok = prefix === '' ? currentStokMaster : currentStokMasterEdit;
 
-            if (stokValue > 0) {
-                if (stokValue > currentStok) {
+            // Jika belum memilih bulan stok
+            if (currentStok === 0) {
+                stokInfo.text('Pilih Bulan Stok terlebih dahulu').removeClass('text-danger');
+                if (simpanBtn.length) {
+                    simpanBtn.attr('disabled', 'disabled');
+                }
+                return;
+            }
+
+            if (jumlahValue > 0) {
+                if (jumlahValue > currentStok) {
                     // Jika melebihi stok master
                     stokInfo.addClass('text-danger');
                     stokInfo.text('Melebihi stok master! Stok tersedia: ' + formatRupiah(currentStok));
@@ -1431,11 +1569,11 @@
                     }
                 }
             } else {
-                stokInfo.text('Masukkan jumlah stok. Stok master: ' + formatRupiah(currentStok));
+                stokInfo.text('Masukkan jumlah KP. Stok master: ' + formatRupiah(currentStok));
                 stokInfo.removeClass('text-danger');
                 
                 // Disable tombol simpan jika kosong
-                if (simpanBtn.length && stokValue === 0) {
+                if (simpanBtn.length && jumlahValue === 0) {
                     simpanBtn.attr('disabled', 'disabled');
                 }
             }
@@ -1446,13 +1584,19 @@
         // Load data kode print berdasarkan customer (Tambah)
         $('#id_customer').change(function () {
             var id_customer = $(this).val();
-            loadPrintsByCustomer(id_customer, '');
+            // Jika checkbox kode print dicentang, load data print
+            if ($('#use_print').is(':checked')) {
+                loadPrintsByCustomer(id_customer, '');
+            }
         });
 
         // Load data kode print berdasarkan customer (Edit)
         $('#e-id_customer').change(function () {
             var id_customer = $(this).val();
-            loadPrintsByCustomer(id_customer, 'e-');
+            // Jika checkbox kode print dicentang, load data print
+            if ($('#e-use_print').is(':checked')) {
+                loadPrintsByCustomer(id_customer, 'e-');
+            }
         });
 
         // Load kode print berdasarkan customer
@@ -1628,7 +1772,18 @@
             // PERBAIKAN: Set spek kapsul sebagai select
             modal.find('#e-spek_kapsul').val(spek_kapsul).trigger("chosen:updated");
             
-            modal.find('#e-kode_print').val(kode_print);
+            // Set checkbox kode print berdasarkan apakah ada kode print
+            if (kode_print && kode_print !== '') {
+                $('#e-use_print').prop('checked', true);
+                $('.e-print-section').show();
+                modal.find('#e-kode_print').val(kode_print);
+                // Load data kode print untuk edit
+                loadPrintsByCustomer(id_customer, 'e-');
+            } else {
+                $('#e-use_print').prop('checked', false);
+                $('.e-print-section').hide();
+            }
+            
             modal.find('#e-kode_warna_cap').val(kode_warna_cap);
             modal.find('#e-kode_warna_body').val(kode_warna_body);
             modal.find('#e-jumlah_kp').val(jumlah_kp);
@@ -1643,13 +1798,11 @@
             // Set nilai stok master untuk edit
             if (stok_master) {
                 $('#e-stok_master').val(formatRupiah(stok_master.toString()));
+                currentStokMasterEdit = unformatRupiah(stok_master);
             }
 
             let total = (parseFloat(jumlah_kp) || 0) * (parseFloat(harga_kp) || 0);
             modal.find('#e-total_harga').val(formatRupiah(total));
-
-            // Load data kode print untuk edit
-            loadPrintsByCustomer(id_customer, 'e-');
 
             // Hitung total saat edit
             function hitungTotalEdit() {
@@ -1660,8 +1813,8 @@
             }
 
             $('#e-jumlah_kp, #e-harga_kp').on('input', function () {
-                let value = this.value.replace(/\D/g, '');
-                this.value = new Intl.NumberFormat('id-ID').format(value);
+                let value = this.value.replace(/[^0-9]/g, '');
+                this.value = formatRupiah(value);
                 hitungTotalEdit();
             });
         });
@@ -1713,6 +1866,9 @@
             $('#stok-info').text('').removeClass('text-danger');
             $('#simpan').removeAttr('disabled');
             currentStokMaster = 0;
+            // Reset checkbox dan sembunyikan section kode print
+            $('#use_print').prop('checked', false);
+            $('.print-section').hide();
         });
 
         // Reset form saat modal edit ditutup
@@ -1720,12 +1876,45 @@
             $('#e-stok-info').text('').removeClass('text-danger');
             $('#simpan').removeAttr('disabled');
             currentStokMasterEdit = 0;
+            // Reset checkbox dan sembunyikan section kode print
+            $('#e-use_print').prop('checked', false);
+            $('.e-print-section').hide();
         });
 
         // Format input stok master otomatis
         $('#stok_master, #e-stok_master').on('input', function() {
-            let value = this.value.replace(/\D/g, '');
-            this.value = new Intl.NumberFormat('id-ID').format(value);
+            let value = this.value.replace(/[^0-9]/g, '');
+            this.value = formatRupiah(value);
+        });
+
+        // ========== KONFIRMASI SUBMIT ==========
+
+        // Konfirmasi submit untuk form tambah
+        $('#form-add').submit(function(e) {
+            var jumlahKP = unformatRupiah($('#jumlah_kp').val());
+            var stokMaster = currentStokMaster;
+            
+            if (jumlahKP > stokMaster) {
+                e.preventDefault();
+                alert('Jumlah KP melebihi stok master yang tersedia!');
+                return false;
+            }
+            
+            return confirm('Apakah Anda yakin ingin menyimpan data Konfirmasi Pesanan ini?');
+        });
+
+        // Konfirmasi submit untuk form edit
+        $('#form-edit').submit(function(e) {
+            var jumlahKP = unformatRupiah($('#e-jumlah_kp').val());
+            var stokMaster = currentStokMasterEdit;
+            
+            if (jumlahKP > stokMaster) {
+                e.preventDefault();
+                alert('Jumlah KP melebihi stok master yang tersedia!');
+                return false;
+            }
+            
+            return confirm('Apakah Anda yakin ingin mengupdate data Konfirmasi Pesanan ini?');
         });
     });
 </script>

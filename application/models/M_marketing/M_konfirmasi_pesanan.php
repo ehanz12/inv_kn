@@ -50,6 +50,14 @@ class M_konfirmasi_pesanan extends CI_Model {
         
         return $this->db->query($sql)->result_array();
     }
+
+    // public function get_stok_by_id($id_master_stok_size) {
+    //     $this->db->select('*');
+    //     $this->db->from('tb_mkt_master_stok');
+    //     $this->db->where('id_master_stok_size', $id_master_stok_size);
+    //     $this->db->where('is_deleted', 0);
+    //     return $this->db->get()->row_array();
+    // }
     
     // Get customers untuk dropdown
     public function get_customers() {

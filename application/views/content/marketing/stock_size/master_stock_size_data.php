@@ -24,8 +24,8 @@
         }
         
         body {
-            /* background-color: #f5f7fb; */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fb;
         }
         
         .page-header {
@@ -117,7 +117,7 @@
         
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            /* color: white; */
+            color: white;
         }
         
         .btn-primary:hover {
@@ -127,7 +127,7 @@
         
         .btn-info {
             background: linear-gradient(135deg, #4895ef, #3a86ff);
-            /* color: white; */
+            color: white;
         }
         
         .btn-info:hover {
@@ -215,7 +215,7 @@
             padding: 40px !important;
             color: #6c757d;
             font-style: italic;
-            background-color: #469bf0ff;
+            background-color: #f8f9fa;
             text-align: center;
         }
         
@@ -229,15 +229,15 @@
         
         .alert-success {
             border-radius: 12px;
-            background-color: #58f135ff;
-            border-color: #3ab831e1;
-            color: #ffffffff;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
         }
         
         .alert-danger {
             border-radius: 12px;
             background-color: #f8d7da;
-            border-color: #464141ff;
+            border-color: #f5c6cb;
             color: #721c24;
         }
         
@@ -251,7 +251,7 @@
         
         .form-control:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 0.2rem rgba(205, 50, 50, 0.25);
+            box-shadow: 0 0 0 0.2rem rgba(0, 140, 255, 0.25);
         }
         
         .form-label {
@@ -277,12 +277,12 @@
         }
         
         .close {
-            /* color: white; */
+            color: white;
             opacity: 0.8;
         }
         
         .close:hover {
-            /* color: white; */
+            color: white;
             opacity: 1;
         }
         
@@ -294,8 +294,14 @@
         
         .badge-primary {
             background-color: rgba(222, 76, 76, 0.15);
-            color: #7e1e1eff;
+            color: #7e1e1e;
             border: 1px solid rgba(205, 70, 70, 0.3);
+        }
+        
+        .badge-info {
+            background-color: rgba(72, 149, 239, 0.15);
+            color: #1b39be;
+            border: 1px solid rgba(72, 149, 239, 0.3);
         }
         
         @media (max-width: 768px) {
@@ -324,7 +330,7 @@
         }
     </style>
 </head>
-<body></body>
+<body>
 
 <!-- [ Main Content ] start -->
 <section class="pcoded-main-container">
@@ -342,8 +348,7 @@
                 <ul class="breadcrumb">
                   <li class="breadcrumb-item"><a href="<?= base_url() ?>"><i class="feather icon-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="javascript:">Marketing</a></li>
-                  <li class="breadcrumb-item"><a href="<?= base_url('Marketing/master/Master_stock') ?>">Master Stock
-                      Size</a></li>
+                  <li class="breadcrumb-item"><a href="<?= base_url('Marketing/master/Master_stock') ?>">Master Stock Size</a></li>
                 </ul>
               </div>
             </div>
@@ -358,11 +363,10 @@
               <div class="col-xl-12">
                 <div class="card">
                   <div class="card-header">
-                    <h5 style="color: white;">Data Master Stock Size</h5>
+                    <h5>Data Master Stock Size</h5>
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal"
-                      data-target="#add">
+                    <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add">
                       <i class="feather icon-plus"></i> Tambah Stock Size
                     </button>
                   </div>
@@ -370,10 +374,8 @@
 
                     <!-- Alert dari URL parameter -->
                     <?php if (isset($_GET['alert']) && isset($_GET['msg'])): ?>
-                      <div
-                        class="alert alert-<?= $_GET['alert'] == 'success' ? 'success' : 'danger' ?> alert-dismissible fade show">
-                        <i
-                          class="feather <?= $_GET['alert'] == 'success' ? 'icon-check-circle' : 'icon-alert-triangle' ?>"></i>
+                      <div class="alert alert-<?= $_GET['alert'] == 'success' ? 'success' : 'danger' ?> alert-dismissible fade show">
+                        <i class="feather <?= $_GET['alert'] == 'success' ? 'icon-check-circle' : 'icon-alert-triangle' ?>"></i>
                         <?= $_GET['msg'] ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
@@ -387,6 +389,7 @@
                           <tr>
                             <th>#</th>
                             <th>Master Stock</th>
+                            <th>Size Machine</th>
                             <th>Bulan Stock</th>
                             <th>Tahun Stock</th>
                             <th>Dibuat Pada</th>
@@ -395,7 +398,7 @@
                         </thead>
                         <tbody>
                           <?php
-                          $level = $this->session->userdata('level');
+                          $level = $this->session->userdata('departement');
                           $no = 1;
                           if (!empty($result)) {
                             foreach ($result as $k) {
@@ -418,6 +421,7 @@
                               <tr>
                                 <th scope="row"><?= $no++ ?></th>
                                 <td><span class="badge badge-info"><?= $k['stok_master'] ?></span></td>
+                                <td><span class="badge badge-info"><?= $k['size_machine'] ?></span></td>
                                 <td><span class="badge badge-primary"><?= $bulanName ?></span></td>
                                 <td><span class="badge badge-info"><?= $k['stok_tahun'] ?></span></td>
                                 <td><?= date('d/m/Y', strtotime($k['created_at'])) ?></td>
@@ -425,8 +429,12 @@
                                   <?php if ($level === "admin") { ?>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                       <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal"
-                                        data-target="#edit" data-id_master_stok_size="<?= $k['id_master_stok_size'] ?>"
-                                        data-stok_bulan="<?= $k['stok_bulan'] ?>" data-stok_tahun="<?= $k['stok_tahun'] ?>">
+                                        data-target="#edit" 
+                                        data-id_master_stok_size="<?= $k['id_master_stok_size'] ?>"
+                                        data-stok_bulan="<?= $k['stok_bulan'] ?>" 
+                                        data-stok_tahun="<?= $k['stok_tahun'] ?>"
+                                        data-size_machine="<?= $k['size_machine'] ?>"
+                                        data-stok_master="<?= $k['stok_master'] ?>">
                                         <i class="feather icon-edit-2"></i> Edit
                                       </button>
                                     </div>
@@ -444,7 +452,7 @@
                             }
                           } else { ?>
                             <tr>
-                              <td colspan="5" class="text-center py-4">
+                              <td colspan="7" class="text-center py-4">
                                 <i class="feather icon-inbox" style="font-size: 48px; color: #ccc;"></i>
                                 <p class="text-muted mt-2">Belum ada data stock size</p>
                               </td>
@@ -495,10 +503,23 @@
               <option value="12">December</option>
             </select>
           </div>
+          
           <div class="form-group">
-                        <label for="logo_print" class="form-label">Master Stok</label>
-                        <input type="text" class="form-control text-uppercase" id="stok_master" name="stok_master" autocomplete="off" placeholder="stok master" required>
-                    </div>
+            <label for="stok_master" class="form-label">Master Stok</label>
+            <input type="text" class="form-control text-uppercase" id="stok_master" name="stok_master" autocomplete="off" placeholder="Stok Master" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="size_machine">Size Machine</label>
+            <select class="form-control" id="size_machine" name="size_machine" required>
+              <option value="">- Pilih Size Machine -</option>
+              <option value="00">00</option>
+              <option value="0N">0N</option>
+              <option value="1N">1N</option>
+              <option value="2N">2N</option>
+              <option value="3N">3N</option>     
+            </select>
+          </div>
               
           <div class="form-group">
             <label for="stok_tahun">Tahun Stock</label>
@@ -527,9 +548,10 @@
       </div>
       <form method="post" action="<?= base_url() ?>Marketing/master/Master_stock/update">
         <div class="modal-body">
+          <input type="hidden" id="e_id_master_stok_size" name="id_master_stok_size">
+          
           <div class="form-group">
-            <label for="stok_bulan">Bulan Stock</label>
-            <input type="hidden" id="e_id_master_stok_size" name="id_master_stok_size">
+            <label for="e_stok_bulan">Bulan Stock</label>
             <select class="form-control" id="e_stok_bulan" name="stok_bulan" required>
               <option value="">- Pilih Bulan -</option>
               <option value="1">January</option>
@@ -546,10 +568,27 @@
               <option value="12">December</option>
             </select>
           </div>
+          
           <div class="form-group">
-            <label for="stok_tahun">Tahun Stock</label>
-            <input type="number" class="form-control" id="stok_tahun" name="stok_tahun" min="2020" max="2030"
-              value="<?= date('Y') ?>" placeholder="Tahun Stock" required>
+            <label for="e_stok_master" class="form-label">Master Stok</label>
+            <input type="text" class="form-control text-uppercase" id="e_stok_master" name="stok_master" autocomplete="off" placeholder="Stok Master" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="e_size_machine">Size Machine</label>
+            <select class="form-control" id="e_size_machine" name="size_machine" required>
+              <option value="">- Pilih Size Machine -</option>
+              <option value="00">00</option>
+              <option value="0N">0N</option>
+              <option value="1N">1N</option>
+              <option value="2N">2N</option>
+              <option value="3N">3N</option>     
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="e_stok_tahun">Tahun Stock</label>
+            <input type="number" class="form-control" id="e_stok_tahun" name="stok_tahun" min="2020" max="2030" placeholder="Tahun Stock" required>
           </div>
         </div>
         <div class="modal-footer">
@@ -561,6 +600,8 @@
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function () {
     // Modal edit show event
@@ -568,12 +609,14 @@
       var button = $(event.relatedTarget);
       var id_master_stok_size = button.data('id_master_stok_size');
       var stok_bulan = button.data('stok_bulan');
+      var size_machine = button.data('size_machine');
       var stok_tahun = button.data('stok_tahun');
       var stok_master = button.data('stok_master');
 
       var modal = $(this);
       modal.find('#e_id_master_stok_size').val(id_master_stok_size);
       modal.find('#e_stok_bulan').val(stok_bulan);
+      modal.find('#e_size_machine').val(size_machine);
       modal.find('#e_stok_tahun').val(stok_tahun);
       modal.find('#e_stok_master').val(stok_master);
     });
@@ -584,3 +627,5 @@
     }, 5000);
   });
 </script>
+</body>
+</html>

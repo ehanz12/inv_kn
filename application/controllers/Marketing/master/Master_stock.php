@@ -22,6 +22,7 @@ class Master_stock extends CI_Controller
 
         $stok_bulan = $this->input->post('stok_bulan', TRUE);
         $stok_tahun = $this->input->post('stok_tahun', TRUE);
+        $size_machine = $this->input->post('size_machine', TRUE);
         $stok_master = $this->input->post('stok_master', TRUE);
 
         if(empty($stok_tahun) || $stok_tahun < 2020 || $stok_tahun > 2030) {
@@ -32,6 +33,7 @@ class Master_stock extends CI_Controller
         $data = [
             'stok_bulan' => $stok_bulan,
             'stok_tahun' => $stok_tahun,
+            'size_machine' => $size_machine,
             'stok_master' => $stok_master,
             'id_user' => $this->session->userdata('id_user'),
         ];
@@ -50,7 +52,8 @@ class Master_stock extends CI_Controller
         $data['id_master_stok_size'] = $this->input->post('id_master_stok_size', TRUE);
         $data['stok_bulan'] = $this->input->post('stok_bulan', TRUE);
         $data['stok_tahun'] = $this->input->post('stok_tahun', TRUE);
-         $data['stok_master'] = $this->input->post('stok_master', TRUE);
+        $data['size_machine'] = $this->input->post('size_machine', TRUE);
+        $data['stok_master'] = $this->input->post('stok_master', TRUE);
         
         $respon = $this->M_master_stok->update($data);
         
