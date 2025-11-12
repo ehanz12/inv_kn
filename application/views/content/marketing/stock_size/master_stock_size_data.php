@@ -304,6 +304,30 @@
             border: 1px solid rgba(72, 149, 239, 0.3);
         }
         
+        .duplicate-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .feather.icon-loader {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         @media (max-width: 768px) {
             .card-header {
                 flex-direction: column;
@@ -363,7 +387,7 @@
               <div class="col-xl-12">
                 <div class="card">
                   <div class="card-header">
-                    <h5>Data Master Stock Size</h5>
+                    <h5 style="color:white;">Data Master Stock Size</h5>
 
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add">
@@ -388,10 +412,10 @@
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Master Stock</th>
                             <th>Size Machine</th>
                             <th>Bulan Stock</th>
                             <th>Tahun Stock</th>
+                            <th>Master Stock</th>
                             <th>Dibuat Pada</th>
                             <th class="text-center">Aksi</th>
                           </tr>
@@ -416,14 +440,14 @@
                                 'November',
                                 'December'
                               ];
-                              $bulanName = isset($bulanNames[$k['stok_bulan'] - 1]) ? $bulanNames[$k['stok_bulan'] - 1] : 'Unknown';
+                              $bulanName = $k['stok_bulan'];
                               ?>
                               <tr>
                                 <th scope="row"><?= $no++ ?></th>
-                                <td><span class="badge badge-info"><?= $k['stok_master'] ?></span></td>
                                 <td><span class="badge badge-info"><?= $k['size_machine'] ?></span></td>
                                 <td><span class="badge badge-primary"><?= $bulanName ?></span></td>
                                 <td><span class="badge badge-info"><?= $k['stok_tahun'] ?></span></td>
+                                <td><span class="badge badge-success"><?= number_format($k['stok_master'], 0, ",", ".") ?> pcs</span></td>
                                 <td><?= date('d/m/Y', strtotime($k['created_at'])) ?></td>
                                 <td class="text-center">
                                   <?php if ($level === "admin") { ?>
@@ -483,30 +507,37 @@
         </button>
       </div>
       
-      <form method="post" action="<?= base_url() ?>Marketing/master/Master_stock/add">
+      <form method="post" action="<?= base_url() ?>Marketing/master/Master_stock/add" id="formTambah">
         <div class="modal-body">
+          <!-- Warning duplikasi -->
+          <div class="duplicate-warning" id="duplicateWarning">
+            <i class="feather icon-alert-triangle"></i>
+            <span id="warningText"></span>
+          </div>
+          
           <div class="form-group">
             <label for="stok_bulan">Bulan Stock</label>
             <select class="form-control" id="stok_bulan" name="stok_bulan" required>
               <option value="">- Pilih Bulan -</option>
-              <option value="1">January</option>
-              <option value="2">February</option>
-              <option value="3">March</option>
-              <option value="4">April</option>
-              <option value="5">May</option>
-              <option value="6">June</option>
-              <option value="7">July</option>
-              <option value="8">August</option>
-              <option value="9">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="Maret">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
             </select>
           </div>
           
           <div class="form-group">
             <label for="stok_master" class="form-label">Master Stok</label>
-            <input type="text" class="form-control text-uppercase" id="stok_master" name="stok_master" autocomplete="off" placeholder="Stok Master" required>
+            <input type="text" class="form-control" id="stok_master" name="stok_master" autocomplete="off" placeholder="Masukkan jumlah stok" required>
+            <small class="form-text text-muted"></small>
           </div>
           
           <div class="form-group">
@@ -529,7 +560,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
+          <button type="submit" class="btn btn-primary" id="btnSimpan">
+            <i class="feather icon-save"></i> Simpan
+          </button>
         </div>
       </form>
     </div>
@@ -546,32 +579,39 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="<?= base_url() ?>Marketing/master/Master_stock/update">
+      <form method="post" action="<?= base_url() ?>Marketing/master/Master_stock/update" id="formEdit">
         <div class="modal-body">
+          <!-- Warning duplikasi -->
+          <div class="duplicate-warning" id="duplicateWarningEdit">
+            <i class="feather icon-alert-triangle"></i>
+            <span id="warningTextEdit"></span>
+          </div>
+          
           <input type="hidden" id="e_id_master_stok_size" name="id_master_stok_size">
           
           <div class="form-group">
             <label for="e_stok_bulan">Bulan Stock</label>
             <select class="form-control" id="e_stok_bulan" name="stok_bulan" required>
               <option value="">- Pilih Bulan -</option>
-              <option value="1">January</option>
-              <option value="2">February</option>
-              <option value="3">March</option>
-              <option value="4">April</option>
-              <option value="5">May</option>
-              <option value="6">June</option>
-              <option value="7">July</option>
-              <option value="8">August</option>
-              <option value="9">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="Maret">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
             </select>
           </div>
           
           <div class="form-group">
             <label for="e_stok_master" class="form-label">Master Stok</label>
-            <input type="text" class="form-control text-uppercase" id="e_stok_master" name="stok_master" autocomplete="off" placeholder="Stok Master" required>
+            <input type="text" class="form-control" id="e_stok_master" name="stok_master" autocomplete="off" placeholder="Masukkan jumlah stok" required>
+            <small class="form-text text-muted"></small>
           </div>
           
           <div class="form-group">
@@ -593,7 +633,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-info">Update</button>
+          <button type="submit" class="btn btn-info" id="btnUpdate">
+            <i class="feather icon-edit-2"></i> Update
+          </button>
         </div>
       </form>
     </div>
@@ -604,26 +646,174 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function () {
-    // Modal edit show event
-    $('#edit').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget);
-      var id_master_stok_size = button.data('id_master_stok_size');
-      var stok_bulan = button.data('stok_bulan');
-      var size_machine = button.data('size_machine');
-      var stok_tahun = button.data('stok_tahun');
-      var stok_master = button.data('stok_master');
+    // Fungsi format rupiah dengan titik
+    function formatRupiah(angka) {
+        if (!angka) return '0';
+        // Hapus semua karakter non-digit
+        let number_string = angka.toString().replace(/[^,\d]/g, '');
+        // Jika kosong, return 0
+        if (number_string === '') return '0';
+        // Konversi ke number
+        let number = parseInt(number_string);
+        // Format dengan separator ribuan
+        return number.toLocaleString('id-ID');
+    }
 
-      var modal = $(this);
-      modal.find('#e_id_master_stok_size').val(id_master_stok_size);
-      modal.find('#e_stok_bulan').val(stok_bulan);
-      modal.find('#e_size_machine').val(size_machine);
-      modal.find('#e_stok_tahun').val(stok_tahun);
-      modal.find('#e_stok_master').val(stok_master);
+    function unformatRupiah(angka) {
+        if (!angka) return 0;
+        // Hapus semua karakter non-digit dan konversi ke number
+        return parseInt(angka.toString().replace(/[^0-9]/g, ''));
+    }
+
+    // Format input Master Stock untuk tambah
+    $('#stok_master').on('input', function () {
+        let value = this.value.replace(/[^0-9]/g, '');
+        this.value = formatRupiah(value);
+    });
+
+    // Format input Master Stock untuk edit
+    $('#e_stok_master').on('input', function () {
+        let value = this.value.replace(/[^0-9]/g, '');
+        this.value = formatRupiah(value);
+    });
+
+    // Format nilai saat modal edit dibuka
+    $('#edit').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id_master_stok_size = button.data('id_master_stok_size');
+        var stok_bulan = button.data('stok_bulan');
+        var size_machine = button.data('size_machine');
+        var stok_tahun = button.data('stok_tahun');
+        var stok_master = button.data('stok_master');
+
+        var modal = $(this);
+        modal.find('#e_id_master_stok_size').val(id_master_stok_size);
+        modal.find('#e_stok_bulan').val(stok_bulan);
+        modal.find('#e_size_machine').val(size_machine);
+        modal.find('#e_stok_tahun').val(stok_tahun);
+        // Format stok master dengan titik
+        modal.find('#e_stok_master').val(formatRupiah(stok_master));
+        
+        // Sembunyikan warning saat modal dibuka
+        $('#duplicateWarningEdit').hide();
+    });
+
+    // Validasi real-time untuk form tambah
+    $('#formTambah').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Unformat stok master sebelum submit
+        var stokMasterValue = unformatRupiah($('#stok_master').val());
+        $('#stok_master').val(stokMasterValue);
+        
+        var stok_bulan = $('#stok_bulan').val();
+        var stok_tahun = $('#stok_tahun').val();
+        var size_machine = $('#size_machine').val();
+        
+        if (stok_bulan && stok_tahun && size_machine) {
+            // Tampilkan loading state
+            $('#btnSimpan').html('<i class="feather icon-loader"></i> Memeriksa...').prop('disabled', true);
+            
+            // Cek duplikasi via AJAX
+            $.ajax({
+                url: '<?= base_url() ?>Marketing/master/Master_stock/check_duplicate',
+                type: 'POST',
+                data: {
+                    stok_bulan: stok_bulan,
+                    stok_tahun: stok_tahun,
+                    size_machine: size_machine
+                },
+                success: function(response) {
+                    if (response.is_duplicate) {
+                        // Tampilkan warning
+                        $('#warningText').text('Data untuk bulan ' + response.bulan_name + ' tahun ' + stok_tahun + ' dengan size ' + size_machine + ' sudah ada!');
+                        $('#duplicateWarning').show();
+                        $('#btnSimpan').html('<i class="feather icon-save"></i> Simpan').prop('disabled', false);
+                        // Format kembali stok master
+                        $('#stok_master').val(formatRupiah(stokMasterValue));
+                    } else {
+                        // Lanjutkan submit form
+                        $('#duplicateWarning').hide();
+                        $('#formTambah').off('submit').submit();
+                    }
+                },
+                error: function() {
+                    $('#btnSimpan').html('<i class="feather icon-save"></i> Simpan').prop('disabled', false);
+                    alert('Terjadi kesalahan saat memeriksa data');
+                    // Format kembali stok master
+                    $('#stok_master').val(formatRupiah(stokMasterValue));
+                }
+            });
+        }
+    });
+
+    // Validasi real-time untuk form edit
+    $('#formEdit').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Unformat stok master sebelum submit
+        var stokMasterValue = unformatRupiah($('#e_stok_master').val());
+        $('#e_stok_master').val(stokMasterValue);
+        
+        var id_master_stok_size = $('#e_id_master_stok_size').val();
+        var stok_bulan = $('#e_stok_bulan').val();
+        var stok_tahun = $('#e_stok_tahun').val();
+        var size_machine = $('#e_size_machine').val();
+        
+        if (stok_bulan && stok_tahun && size_machine) {
+            // Tampilkan loading state
+            $('#btnUpdate').html('<i class="feather icon-loader"></i> Memeriksa...').prop('disabled', true);
+            
+            // Cek duplikasi via AJAX (dengan exclude ID)
+            $.ajax({
+                url: '<?= base_url() ?>Marketing/master/Master_stock/check_duplicate_edit',
+                type: 'POST',
+                data: {
+                    id_master_stok_size: id_master_stok_size,
+                    stok_bulan: stok_bulan,
+                    stok_tahun: stok_tahun,
+                    size_machine: size_machine
+                },
+                success: function(response) {
+                    if (response.is_duplicate) {
+                        // Tampilkan warning
+                        $('#warningTextEdit').text('Data untuk bulan ' + response.bulan_name + ' tahun ' + stok_tahun + ' dengan size ' + size_machine + ' sudah ada!');
+                        $('#duplicateWarningEdit').show();
+                        $('#btnUpdate').html('<i class="feather icon-edit-2"></i> Update').prop('disabled', false);
+                        // Format kembali stok master
+                        $('#e_stok_master').val(formatRupiah(stokMasterValue));
+                    } else {
+                        // Lanjutkan submit form
+                        $('#duplicateWarningEdit').hide();
+                        $('#formEdit').off('submit').submit();
+                    }
+                },
+                error: function() {
+                    $('#btnUpdate').html('<i class="feather icon-edit-2"></i> Update').prop('disabled', false);
+                    alert('Terjadi kesalahan saat memeriksa data');
+                    // Format kembali stok master
+                    $('#e_stok_master').val(formatRupiah(stokMasterValue));
+                }
+            });
+        }
+    });
+
+    // Reset form dan warning saat modal tambah ditutup
+    $('#add').on('hidden.bs.modal', function () {
+        $('#formTambah')[0].reset();
+        $('#duplicateWarning').hide();
+        $('#btnSimpan').html('<i class="feather icon-save"></i> Simpan').prop('disabled', false);
+    });
+
+    // Reset warning saat modal edit ditutup
+    $('#edit').on('hidden.bs.modal', function () {
+        $('#duplicateWarningEdit').hide();
+        $('#btnUpdate').html('<i class="feather icon-edit-2"></i> Update').prop('disabled', false);
     });
 
     // Auto-hide alert setelah 5 detik
     setTimeout(function () {
-      $('.alert').alert('close');
+        $('.alert').alert('close');
     }, 5000);
   });
 </script>

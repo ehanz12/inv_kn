@@ -74,7 +74,7 @@
                               <td><?= $k['sisa'] ?></td>
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#view" data-id_sch="<?= $k['id_sch'] ?>" data-id_customer="<?= $k['id_customer'] ?>" data-id_kw_cap="<?= $k['id_kw_cap'] ?>" data-id_kw_body="<?= $k['id_kw_body'] ?>" data-no_cr="<?= $k['no_cr'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-tgl_sch="<?= $tgl_sch ?>" data-size="<?= $k['size'] ?>" data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>" data-kode_warna_body="<?= $k['kode_warna_body'] ?>" data-warna_cap="<?= $k['warna_cap'] ?>" data-warna_body="<?= $k['warna_body'] ?>" data-mesin="<?= $k['mesin'] ?>" data-jumlah="<?= $k['jumlah'] ?>" data-sisa="<?= $k['sisa'] ?>" data-cek_print="<?= $k['cek_print'] ?>" data-print="<?= $k['print'] ?>" data-tinta="<?= $k['tinta'] ?>" data-nama_customer="<?= $k['nama_customer'] ?>" data-jenis_box="<?= $k['jenis_box'] ?>" data-jenis_zak="<?= $k['jenis_zak'] ?>" data-tgl_kirim="<?= $tgl_kirim ?>" data-tgl_prd="<?= $tgl_prd ?>" data-minyak="<?= $k['minyak'] ?>" data-keterangan="<?= $k['keterangan'] ?>">
+                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#view" data-id_sch="<?= $k['id_mkt_schedule'] ?>" data-id_customer="<?= $k['id_customer'] ?>" data-id_kw_cap="<?= $k['id_master_kw_cap'] ?>" data-id_kw_body="<?= $k['id_master_kw_body'] ?>" data-no_cr="<?= $k['no_cr'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-tgl_sch="<?= $tgl_sch ?>" data-size="<?= $k['size_machine'] ?>" data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>" data-kode_warna_body="<?= $k['kode_warna_body'] ?>" data-warna_cap="<?= $k['warna_cap'] ?>" data-warna_body="<?= $k['warna_body'] ?>" data-mesin="<?= $k['mesin_prd'] ?>" data-jumlah="<?= $k['jumlah_prd'] ?>" data-sisa="<?= $k['sisa'] ?>" data-cek_print="<?= $k['cek_print'] ?>" data-print="<?= $k['print'] ?>" data-tinta="<?= $k['tinta'] ?>" data-nama_customer="<?= $k['nama_customer'] ?>" data-jenis_box="<?= $k['jenis_box'] ?>" data-jenis_zak="<?= $k['jenis_zak'] ?>" data-tgl_kirim="<?= $tgl_kirim ?>" data-tgl_prd="<?= $tgl_prd ?>" data-minyak="<?= $k['minyak'] ?>" data-keterangan="<?= $k['ket_prd'] ?>">
                                     <i class="feather icon-eye"></i>Detail
                                   </button>
                                 </div>
@@ -82,12 +82,12 @@
                               <td class="text-center">
                                 <?php if ($level === "admin") { ?>
                                   <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" data-id_sch="<?= $k['id_sch'] ?>" data-id_customer="<?= $k['id_customer'] ?>" data-id_kw_cap="<?= $k['id_kw_cap'] ?>" data-id_kw_body="<?= $k['id_kw_body'] ?>" data-no_cr="<?= $k['no_cr'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-tgl_sch="<?= $tgl_sch ?>" data-size="<?= $k['size'] ?>" data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>" data-kode_warna_body="<?= $k['kode_warna_body'] ?>" data-warna_cap="<?= $k['warna_cap'] ?>" data-warna_body="<?= $k['warna_body'] ?>" data-mesin="<?= $k['mesin'] ?>" data-jumlah="<?= $k['jumlah'] ?>" data-sisa="<?= $k['sisa'] ?>" data-cek_print="<?= $k['cek_print'] ?>" data-print="<?= $k['print'] ?>" data-tinta="<?= $k['tinta'] ?>" data-nama_customer="<?= $k['nama_customer'] ?>" data-jenis_box="<?= $k['jenis_box'] ?>" data-jenis_zak="<?= $k['jenis_zak'] ?>" data-tgl_kirim="<?= $tgl_kirim ?>" data-tgl_prd="<?= $tgl_prd ?>" data-minyak="<?= $k['minyak'] ?>" data-keterangan="<?= $k['keterangan'] ?>">
+                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" data-id_sch="<?= $k['id_mkt_schedule'] ?>" data-id_customer="<?= $k['id_customer'] ?>" data-id_kw_cap="<?= $k['id_master_kw_cap'] ?>" data-id_kw_body="<?= $k['id_master_kw_body'] ?>" data-no_cr="<?= $k['no_cr'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-tgl_sch="<?= $tgl_sch ?>" data-size="<?= $k['size_machine'] ?>" data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>" data-kode_warna_body="<?= $k['kode_warna_body'] ?>" data-warna_cap="<?= $k['warna_cap'] ?>" data-warna_body="<?= $k['warna_body'] ?>" data-mesin="<?= $k['mesin_prd'] ?>" data-jumlah="<?= $k['jumlah_prd'] ?>" data-sisa="<?= $k['sisa'] ?>" data-cek_print="<?= $k['cek_print'] ?>" data-print="<?= $k['print'] ?>" data-tinta="<?= $k['tinta'] ?>" data-nama_customer="<?= $k['nama_customer'] ?>" data-jenis_box="<?= $k['jenis_box'] ?>" data-jenis_zak="<?= $k['jenis_zak'] ?>" data-tgl_kirim="<?= $tgl_kirim ?>" data-tgl_prd="<?= $tgl_prd ?>" data-minyak="<?= $k['minyak'] ?>" data-keterangan="<?= $k['ket_prd'] ?>">
                                       <i class="feather icon-edit-2"></i>Edit
                                     </button>
                                   </div>
                                   <div class="btn-group" role="group">
-                                    <a href="<?= base_url() ?>Marketing/Tambah_schedule/delete/<?= $k['id_sch'] ?>" class="btn btn-danger btn-square text-light btn-sm" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
+                                    <a href="<?= base_url() ?>Marketing/Tambah_schedule/delete/<?= $k['id_mkt_sch'] ?>" class="btn btn-danger btn-square text-light btn-sm" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
                                       <i class="feather icon-trash-2"></i>Hapus
                                     </a>
                                   </div>
@@ -139,6 +139,24 @@
                 <input type="text" class="form-control text-uppercase" id="no_batch" name="no_batch" placeholder="No. Batch" autocomplete="off" required>
               </div>
             </div>
+              <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>No KP</span>
+                                    </label>
+                                    <select class="form-control chosen-select" id="no_kp" name="no_kp"
+                                        autocomplete="off" required>
+                                        <option value="">- Pilih No KP -</option>
+                                        <?php foreach ($res_no_kp as $nk) { ?>
+                                            <option value="<?= $nk['id_mkt_kp'] ?>" 
+                                                data-stok="<?= $nk['no_kp'] ?>">
+                                                <?= $nk['no_kp'] ?> 
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="tgl_sch">Tanggal Schedule</label>
@@ -554,7 +572,7 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $('#view').on('show.bs.modal', function(event) {
-      var id_sch = $(event.relatedTarget).data('id_sch')
+      var id_sch = $(event.relatedTarget).data('id_mkt_sch')
       var no_cr = $(event.relatedTarget).data('no_cr')
       var no_batch = $(event.relatedTarget).data('no_batch')
       var tgl_sch = $(event.relatedTarget).data('tgl_sch')
@@ -577,7 +595,7 @@
       var tgl_prd = $(event.relatedTarget).data('tgl_prd')
       var keterangan = $(event.relatedTarget).data('keterangan')
 
-      $(this).find('#v-id_sch').val(id_sch)
+      $(this).find('#v-id_sch').val(id_mkt_sch)
       $(this).find('#v-no_cr').val(no_cr)
       $(this).find('#v-no_batch').val(no_batch)
       $(this).find('#v-tgl_sch').val(tgl_sch)
@@ -813,7 +831,7 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $('#edit').on('show.bs.modal', function(event) {
-      var id_sch = $(event.relatedTarget).data('id_sch')
+      var id_sch = $(event.relatedTarget).data('id_mkt_sch')
       var no_cr = $(event.relatedTarget).data('no_cr')
       var no_batch = $(event.relatedTarget).data('no_batch')
       var tgl_sch = $(event.relatedTarget).data('tgl_sch')
@@ -835,7 +853,7 @@
       var tgl_prd = $(event.relatedTarget).data('tgl_prd')
       var keterangan = $(event.relatedTarget).data('keterangan')
 
-      $(this).find('#e_id_sch').val(id_sch)
+      $(this).find('#e_id_sch').val(id_mkt_sch)
       $(this).find('#e_no_cr').val(no_cr)
       $(this).find('#e_no_batch').val(no_batch)
       $(this).find('#e_tgl_sch').val(tgl_sch)

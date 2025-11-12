@@ -3,11 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Master_stock extends CI_Controller
 {
-
     function __construct()
     {
         parent::__construct();
-        // check_not_login();
         $this->load->model('M_marketing/M_master_stok');
     }
 
@@ -19,16 +17,21 @@ class Master_stock extends CI_Controller
 
     public function add()
     {
-
         $stok_bulan = $this->input->post('stok_bulan', TRUE);
         $stok_tahun = $this->input->post('stok_tahun', TRUE);
         $size_machine = $this->input->post('size_machine', TRUE);
         $stok_master = $this->input->post('stok_master', TRUE);
 
-        if(empty($stok_tahun) || $stok_tahun < 2020 || $stok_tahun > 2030) {
-        redirect('Marketing/master/Master_stock?alert=error&msg=Tahun tidak valid');
-        return;
-    }
+        if (empty($stok_tahun) || $stok_tahun < 2020 || $stok_tahun > 2030) {
+            redirect('Marketing/master/Master_stock?alert=error&msg=Tahun tidak valid');
+            return;
+        }
+
+        $is_duplicate = $this->M_master_stok->check_duplicate($stok_bulan, $stok_tahun, $size_machine);
+        if ($is_duplicate) {
+            redirect('Marketing/master/Master_stock?alert=error&msg=Data untuk bulan '.$stok_bulan.' tahun '.$stok_tahun.' dengan size '.$size_machine.' sudah ada');
+            return;
+        }
 
         $data = [
             'stok_bulan' => $stok_bulan,
@@ -45,6 +48,20 @@ class Master_stock extends CI_Controller
         } else {
             redirect('Marketing/master/Master_stock?alert=error&msg=Maaf anda gagal menambah Stock Size');
         }
+    }
+
+    public function check_duplicate()
+    {
+        $stok_bulan = $this->input->post('stok_bulan', TRUE);
+        $stok_tahun = $this->input->post('stok_tahun', TRUE);
+        $size_machine = $this->input->post('size_machine', TRUE);
+        
+        $is_duplicate = $this->M_master_stok->check_duplicate($stok_bulan, $stok_tahun, $size_machine);
+
+        echo json_encode([
+            'is_duplicate' => $is_duplicate,
+            'bulan_name' => $stok_bulan  // langsung kirim nama bulan
+        ]);
     }
 
     public function update()

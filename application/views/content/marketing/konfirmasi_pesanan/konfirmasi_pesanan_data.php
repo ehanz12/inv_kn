@@ -609,6 +609,8 @@
                                                             $logo_print = isset($k['logo_print']) ? $k['logo_print'] : '';
                                                             $stok_master = isset($k['stok_master']) ? $k['stok_master'] : '';
                                                             $kode_warna_cap = isset($k['kode_warna_cap']) ? $k['kode_warna_cap'] : '';
+                                                            $warna_cap = isset($k['warna_cap']) ? $k['warna_cap'] : '';
+                                                            $warna_body = isset($k['warna_body']) ? $k['warna_body'] : '';
                                                             $kode_warna_body = isset($k['kode_warna_body']) ? $k['kode_warna_body'] : '';
                                                             $jumlah_kp = isset($k['jumlah_kp']) ? $k['jumlah_kp'] : 0;
                                                             $harga_kp = isset($k['harga_kp']) ? $k['harga_kp'] : 0;
@@ -635,8 +637,8 @@
                                                                         data-kode_print="<?= $kode_print ?>"
                                                                         data-logo_print="<?= $logo_print ?>"
                                                                         data-stok_master="<?= $stok_master ?>"
-                                                                        data-kode_warna_cap="<?= $kode_warna_cap ?>"
-                                                                        data-kode_warna_body="<?= $kode_warna_body ?>"
+                                                                        data-kode_warna_cap="<?= $kode_warna_cap ?> | <?= $warna_cap ?>"
+                                                                        data-kode_warna_body="<?= $kode_warna_body ?> | <?= $warna_body ?>"
                                                                         data-jumlah_kp="<?= $jumlah_kp ?>"
                                                                         data-harga_kp="<?= $harga_kp ?>"
                                                                         data-no_po="<?= $no_po ?>" 
@@ -678,7 +680,7 @@
                                                                                 data-kode_customer="<?= $kode_customer ?>"
                                                                                 data-spek_kapsul="<?= $spek_kapsul ?>"
                                                                                 data-kode_print="<?= $kode_print ?>"
-                                                                                data-kode_warna_cap="<?= $kode_warna_cap ?>"
+                                                                                data-kode_warna_cap="<?= $kode_warna_cap ?> "
                                                                                 data-kode_warna_body="<?= $kode_warna_body ?>"
                                                                                 data-jumlah_kp="<?= $jumlah_kp ?>"
                                                                                 data-harga_kp="<?= $harga_kp ?>"
@@ -749,6 +751,21 @@
                                     <label class="form-label">Tanggal KP</label>
                                     <input type="text" class="form-control datepicker" id="tgl_kp" name="tgl_kp"
                                         placeholder="Tanggal KP" autocomplete="off" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Tanggal PO</label>
+                                    <input type="text" class="form-control datepicker" id="tgl_po" name="tgl_po"
+                                        placeholder="Tanggal PO" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Tanggal Kirim</label>
+                                    <input type="text" class="form-control datepicker" id="tgl_kirim" name="tgl_kirim"
+                                        placeholder="Tanggal Kirim" autocomplete="off">
                                 </div>
                             </div>
 
@@ -880,21 +897,9 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Jumlah KP</label>
-                                    <input type="text" class="form-control" id="jumlah_kp" name="jumlah_kp"
-                                        placeholder="Jumlah KP" autocomplete="off" required>
-                                </div>
-                            </div>
+                            
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Harga KP</label>
-                                    <input type="text" class="form-control" id="harga_kp" name="harga_kp"
-                                        placeholder="Harga KP" autocomplete="off" required>
-                                </div>
-                            </div>
+                            
 
                             <!-- <div class="col-md-6">
                                 <div class="form-group">
@@ -903,6 +908,7 @@
                                         placeholder="Total Harga" readonly>
                                 </div>
                             </div> -->
+                            
 
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -914,11 +920,20 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Tanggal PO</label>
-                                    <input type="text" class="form-control datepicker" id="tgl_po" name="tgl_po"
-                                        placeholder="Tanggal PO" autocomplete="off">
+                                    <label class="form-label">Jumlah KP</label>
+                                    <input type="text" class="form-control" id="jumlah_kp" name="jumlah_kp"
+                                        placeholder="Jumlah KP" autocomplete="off" required>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Harga KP</label>
+                                    <input type="text" class="form-control" id="harga_kp" name="harga_kp"
+                                        placeholder="Harga KP" autocomplete="off" required>
+                                </div>
+                            </div>
+
+                            
 
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -933,13 +948,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Tanggal Kirim</label>
-                                    <input type="text" class="form-control datepicker" id="tgl_kirim" name="tgl_kirim"
-                                        placeholder="Tanggal Kirim" autocomplete="off">
-                                </div>
-                            </div>
+                            
 
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -1033,31 +1042,31 @@
                         </div>
 
                         <!-- TAMBAHKAN STOK SIZE DI MODAL DETAIL -->
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Outstanding</label>
                                 <input type="text" class="form-control" id="v-stok_master" readonly>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Kode Warna Cap</label>
-                                <input type="text" class="form-control" id="v-kode_warna_cap" readonly>
+                                <span type="text" class="form-control" id="v-kode_warna_cap" readonly>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Kode Warna Body</label>
-                                <input type="text" class="form-control" id="v-kode_warna_body" readonly>
+                                <span type="text" class="form-control" id="v-kode_warna_body" readonly></span>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Jumlah KP</label>
-                                <input type="text" class="form-control" id="v-jumlah_kp" readonly>
+                                <input type="text" class="form-control" id="v-jumlah_kp" readonly></span>
                             </div>
                         </div>
 
@@ -1260,7 +1269,7 @@
                                         <?php foreach ($res_warna_cap as $warna) { ?>
                                             <option value="<?= $warna['id_master_kw_cap'] ?>"
                                                 data-kode="<?= $warna['kode_warna_cap'] ?>">
-                                                <?= $warna['kode_warna_cap'] ?>
+                                                <?= $warna['kode_warna_cap'] ?> | <?= $warna['warna_cap'] ?>
                                             </option>
                                         <?php } ?>
                                     </select>
@@ -1278,7 +1287,7 @@
                                         <?php foreach ($res_warna_body as $warna) { ?>
                                             <option value="<?= $warna['id_master_kw_body'] ?>"
                                                 data-kode="<?= $warna['kode_warna_body'] ?>">
-                                                <?= $warna['kode_warna_body'] ?>
+                                               <?= $warna['kode_warna_body'] ?> | <?= $warna['warna_body'] ?>
                                             </option>
                                         <?php } ?>
                                     </select>
@@ -1703,8 +1712,11 @@
             var kode_customer = button.data('kode_customer');
             var spek_kapsul = button.data('spek_kapsul');
             var kode_print = button.data('kode_print');
-            var kode_warna_cap = button.data('kode_warna_cap');
-            var kode_warna_body = button.data('kode_warna_body');
+            var kode_warna_cap_full = button.data('kode_warna_cap'); // Format: "KODE | NAMA_WARNA"
+            var kode_warna_body_full = button.data('kode_warna_body'); // Format: "KODE | NAMA_WARNA"
+            // Pisahkan kode dan nama warna
+            var kode_warna_cap_parts = kode_warna_cap_full ? kode_warna_cap_full.split(' | ') : ['', ''];
+            var kode_warna_body_parts = kode_warna_body_full ? kode_warna_body_full.split(' | ') : ['', ''];
             var jumlah_kp = button.data('jumlah_kp');
             var harga_kp = button.data('harga_kp');
             var no_po = button.data('no_po');
@@ -1725,8 +1737,8 @@
             modal.find('#v-kode_print').val(kode_print);
             modal.find('#v-logo_print').val(button.data('logo_print') || '-');
             modal.find('#v-stok_master').val(formatRupiah(stok_master.toString()));
-            modal.find('#v-kode_warna_cap').val(kode_warna_cap);
-            modal.find('#v-kode_warna_body').val(kode_warna_body);
+            modal.find('#v-kode_warna_cap').text(kode_warna_cap_parts[0] || '-');
+            modal.find('#v-kode_warna_body').text(kode_warna_body_parts[0] || '-');
             modal.find('#v-jumlah_kp').val(formatRupiah(jumlah_kp.toString()));
             modal.find('#v-harga_kp').val(formatRupiah(harga_kp.toString()));
             modal.find('#v-no_po').val(no_po);

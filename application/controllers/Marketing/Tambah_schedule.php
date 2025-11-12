@@ -11,6 +11,7 @@ class Tambah_schedule extends CI_Controller
 		$this->load->model('M_marketing/M_tambah_schedule');
 		$this->load->model('M_marketing/M_customer');
 		$this->load->model('M_marketing/M_kode_warna');
+		$this->load->model('M_marketing/M_konfirmasi_pesanan');
 	}
 
 	public function index()
@@ -20,6 +21,7 @@ class Tambah_schedule extends CI_Controller
 		$data['res_kodewarna_cap'] = $this->M_kode_warna->getcap()->result_array();
 		$data['res_kodewarna_body'] = $this->M_kode_warna->getbody()->result_array();
 		$data['res_customer'] = $this->M_customer->get()->result_array();
+		$data['res_no_kp'] = $this->M_konfirmasi_pesanan->get_all();
 		$this->template->load('template', 'content/marketing/tambah_schedule/schedule_data', $data);
 		// print_r($data);
 
@@ -111,4 +113,21 @@ class Tambah_schedule extends CI_Controller
 	{
 		return explode('/', $date)[2] . "-" . explode('/', $date)[1] . "-" . explode('/', $date)[0];
 	}
+
+	public function get_prints_by_customer() {
+        $no_kp = $this->input->post('id_customer');
+        
+        // Get prints data berdasarkan customer
+        $prints_result = $this->M_master_print->get();
+        $prints = array();
+        
+        foreach ($prints_result->result_array() as $print) {
+            if ($print['no_kp'] == $no_kp) {
+                $prints[] = $print;
+            }
+        }
+        
+        echo json_encode($prints);
+    }
+
 }

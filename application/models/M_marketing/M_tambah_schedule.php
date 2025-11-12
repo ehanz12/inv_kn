@@ -14,10 +14,11 @@ class M_tambah_schedule extends CI_Model
     public function get($id = null)
     {
         $sql = "
-        SELECT a.*,b.kode_warna_cap,b.warna_cap,c.kode_warna_body,c.warna_body,d.nama_customer,d.negara FROM tb_mkt_schedulemarketing a
-            LEFT JOIN tb_mkt_master_kw_cap b ON a.id_kw_cap = b.id_master_kw_cap
-            LEFT JOIN tb_mkt_master_kw_body c ON a.id_kw_body = c.id_master_kw_body
+        SELECT a.*,b.kode_warna_cap,b.warna_cap,c.kode_warna_body,c.warna_body,d.nama_customer,d.negara,e.tgl_kp, e.kode_warna_cap,e.kode_warna_body,e.id_customer,e.id_master_print,e.spek_kapsul FROM Tb_mkt_schedule a
+            LEFT JOIN tb_mkt_master_kw_cap b ON a.id_master_kw_cap = b.id_master_kw_cap
+            LEFT JOIN tb_mkt_master_kw_body c ON a.id_master_kw_body = c.id_master_kw_body
             LEFT JOIN tb_mkt_master_customer d ON a.id_customer = d.id_customer
+            LEFT JOIN tb_mkt_kp e ON a.id_mkt_kp = e.id_mkt_kp
             WHERE a.is_deleted = 0 ORDER BY a.created_at ASC";
         return $this->db->query($sql);
     }
@@ -57,7 +58,7 @@ class M_tambah_schedule extends CI_Model
                 `tgl_prd`='$data[tgl_prd]',
                 `minyak`='$data[minyak]',
                 `updated_at`= NOW(),`updated_by`='$id_user' 
-            WHERE `id_sch`='$data[id_sch]'
+            WHERE `id_mkt_sch`='$data[id_mkt_sch]'
         ";
         return $this->db->query($sql);
         // return $sql;
@@ -81,7 +82,7 @@ class M_tambah_schedule extends CI_Model
         //";
         $sql = "
         DELETE FROM `tb_mkt_schedulemarketing`
-         WHERE `id_sch`='$data[id_sch]'
+         WHERE `id_mkt_sch`='$data[id_mkt_sch]'
         ";
         return $this->db->query($sql);
     }
