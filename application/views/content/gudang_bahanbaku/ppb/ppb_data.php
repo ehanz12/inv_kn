@@ -49,6 +49,7 @@
                                                         <th>No PPB</th>
                                                         <th>Tanggal PPB</th>
                                                         <th>Jenis PPB</th>
+                                                        <th>Status</th>
                                                         <th class="text-center">Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -65,6 +66,7 @@
                                                             <td><?= $k['no_ppb'] ?></td>
                                                             <td><?= $tgl_ppb ?></td>
                                                             <td><?= $k['jenis_ppb'] ?></td>
+                                                            <td><?= $k['status'] ?></td>
                                                             <td class="text-center">
                                                                 <?php if ($level === "admin") { ?>
                                                                     <div class="btn-group" role="group" aria-label="Basic example">
@@ -81,6 +83,11 @@
                                                                         >
                                                                             <i class="feather icon-edit-2"></i>Edit
                                                                         </button>
+                                                                    </div>
+                                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                                        <a type="button" class="btn btn-success btn-square text-light btn-sm" href="<?= base_url() ?>ppb/ppb/cetak/<?= $k['no_ppb'] ?>">
+                                                                            <i class="feather icon-trash-2"></i>Cetak
+                                                                        </a>
                                                                     </div>
                                                                     <div class="btn-group" role="group" aria-label="Basic example">
                                                                         <a type="button" class="btn btn-danger btn-square text-light btn-sm" href="<?= base_url() ?>ppb/ppb/delete/<?= $k['no_ppb'] ?>" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">

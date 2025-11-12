@@ -13,6 +13,9 @@ class M_ppb extends CI_Model
     }
     
     
+    public function get_ppb($no_ppb) {
+        return $this->db->get_where('tb_prc_ppb_tf', ['no_ppb' => $no_ppb])->row();
+    }
     
     public function add_transfer_slip($data)
     {
