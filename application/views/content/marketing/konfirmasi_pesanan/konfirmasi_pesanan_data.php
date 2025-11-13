@@ -576,14 +576,8 @@
                                                         <th>Tgl KP</th>
                                                         <th>No KP</th>
                                                         <th>Customer</th>
-                                                        <!-- <th>Kode Customer</th>
-                                                        <th>Spesifikasi Kapsul</th>
-                                                        <th>Kode Print</th> -->
-                                                        <!-- <th>Kode Warna Cap</th>
-                                                        <th>Kode Warna Body</th> -->
                                                         <th>Jumlah KP</th>
                                                         <th>Harga KP</th>
-                                                       
                                                         <th class="text-center">Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -619,7 +613,6 @@
                                                             $ket_kp = isset($k['ket_kp']) ? $k['ket_kp'] : '';
                                                             $created_by = isset($k['created_by']) ? $k['created_by'] : '';
                                                             
-                                                            
                                                             ?>
                                                             <tr>
                                                                 <th scope="row"><?= $no++ ?></th>
@@ -647,18 +640,10 @@
                                                                         data-tgl_kirim="<?= $tgl_kirim ?>"
                                                                         data-ket_kp="<?= $ket_kp ?>"
                                                                         data-created_by="<?= $created_by ?>">
-                                                                       
-                                                                        
                                                                         <?= $k['no_kp'] ?>
-                                                                        <!-- <?= $no_kp ?> -->
                                                                     </span>
                                                                 </td>
                                                                 <td><?= $nama_customer ?></td>
-                                                                <!-- <td><?= $kode_customer ?></td>
-                                                                <td><?= $spek_kapsul ?></td>
-                                                                <td><?= $kode_print ?></td> -->
-                                                                <!-- <td><?= $kode_warna_cap ?></td>
-                                                                <td><?= $kode_warna_body ?></td> -->
                                                                 <td class="text-right">
                                                                     <?= number_format($jumlah_kp, 0, ",", ".") ?> pcs
                                                                 </td>
@@ -680,7 +665,7 @@
                                                                                 data-kode_customer="<?= $kode_customer ?>"
                                                                                 data-spek_kapsul="<?= $spek_kapsul ?>"
                                                                                 data-kode_print="<?= $kode_print ?>"
-                                                                                data-kode_warna_cap="<?= $kode_warna_cap ?> "
+                                                                                data-kode_warna_cap="<?= $kode_warna_cap ?>"
                                                                                 data-kode_warna_body="<?= $kode_warna_body ?>"
                                                                                 data-jumlah_kp="<?= $jumlah_kp ?>"
                                                                                 data-harga_kp="<?= $harga_kp ?>"
@@ -826,7 +811,7 @@
                                 </div>
                             </div>
 
-                            <!-- DROPDOWN BULAN STOK -->
+                            <!-- DROPDOWN BULAN STOK - PERBAIKAN: Filter stok > 0 -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">
@@ -836,11 +821,21 @@
                                     <select class="form-control chosen-select" id="id_bulan_stok" name="id_bulan_stok"
                                         autocomplete="off" required>
                                         <option value="">- Pilih Bulan Stok -</option>
-                                        <?php foreach ($res_bulan_stok as $bulan) { ?>
-                                            <option value="<?= $bulan['id_master_stok_size'] ?>" 
-                                                data-stok="<?= $bulan['stok_master'] ?>">
-                                                <?= $bulan['stok_bulan'] ?> - <?= $bulan['stok_tahun'] ?> - <?= $bulan['size_machine'] ?>
-                                            </option>
+                                        <?php 
+                                        // Filter hanya bulan stok yang memiliki stok > 0
+                                        $filtered_bulan_stok = array_filter($res_bulan_stok, function($bulan) {
+                                            return isset($bulan['stok_master']) && $bulan['stok_master'] > 0;
+                                        });
+                                        
+                                        if (count($filtered_bulan_stok) > 0) {
+                                            foreach ($filtered_bulan_stok as $bulan) { ?>
+                                                <option value="<?= $bulan['id_master_stok_size'] ?>" 
+                                                    data-stok="<?= $bulan['stok_master'] ?>">
+                                                    <?= $bulan['stok_bulan'] ?> - <?= $bulan['stok_tahun'] ?> - <?= $bulan['size_machine'] ?> (Stok: <?= number_format($bulan['stok_master'], 0, ',', '.') ?>)
+                                                </option>
+                                            <?php }
+                                        } else { ?>
+                                            <option value="" disabled>Tidak ada stok tersedia</option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -858,8 +853,6 @@
                                     <small class="form-text text-muted" id="stok-info"></small>
                                 </div>
                             </div>
-
-                            
 
                             <!-- Kode Warna Cap - langsung dari master -->
                             <div class="col-3">
@@ -897,19 +890,6 @@
                                 </div>
                             </div>
 
-                            
-
-                            
-
-                            <!-- <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Total Harga</label>
-                                    <input type="text" class="form-control" id="total_harga" name="total_harga"
-                                        placeholder="Total Harga" readonly>
-                                </div>
-                            </div> -->
-                            
-
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">No PO</label>
@@ -933,8 +913,6 @@
                                 </div>
                             </div>
 
-                            
-
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Jenis Packing</label>
@@ -947,8 +925,6 @@
                                     </select>
                                 </div>
                             </div>
-
-                            
 
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -1042,31 +1018,32 @@
                         </div>
 
                         <!-- TAMBAHKAN STOK SIZE DI MODAL DETAIL -->
-                        <!-- <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Outstanding</label>
+                                <label class="form-label">Stok Size</label>
                                 <input type="text" class="form-control" id="v-stok_master" readonly>
                             </div>
-                        </div> -->
+                        </div>
 
+                        <!-- PERBAIKAN: Kode Warna Cap dan Body di Detail -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Kode Warna Cap</label>
-                                <span type="text" class="form-control" id="v-kode_warna_cap" readonly>
+                                <input type="text" class="form-control" id="v-kode_warna_cap" readonly>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Kode Warna Body</label>
-                                <span type="text" class="form-control" id="v-kode_warna_body" readonly></span>
+                                <input type="text" class="form-control" id="v-kode_warna_body" readonly>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Jumlah KP</label>
-                                <input type="text" class="form-control" id="v-jumlah_kp" readonly></span>
+                                <input type="text" class="form-control" id="v-jumlah_kp" readonly>
                             </div>
                         </div>
 
@@ -1076,13 +1053,6 @@
                                 <input type="text" class="form-control" id="v-harga_kp" readonly>
                             </div>
                         </div>
-
-                        <!-- <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Total Harga</label>
-                                <input type="text" class="form-control" id="v-total_harga" readonly>
-                            </div>
-                        </div> -->
 
                         <div class="col-md-6">
                             <div class="form-group">
@@ -1134,7 +1104,7 @@
         </div>
     </div>
 
-    <!-- Modal Edit - DIPERBAIKI -->
+    <!-- Modal Edit -->
     <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -1181,7 +1151,6 @@
                                 </div>
                             </div>
 
-                            <!-- PERBAIKAN: Ganti input text menjadi select seperti di modal tambah -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Spek Kapsul</label>
@@ -1226,7 +1195,7 @@
                                 </div>
                             </div>
 
-                            <!-- DROPDOWN BULAN STOK DI EDIT -->
+                            <!-- DROPDOWN BULAN STOK DI EDIT - PERBAIKAN: Filter stok > 0 -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">
@@ -1236,11 +1205,21 @@
                                     <select class="form-control chosen-select" id="e-id_bulan_stok" name="id_bulan_stok"
                                         autocomplete="off" required>
                                         <option value="">- Pilih Bulan Stok -</option>
-                                        <?php foreach ($res_bulan_stok as $bulan) { ?>
-                                            <option value="<?= $bulan['id_master_stok_size'] ?>" 
-                                                data-stok="<?= $bulan['stok_master'] ?>">
-                                                <?= $bulan['stok_bulan'] ?> - <?= $bulan['stok_tahun'] ?>
-                                            </option>
+                                        <?php 
+                                        // Filter hanya bulan stok yang memiliki stok > 0
+                                        $filtered_bulan_stok = array_filter($res_bulan_stok, function($bulan) {
+                                            return isset($bulan['stok_master']) && $bulan['stok_master'] > 0;
+                                        });
+                                        
+                                        if (count($filtered_bulan_stok) > 0) {
+                                            foreach ($filtered_bulan_stok as $bulan) { ?>
+                                                <option value="<?= $bulan['id_master_stok_size'] ?>" 
+                                                    data-stok="<?= $bulan['stok_master'] ?>">
+                                                    <?= $bulan['stok_bulan'] ?> - <?= $bulan['stok_tahun'] ?> (Stok: <?= number_format($bulan['stok_master'], 0, ',', '.') ?>)
+                                                </option>
+                                            <?php }
+                                        } else { ?>
+                                            <option value="" disabled>Tidak ada stok tersedia</option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -1310,14 +1289,6 @@
                                         placeholder="Harga KP" autocomplete="off" required>
                                 </div>
                             </div>
-
-                            <!-- <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Total Harga</label>
-                                    <input type="text" class="form-control" id="e-total_harga" name="total_harga"
-                                        placeholder="Total Harga" readonly>
-                                </div>
-                            </div> -->
 
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -1468,19 +1439,10 @@
             return parseInt(angka.toString().replace(/[^0-9]/g, ''));
         }
 
-        // Hitung total harga
-        // function hitungTotal() {
-        //     let jumlah = unformatRupiah($('#jumlah_kp').val());
-        //     let harga = unformatRupiah($('#harga_kp').val());
-        //     let total = jumlah * harga;
-        //     $('#total_harga').val(formatRupiah(total));
-        // }
-
         // Format input angka dengan benar
         $('#jumlah_kp, #harga_kp').on('input', function () {
             let value = this.value.replace(/[^0-9]/g, '');
             this.value = formatRupiah(value);
-            hitungTotal();
         });
 
         // ========== FUNGSI BULAN STOK ==========
@@ -1702,7 +1664,7 @@
             }
         });
 
-        // Detail modal functionality
+        // PERBAIKAN: Detail modal functionality - Tampilkan kode warna dan nama warna
         $('#detail').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var id_mkt_kp = button.data('id_mkt_kp');
@@ -1712,11 +1674,11 @@
             var kode_customer = button.data('kode_customer');
             var spek_kapsul = button.data('spek_kapsul');
             var kode_print = button.data('kode_print');
+            
+            // PERBAIKAN: Ambil data lengkap kode warna cap dan body
             var kode_warna_cap_full = button.data('kode_warna_cap'); // Format: "KODE | NAMA_WARNA"
             var kode_warna_body_full = button.data('kode_warna_body'); // Format: "KODE | NAMA_WARNA"
-            // Pisahkan kode dan nama warna
-            var kode_warna_cap_parts = kode_warna_cap_full ? kode_warna_cap_full.split(' | ') : ['', ''];
-            var kode_warna_body_parts = kode_warna_body_full ? kode_warna_body_full.split(' | ') : ['', ''];
+            
             var jumlah_kp = button.data('jumlah_kp');
             var harga_kp = button.data('harga_kp');
             var no_po = button.data('no_po');
@@ -1737,8 +1699,11 @@
             modal.find('#v-kode_print').val(kode_print);
             modal.find('#v-logo_print').val(button.data('logo_print') || '-');
             modal.find('#v-stok_master').val(formatRupiah(stok_master.toString()));
-            modal.find('#v-kode_warna_cap').text(kode_warna_cap_parts[0] || '-');
-            modal.find('#v-kode_warna_body').text(kode_warna_body_parts[0] || '-');
+            
+            // PERBAIKAN: Tampilkan kode warna cap dan body dengan format lengkap
+            modal.find('#v-kode_warna_cap').val(kode_warna_cap_full || '-');
+            modal.find('#v-kode_warna_body').val(kode_warna_body_full || '-');
+            
             modal.find('#v-jumlah_kp').val(formatRupiah(jumlah_kp.toString()));
             modal.find('#v-harga_kp').val(formatRupiah(harga_kp.toString()));
             modal.find('#v-no_po').val(no_po);
@@ -1747,12 +1712,9 @@
             modal.find('#v-tgl_kirim').val(tgl_kirim);
             modal.find('#v-ket_kp').val(ket_kp);
             modal.find('#v-created_by').val(created_by);
-
-            let total = parseInt(jumlah_kp) * parseInt(harga_kp);
-            modal.find('#v-total_harga').val(formatRupiah(total.toString()));
         });
 
-        // Edit modal functionality - DIPERBAIKI
+        // Edit modal functionality
         $('#edit').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var id_mkt_kp = button.data('id_mkt_kp');
@@ -1781,7 +1743,6 @@
             modal.find('#e-tgl_kp').val(tgl_kp);
             modal.find('#e-id_customer').val(id_customer).trigger("chosen:updated");
             
-            // PERBAIKAN: Set spek kapsul sebagai select
             modal.find('#e-spek_kapsul').val(spek_kapsul).trigger("chosen:updated");
             
             // Set checkbox kode print berdasarkan apakah ada kode print
@@ -1812,23 +1773,6 @@
                 $('#e-stok_master').val(formatRupiah(stok_master.toString()));
                 currentStokMasterEdit = unformatRupiah(stok_master);
             }
-
-            let total = (parseFloat(jumlah_kp) || 0) * (parseFloat(harga_kp) || 0);
-            modal.find('#e-total_harga').val(formatRupiah(total));
-
-            // Hitung total saat edit
-            function hitungTotalEdit() {
-                let jumlah = unformatRupiah($('#e-jumlah_kp').val());
-                let harga = unformatRupiah($('#e-harga_kp').val());
-                let total = jumlah * harga;
-                $('#e-total_harga').val(formatRupiah(total));
-            }
-
-            $('#e-jumlah_kp, #e-harga_kp').on('input', function () {
-                let value = this.value.replace(/[^0-9]/g, '');
-                this.value = formatRupiah(value);
-                hitungTotalEdit();
-            });
         });
 
         // Cek No KP untuk tambah
@@ -1931,5 +1875,4 @@
     });
 </script>
 </body>
-
 </html>
