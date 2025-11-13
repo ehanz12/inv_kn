@@ -37,6 +37,10 @@ class M_ppb_tf extends CI_Model
             a.acc_direktur,
             a.status,
             a.id_user,
+            a.acc_spv,
+            a.acc_manager,
+            a.acc_pm,
+            a.acc_direktur,
             a.is_deleted
             FROM tb_prc_ppb_tf a WHERE a.is_deleted = 0 AND a.departement = '$departement'
             ORDER BY a.id_prc_ppb_tf DESC
@@ -95,5 +99,16 @@ class M_ppb_tf extends CI_Model
         ";
         $this->db->query($sql);
         return $this->db->query($sql1);
+    }
+
+    public function approval_spv($no_ppb)
+    {
+        $id_user = $this->id_user();
+        $sql = "
+            UPDATE tb_prc_ppb_tf 
+            SET acc_spv = 'Approved', updated_at = NOW(), updated_by = '$id_user'
+            WHERE no_ppb = '$no_ppb'
+        ";
+        return $this->db->query($sql);
     }
 }

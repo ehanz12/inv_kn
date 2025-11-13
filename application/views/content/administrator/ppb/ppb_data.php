@@ -231,7 +231,7 @@
               </div>
               <div class="col-md-2">
                 <div class="form-group">
-                  <label for="jumlah">Jumlah</label>
+                  <label for="jumlah">Jumlah Order</label>
                   <input type="text" class="form-control" id="jumlah" name="jumlah" placeholder="Jumlah" autocomplete="off" aria-describedby="validationServer03Feedback" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase()" required>
                   <div id="validationServer03Feedback" class="invalid-feedback">
                   Maaf Jumlah tidak boleh lebih dari Stock.
@@ -255,8 +255,8 @@
                     <th>Nama Barang</th>
                     <th>Spek</th>
                     <th>Satuan</th>
-                    <th>Jumlah</th>
                     <th>Stok</th>
+                    <th>Jumlah Order</th>
                     <th class="text-right">Hapus</th>
                   </tr>
                 </thead>
@@ -366,8 +366,8 @@
             <td>${nama_barang}</td> <!-- Nama Barang -->
             <td>${spek}</td>
             <td>${satuan}</td>
-            <td>${jumlah}</td>
             <td>${stok}</td>
+            <td>${jumlah}</td>
             <td class="text-right">
               <a href="javascript:void(0)" class="text-danger btn-remove-row">
                 <i class="feather icon-trash-2"></i>
@@ -384,17 +384,6 @@
       });
 
       
-    $("#jumlah").keyup(function() {
-      var jumlah = $("#jumlah").val().replaceAll('.', '');
-      var stok = $("#stok").val().replaceAll('.', '');
-      if (parseInt(jumlah) > parseInt(stok)) {
-        $("#jumlah").addClass("is-invalid");
-        $("#input").addClass("disabled");
-      } else {
-        $("#jumlah").removeClass("is-invalid");
-        $("#input").removeClass("disabled");
-      }
-    });
       
         $("#no_ppb").keyup(function() {
             var no_ppb = $("#no_ppb").val();
@@ -502,7 +491,7 @@
             </div>
 
             <div class="col-md-2">
-              <label>Jumlah</label>
+              <label>Jumlah Order</label>
               <input type="number" class="form-control" id="e-jumlah" placeholder="Jumlah" aria-describedby="validationServer03Feedback" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase()" required">
               <div id="validationServer03Feedback" class="invalid-feedback">
                   Maaf Jumlah tidak boleh lebih dari Stock.
@@ -624,18 +613,7 @@ $(document).ready(function() {
     `;
   }
 
-  $("#e-jumlah").keyup(function() {
-      var jumlah = $("#e-jumlah").val().replaceAll('.', '');
-      var stok = $("#e-stok").val().replaceAll('.', '');
-      if (parseInt(jumlah) > parseInt(stok)) {
-        $("#e-jumlah").addClass("is-invalid");
-        $("#e-add-item").addClass("disabled");
-      } else {
-        $("#e-jumlah").removeClass("is-invalid");
-        $("#e-add-item").removeClass("disabled");
-      }
-    });
-
+  
   // ========== SAAT PILIH BARANG BARU ==========
   $('#e-kode_barang').on('change', function() {
     const selected = $(this).find(':selected');

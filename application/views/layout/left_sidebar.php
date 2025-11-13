@@ -46,7 +46,7 @@
                             <li class="nav-item <?= $uri == 'Stock_keeper' ? 'active' : '' ?>"><a
                                     href="<?= base_url('administrator/ppb') ?>" class="">PPB</a></li>
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a
-                                    href="<?= base_url('accounting/accounting_ppb') ?>" class="">ACC Supervisor</a></li>
+                                    href="<?= base_url('administrator/acc/acc_supervisor') ?>" class="">ACC Supervisor</a></li>
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a
                                     href="<?= base_url('accounting/accounting_ppb') ?>" class="">ACC Manager</a></li>
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a
