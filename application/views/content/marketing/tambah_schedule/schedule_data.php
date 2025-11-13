@@ -90,6 +90,7 @@
                                     data-nama_customer="<?= $k['nama_customer'] ?>"
                                     data-jenis_box="<?= $k['jenis_box'] ?>" data-jenis_zak="<?= $k['jenis_zak'] ?>"
                                     data-tgl_kirim="<?= $tgl_kirim ?>" data-tgl_prd="<?= $tgl_prd ?>"
+                                    
                                     data-minyak="<?= $k['minyak'] ?>" data-ket_prd="<?= $k['ket_prd'] ?>">
                                     <i class="feather icon-eye"></i>Detail
                                   </button>
@@ -115,6 +116,7 @@
                                       data-nama_customer="<?= $k['nama_customer'] ?>"
                                       data-jenis_box="<?= $k['jenis_box'] ?>" data-jenis_zak="<?= $k['jenis_zak'] ?>"
                                       data-tgl_kirim="<?= $tgl_kirim ?>" data-tgl_prd="<?= $tgl_prd ?>"
+                                      
                                       data-minyak="<?= $k['minyak'] ?>" data-ket_prd="<?= $k['ket_prd'] ?>">
                                       <i class="feather icon-edit-2"></i>Edit
                                     </button>
@@ -254,6 +256,14 @@
 
             <div class="col-md-6">
               <div class="form-group">
+                <label for="jumlah_kp">Jumlah KP</label>
+                <input type="text" id="jumlah_kp" name="jumlah_kp" class="form-control" placeholder="Jumlah KP" readonly>
+              </div>
+            </div>
+
+
+            <div class="col-md-6">
+              <div class="form-group">
                 <label for="minyak">Minyak N-M</label>
                 <input type="text" id="minyak" name="minyak" class="form-control" placeholder="U- M/N" readonly>
               </div>
@@ -307,9 +317,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="jumlah_prd">Jumlah</label>
-                <input type="number" class="form-control" id="jumlah_prd" name="jumlah_prd" placeholder="Jumlah"
+                <input type="number" class="form-control" id="jumlah_prd" name="jumlah_prd" placeholder="Jumlah" aria-describedby="validationServer03Feedback" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase() "
                   autocomplete="off" min="1" required>
+                  <div id="validationServer03Feedback" class="invalid-feedback">
+                  Maaf Jumlah tidak boleh lebih dari Jumlah KP.
+                </div>
               </div>
+                            
             </div>
 
             <!-- Print Details -->
@@ -363,21 +377,21 @@
               </div>
             </div>
 
+             <div class="col-md-4">
+              <div class="form-group">
+                <label for="tgl_prd">Tanggal PRD</label>
+                <input type="text" class="form-control datepicker" id="tgl_prd" name="tgl_prd" placeholder="Tanggal PRD"
+                  autocomplete="off" required>
+              </div>
+            </div>
+
+
             <!-- Tanggal Kirim -->
             <div class="col-md-4">
               <div class="form-group">
                 <label for="tgl_kirim">Tanggal Kirim</label>
                 <input type="text" class="form-control datepicker" id="tgl_kirim" name="tgl_kirim"
                   placeholder="Tanggal Kirim" autocomplete="off" required>
-              </div>
-            </div>
-
-            <!-- Tanggal PRD -->
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="tgl_prd">Tanggal PRD</label>
-                <input type="text" class="form-control datepicker" id="tgl_prd" name="tgl_prd" placeholder="Tanggal PRD"
-                  autocomplete="off" required>
               </div>
             </div>
 
@@ -662,6 +676,15 @@
               </div>
             </div>
 
+            <!-- Jumlah KP -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="e_jumlah_kp">Jumlah KP</label>
+                <input type="text" id="e_jumlah_kp" name="jumlah_kp" class="form-control" placeholder="Jumlah KP" readonly>
+              </div>
+            </div>
+
+            <!-- Minyak N-M -->
             <div class="col-md-6">
               <div class="form-group">
                 <label for="e_minyak">Minyak N-M</label>
@@ -676,6 +699,9 @@
                 <input type="hidden" id="e_id_mkt_schedule" name="id_mkt_schedule">
                 <input type="text" class="form-control text-uppercase" id="e_no_cr" name="no_cr" placeholder="Nomor CR"
                   autocomplete="off" required>
+                <div class="invalid-feedback" id="e_cr-feedback">
+                  Maaf No. CR sudah ada.
+                </div>
               </div>
             </div>
 
@@ -715,8 +741,12 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="e_jumlah_prd">Jumlah</label>
-                <input type="number" class="form-control" id="e_jumlah_prd" name="jumlah_prd" placeholder="Jumlah"
-                  autocomplete="off" min="1" required>
+                <input type="number" class="form-control" id="e_jumlah_prd" name="jumlah_prd" placeholder="Jumlah" 
+                  aria-describedby="e_validationServer03Feedback" style="text-transform:uppercase" 
+                  onkeyup="this.value = this.value.toUpperCase()" autocomplete="off" min="1" required>
+                <div id="e_validationServer03Feedback" class="invalid-feedback">
+                  Maaf Jumlah tidak boleh lebih dari Jumlah KP.
+                </div>
               </div>
             </div>
 
@@ -733,6 +763,7 @@
               </div>
             </div>
 
+            <!-- Jenis GRV -->
             <div class="col-md-6">
               <div class="form-group">
                 <label for="e_jenis_grv">Jenis GRV</label>
@@ -770,21 +801,21 @@
               </div>
             </div>
 
-            <!-- Tanggal Kirim -->
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="e_tgl_kirim">Tanggal Kirim</label>
-                <input type="text" class="form-control datepicker" id="e_tgl_kirim" name="tgl_kirim"
-                  placeholder="Tanggal Kirim" autocomplete="off" required>
-              </div>
-            </div>
-
             <!-- Tanggal PRD -->
             <div class="col-md-4">
               <div class="form-group">
                 <label for="e_tgl_prd">Tanggal PRD</label>
                 <input type="text" class="form-control datepicker" id="e_tgl_prd" name="tgl_prd" placeholder="Tanggal PRD"
                   autocomplete="off" required>
+              </div>
+            </div>
+
+            <!-- Tanggal Kirim -->
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="e_tgl_kirim">Tanggal Kirim</label>
+                <input type="text" class="form-control datepicker" id="e_tgl_kirim" name="tgl_kirim"
+                  placeholder="Tanggal Kirim" autocomplete="off" required>
               </div>
             </div>
 
@@ -828,6 +859,32 @@
             grvInput.val('');
         }
     }
+
+    // Validasi jumlah untuk ADD modal
+    $("#jumlah_prd").keyup(function() {
+      var jumlah = $("#jumlah_prd").val().replaceAll('.', '');
+      var stok = $("#jumlah_kp").val().replaceAll('.', '');
+      if (parseInt(jumlah) > parseInt(stok)) {
+        $("#jumlah_prd").addClass("is-invalid");
+        $("#simpan").attr("disabled", "disabled");
+      } else {
+        $("#jumlah_prd").removeClass("is-invalid");
+        $("#simpan").removeAttr("disabled");
+      }
+    });
+
+    // Validasi jumlah untuk EDIT modal
+    $("#e_jumlah_prd").keyup(function() {
+      var jumlah = $("#e_jumlah_prd").val().replaceAll('.', '');
+      var stok = $("#e_jumlah_kp").val().replaceAll('.', '');
+      if (parseInt(jumlah) > parseInt(stok)) {
+        $("#e_jumlah_prd").addClass("is-invalid");
+        $("button[type='submit']").attr("disabled", "disabled");
+      } else {
+        $("#e_jumlah_prd").removeClass("is-invalid");
+        $("button[type='submit']").removeAttr("disabled");
+      }
+    });
 
     // Validasi ketergantungan Tinta dan GRV - EDIT MODAL
     function validateTintaGrvDependencyEdit() {
@@ -878,6 +935,7 @@
               $('#warna_body').val(data.short_body || '');
               $('#size_machine').val(data.size_kp || '');
               $('#minyak').val(data.spek_kapsul || '');
+              $('#jumlah_kp').val(data.jumlah_kp || '');
               $('#print').val(data.kode_print || '');
               $('#logo_print').val(data.logo_print || '');
 
@@ -939,6 +997,7 @@
               $('#e_warna_body').val(data.short_body || '');
               $('#e_size_machine').val(data.size_kp || '');
               $('#e_minyak').val(data.spek_kapsul || '');
+              $('#e_jumlah_kp').val(data.jumlah_kp || '');
               $('#e_print').val(data.kode_print || '');
               $('#e_logo_print').val(data.logo_print || '');
 
@@ -975,6 +1034,7 @@
       $('#id_master_kw_body').val('');
       $('#warna_body').val('');
       $('#minyak').val('');
+      $('#jumlah_kp').val('');
       $('#hidden_id_customer').val('');
       $('#hidden_id_master_kw_cap').val('');
       $('#hidden_id_master_kw_body').val('');
@@ -989,6 +1049,7 @@
       $('#e_id_master_kw_body').val('');
       $('#e_warna_body').val('');
       $('#e_minyak').val('');
+      $('#e_jumlah_kp').val('');
       $('#e_hidden_id_customer').val('');
       $('#e_hidden_id_master_kw_cap').val('');
       $('#e_hidden_id_master_kw_body').val('');
@@ -1024,6 +1085,7 @@
     uppercase('#e_ket_prd');
     uppercase('#e_jenis_grv');
 
+    // Validasi No CR untuk ADD modal
     $("#no_cr").keyup(function () {
       var no_cr = $("#no_cr").val();
       jQuery.ajax({
@@ -1034,10 +1096,31 @@
         success: function (response) {
           if (response == "true") {
             $("#no_cr").addClass("is-invalid");
-            $("#simpan").attr("enabled", "enabled");
+            $("#simpan").attr("disabled", "disabled");
           } else {
             $("#no_cr").removeClass("is-invalid");
-            $("#simpan").removeAttr("enabled");
+            $("#simpan").removeAttr("disabled");
+          }
+        }
+      });
+    });
+
+    // Validasi No CR untuk EDIT modal
+    $("#e_no_cr").keyup(function () {
+      var no_cr = $("#e_no_cr").val();
+      var id_mkt_schedule = $("#e_id_mkt_schedule").val();
+      jQuery.ajax({
+        url: "<?= base_url() ?>Marketing/Tambah_schedule/cek_no_cr_edit",
+        dataType: 'text',
+        type: "post",
+        data: { no_cr: no_cr, id_mkt_schedule: id_mkt_schedule },
+        success: function (response) {
+          if (response == "true") {
+            $("#e_no_cr").addClass("is-invalid");
+            $("button[type='submit']").attr("disabled", "disabled");
+          } else {
+            $("#e_no_cr").removeClass("is-invalid");
+            $("button[type='submit']").removeAttr("disabled");
           }
         }
       });

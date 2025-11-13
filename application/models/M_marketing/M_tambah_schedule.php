@@ -44,6 +44,7 @@ class M_tambah_schedule extends CI_Model
                 kp.kode_print,
                 kp.logo_print,
                 kp.spek_kapsul,
+                kp.jumlah_kp,
                 cust.nama_customer,
                 kw_cap.id_master_kw_cap,
                 kw_cap.kode_warna_cap,
