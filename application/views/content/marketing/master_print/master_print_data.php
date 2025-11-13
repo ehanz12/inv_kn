@@ -391,7 +391,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                    $level = $this->session->userdata('level');
+                                                    $level = $this->session->userdata('departement');
                                                     $no = 1;
                                                     if(!empty($result)) {
                                                         foreach ($result as $k) {
