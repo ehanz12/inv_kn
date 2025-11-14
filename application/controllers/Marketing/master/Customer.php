@@ -24,7 +24,11 @@ class Customer extends CI_Controller
         'kode_customer' => $this->input->post('kode_customer', TRUE),
         'nama_customer' => $this->input->post('nama_customer', TRUE),
         'negara'        => $this->input->post('negara', TRUE),
-        'alamat'        => $this->input->post('alamat', TRUE),
+        'alamat_inv'    => $this->input->post('alamat_inv', TRUE),
+        'alamat_sjl'    => $this->input->post('alamat_sjl', TRUE),
+        'alamat_pjk'    => $this->input->post('alamat_pjk', TRUE),
+        'npwpt'        	=> $this->input->post('npwpt', TRUE),
+        'jatuh_tempo'   => $this->input->post('jatuh_tempo', TRUE),
         'id_user'       => $this->session->userdata('id_user'), // otomatis
     ];
 
@@ -43,7 +47,11 @@ class Customer extends CI_Controller
 		$data['kode_customer'] = $this->input->post('kode_customer', TRUE);
 		$data['nama_customer'] = $this->input->post('nama_customer', TRUE);
 		$data['negara'] = $this->input->post('negara', TRUE);
-		$data['alamat'] = $this->input->post('alamat', TRUE);
+		$data['alamat_inv'] = $this->input->post('alamat_inv', TRUE);
+		$data['alamat_sjl'] = $this->input->post('alamat_sjl', TRUE);
+		$data['alamat_pjk'] = $this->input->post('alamat_pjk', TRUE);
+		$data['npwpt'] = $this->input->post('npwpt', TRUE);
+		$data['jatuh_tempo'] = $this->input->post('jatuh_tempo', TRUE);
 		$respon = $this->M_customer->update($data);
 		// echo $respon;
 		if ($respon) {

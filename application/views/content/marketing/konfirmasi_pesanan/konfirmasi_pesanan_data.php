@@ -659,8 +659,11 @@
                                                                                 data-kode_customer="<?= $kode_customer ?>"
                                                                                 data-spek_kapsul="<?= $spek_kapsul ?>"
                                                                                 data-kode_print="<?= $kode_print ?>"
+                                                                                data-logo_print="<?= $logo_print ?>"
                                                                                 data-kode_warna_cap="<?= $kode_warna_cap ?>"
+                                                                                data-warna_cap="<?= $warna_cap ?>"
                                                                                 data-kode_warna_body="<?= $kode_warna_body ?>"
+                                                                                data-warna_body="<?= $warna_body ?>"
                                                                                 data-jumlah_kp="<?= $jumlah_kp ?>"
                                                                                 data-harga_kp="<?= $harga_kp ?>"
                                                                                 data-no_po="<?= $no_po ?>"
@@ -823,12 +826,14 @@
                                         <option value="">- Pilih Kode Warna Cap -</option>
                                         <?php foreach ($res_warna_cap as $warna) { ?>
                                             <option value="<?= $warna['id_master_kw_cap'] ?>"
-                                                data-kode="<?= $warna['kode_warna_cap'] ?>">
+                                                data-kode="<?= $warna['kode_warna_cap'] ?>"
+                                                data-warna="<?= $warna['warna_cap'] ?>">
                                                 <?= $warna['kode_warna_cap'] ?> | <?= $warna['warna_cap'] ?>
                                             </option>
                                         <?php } ?>
                                     </select>
                                     <input type="hidden" id="kode_warna_cap" name="kode_warna_cap">
+                                    <input type="hidden" id="warna_cap" name="warna_cap">
                                 </div>
                             </div>
 
@@ -841,12 +846,14 @@
                                         <option value="">- Pilih Kode Warna Body -</option>
                                         <?php foreach ($res_warna_body as $warna) { ?>
                                             <option value="<?= $warna['id_master_kw_body'] ?>"
-                                                data-kode="<?= $warna['kode_warna_body'] ?>">
+                                                data-kode="<?= $warna['kode_warna_body'] ?>"
+                                                data-warna="<?= $warna['warna_body'] ?>">
                                                 <?= $warna['kode_warna_body'] ?> | <?= $warna['warna_body'] ?>
                                             </option>
                                         <?php } ?>
                                     </select>
                                     <input type="hidden" id="kode_warna_body" name="kode_warna_body">
+                                    <input type="hidden" id="warna_body" name="warna_body">
                                 </div>
                             </div>
 
@@ -1048,7 +1055,7 @@
         </div>
     </div>
 
-    <!-- Modal Edit -->
+    <!-- Modal Edit - DIUBAH AGAR SAMA DENGAN MODAL TAMBAH -->
     <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -1083,7 +1090,7 @@
                                     <input type="text" class="form-control" id="e-no_kp" name="no_kp"
                                         placeholder="No KP" autocomplete="off" style="text-transform:uppercase"
                                         onkeyup="this.value = this.value.toUpperCase()" required>
-                                    <div id="validationServer03Feedback" class="invalid-feedback">
+                                    <div id="validationServer03FeedbackEdit" class="invalid-feedback">
                                         Maaf No KP sudah ada.
                                     </div>
                                 </div>
@@ -1094,14 +1101,6 @@
                                     <label class="form-label">Tanggal KP</label>
                                     <input type="text" class="form-control datepicker" id="e-tgl_kp" name="tgl_kp"
                                         placeholder="Tanggal KP" autocomplete="off" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Tanggal Kirim</label>
-                                    <input type="text" class="form-control datepicker" id="e-tgl_kirim" name="tgl_kirim"
-                                        placeholder="Tanggal Kirim" autocomplete="off">
                                 </div>
                             </div>
 
@@ -1120,6 +1119,14 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label class="form-label">Tanggal Kirim</label>
+                                    <input type="text" class="form-control datepicker" id="e-tgl_kirim" name="tgl_kirim"
+                                        placeholder="Tanggal Kirim" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label class="form-label">Spek Kapsul</label>
                                     <select class="form-control chosen-select" id="e-spek_kapsul" name="spek_kapsul"
                                         autocomplete="off" required>
@@ -1130,7 +1137,7 @@
                                 </div>
                             </div>
 
-                            <!-- Checkbox untuk kode print di Edit -->
+                            <!-- Checkbox untuk kode print di Edit - SAMA DENGAN TAMBAH -->
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="form-check">
@@ -1143,7 +1150,7 @@
                                 </div>
                             </div>
 
-                            <!-- Kode Print dengan dropdown di Edit - Awalnya tersembunyi -->
+                            <!-- Kode Print dengan dropdown di Edit - SAMA DENGAN TAMBAH -->
                             <div class="col-md-6 e-print-section" style="display: none;">
                                 <div class="form-group">
                                     <label class="form-label">Kode Print</label>
@@ -1163,7 +1170,7 @@
                                 </div>
                             </div>
 
-                            <!-- Kode Warna Cap - langsung dari master -->
+                            <!-- Kode Warna Cap - langsung dari master - SAMA DENGAN TAMBAH -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Kode Warna Cap</label>
@@ -1172,16 +1179,18 @@
                                         <option value="">- Pilih Kode Warna Cap -</option>
                                         <?php foreach ($res_warna_cap as $warna) { ?>
                                             <option value="<?= $warna['id_master_kw_cap'] ?>"
-                                                data-kode="<?= $warna['kode_warna_cap'] ?>">
+                                                data-kode="<?= $warna['kode_warna_cap'] ?>"
+                                                data-warna="<?= $warna['warna_cap'] ?>">
                                                 <?= $warna['kode_warna_cap'] ?> | <?= $warna['warna_cap'] ?>
                                             </option>
                                         <?php } ?>
                                     </select>
                                     <input type="hidden" id="e-kode_warna_cap" name="kode_warna_cap">
+                                    <input type="hidden" id="e-warna_cap" name="warna_cap">
                                 </div>
                             </div>
 
-                            <!-- Kode Warna Body - langsung dari master -->
+                            <!-- Kode Warna Body - langsung dari master - SAMA DENGAN TAMBAH -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Kode Warna Body</label>
@@ -1190,12 +1199,14 @@
                                         <option value="">- Pilih Kode Warna Body -</option>
                                         <?php foreach ($res_warna_body as $warna) { ?>
                                             <option value="<?= $warna['id_master_kw_body'] ?>"
-                                                data-kode="<?= $warna['kode_warna_body'] ?>">
+                                                data-kode="<?= $warna['kode_warna_body'] ?>"
+                                                data-warna="<?= $warna['warna_body'] ?>">
                                                 <?= $warna['kode_warna_body'] ?> | <?= $warna['warna_body'] ?>
                                             </option>
                                         <?php } ?>
                                     </select>
                                     <input type="hidden" id="e-kode_warna_body" name="kode_warna_body">
+                                    <input type="hidden" id="e-warna_body" name="warna_body">
                                 </div>
                             </div>
 
@@ -1510,7 +1521,7 @@
             }
         });
 
-        // Toggle kode print section untuk edit
+        // Toggle kode print section untuk edit - SAMA DENGAN TAMBAH
         $('#e-use_print').change(function() {
             if ($(this).is(':checked')) {
                 $('.e-print-section').slideDown(300);
@@ -1543,7 +1554,7 @@
             }
         });
 
-        // Load data kode print berdasarkan customer (Edit)
+        // Load data kode print berdasarkan customer (Edit) - SAMA DENGAN TAMBAH
         $('#e-id_customer').change(function () {
             var id_customer = $(this).val();
             // Jika checkbox kode print dicentang, load data print
@@ -1589,7 +1600,7 @@
             $('#logo_print').val(logoPrint || '');
         });
 
-        // Handle perubahan kode print (Edit)
+        // Handle perubahan kode print (Edit) - SAMA DENGAN TAMBAH
         $('#e-id_master_print').change(function () {
             var selectedOption = $(this).find('option:selected');
             var kodePrint = selectedOption.data('kode');
@@ -1603,28 +1614,36 @@
         $('#id_master_kw_cap').change(function () {
             var selectedOption = $(this).find('option:selected');
             var kodeWarna = selectedOption.data('kode');
+            var warnaCap = selectedOption.data('warna');
             $('#kode_warna_cap').val(kodeWarna);
+            $('#warna_cap').val(warnaCap);
         });
 
-        // Handle perubahan kode warna cap (Edit)
+        // Handle perubahan kode warna cap (Edit) - SAMA DENGAN TAMBAH
         $('#e-id_master_kw_cap').change(function () {
             var selectedOption = $(this).find('option:selected');
             var kodeWarna = selectedOption.data('kode');
+            var warnaCap = selectedOption.data('warna');
             $('#e-kode_warna_cap').val(kodeWarna);
+            $('#e-warna_cap').val(warnaCap);
         });
 
         // Handle perubahan kode warna body (Tambah)
         $('#id_master_kw_body').change(function () {
             var selectedOption = $(this).find('option:selected');
             var kodeWarna = selectedOption.data('kode');
+            var warnaBody = selectedOption.data('warna');
             $('#kode_warna_body').val(kodeWarna);
+            $('#warna_body').val(warnaBody);
         });
 
-        // Handle perubahan kode warna body (Edit)
+        // Handle perubahan kode warna body (Edit) - SAMA DENGAN TAMBAH
         $('#e-id_master_kw_body').change(function () {
             var selectedOption = $(this).find('option:selected');
             var kodeWarna = selectedOption.data('kode');
+            var warnaBody = selectedOption.data('warna');
             $('#e-kode_warna_body').val(kodeWarna);
+            $('#e-warna_body').val(warnaBody);
         });
 
         // ========== FUNGSI FILTER ==========
@@ -1704,7 +1723,7 @@
             modal.find('#v-created_by').val(created_by || '-');
         });
 
-        // Edit modal functionality dengan penanganan tanggal yang lebih baik
+        // Edit modal functionality dengan penanganan yang SAMA DENGAN TAMBAH
         $('#edit').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var id_mkt_kp = button.data('id_mkt_kp');
@@ -1715,8 +1734,11 @@
             var kode_customer = button.data('kode_customer');
             var spek_kapsul = button.data('spek_kapsul');
             var kode_print = button.data('kode_print');
+            var logo_print = button.data('logo_print');
             var kode_warna_cap = button.data('kode_warna_cap');
+            var warna_cap = button.data('warna_cap');
             var kode_warna_body = button.data('kode_warna_body');
+            var warna_body = button.data('warna_body');
             var jumlah_kp = button.data('jumlah_kp');
             var harga_kp = button.data('harga_kp');
             var no_po = button.data('no_po');
@@ -1775,11 +1797,12 @@
                 modal.find('#e-tgl_kirim').val(formatDateForInput(new Date()));
             }
             
-            // Set checkbox kode print berdasarkan apakah ada kode print
+            // Set checkbox kode print berdasarkan apakah ada kode print - SAMA DENGAN TAMBAH
             if (kode_print && kode_print !== '' && kode_print !== '-') {
                 $('#e-use_print').prop('checked', true);
                 $('.e-print-section').show();
                 modal.find('#e-kode_print').val(kode_print);
+                modal.find('#e-logo_print').val(logo_print || '');
                 // Load data kode print untuk edit
                 setTimeout(function() {
                     loadPrintsByCustomer(id_customer, 'e-');
@@ -1792,12 +1815,14 @@
                 $('#e-use_print').prop('checked', false);
                 $('.e-print-section').hide();
             }
-            
-            // Set kode warna
+
+            // Set kode warna - SAMA DENGAN TAMBAH
             modal.find('#e-kode_warna_cap').val(kode_warna_cap || '');
+            modal.find('#e-warna_cap').val(warna_cap || '');
             modal.find('#e-kode_warna_body').val(kode_warna_body || '');
+            modal.find('#e-warna_body').val(warna_body || '');
             
-            // Set nilai dropdown kode warna jika ada
+            // Set nilai dropdown kode warna jika ada - SAMA DENGAN TAMBAH
             if (kode_warna_cap) {
                 $('#e-id_master_kw_cap').val(kode_warna_cap).trigger('chosen:updated');
             }
@@ -1810,6 +1835,19 @@
             modal.find('#e-jenis_pack').val(jenis_pack).trigger("chosen:updated");
             modal.find('#e-ket_kp').val(ket_kp || '');
             modal.find('#e-updated_by').val(created_by);
+
+            // Handle datepicker conflict dengan modal
+            modal.find('#e-tgl_po').datepicker().on('show.bs.modal', function(event) {
+                event.stopPropagation();
+            });
+            
+            modal.find('#e-tgl_kp').datepicker().on('show.bs.modal', function(event) {
+                event.stopPropagation();
+            });
+
+            modal.find('#e-tgl_kirim').datepicker().on('show.bs.modal', function(event) {
+                event.stopPropagation();
+            });
         });
 
         // ========== VALIDASI NO KP ==========
@@ -1843,7 +1881,7 @@
             }
         });
 
-        // Cek No KP untuk edit
+        // Cek No KP untuk edit - SAMA DENGAN TAMBAH
         $("#e-no_kp").keyup(function () {
             var no_kp = $("#e-no_kp").val();
             if (no_kp.length > 0) {
@@ -1886,7 +1924,7 @@
             $('#no_kp').removeClass('is-invalid');
         });
 
-        // Reset form saat modal edit ditutup
+        // Reset form saat modal edit ditutup - SAMA DENGAN TAMBAH
         $('#edit').on('hidden.bs.modal', function () {
             $('#update').removeAttr('disabled');
             // Reset checkbox dan sembunyikan section kode print
@@ -1936,7 +1974,7 @@
             return confirm('Apakah Anda yakin ingin menyimpan data Konfirmasi Pesanan ini?');
         });
 
-        // Konfirmasi submit untuk form edit dengan validasi tanggal
+        // Konfirmasi submit untuk form edit dengan validasi tanggal - SAMA DENGAN TAMBAH
         $('#form-edit').submit(function(e) {
             // Validasi field wajib
             var no_kp = $('#e-no_kp').val();
@@ -2004,7 +2042,7 @@
             $('#no_kp').focus();
         });
 
-        // Auto-focus pada input pertama di modal edit
+        // Auto-focus pada input pertama di modal edit - SAMA DENGAN TAMBAH
         $('#edit').on('shown.bs.modal', function () {
             $('#e-no_kp').focus();
         });
@@ -2020,5 +2058,5 @@
     });
 </script>
 </body>
-
+ 
 </html>

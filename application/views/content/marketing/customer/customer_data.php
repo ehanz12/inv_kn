@@ -155,6 +155,16 @@
             box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
         }
         
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+        }
+        
         .btn-sm {
             padding: 6px 12px;
             font-size: 12px;
@@ -296,6 +306,31 @@
             border: 1px solid rgba(67, 97, 238, 0.3);
         }
         
+        .badge-secondary {
+            background-color: rgba(108, 117, 125, 0.15);
+            color: #495057;
+            border: 1px solid rgba(108, 117, 125, 0.3);
+        }
+        
+        .detail-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
         @media (max-width: 768px) {
             .card-header {
                 flex-direction: column;
@@ -382,9 +417,8 @@
                                                         <th>#</th>
                                                         <th>Kode Customer</th>
                                                         <th>Nama Customer</th>
-                                                        <th>Negara</th>
-                                                        <th>Alamat</th>
-                                                        <th class="text-center">Aksi</th>
+                                                        <th>Edit</th>
+                                                        <th >Hapus</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -395,28 +429,49 @@
                                                     ?>
                                                         <tr>
                                                             <th scope="row"><?= $no++ ?></th>
-                                                            <td><span class="badge badge-primary"><?= $k['kode_customer'] ?></span></td>
-                                                            <td><?= $k['nama_customer'] ?></td>
-                                                            <td><?= $k['negara'] ?></td>
-                                                            <td><?= $k['alamat'] ?></td>
+                                                            
+                                                            <td> 
+                                                                    <span style="cursor: pointer;" class="badge badge-primary" data-toggle="modal" data-target="#detail" 
+                                                                            data-id_customer="<?= $k['id_customer'] ?>" 
+                                                                            data-kode_customer="<?= $k['kode_customer'] ?>" 
+                                                                            data-nama_customer="<?= $k['nama_customer'] ?>" 
+                                                                            data-negara="<?= $k['negara'] ?>" 
+                                                                            data-alamat_inv="<?= $k['alamat_inv'] ?>"
+                                                                            data-alamat_sjl="<?= $k['alamat_sjl'] ?>"
+                                                                            data-alamat_pjk="<?= $k['alamat_pjk'] ?>"
+                                                                            data-npwpt="<?= $k['npwpt'] ?>"
+                                                                            data-jatuh_tempo="<?= $k['jatuh_tempo'] ?>">
+                                                                        <i ></i><?= $k['kode_customer'] ?>
+                                                                        </span>
+                                                                     </td>
+
+                                                                     <td><span class="badge badge-primary"><?= $k['nama_customer'] ?></span></td>
+                                                            
+                                                                   
                                                             <td class="text-center">
-                                                                <?php if ($level === "admin") { ?>
-                                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                                    <?php if ($level === "admin") { ?>
                                                                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit" 
                                                                                 data-id_customer="<?= $k['id_customer'] ?>" 
                                                                                 data-kode_customer="<?= $k['kode_customer'] ?>" 
                                                                                 data-nama_customer="<?= $k['nama_customer'] ?>" 
                                                                                 data-negara="<?= $k['negara'] ?>" 
-                                                                                data-alamat="<?= $k['alamat'] ?>">
+                                                                                data-alamat_inv="<?= $k['alamat_inv'] ?>"
+                                                                                data-alamat_sjl="<?= $k['alamat_sjl'] ?>"
+                                                                                data-alamat_pjk="<?= $k['alamat_pjk'] ?>"
+                                                                                data-npwpt="<?= $k['npwpt'] ?>"
+                                                                                data-jatuh_tempo="<?= $k['jatuh_tempo'] ?>">
                                                                             <i class="fas fa-edit me-1"></i>Edit
                                                                         </button>
-                                                                        <a type="button" class="btn btn-danger btn-sm text-light" 
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </td>
+
+                                                            <td class="text-center">
+                                                                 <a type="button" class="btn btn-danger btn-sm text-light" 
                                                                            href="<?= base_url() ?>Marketing/master/Customer/delete/<?= $k['id_customer'] ?>" 
                                                                            onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
                                                                             <i class="fas fa-trash me-1"></i>Hapus
                                                                         </a>
-                                                                    </div>
-                                                                <?php } ?>
                                                             </td>
                                                         </tr>
                                                     <?php } ?>
@@ -436,7 +491,7 @@
 
 <!-- Modal Tambah -->
 <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus-circle me-2"></i>Tambah Customer</h5>
@@ -446,24 +501,57 @@
             </div>
             <form method="post" action="<?= base_url() ?>Marketing/master/Customer/add">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="kode_customer" class="form-label">Kode Customer</label>
-                        <input type="text" class="form-control text-uppercase" id="kode_customer" name="kode_customer" autocomplete="off" placeholder="Kode Customer" aria-describedby="validationServer03Feedback" required>
-                        <div id="validationServer03Feedback" class="invalid-feedback">
-                            <i class="fas fa-exclamation-triangle me-1"></i>Maaf Kode Customer sudah ada.
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="kode_customer" class="form-label">Kode Customer</label>
+                                <input type="text" class="form-control text-uppercase" id="kode_customer" name="kode_customer" autocomplete="off" placeholder="Kode Customer" aria-describedby="validationServer03Feedback" required>
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>Maaf Kode Customer sudah ada.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nama_customer" class="form-label">Nama Customer</label>
+                                <input type="text" class="form-control text-uppercase" id="nama_customer" name="nama_customer" autocomplete="off" placeholder="Nama Customer" required>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="nama_customer" class="form-label">Nama Customer</label>
-                        <input type="text" class="form-control text-uppercase" id="nama_customer" name="nama_customer" autocomplete="off" placeholder="Nama Customer" required>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="negara" class="form-label">Negara</label>
+                                <input type="text" class="form-control text-uppercase" id="negara" name="negara" autocomplete="off" placeholder="Negara Customer" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="jatuh_tempo" class="form-label">Jatuh Tempo</label>
+                                <input type="text" class="form-control" id="jatuh_tempo" name="jatuh_tempo" autocomplete="off" placeholder="Jatuh Tempo (hari)">
+                            </div>
+                        </div>
                     </div>
+
                     <div class="form-group">
-                        <label for="negara" class="form-label">Negara</label>
-                        <input type="text" class="form-control text-uppercase" id="negara" name="negara" autocomplete="off" placeholder="Negara Customer" required>
+                        <label for="alamat_inv" class="form-label">Alamat INV</label>
+                        <textarea class="form-control text-uppercase" id="alamat_inv" name="alamat_inv" rows="2" placeholder="Alamat Inventory"></textarea>
                     </div>
+
                     <div class="form-group">
-                        <label for="alamat" class="form-label">Alamat</label>
-                        <textarea class="form-control text-uppercase" id="alamat" name="alamat" rows="3" placeholder="Alamat Customer"></textarea>
+                        <label for="alamat_sjl" class="form-label">Alamat SJL</label>
+                        <textarea class="form-control text-uppercase" id="alamat_sjl" name="alamat_sjl" rows="2" placeholder="Alamat Surat Jalan"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alamat_pjk" class="form-label">Alamat PJK</label>
+                        <textarea class="form-control text-uppercase" id="alamat_pjk" name="alamat_pjk" rows="2" placeholder="Alamat Pajak"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="npwpt" class="form-label">NPWPT</label>
+                        <textarea class="form-control text-uppercase" id="npwpt" name="npwpt" rows="2" placeholder="NPWPT"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -481,7 +569,7 @@
 
 <!-- Modal Edit -->
 <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit me-2"></i>Edit Customer</h5>
@@ -491,25 +579,59 @@
             </div>
             <form method="post" action="<?= base_url() ?>Marketing/master/Customer/update" id="form-edit">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="e_kode_customer" class="form-label">Kode Customer</label>
-                        <input type="hidden" id="e_id_customer" name="id_customer">
-                        <input type="text" class="form-control text-uppercase" id="e_kode_customer" name="kode_customer" autocomplete="off" required>
-                        <div id="validationServer03FeedbackEdit" class="invalid-feedback">
-                            <i class="fas fa-exclamation-triangle me-1"></i>Maaf Kode Customer sudah ada.
+                    <input type="hidden" id="e_id_customer" name="id_customer">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="e_kode_customer" class="form-label">Kode Customer</label>
+                                <input type="text" class="form-control text-uppercase" id="e_kode_customer" name="kode_customer" autocomplete="off" placeholder="Kode Customer" aria-describedby="validationServer03FeedbackEdit" required>
+                                <div id="validationServer03FeedbackEdit" class="invalid-feedback">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>Maaf Kode Customer sudah ada.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="e_nama_customer" class="form-label">Nama Customer</label>
+                                <input type="text" class="form-control text-uppercase" id="e_nama_customer" name="nama_customer" autocomplete="off" placeholder="Nama Customer" required>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="e_nama_customer" class="form-label">Nama Customer</label>
-                        <input type="text" class="form-control text-uppercase" id="e_nama_customer" name="nama_customer" autocomplete="off" required>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="e_negara" class="form-label">Negara</label>
+                                <input type="text" class="form-control text-uppercase" id="e_negara" name="negara" autocomplete="off" placeholder="Negara Customer" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="e_jatuh_tempo" class="form-label">Jatuh Tempo</label>
+                                <input type="text" class="form-control" id="e_jatuh_tempo" name="jatuh_tempo" autocomplete="off" placeholder="Jatuh Tempo (hari)">
+                            </div>
+                        </div>
                     </div>
+
                     <div class="form-group">
-                        <label for="e_negara" class="form-label">Negara</label>
-                        <input type="text" class="form-control text-uppercase" id="e_negara" name="negara" autocomplete="off" required>
+                        <label for="e_alamat_inv" class="form-label">Alamat INV</label>
+                        <textarea class="form-control text-uppercase" id="e_alamat_inv" name="alamat_inv" rows="2" placeholder="Alamat Inventory"></textarea>
                     </div>
+
                     <div class="form-group">
-                        <label for="e_alamat" class="form-label">Alamat</label>
-                        <textarea class="form-control text-uppercase" id="e_alamat" name="alamat" rows="3" required></textarea>
+                        <label for="e_alamat_sjl" class="form-label">Alamat SJL</label>
+                        <textarea class="form-control text-uppercase" id="e_alamat_sjl" name="alamat_sjl" rows="2" placeholder="Alamat Surat Jalan"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="e_alamat_pjk" class="form-label">Alamat PJK</label>
+                        <textarea class="form-control text-uppercase" id="e_alamat_pjk" name="alamat_pjk" rows="2" placeholder="Alamat Pajak"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="e_npwpt" class="form-label">NPWPT</label>
+                        <textarea class="form-control text-uppercase" id="e_npwpt" name="npwpt" rows="2" placeholder="NPWPT"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -525,6 +647,70 @@
     </div>
 </div>
 
+<!-- Modal Detail -->
+<div class="modal fade" id="detail" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailModalLabel"><i class="fas fa-info-circle me-2"></i>Detail Customer</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="detail-label">Kode Customer</div>
+                            <div class="detail-value" id="d_kode_customer">-</div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-label">Nama Customer</div>
+                            <div class="detail-value" id="d_nama_customer">-</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="detail-label">Negara</div>
+                            <div class="detail-value" id="d_negara">-</div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-label">Jatuh Tempo</div>
+                            <div class="detail-value" id="d_jatuh_tempo">-</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-label">Alamat Inventory (INV)</div>
+                    <div class="detail-value" id="d_alamat_inv">-</div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-label">Alamat Surat Jalan (SJL)</div>
+                    <div class="detail-value" id="d_alamat_sjl">-</div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-label">Alamat Pajak (PJK)</div>
+                    <div class="detail-value" id="d_alamat_pjk">-</div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-label">NPWPT</div>
+                    <div class="detail-value" id="d_npwpt">-</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -534,7 +720,10 @@
         uppercase('#kode_customer');
         uppercase('#nama_customer');
         uppercase('#negara');
-        uppercase('#alamat');
+        uppercase('#alamat_inv');
+        uppercase('#alamat_sjl');
+        uppercase('#alamat_pjk');
+        uppercase('#npwpt');
 
         // Cek kode customer untuk tambah data
         $("#kode_customer").keyup(function(){
@@ -588,14 +777,22 @@
             var kode_customer = button.data('kode_customer');
             var nama_customer = button.data('nama_customer');
             var negara = button.data('negara');
-            var alamat = button.data('alamat');
+            var alamat_inv = button.data('alamat_inv');
+            var alamat_sjl = button.data('alamat_sjl');
+            var alamat_pjk = button.data('alamat_pjk');
+            var npwpt = button.data('npwpt');
+            var jatuh_tempo = button.data('jatuh_tempo');
 
             var modal = $(this);
             modal.find('#e_id_customer').val(id_customer);
             modal.find('#e_kode_customer').val(kode_customer);
             modal.find('#e_nama_customer').val(nama_customer);
             modal.find('#e_negara').val(negara);
-            modal.find('#e_alamat').val(alamat);
+            modal.find('#e_alamat_inv').val(alamat_inv);
+            modal.find('#e_alamat_sjl').val(alamat_sjl);
+            modal.find('#e_alamat_pjk').val(alamat_pjk);
+            modal.find('#e_npwpt').val(npwpt);
+            modal.find('#e_jatuh_tempo').val(jatuh_tempo);
 
             // Reset validation state
             modal.find('#e_kode_customer').removeClass("is-invalid");
@@ -605,7 +802,33 @@
             uppercase('#e_kode_customer');
             uppercase('#e_nama_customer');
             uppercase('#e_negara');
-            uppercase('#e_alamat');
+            uppercase('#e_alamat_inv');
+            uppercase('#e_alamat_sjl');
+            uppercase('#e_alamat_pjk');
+            uppercase('#e_npwpt');
+        });
+
+        // Modal detail show event
+        $('#detail').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var kode_customer = button.data('kode_customer');
+            var nama_customer = button.data('nama_customer');
+            var negara = button.data('negara');
+            var alamat_inv = button.data('alamat_inv');
+            var alamat_sjl = button.data('alamat_sjl');
+            var alamat_pjk = button.data('alamat_pjk');
+            var npwpt = button.data('npwpt');
+            var jatuh_tempo = button.data('jatuh_tempo');
+
+            var modal = $(this);
+            modal.find('#d_kode_customer').text(kode_customer);
+            modal.find('#d_nama_customer').text(nama_customer);
+            modal.find('#d_negara').text(negara);
+            modal.find('#d_jatuh_tempo').text(jatuh_tempo ? jatuh_tempo + ' hari' : '-');
+            modal.find('#d_alamat_inv').text(alamat_inv || '-');
+            modal.find('#d_alamat_sjl').text(alamat_sjl || '-');
+            modal.find('#d_alamat_pjk').text(alamat_pjk || '-');
+            modal.find('#d_npwpt').text(npwpt || '-');
         });
 
         // Reset form ketika modal edit ditutup

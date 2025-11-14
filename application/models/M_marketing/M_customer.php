@@ -23,8 +23,8 @@ class M_customer extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO tb_mkt_master_customer( kode_customer, id_user, nama_customer, negara, alamat, created_at, created_by, updated_at, updated_by, is_deleted) 
-        VALUES ('$data[kode_customer]',$data[id_user],'$data[nama_customer]','$data[negara]','$data[alamat]',NOW(),'$id_user','0000-00-00 00:00:00','','0')
+        INSERT INTO tb_mkt_master_customer( kode_customer, id_user, nama_customer, negara, alamat_inv, alamat_sjl, alamat_pjk,npwpt,jatuh_tempo, created_at, created_by, updated_at, updated_by, is_deleted) 
+        VALUES ('$data[kode_customer]',$data[id_user],'$data[nama_customer]','$data[negara]','$data[alamat_inv]','$data[alamat_sjl]','$data[alamat_pjk]','$data[npwpt]','$data[jatuh_tempo]',NOW(),'$id_user','0000-00-00 00:00:00','','0')
         ";
 
         return $this->db->query($sql);
@@ -39,7 +39,11 @@ class M_customer extends CI_Model
             SET kode_customer='$data[kode_customer]',
                 nama_customer='$data[nama_customer]',
                 negara='$data[negara]',
-                alamat='$data[alamat]',
+                alamat_inv='$data[alamat_inv]',
+                alamat_sjl='$data[alamat_sjl]',
+                alamat_pjk='$data[alamat_pjk]',
+                npwpt='$data[npwpt]',
+                jatuh_tempo='$data[jatuh_tempo]',
                 updated_at=NOW(),
                 updated_by='$id_user' 
             WHERE id_customer='$data[id_customer]'
