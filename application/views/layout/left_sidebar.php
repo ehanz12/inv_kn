@@ -42,17 +42,19 @@
                                 class="pcoded-mtext">Administrasi</span></a>
                         <ul class="pcoded-submenu">
                             <li class="nav-item <?= $uri == 'Stock_keeper' ? 'active' : '' ?>"><a
+                                    href="<?= base_url('administrator/master_barang') ?>" class="">Master Barang</a></li>
+                            <li class="nav-item <?= $uri == 'Stock_keeper' ? 'active' : '' ?>"><a
                                     href="<?= base_url('administrator/stok_barang') ?>" class="">Stok Barang</a></li>
                             <li class="nav-item <?= $uri == 'Stock_keeper' ? 'active' : '' ?>"><a
                                     href="<?= base_url('administrator/ppb') ?>" class="">PPB</a></li>
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a
                                     href="<?= base_url('administrator/acc/acc_supervisor') ?>" class="">ACC Supervisor</a></li>
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a
-                                    href="<?= base_url('accounting/accounting_ppb') ?>" class="">ACC Manager</a></li>
+                                    href="<?= base_url('administrator/acc/acc_manager') ?>" class="">ACC Manager</a></li>
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a
-                                    href="<?= base_url('accounting/accounting_ppb') ?>" class="">ACC Plant Manager</a></li>
+                                    href="<?= base_url('administrator/acc/acc_plant_manager') ?>" class="">ACC Plant Manager</a></li>
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a
-                                    href="<?= base_url('accounting/accounting_ppb') ?>" class="">ACC Direktur</a></li>
+                                    href="<?= base_url('administrator/acc/acc_direktur') ?>" class="">ACC Direktur</a></li>
                         </ul>
                     </li>
                 <?php } ?>

@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once FCPATH . 'vendor/autoload.php';
 
-class acc_supervisor extends CI_Controller
+class acc_manager extends CI_Controller
 {
 
     function __construct()
@@ -26,33 +26,33 @@ class acc_supervisor extends CI_Controller
 
     public function index()
     {
-        $data['result'] = $this->M_ppb_tf->get_spv()->result_array();
-        $this->template->load('template', 'content/administrator/acc/acc_supervisor', $data);
+        $data['result'] = $this->M_ppb_tf->get_manager()->result_array();
+        $this->template->load('template', 'content/administrator/acc/acc_manager', $data);
     }
 
     public function update()
     {
         $data['no_ppb'] = $this->input->post('no_ppb', TRUE);
-        $respon = $this->M_ppb_tf->approval_spv($data['no_ppb']);
+        $respon = $this->M_ppb_tf->approval_manager($data['no_ppb']);
        
         if ($respon) {
             // Redirect setelah berhasil
-            header('location:'.base_url('administrator/acc/acc_supervisor').'?alert=success&msg=Selamat anda berhasil acc Barang');
+            header('location:'.base_url('administrator/acc/acc_manager').'?alert=success&msg=Selamat anda berhasil acc Barang');
         } else {
             // Redirect jika gagal
-            header('location:'.base_url('administrator/acc/acc_supervisor').'?alert=error&msg=Maaf anda gagal acc Barang');
+            header('location:'.base_url('administrator/acc/acc_manager').'?alert=error&msg=Maaf anda gagal acc Barang');
         }
     }
 
     public function delete($no_ppb)
     {
-        $respon = $this->M_ppb_tf->delete_spv($no_ppb);
+        $respon = $this->M_ppb_tf->delete_manager($no_ppb);
         if ($respon) {
             // Redirect setelah berhasil
-            header('location:'.base_url('administrator/acc/acc_supervisor').'?alert=success&msg=Selamat anda berhasil menghapus data PPB');
+            header('location:'.base_url('administrator/acc/acc_manager').'?alert=success&msg=Selamat anda berhasil menghapus data PPB');
         } else {
             // Redirect jika gagal
-            header('location:'.base_url('administrator/acc/acc_supervisor').'?alert=error&msg=Maaf anda gagal menghapus data PPB');
+            header('location:'.base_url('administrator/acc/acc_manager').'?alert=error&msg=Maaf anda gagal menghapus data PPB');
         }
     }
 

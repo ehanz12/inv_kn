@@ -19,7 +19,6 @@ class M_ppb_tf extends CI_Model
 
     public function get()
     {
-        $departement = $this->departement();
 
         $sql = "
         SELECT 
@@ -41,8 +40,123 @@ class M_ppb_tf extends CI_Model
             a.acc_manager,
             a.acc_pm,
             a.acc_direktur,
-            a.is_deleted
-            FROM tb_prc_ppb_tf a WHERE a.is_deleted = 0 AND a.departement = '$departement'
+            a.is_deleted,
+            b.nama_operator AS nama_admin
+            FROM tb_prc_ppb_tf a
+            LEFT JOIN tb_user b ON a.id_user = b.id_user
+            WHERE a.is_deleted = 0 
+            ORDER BY a.id_prc_ppb_tf DESC
+        ";
+        return $this->db->query($sql);
+    }
+    public function get_spv()
+    {
+        $departement = $this->session->userdata("departement");
+        $sql = "
+        SELECT 
+            a.id_prc_ppb_tf,
+            a.no_ppb,
+            a.departement,
+            a.jenis_form_ppb,
+            a.jenis_ppb,
+            a.tgl_ppb,
+            a.tgl_pakai,
+            a.ket,
+            a.acc_spv,
+            a.acc_manager,
+            a.acc_pm,
+            a.acc_direktur,
+            a.status,
+            a.id_user,
+            a.is_deleted,
+            b.nama_operator AS nama_admin
+            FROM tb_prc_ppb_tf a
+            LEFT JOIN tb_user b ON a.id_user = b.id_user
+            WHERE a.is_deleted = 0
+            ORDER BY a.id_prc_ppb_tf DESC
+        ";
+        return $this->db->query($sql);
+    }
+    public function get_manager()
+    {
+        $departement = $this->session->userdata("departement");
+        $sql = "
+        SELECT 
+            a.id_prc_ppb_tf,
+            a.no_ppb,
+            a.departement,
+            a.jenis_form_ppb,
+            a.jenis_ppb,
+            a.tgl_ppb,
+            a.tgl_pakai,
+            a.ket,
+            a.acc_spv,
+            a.acc_manager,
+            a.acc_pm,
+            a.acc_direktur,
+            a.status,
+            a.id_user,
+            a.is_deleted,
+            b.nama_operator AS nama_admin
+            FROM tb_prc_ppb_tf a
+            LEFT JOIN tb_user b ON a.id_user = b.id_user
+            WHERE a.is_deleted = 0 AND a.acc_spv = 'Approved'
+            ORDER BY a.id_prc_ppb_tf DESC
+        ";
+        return $this->db->query($sql);
+    }
+    public function get_plant_manager()
+    {
+        $departement = $this->session->userdata("departement");
+        $sql = "
+        SELECT 
+            a.id_prc_ppb_tf,
+            a.no_ppb,
+            a.departement,
+            a.jenis_form_ppb,
+            a.jenis_ppb,
+            a.tgl_ppb,
+            a.tgl_pakai,
+            a.ket,
+            a.acc_spv,
+            a.acc_manager,
+            a.acc_pm,
+            a.acc_direktur,
+            a.status,
+            a.id_user,
+            a.is_deleted,
+            b.nama_operator AS nama_admin
+            FROM tb_prc_ppb_tf a
+            LEFT JOIN tb_user b ON a.id_user = b.id_user
+            WHERE a.is_deleted = 0 AND a.acc_manager = 'Approved'
+            ORDER BY a.id_prc_ppb_tf DESC
+        ";
+        return $this->db->query($sql);
+    }
+    public function get_direktur()
+    {
+        $departement = $this->session->userdata("departement");
+        $sql = "
+        SELECT 
+            a.id_prc_ppb_tf,
+            a.no_ppb,
+            a.departement,
+            a.jenis_form_ppb,
+            a.jenis_ppb,
+            a.tgl_ppb,
+            a.tgl_pakai,
+            a.ket,
+            a.acc_spv,
+            a.acc_manager,
+            a.acc_pm,
+            a.acc_direktur,
+            a.status,
+            a.id_user,
+            a.is_deleted,
+            b.nama_operator AS nama_admin
+            FROM tb_prc_ppb_tf a
+            LEFT JOIN tb_user b ON a.id_user = b.id_user
+            WHERE a.is_deleted = 0 AND a.acc_pm = 'Approved' AND a.jenis_ppb='Non-Budget'
             ORDER BY a.id_prc_ppb_tf DESC
         ";
         return $this->db->query($sql);
@@ -108,6 +222,92 @@ class M_ppb_tf extends CI_Model
             UPDATE tb_prc_ppb_tf 
             SET acc_spv = 'Approved', updated_at = NOW(), updated_by = '$id_user'
             WHERE no_ppb = '$no_ppb'
+        ";
+        return $this->db->query($sql);
+    }
+
+    public function delete_spv($no_ppb)
+    {
+        $id_user = $this->id_user();
+        $sql = "
+            UPDATE tb_prc_ppb_tf 
+            SET acc_spv = NULL, updated_at = NOW(), updated_by = '$id_user'
+            WHERE no_ppb = '$no_ppb'
+        ";
+        return $this->db->query($sql);
+    }
+
+    public function approval_manager($no_ppb)
+    {
+        $id_user = $this->id_user();
+        $sql = "
+            UPDATE tb_prc_ppb_tf 
+            SET acc_manager = 'Approved', updated_at = NOW(), updated_by = '$id_user'
+            WHERE no_ppb = '$no_ppb'
+        ";
+        return $this->db->query($sql);
+    }
+
+    public function delete_manager($no_ppb)
+    {
+        $id_user = $this->id_user();
+        $sql = "
+            UPDATE tb_prc_ppb_tf 
+            SET acc_manager = NULL, updated_at = NOW(), updated_by = '$id_user'
+            WHERE no_ppb = '$no_ppb'
+        ";
+        return $this->db->query($sql);
+    }
+    
+    public function approval_pm($no_ppb)
+    {
+        $id_user = $this->id_user();
+        $sql = "
+            UPDATE tb_prc_ppb_tf 
+            SET acc_pm = 'Approved', updated_at = NOW(), updated_by = '$id_user'
+            WHERE no_ppb = '$no_ppb'
+        ";
+        return $this->db->query($sql);
+    }
+
+    public function delete_pm($no_ppb)
+    {
+        $id_user = $this->id_user();
+        $sql = "
+            UPDATE tb_prc_ppb_tf 
+            SET acc_pm = NULL, updated_at = NOW(), updated_by = '$id_user'
+            WHERE no_ppb = '$no_ppb'
+        ";
+        return $this->db->query($sql);
+    }
+
+    public function approval_direktur($no_ppb)
+    {
+        $id_user = $this->id_user();
+        $sql = "
+            UPDATE tb_prc_ppb_tf 
+            SET acc_direktur = 'Approved', updated_at = NOW(), updated_by = '$id_user'
+            WHERE no_ppb = '$no_ppb'
+        ";
+        return $this->db->query($sql);
+    }
+
+    public function delete_direktur($no_ppb)
+    {
+        $id_user = $this->id_user();
+        $sql = "
+            UPDATE tb_prc_ppb_tf 
+            SET acc_direktur = NULL, updated_at = NOW(), updated_by = '$id_user'
+            WHERE no_ppb = '$no_ppb'
+        ";
+        return $this->db->query($sql);
+    }
+
+    public function cek_acc_spv()
+    {
+        $sql = "
+            SELECT COUNT(acc_spv) AS count_spv FROM tb_prc_ppb_tf 
+            WHERE acc_spv IS NULL AND is_deleted = 0
         ";
         return $this->db->query($sql);
     }
