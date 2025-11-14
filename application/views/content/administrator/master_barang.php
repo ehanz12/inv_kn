@@ -50,7 +50,7 @@
                           <button class="btn btn-primary" id="export" type="button">Cetak</button>
                         </div>
                         <div class="btn-group">
-                          <a href="<?= base_url() ?>purchasing/prc_ppb/prc_ppb_masterbarang" style="width: 40px;" class="btn btn-warning" id="export" type="button"><i class="feather icon-refresh-ccw"></i></a>
+                          <a href="<?= base_url() ?>administrator/master_barang" style="width: 40px;" class="btn btn-warning" id="export" type="button"><i class="feather icon-refresh-ccw"></i></a>
                         </div>
                         <div class="btn-group">
                           <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add">
@@ -300,7 +300,7 @@
     $("#kode_barang").keyup(function() {
             var kode_barang = $("#kode_barang").val();
             jQuery.ajax({
-                url: "<?= base_url() ?>Purchasing/Prc_ppb/Prc_ppb_masterbarang/cek_kode_barang/",
+                url: "<?= base_url() ?>administrator/master_barang/cek_kode_barang/",
                 dataType: 'text',
                 type: "post",
                 data: {

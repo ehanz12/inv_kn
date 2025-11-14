@@ -91,7 +91,7 @@ class Users extends CI_Controller
     public function ganti_password()
     {
         $data['id_user'] = $this->input->post('id_user', TRUE);
-        $data['username'] = $this->input->post('username', TRUE);
+        $data['nip'] = $this->input->post('nip', TRUE);
         $data['password'] = md5($this->input->post('password', TRUE));
         $data['password_baru'] = $this->input->post('password_baru', TRUE);
         $data['ulang_password_baru'] = $this->input->post('ulang_password_baru', TRUE);

@@ -81,12 +81,12 @@ $notif = $this->M_barang_masuk->get()->result_array();
                         <input type="text" class="form-control" id="e_nama" name="nama" value="<?= $this->session->userdata('nama_operator') ?>" maxlength="100" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="exampleFormControlInput1">Username</label>
-                        <input type="text" class="form-control" id="e_username" name="username" value="<?= $this->session->userdata('username') ?>" placeholder="Username" maxlength="100" readonly>
+                        <label for="exampleFormControlInput1">nip</label>
+                        <input type="text" class="form-control" id="e_username" name="username" value="<?= $this->session->userdata('nip') ?>" placeholder="Username" maxlength="100" readonly>
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Level</label>
-                        <input type="text" class="form-control" id="e_level" name="level" value="<?= $this->session->userdata('level') ?>" placeholder="Level" maxlength="100" readonly>
+                        <input type="text" class="form-control" id="e_level" name="level" value="<?= $this->session->userdata('departement') ?>" placeholder="Level" maxlength="100" readonly>
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Jabatan</label>
@@ -104,7 +104,7 @@ $notif = $this->M_barang_masuk->get()->result_array();
 <script type="text/javascript">
     $(document).ready(function() {
         $('#profil').on('show.bs.modal', function(event) {
-            var level = "<?= $this->session->userdata('level') ?>"
+            var level = "<?= $this->session->userdata('departement') ?>"
             $(this).find('#e_level').val(level)
         })
     })
@@ -122,57 +122,57 @@ $notif = $this->M_barang_masuk->get()->result_array();
             <form method="post" action="<?= base_url() ?>users/users/ganti_password">
                 <div class="modal-body">
                     <div class="input-group mb-4">
-                        <input type="password" class="form-control" id="password_baru" name="password_baru" placeholder="Masukan password baru anda" maxlength="100" autocomplete="off" required>
-                              <div class="input-group-append">
+                        <input type="hidden" id="" name="id_user" value="<?= $this->session->userdata('id_user') ?>">
+                        <input type="hidden" id="" name="nip" value="<?= $this->session->userdata('nip') ?>">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Masukan password lama anda" maxlength="100" required>
+                        <div class="input-group-append">
 
-                                <!-- kita pasang onclick untuk merubah icon buka/tutup mata setiap diklik  -->
-                                  <span id="mybutton1" onclick="change1()" class="input-group-text">
+                            <!-- kita pasang onclick untuk merubah icon buka/tutup mata setiap diklik  -->
+                            <span id="mybutton" onclick="change()" class="input-group-text">
 
                                 <!-- icon mata bawaan bootstrap  -->
-                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                        <path fill-rule="evenodd"
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                    <path fill-rule="evenodd"
                                         d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                    </svg>
-                                  </span>
-                              </div>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-4">
+                        <input type="password" class="form-control" id="password_baru" name="password_baru" placeholder="Masukan password baru anda" maxlength="100" autocomplete="off" required>
+                        <div class="input-group-append">
+
+                            <!-- kita pasang onclick untuk merubah icon buka/tutup mata setiap diklik  -->
+                            <span id="mybutton1" onclick="change1()" class="input-group-text">
+
+                                <!-- icon mata bawaan bootstrap  -->
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                    <path fill-rule="evenodd"
+                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                </svg>
+                            </span>
+                        </div>
                     </div>
                     <div class="input-group mb-4">
                         <input type="password" class="form-control" id="ulang_password_baru" name="ulang_password_baru" placeholder="Ulangi Password Baru anda Disini" maxlength="100" autocomplete="off" required>
-                              <div class="input-group-append">
+                        <div class="input-group-append">
 
-                                <!-- kita pasang onclick untuk merubah icon buka/tutup mata setiap diklik  -->
-                                  <span id="mybutton2" onclick="change2()" class="input-group-text">
-
-                                <!-- icon mata bawaan bootstrap  -->
-                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                        <path fill-rule="evenodd"
-                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                    </svg>
-                                  </span>
-                              </div>
-                    </div>
-                    <div class="input-group mb-4">
-                        <input type="hidden" id="" name="id_user" value="<?= $this->session->userdata('id_user') ?>">
-                        <input type="hidden" id="" name="username" value="<?= $this->session->userdata('username') ?>">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Masukan password lama anda" maxlength="100" required>
-                              <div class="input-group-append">
-
-                                <!-- kita pasang onclick untuk merubah icon buka/tutup mata setiap diklik  -->
-                                  <span id="mybutton" onclick="change()" class="input-group-text">
+                            <!-- kita pasang onclick untuk merubah icon buka/tutup mata setiap diklik  -->
+                            <span id="mybutton2" onclick="change2()" class="input-group-text">
 
                                 <!-- icon mata bawaan bootstrap  -->
-                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                        <path fill-rule="evenodd"
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                    <path fill-rule="evenodd"
                                         d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                    </svg>
-                                  </span>
-                              </div>
+                                </svg>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -185,104 +185,100 @@ $notif = $this->M_barang_masuk->get()->result_array();
 </div>
 
 <script>
-            // membuat fungsi change
-            function change() {
-    
-                // membuat variabel berisi tipe input dari id='pass', id='pass' adalah form input password 
-                var x = document.getElementById('password').type;
-    
-                //membuat if kondisi, jika tipe x adalah password maka jalankan perintah di bawahnya
-                if (x == 'password') {
-    
-                    //ubah form input password menjadi text
-                    document.getElementById('password').type = 'text';
-                    
-                    //ubah icon mata terbuka menjadi tertutup
-                    document.getElementById('mybutton').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-slash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    // membuat fungsi change
+    function change() {
+
+        // membuat variabel berisi tipe input dari id='pass', id='pass' adalah form input password 
+        var x = document.getElementById('password').type;
+
+        //membuat if kondisi, jika tipe x adalah password maka jalankan perintah di bawahnya
+        if (x == 'password') {
+
+            //ubah form input password menjadi text
+            document.getElementById('password').type = 'text';
+
+            //ubah icon mata terbuka menjadi tertutup
+            document.getElementById('mybutton').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-slash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M10.79 12.912l-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
                                                                     <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708l-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829z"/>
                                                                     <path fill-rule="evenodd" d="M13.646 14.354l-12-12 .708-.708 12 12-.708.708z"/>
                                                                     </svg>`;
-                }
-                else {
-    
-                    //ubah form input password menjadi text
-                    document.getElementById('password').type = 'password';
-    
-                    //ubah icon mata terbuka menjadi tertutup
-                    document.getElementById('mybutton').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        } else {
+
+            //ubah form input password menjadi text
+            document.getElementById('password').type = 'password';
+
+            //ubah icon mata terbuka menjadi tertutup
+            document.getElementById('mybutton').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
                                                                     <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
                                                                     </svg>`;
-                }
-            }
-        </script>
+        }
+    }
+</script>
 
 <script>
-            // membuat fungsi change
-            function change1() {
-    
-                // membuat variabel berisi tipe input dari id='pass', id='pass' adalah form input password 
-                var x = document.getElementById('password_baru').type;
-    
-                //membuat if kondisi, jika tipe x adalah password maka jalankan perintah di bawahnya
-                if (x == 'password') {
-    
-                    //ubah form input password menjadi text
-                    document.getElementById('password_baru').type = 'text';
-                    
-                    //ubah icon mata terbuka menjadi tertutup
-                    document.getElementById('mybutton1').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-slash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    // membuat fungsi change
+    function change1() {
+
+        // membuat variabel berisi tipe input dari id='pass', id='pass' adalah form input password 
+        var x = document.getElementById('password_baru').type;
+
+        //membuat if kondisi, jika tipe x adalah password maka jalankan perintah di bawahnya
+        if (x == 'password') {
+
+            //ubah form input password menjadi text
+            document.getElementById('password_baru').type = 'text';
+
+            //ubah icon mata terbuka menjadi tertutup
+            document.getElementById('mybutton1').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-slash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M10.79 12.912l-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
                                                                     <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708l-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829z"/>
                                                                     <path fill-rule="evenodd" d="M13.646 14.354l-12-12 .708-.708 12 12-.708.708z"/>
                                                                     </svg>`;
-                }
-                else {
-    
-                    //ubah form input password menjadi text
-                    document.getElementById('password_baru').type = 'password';
-    
-                    //ubah icon mata terbuka menjadi tertutup
-                    document.getElementById('mybutton1').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        } else {
+
+            //ubah form input password menjadi text
+            document.getElementById('password_baru').type = 'password';
+
+            //ubah icon mata terbuka menjadi tertutup
+            document.getElementById('mybutton1').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
                                                                     <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
                                                                     </svg>`;
-                }
-            }
-        </script>
+        }
+    }
+</script>
 
 <script>
-            // membuat fungsi change
-            function change2() {
-    
-                // membuat variabel berisi tipe input dari id='pass', id='pass' adalah form input password 
-                var x = document.getElementById('ulang_password_baru').type;
-    
-                //membuat if kondisi, jika tipe x adalah password maka jalankan perintah di bawahnya
-                if (x == 'password') {
-    
-                    //ubah form input password menjadi text
-                    document.getElementById('ulang_password_baru').type = 'text';
-                    
-                    //ubah icon mata terbuka menjadi tertutup
-                    document.getElementById('mybutton2').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-slash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    // membuat fungsi change
+    function change2() {
+
+        // membuat variabel berisi tipe input dari id='pass', id='pass' adalah form input password 
+        var x = document.getElementById('ulang_password_baru').type;
+
+        //membuat if kondisi, jika tipe x adalah password maka jalankan perintah di bawahnya
+        if (x == 'password') {
+
+            //ubah form input password menjadi text
+            document.getElementById('ulang_password_baru').type = 'text';
+
+            //ubah icon mata terbuka menjadi tertutup
+            document.getElementById('mybutton2').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-slash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M10.79 12.912l-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
                                                                     <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708l-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829z"/>
                                                                     <path fill-rule="evenodd" d="M13.646 14.354l-12-12 .708-.708 12 12-.708.708z"/>
                                                                     </svg>`;
-                }
-                else {
-    
-                    //ubah form input password menjadi text
-                    document.getElementById('ulang_password_baru').type = 'password';
-    
-                    //ubah icon mata terbuka menjadi tertutup
-                    document.getElementById('mybutton2').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        } else {
+
+            //ubah form input password menjadi text
+            document.getElementById('ulang_password_baru').type = 'password';
+
+            //ubah icon mata terbuka menjadi tertutup
+            document.getElementById('mybutton2').innerHTML = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
                                                                     <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
                                                                     </svg>`;
-                }
-            }
-        </script>
-
+        }
+    }
+</script>
