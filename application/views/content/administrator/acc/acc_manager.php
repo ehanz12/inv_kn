@@ -14,7 +14,7 @@
                                 <ul class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="<?= base_url() ?>"><i class="feather icon-home"></i></a></li>
                                     <li class="breadcrumb-item"><a href="javascript:">Administrator</a></li>
-                                    <li class="breadcrumb-item"><a href="<?= base_url('administrator/acc/acc_supervisor') ?>">Acc Supervisor</a></li>
+                                    <li class="breadcrumb-item"><a href="<?= base_url('administrator/acc/acc_manager') ?>">Acc Manager</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                                                             <td><?= $k['jenis_ppb'] ?></td>
                                                             <td><?= $k['status'] ?></td>
                                                             <td class="text-center">
-                                                              <?php if($k['acc_spv'] == null) :  ?>
+                                                              <?php if($k['acc_manager'] == null && $k['acc_spv'] == 'Approved') :  ?>
                                                               <div class="btn-group" role="group" aria-label="Basic example">
                                                                   <button type="button" class="btn btn-info btn-square btn-sm" 
                                                                   data-toggle="modal" 
@@ -97,9 +97,9 @@
                                                                   </button>
                                                               </div>
                                                               <?php endif; ?>
-                                                                <?php if ($k['acc_manager'] == null && $k['acc_spv'] == 'Approved') { ?>
+                                                                <?php if ($k['acc_pm'] == null && $k['acc_manager'] == 'Approved') { ?>
                                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                                        <a type="button" class="btn btn-danger btn-square text-light btn-sm" href="<?= base_url() ?>administrator/acc/acc_supervisor/delete/<?= $k['no_ppb'] ?>" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
+                                                                        <a type="button" class="btn btn-danger btn-square text-light btn-sm" href="<?= base_url() ?>administrator/acc/acc_manager/delete/<?= $k['no_ppb'] ?>" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
                                                                             <i class="feather icon-trash-2"></i>Hapus Acc
                                                                         </a>
                                                                     </div>
@@ -230,7 +230,7 @@
           <div class="col-md-3">
               <div class="form-group">
                 <label for="v-nama_admin">Nama Admin</label>
-                <input type="text" class="form-control" id="v-nama_admin" name="nama_admin" placeholder="Admin" readonly>
+                <input type="text" class="form-control" id="v-nama_admin" name="nama_admin" placeholder="" readonly>
               </div>
           </div>
           </div>
@@ -311,7 +311,7 @@
         <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
       </div>
 
-      <form method="post" action="<?= base_url('administrator/acc/acc_supervisor/update') ?>">
+      <form method="post" action="<?= base_url('administrator/acc/acc_manager/update') ?>">
         <div class="modal-body">
 
           <!-- ===== INFO UMUM ===== -->
