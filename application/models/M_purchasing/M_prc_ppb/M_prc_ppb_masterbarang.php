@@ -23,14 +23,21 @@ class M_prc_ppb_masterbarang extends CI_Model
         return $this->db->query($sql);
     }
 
-    // public function get_supp($id = null) {
-    //     $sql = "
-    //     SELECT a.*, b.nama_po_supplier
-    //     FROM tb_prc_po_supplier b ON a.id_prc_po_supplier = b.id_prc_po_supplier
-    //     WHERE a.is_deleted = ORDER BY nama_barang ASC";
 
-    //     return $this->db->query($sql);
-    // }
+    public function update_supplier($data)
+    {
+        $id_user = $this->id_user();
+        $sql = "
+            UPDATE tb_prc_master_barang 
+            SET id_prc_master_supplier='$data[id_prc_master_supplier]',
+                tipe_barang='$data[tipe_barang]',
+                updated_at= NOW(),
+                updated_by='$id_user' 
+            WHERE id_prc_master_barang='$data[id_prc_master_barang]'
+        ";
+        return $this->db->query($sql);
+    }
+
     public function get_filter_brng()
     {
         $sql = "SELECT DISTINCT nama_barang FROM tb_prc_master_barang WHERE is_deleted = 0 ORDER BY nama_barang ASC";

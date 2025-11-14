@@ -71,25 +71,19 @@
                             <tr>                                                                                                                                                                                                          
                               <th scope="row"><?= $no++ ?></th>
                               <td><?= $tgl_ppb ?></td>
-                              <td><?= $k['no_ppb_accounting'] ?></td>
+                              <td><?= $k['no_ppb'] ?></td>
                               <td class="text-center"><?= $k['departement'] ?></td>
                               
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                   <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail" 
-                                      data-no_ppb_accounting="<?= $k['no_ppb_accounting'] ?>",
+                                      data-no_ppb="<?= $k['no_ppb'] ?>",
                                       data-departement="<?= $k['departement'] ?>",
-                                      data-form_ppb="<?= $k['form_ppb']?>",
+                                      data-form_ppb="<?= $k['jenis_form_ppb']?>",
                                       data-jenis_ppb="<?= $k['jenis_ppb']?>",
                                       data-tgl_ppb="<?= $tgl_ppb ?>",
                                       data-tgl_pakai="<?= $tgl_pakai ?>",
                                       data-ket="<?= $k['ket']?>",
-                                      data-nama_admin="<?= $k['nama_admin']?>",
-                                      data-nama_spv="<?= $k['nama_spv']?>",
-                                      data-nama_manager="<?= $k['nama_manager']?>",
-                                      data-nama_pm="<?= $k['nama_pm']?>",
-                                      data-nama_direktur="<?= $k['nama_direktur']?>"
-                                      data-jumlah="<?= $k['jumlah']?>"
                                        >
                                     <i class="feather icon-eye"></i>Details
                                   </button>
@@ -102,19 +96,12 @@
 
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <a type="button" class="btn btn-success btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>accounting/accounting_ppb/pdf_cetak/<?= str_replace('/', '--', $k['no_ppb_accounting']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); " 
-                                  data-id_accounting_ppb_tf="<?= $k['id_accounting_ppb_tf'] ?>" 
-                                  data-form_ppb="<?= $k['form_ppb'] ?>" 
+                                  <a type="button" class="btn btn-success btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>accounting/accounting_ppb/pdf_cetak/<?= str_replace('/', '--', $k['no_ppb']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); " 
+                                  data-id_prc_ppb_tf="<?= $k['id_prc_ppb_tf'] ?>" 
+                                  data-form_ppb="<?= $k['jenis_form_ppb'] ?>" 
                                   data-jenis_ppb="<?= $k['jenis_ppb'] ?>"
                                   data-tgl_ppb="<?= $k['tgl_ppb'] ?>"
                                   data-tgl_pakai="<?= $k['tgl_pakai'] ?>"
-                                  data-nama_admin="<?= $k['nama_admin'] ?>"
-                                  data-nama_spv="<?= $k['nama_spv'] ?>"
-                                  data-nama_manager="<?= $k['nama_manager'] ?>"
-                                  data-nama_pm="<?= $k['nama_pm'] ?>"
-                                  data-nama_direktur="<?= $k['nama_direktur'] ?>"
-                                  data-no_ppb_accounting="<?= $k['no_ppb_accounting'] ?>"
-                                  data-form_ppb="<?= $k['form_ppb'] ?>"
                                   data-ket="<?= $k['ket'] ?>">
                                       <i class="feather icon-file"></i>Cetak
                                   </a>  
@@ -122,45 +109,45 @@
 
                                 <?php if($k['status'] !== 'selesai') { ?>
                                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add"
-                                      data-no_ppb_accounting="<?= $k['no_ppb_accounting'] ?>"
+                                      data-no_ppb="<?= $k['no_ppb'] ?>"
                                       data-departement="<?= $k['departement'] ?>"
-                                      data-form_ppb="<?= $k['form_ppb']?>"
+                                      data-form_ppb="<?= $k['jenis_form_ppb']?>"
                                       data-jenis_ppb="<?= $k['jenis_ppb']?>"
                                       data-tgl_ppb="<?= $tgl_ppb ?>"
                                       data-tgl_pakai="<?= $tgl_pakai ?>"
                                       data-ket="<?= $k['ket']?>"
-                                      data-nama_admin="<?= $k['nama_admin']?>"
-                                      data-nama_spv="<?= $k['nama_spv']?>"
-                                      data-nama_manager="<?= $k['nama_manager']?>"
-                                      data-nama_pm="<?= $k['nama_pm']?>"
-                                      data-nama_direktur="<?= $k['nama_direktur']?>"
-                                    
                                       >
-                                  <i class="feather icon-plus"></i>Tambah Data DPB
+                                  <i class="feather icon-plus"></i>Tambah Data RB
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add"
+                                      data-no_ppb="<?= $k['no_ppb'] ?>"
+                                      data-departement="<?= $k['departement'] ?>"
+                                      data-form_ppb="<?= $k['jenis_form_ppb']?>"
+                                      data-jenis_ppb="<?= $k['jenis_ppb']?>"
+                                      data-tgl_ppb="<?= $tgl_ppb ?>"
+                                      data-tgl_pakai="<?= $tgl_pakai ?>"
+                                      data-ket="<?= $k['ket']?>"
+                                      >
+                                  <i class="feather icon-plus"></i>Tambah Data RH
                                 </button>
                                 <?php } ?>
 
                                 <?php if ($level === "admin" && $k['acc_spv'] !== "Approved" && $k['acc_manager'] !== "Approved" && $k['acc_pm'] !== "Approved") { ?>
                                   <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" 
-                                      data-no_ppb_accounting="<?= $k['no_ppb_accounting'] ?>"
+                                      data-no_ppb="<?= $k['no_ppb'] ?>"
                                       data-departement="<?= $k['departement'] ?>"
-                                      data-form_ppb="<?= $k['form_ppb']?>"
+                                      data-form_ppb="<?= $k['jenis_form_ppb']?>"
                                       data-jenis_ppb="<?= $k['jenis_ppb']?>"
                                       data-tgl_ppb="<?= $tgl_ppb ?>"
                                       data-tgl_pakai="<?= $tgl_pakai ?>"
                                       data-ket="<?= $k['ket']?>"
-                                      data-nama_admin="<?= $k['nama_admin']?>"
-                                      data-nama_spv="<?= $k['nama_spv']?>"
-                                      data-nama_manager="<?= $k['nama_manager']?>"
-                                      data-nama_pm="<?= $k['nama_pm']?>"
-                                      data-nama_direktur="<?= $k['nama_direktur']?>"
                                     >
                                       <i class="feather icon-edit-2"></i>Edit
                                     </button>
                                   </div>
                                   <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a type="button" class="btn btn-danger btn-square text-light btn-sm" href="<?= base_url() ?>Accounting/Accounting_ppb/delete/<?= str_replace('/', '--', $k['no_ppb_accounting']) ?>" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
+                                    <a type="button" class="btn btn-danger btn-square text-light btn-sm" href="<?= base_url() ?>Accounting/Accounting_ppb/delete/<?= str_replace('/', '--', $k['no_ppb']) ?>" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
                                       <i class="feather icon-trash-2"></i>Delete
                                     </a>
                                   </div>

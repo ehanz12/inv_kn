@@ -53,6 +53,7 @@ class PPB extends CI_Controller
                     $d['no_ppb'] = $data['no_ppb'];
                     $d['id_prc_master_barang'] = $data['id_prc_master_barang'][$i];
                     $d['jumlah_ppb'] = $data['jumlah_ppb'][$i];
+                    $d['created_at'] = date('Y-m-d H:i:s');
 
                     $this->M_ppb->add_permintaan_barang($d);
                     // $this->M_accounting_ppb->update_status_ppb($data['id_accounting_ppb'], "Approved");
@@ -119,6 +120,7 @@ class PPB extends CI_Controller
                     'no_ppb'            => $no_ppb,
                     'id_prc_master_barang' => $id_prc_master_barang[$i],
                     'jumlah_ppb'        => $jumlah[$i],
+                    'updated_at'        => date('Y-m-d H:i:s'),
                 ];
                 $this->M_ppb->add_permintaan_barang($data_barang);
             }

@@ -29,55 +29,12 @@ class Prc_ppb_masterbarang extends CI_Controller
     $this->template->load('template', 'content/purchasing/prc_ppb/prc_ppb_masterbarang', $data);
 }
 
-
-    public function add()
-    {
-        // Validasi input
-        $this->form_validation->set_rules('id_prc_ppb_supplier', 'id_prc_ppb_supplier', 'required');
-        $this->form_validation->set_rules('kode_barang', 'Kode Barang', 'required');
-        $this->form_validation->set_rules('nama_barang', 'Nama Barang', 'required');
-        $this->form_validation->set_rules('jenis_barang', 'Jenis Barang', 'required');
-        $this->form_validation->set_rules('tipe_barang', 'Tipe Barang', 'required');
-        $this->form_validation->set_rules('satuan', 'Satuan', 'required');
-
-        if ($this->form_validation->run() == FALSE) {
-            // Menampilkan form kembali jika validasi gagal
-            $this->index();
-        } else {
-            // Mengambil data dari form
-            $data['id_prc_ppb_supplier'] = $this->input->post('id_prc_ppb_supplier', TRUE);
-            $data['kode_barang'] = $this->input->post('kode_barang', TRUE);
-            $data['nama_barang'] = $this->input->post('nama_barang', TRUE);
-            $data['jenis_barang'] = $this->input->post('jenis_barang', TRUE);
-            $data['tipe_barang'] = $this->input->post('tipe_barang', TRUE);
-            $data['spek'] = $this->input->post('spek', TRUE);
-            $data['mesh'] = $this->input->post('mesh', TRUE);
-            $data['bloom'] = $this->input->post('bloom', TRUE);
-            $data['satuan'] = $this->input->post('satuan', TRUE);
-            $data['departement'] = $this->input->post('departement', TRUE);
-
-            // Menambahkan data barang ke database
-            $respon = $this->M_prc_ppb_masterbarang->add($data);
-
-            if ($respon) {
-                // Redirect setelah berhasil
-        	header('location:'.base_url('Purchasing/prc_ppb/prc_ppb_masterbarang').'?alert=success&msg=Selamat anda berhasil menambah Barang');
-                   
-            } else {
-                // Redirect jika gagal
-            header('location:'.base_url('Purchasing/prc_ppb/prc_ppb_masterbarang').'?alert=error&msg=Maaf anda gagal menambah Barang');
-
-            }
-        }
-    }
-
-    public function update()
+public function update()
     {
         // Validasi input
         $this->form_validation->set_rules('kode_barang', 'Kode Barang', 'required');
         $this->form_validation->set_rules('nama_barang', 'Nama Barang', 'required');
         $this->form_validation->set_rules('jenis_barang', 'Jenis Barang', 'required');
-        $this->form_validation->set_rules('tipe_barang', 'Tipe Barang', 'required');
         $this->form_validation->set_rules('spek', 'Spesifikasi', 'required');
         $this->form_validation->set_rules('satuan', 'Satuan', 'required');
 
@@ -88,60 +45,20 @@ class Prc_ppb_masterbarang extends CI_Controller
             // Mengambil data dari form
             $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
             $data['id_prc_master_supplier'] = $this->input->post('id_prc_master_supplier', TRUE);
-            $data['kode_barang'] = $this->input->post('kode_barang', TRUE);
-            $data['nama_barang'] = $this->input->post('nama_barang', TRUE);
-            $data['jenis_barang'] = $this->input->post('jenis_barang', TRUE);
             $data['tipe_barang'] = $this->input->post('tipe_barang', TRUE);
-            $data['mesh'] = $this->input->post('mesh', TRUE);
-            $data['bloom'] = $this->input->post('bloom', TRUE);
-            $data['spek'] = $this->input->post('spek', TRUE);
-            $data['satuan'] = $this->input->post('satuan', TRUE);
-            $data['departement'] = $this->input->post('departement', TRUE);
 
             // Memperbarui data barang di database
-            $respon = $this->M_prc_ppb_masterbarang->update($data);
+            $respon = $this->M_prc_ppb_masterbarang->update_supplier($data);
 
             if ($respon) {
                 // Redirect setelah berhasil
-            header('location:'.base_url('Purchasing/prc_ppb/prc_ppb_masterbarang').'?alert=success&msg=Selamat anda berhasil Mengupdated Barang');
+            header('location:'.base_url('administrator/master_barang').'?alert=success&msg=Selamat anda berhasil Mengupdated Barang');
             } else {
                 // Redirect jika gagal
-            header('location:'.base_url('Purchasing/prc_ppb/prc_ppb_masterbarang').'?alert=error&msg=Maaf anda gagal Mengupdated Barang');
+            header('location:'.base_url('administrator/master_barang').'?alert=error&msg=Maaf anda gagal Mengupdated Barang');
 
             }
         }
     }
-
-    public function delete($id_prc_master_barang)
-    {
-        $data['id_prc_master_barang'] = $id_prc_master_barang;
-        $respon = $this->M_prc_ppb_masterbarang->delete($data);
-
-        if ($respon) {
-            // Redirect setelah berhasil
-            header('location:'.base_url('Purchasing/prc_ppb/prc_ppb_masterbarang').'?alert=success&msg=Selamat anda berhasil menghapus Barang');
-        } else {
-            // Redirect jika gagal
-            header('location:'.base_url('Purchasing/prc_ppb/prc_ppb_masterbarang').'?alert=error&msg=Maaf anda gagal menghapus Barang');
-        }
-    }
-
-    private function convertDate($date)
-    {
-        return explode('/', $date)[2] . "-" . explode('/', $date)[1] . "-" . explode('/', $date)[0];
-    }
-
-    public function cek_kode_barang()
-    {
-        $kode_barang = $this->input->post('kode_barang', TRUE);
-        $row = $this->M_prc_ppb_masterbarang->cek_kode_barang($kode_barang)->row_array();
-
-        if ($row['count_sj']==0) {
-            echo "false";
-        } else {
-            echo "true";
-        }
-    }
-
 }
 ?>
