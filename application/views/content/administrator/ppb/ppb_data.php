@@ -228,7 +228,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
               <div class="form-group">
                 <label for="spek">Spek</label>
                 <input type="text" class="form-control" id="spek" name="spek" placeholder="Spek" autocomplete="off" readonly>
@@ -244,6 +244,12 @@
               <div class="form-group">
                 <label for="Stok">Stok</label>
                 <input type="text" class="form-control" id="stok" name="stok" placeholder="stok" maxlength="15" autocomplete="off" readonly>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="Stok">No Budget</label>
+                <input type="text" class="form-control" id="no_budget" name="no_budget" placeholder="No Budget" maxlength="15" autocomplete="off" readonly>
               </div>
             </div>
             <div class="col-md-2">
@@ -273,6 +279,7 @@
                   <th>Spek</th>
                   <th>Satuan</th>
                   <th>Stok</th>
+                  <th>No Budget</th>
                   <th>Jumlah Order</th>
                   <th class="text-right">Hapus</th>
                 </tr>
@@ -384,6 +391,7 @@
             <td>${spek}</td>
             <td>${satuan}</td>
             <td>${stok}</td>
+            <td></td>
             <td>${jumlah}</td>
             <td class="text-right">
               <a href="javascript:void(0)" class="text-danger btn-remove-row">

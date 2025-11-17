@@ -107,30 +107,6 @@
                                   </a>  
                                 </div>
 
-                                <?php if($k['status'] !== 'selesai') { ?>
-                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add"
-                                      data-no_ppb="<?= $k['no_ppb'] ?>"
-                                      data-departement="<?= $k['departement'] ?>"
-                                      data-form_ppb="<?= $k['jenis_form_ppb']?>"
-                                      data-jenis_ppb="<?= $k['jenis_ppb']?>"
-                                      data-tgl_ppb="<?= $tgl_ppb ?>"
-                                      data-tgl_pakai="<?= $tgl_pakai ?>"
-                                      data-ket="<?= $k['ket']?>"
-                                      >
-                                  <i class="feather icon-plus"></i>Tambah Data RB
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add"
-                                      data-no_ppb="<?= $k['no_ppb'] ?>"
-                                      data-departement="<?= $k['departement'] ?>"
-                                      data-form_ppb="<?= $k['jenis_form_ppb']?>"
-                                      data-jenis_ppb="<?= $k['jenis_ppb']?>"
-                                      data-tgl_ppb="<?= $tgl_ppb ?>"
-                                      data-tgl_pakai="<?= $tgl_pakai ?>"
-                                      data-ket="<?= $k['ket']?>"
-                                      >
-                                  <i class="feather icon-plus"></i>Tambah Data RH
-                                </button>
-                                <?php } ?>
 
                                 <?php if ($level === "admin" && $k['acc_spv'] !== "Approved" && $k['acc_manager'] !== "Approved" && $k['acc_pm'] !== "Approved") { ?>
                                   <div class="btn-group" role="group" aria-label="Basic example">

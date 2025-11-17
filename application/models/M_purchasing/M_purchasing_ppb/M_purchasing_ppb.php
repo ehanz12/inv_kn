@@ -85,9 +85,8 @@ class M_purchasing_ppb extends CI_Model
     public function get($id = null)
     {
         $sql = " 
-            SELECT a.*, b.jumlah_ppb
+            SELECT a.*
             FROM tb_prc_ppb_tf a 
-            LEFT JOIN tb_prc_ppb b ON a.no_ppb = b.no_ppb
             WHERE a.is_deleted = 0 
                 AND a.acc_spv = 'Approved'
                 AND a.acc_manager = 'Approved'
@@ -110,11 +109,11 @@ class M_purchasing_ppb extends CI_Model
         $id_user = $this->id_user();
         $sql1 = "
             DELETE FROM tb_prc_ppb_tf 
-            WHERE no_ppb_accounting='$data[no_ppb_accounting]'
+            WHERE no_ppb='$data[no_ppb]'
         ";
         $sql = "
            DELETE FROM tb_prc_ppb
-            WHERE no_ppb_accounting='$data[no_ppb_accounting]'
+            WHERE no_ppb='$data[no_ppb]'
         ";
         $this->db->query($sql);
         return $this->db->query($sql1);
