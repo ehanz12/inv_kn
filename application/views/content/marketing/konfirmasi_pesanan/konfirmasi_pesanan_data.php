@@ -580,7 +580,7 @@
                                                     $no = 1;
                                                     if (isset($result) && is_array($result) && count($result) > 0) {
                                                         foreach ($result as $k) {
-                                                            // PERBAIKAN: Format tanggal dengan pengecekan yang lebih baik
+                                                            // Format tanggal dengan pengecekan yang lebih baik
                                                             $tgl_kp = (!empty($k['tgl_kp']) && $k['tgl_kp'] != '0000-00-00') ?
                                                                 date('d/m/Y', strtotime($k['tgl_kp'])) : '';
 
@@ -610,7 +610,11 @@
                                                             $jenis_pack = isset($k['jenis_pack']) ? $k['jenis_pack'] : '';
                                                             $ket_kp = isset($k['ket_kp']) ? $k['ket_kp'] : '';
                                                             $created_by = isset($k['created_by']) ? $k['created_by'] : '';
+                                                            $jumlah_prd = isset($k['jumlah_prd']) ? $k['jumlah_prd'] : 0;
 
+                                                            // Logika untuk menampilkan tombol
+                                                            $show_edit_button = ($level === "admin" || $level == "marketing") && ($jumlah_prd == 0);
+                                                            $show_edit_tanggal_button = ($level === "admin" || $level == "marketing") && ($jumlah_prd > 0);
                                                             ?>
                                                             <tr>
                                                                 <th scope="row"><?= $no++ ?></th>
@@ -637,54 +641,81 @@
                                                                         data-jenis_pack="<?= $jenis_pack ?>"
                                                                         data-tgl_kirim="<?= $tgl_kirim ?>"
                                                                         data-ket_kp="<?= $ket_kp ?>"
-                                                                        data-created_by="<?= $created_by ?>">
+                                                                        data-created_by="<?= $created_by ?>"
+                                                                        data-jumlah_prd="<?= $jumlah_prd ?>">
                                                                         <?= $k['no_kp'] ?>
                                                                     </span>
                                                                 </td>
                                                                 <td><?= $nama_customer ?></td>
                                                                 <td class="text-right">
                                                                     <?= number_format($jumlah_kp, 0, ",", ".") ?> pcs
+                                                                    <?php if ($jumlah_prd > 0): ?>
+                                                                        <br>
+                                                                        <small class="text-muted">
+                                                                            (Produksi: <?= number_format($jumlah_prd, 0, ",", ".") ?> pcs)
+                                                                        </small>
+                                                                    <?php endif; ?>
                                                                 </td>
                                                                 <td><?= $tgl_kirim ?></td>
+                                                                <td class="text-center">
+                                                                    <div class="action-buttons">
+                                                                        <?php if ($show_edit_button): ?>
+                                                                            <!-- Tombol Edit Full (hanya muncul jika belum ada produksi) -->
+                                                                            <button type="button"
+                                                                                class="btn btn-warning btn-sm btn-action"
+                                                                                data-toggle="modal" data-target="#edit"
+                                                                                data-id_mkt_kp="<?= $k['id_mkt_kp'] ?>"
 
-                                                               <td class="text-center">
-    <div class="action-buttons">
-        <?php if ($level === "admin" || $level == "marketing") { ?>
-            <button type="button"
-                class="btn btn-warning btn-sm btn-action"
-                data-toggle="modal" 
-                data-target="#edit"
-                data-id_mkt_kp="<?= $id_mkt_kp ?>"
-                data-no_kp="<?= $no_kp ?>"
-                data-tgl_kp="<?= $tgl_kp ?>"
-                data-id_customer="<?= $id_customer ?>"
-                data-nama_customer="<?= $nama_customer ?>"
-                data-kode_customer="<?= $kode_customer ?>"
-                data-spek_kapsul="<?= $spek_kapsul ?>"
-                data-kode_print="<?= $kode_print ?>"
-                data-logo_print="<?= $logo_print ?>"
-                data-kode_warna_cap="<?= $kode_warna_cap ?>"
-                data-warna_cap="<?= $warna_cap ?>"
-                data-kode_warna_body="<?= $kode_warna_body ?>"
-                data-warna_body="<?= $warna_body ?>"
-                data-jumlah_kp="<?= $jumlah_kp ?>"
-                data-harga_kp="<?= $harga_kp ?>"
-                data-size_machine="<?= $size_machine ?>"
-                data-no_po="<?= $no_po ?>"
-                data-tgl_po="<?= $tgl_po ?>"
-                data-jenis_pack="<?= $jenis_pack ?>"
-                data-tgl_kirim="<?= $tgl_kirim ?>"
-                data-ket_kp="<?= $ket_kp ?>">
-                <i class="fas fa-edit"></i> Edit
-            </button>
-            <a href="<?= base_url() ?>marketing/konfirmasi_pesanan/delete/<?= $id_mkt_kp ?>"
-                class="btn btn-danger btn-sm btn-action"
-                onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
-                <i class="fas fa-trash"></i> Hapus
-            </a>
-        <?php } ?>
-    </div>
-</td>
+                                                                                data-no_kp="<?= $k['no_kp'] ?>"
+                                                                                data-tgl_kp="<?= $k['tgl_kp'] ?>"
+                                                                                data-id_customer="<?= $k['id_customer'] ?>"
+                                                                                data-nama_customer="<?= $k['nama_customer'] ?>"
+                                                                                data-kode_customer="<?= $k['kode_customer'] ?>"
+                                                                                data-spek_kapsul="<?= $k['spek_kapsul'] ?>"
+                                                                                data-kode_print="<?= $k['kode_print'] ?>"
+                                                                                data-logo_print="<?= $k['logo_print'] ?>"
+                                                                                data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>"
+                                                                                data-warna_cap="<?= $k['warna_cap'] ?>"
+                                                                                data-kode_warna_body="<?= $k['kode_warna_body'] ?>"
+                                                                                data-warna_body="<?= $k['warna_body'] ?>"
+                                                                                data-jumlah_kp="<?= $k['jumlah_kp'] ?>"
+                                                                                data-harga_kp="<?= $k['harga_kp'] ?>"
+                                                                                data-size_machine="<?= $k['size_machine'] ?>"
+                                                                                data-no_po="<?= $k['no_po'] ?>"
+                                                                                data-tgl_po="<?= $k['tgl_po'] ?>"
+                                                                                data-jenis_pack="<?= $k['jenis_pack'] ?>"
+                                                                                
+                                                                                data-ket_kp="<?= $k['ket_kp'] ?>"
+                                                                                data-jumlah_prd="<?= $k['jumlah_prd'] ?>">
+                                                                                <i class="fas fa-edit"></i> Edit
+                                                                            </button>
+                                                                        <?php endif; ?>
+
+                                                                        
+                                                                            <!-- Tombol Edit Tanggal Kirim (muncul jika sudah ada produksi) -->
+                                                                            <button type="button"
+                                                                                class="btn btn-info btn-sm btn-action"
+                                                                                data-toggle="modal" data-target="#edit-tanggal"
+                                                                                data-id_mkt_kp="<?= $k['id_mkt_kp'] ?>"
+                                                                                data-no_kp="<?= $k['no_kp'] ?>"
+                                                                                data-tgl_kirim="<?= $k['tgl_kirim'] ?>"
+                                                                                data-jumlah_prd="<?= $k['jumlah_prd'] ?>">
+                                                                                <i class="fas fa-calendar-alt"></i> Edit Tanggal
+                                                                            </button>
+                                                                        
+
+                                                                        <?php if ($level === "admin" || $level == "marketing"): ?>
+                                                                            <?php if ($jumlah_prd == 0): ?>
+                                                                                <!-- Tombol Hapus (hanya muncul jika belum ada produksi) -->
+                                                                                <a href="<?= base_url() ?>marketing/konfirmasi_pesanan/delete/<?= $id_mkt_kp ?>"
+                                                                                    class="btn btn-danger btn-sm btn-action"
+                                                                                    onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
+                                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                                </a>
+                                                                            <?php endif; ?>
+                                                                        <?php endif; ?>
+                                                                    </div>
+                                                                </td>
                                                             </tr>
                                                             <?php
                                                         }
@@ -753,8 +784,6 @@
                                 </div>
                             </div>
 
-
-
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Customer</label>
@@ -787,19 +816,21 @@
                                     </select>
                                 </div>
                             </div>
-<div class="col-md-6">
-                            <div class="form-group">
-            <label for="size_machine">Size Machine</label>
-            <select class="form-control" id="size_machine" name="size_machine" required>
-              <option value="">- Pilih Size Machine -</option>
-              <option value="00">00</option>
-              <option value="0N">0N</option>
-              <option value="1N">1N</option>
-              <option value="2N">2N</option>
-              <option value="3N">3N</option>     
-            </select>
-          </div>
-          </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="size_machine">Size Machine</label>
+                                    <select class="form-control chosen-select" id="size_machine" name="size_machine"
+                                        required>
+                                        <option value="">- Pilih Size Machine -</option>
+                                        <option value="00">00</option>
+                                        <option value="0N">0N</option>
+                                        <option value="1N">1N</option>
+                                        <option value="2N">2N</option>
+                                        <option value="3N">3N</option>
+                                    </select>
+                                </div>
+                            </div>
 
                             <!-- Checkbox untuk kode print -->
                             <div class="col-md-12">
@@ -976,7 +1007,6 @@
                                 <input type="text" class="form-control" id="v-spek_kapsul" readonly>
                             </div>
                         </div>
-                        
 
                         <!-- Section Kode Print di Detail -->
                         <div class="col-md-6">
@@ -993,7 +1023,7 @@
                             </div>
                         </div>
 
-                        <!-- PERBAIKAN: Kode Warna Cap dan Body di Detail -->
+                        <!-- Kode Warna Cap dan Body di Detail -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Kode Warna Cap</label>
@@ -1044,7 +1074,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Size </label>
+                                <label class="form-label">Size Machine</label>
                                 <input type="text" class="form-control" id="v-size_machine" readonly>
                             </div>
                         </div>
@@ -1078,7 +1108,7 @@
         </div>
     </div>
 
-    <!-- Modal Edit - DIUBAH AGAR SAMA DENGAN MODAL TAMBAH -->
+    <!-- Modal Edit Full -->
     <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -1089,7 +1119,9 @@
                     </button>
                 </div>
                 <form method="post" action="<?= base_url() ?>marketing/konfirmasi_pesanan/update" id="form-edit">
-                    <input type="hidden" id="e-id_mkt_kp" name="id_mkt_kp">
+                    
+    <input type="hidden" id="e-id_mkt_kp" name="id_mkt_kp">
+
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -1140,13 +1172,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Tanggal Kirim</label>
-                                    <input type="text" class="form-control datepicker" id="e-tgl_kirim" name="tgl_kirim"
-                                        placeholder="Tanggal Kirim" autocomplete="off">
-                                </div>
-                            </div>
+                            
 
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -1160,7 +1186,22 @@
                                 </div>
                             </div>
 
-                            <!-- Checkbox untuk kode print di Edit - SAMA DENGAN TAMBAH -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="e-size_machine">Size Machine</label>
+                                    <select class="form-control chosen-select" id="e-size_machine" name="size_machine"
+                                        required>
+                                        <option value="">- Pilih Size Machine -</option>
+                                        <option value="00">00</option>
+                                        <option value="0N">0N</option>
+                                        <option value="1N">1N</option>
+                                        <option value="2N">2N</option>
+                                        <option value="3N">3N</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Checkbox untuk kode print di Edit -->
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="form-check">
@@ -1173,7 +1214,7 @@
                                 </div>
                             </div>
 
-                            <!-- Kode Print dengan dropdown di Edit - SAMA DENGAN TAMBAH -->
+                            <!-- Kode Print dengan dropdown di Edit -->
                             <div class="col-md-6 e-print-section" style="display: none;">
                                 <div class="form-group">
                                     <label class="form-label">Kode Print</label>
@@ -1193,7 +1234,7 @@
                                 </div>
                             </div>
 
-                            <!-- Kode Warna Cap - langsung dari master - SAMA DENGAN TAMBAH -->
+                            <!-- Kode Warna Cap - langsung dari master -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Kode Warna Cap</label>
@@ -1213,7 +1254,7 @@
                                 </div>
                             </div>
 
-                            <!-- Kode Warna Body - langsung dari master - SAMA DENGAN TAMBAH -->
+                            <!-- Kode Warna Body - langsung dari master -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Kode Warna Body</label>
@@ -1290,807 +1331,456 @@
         </div>
     </div>
 
+    <!-- Modal Edit Tanggal Kirim -->
+    <div class="modal fade" id="edit-tanggal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-up">
+                    <h5 class="modal-title"><i class="fas fa-calendar-alt"></i> Edit Tanggal Kirim</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="<?= base_url() ?>marketing/konfirmasi_pesanan/update_tanggal_kirim" id="form-edit-tanggal">
+                    <input type="hidden" id="et-id_mkt_kp" name="id_mkt_kp">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">No KP</label>
+                                    <input type="text" class="form-control" id="et-no_kp" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Tanggal Kirim</label>
+                                    <input type="text" class="form-control datepicker" id="et-tgl_kirim" name="tgl_kirim"
+                                        placeholder="Tanggal Kirim" autocomplete="off" required>
+                                </div>
+                            </div>
+                            
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update Tanggal
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript -->
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.id.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        // ========== INISIALISASI KOMPONEN ==========
-        
-        // Initialize chosen select
-        $('.chosen-select').chosen({
-            width: '100%',
-            search_contains: true
-        });
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.id.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // ========== INISIALISASI KOMPONEN ==========
+            $('.chosen-select').chosen({
+                width: '100%',
+                search_contains: true
+            });
 
-        // Initialize Datepicker
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy',
-            autoclose: true,
-            todayHighlight: true,
-            language: 'id',
-            orientation: 'bottom auto'
-        });
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                language: 'id',
+                orientation: 'bottom auto'
+            });
 
-        // ========== FUNGSI UTILITAS ==========
-
-        // Format Rupiah yang benar
-        function formatRupiah(angka) {
-            if (!angka) return '0';
-            // Hapus semua karakter non-digit
-            let number_string = angka.toString().replace(/[^,\d]/g, '');
-            // Jika kosong, return 0
-            if (number_string === '') return '0';
-            // Konversi ke number
-            let number = parseInt(number_string);
-            // Format dengan separator ribuan
-            return number.toLocaleString('id-ID');
-        }
-
-        function unformatRupiah(angka) {
-            if (!angka) return 0;
-            // Hapus semua karakter non-digit dan konversi ke number
-            return parseInt(angka.toString().replace(/[^0-9]/g, ''));
-        }
-
-        // Format tanggal untuk input (dd/mm/yyyy)
-        function formatDateForInput(date) {
-            var day = String(date.getDate()).padStart(2, '0');
-            var month = String(date.getMonth() + 1).padStart(2, '0');
-            var year = date.getFullYear();
-            return day + '/' + month + '/' + year;
-        }
-
-        // Format tanggal untuk Date object dari string dd/mm/yyyy
-        function parseDateFromInput(dateString) {
-            if (!dateString || dateString === '01/01/1970' || dateString === '00/00/0000') return null;
-            var parts = dateString.split('/');
-            if (parts.length !== 3) return null;
-            
-            // Validasi tanggal
-            var day = parseInt(parts[0]);
-            var month = parseInt(parts[1]);
-            var year = parseInt(parts[2]);
-            
-            if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900 || year > 2100) {
-                return null;
+            // ========== FUNGSI UTILITAS ==========
+            function formatRupiah(angka) {
+                if (!angka) return '0';
+                let number_string = angka.toString().replace(/[^,\d]/g, '');
+                if (number_string === '') return '0';
+                let number = parseInt(number_string);
+                return number.toLocaleString('id-ID');
             }
-            
-            return new Date(year, month - 1, day);
-        }
 
-        // Fungsi untuk menampilkan notifikasi
-        function showNotification(message, type) {
-            // Hapus notifikasi sebelumnya jika ada
-            $('.auto-update-notification').remove();
-            
-            // Buat elemen notifikasi
-            var notification = $('<div class="alert alert-' + type + ' alert-dismissible fade show auto-update-notification" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;">' +
-                                '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-                                '<i class="fas fa-info-circle"></i> ' + message +
-                                '</div>');
-            
-            // Tambahkan ke body
-            $('body').append(notification);
-            
-            // Hapus otomatis setelah 5 detik
-            setTimeout(function() {
-                notification.alert('close');
-            }, 5000);
-        }
+            function formatDateForInput(date) {
+                var day = String(date.getDate()).padStart(2, '0');
+                var month = String(date.getMonth() + 1).padStart(2, '0');
+                var year = date.getFullYear();
+                return day + '/' + month + '/' + year;
+            }
 
-        // Validasi tanggal
-        function isValidDate(dateString) {
-            if (!dateString || dateString === '01/01/1970' || dateString === '00/00/0000') return false;
-            var dateObj = parseDateFromInput(dateString);
-            return dateObj !== null && dateObj instanceof Date && !isNaN(dateObj);
-        }
+            function parseDateFromInput(dateString) {
+                if (!dateString || dateString === '01/01/1970' || dateString === '00/00/0000') return null;
+                var parts = dateString.split('/');
+                if (parts.length !== 3) return null;
 
-        // ========== FUNGSI TANGGAL KIRIM OTOMATIS ==========
+                var day = parseInt(parts[0]);
+                var month = parseInt(parts[1]);
+                var year = parseInt(parts[2]);
 
-        // Fungsi untuk mengupdate tanggal kirim otomatis jika sudah lewat
-        function updateDeliveryDateIfPassed() {
-            var today = new Date();
-            var todayFormatted = formatDateForInput(today);
-            var updatedCount = 0;
-            
-            console.log('Memulai pengecekan tanggal kirim...');
-            
-            // Loop melalui semua data di tabel
-            $('.table tbody tr').each(function() {
-                var deliveryDateCell = $(this).find('td:eq(5)'); // Kolom tanggal kirim (index 5)
-                var deliveryDateText = deliveryDateCell.text().trim();
-                var idMktKp = $(this).find('.badge-primary').data('id_mkt_kp');
-                
-                console.log('Cek data ID:', idMktKp, 'Tanggal:', deliveryDateText);
-                
-                if (deliveryDateText && isValidDate(deliveryDateText) && idMktKp) {
-                    var deliveryDate = parseDateFromInput(deliveryDateText);
-                    
-                    // Reset waktu untuk perbandingan yang akurat
-                    today.setHours(0, 0, 0, 0);
-                    deliveryDate.setHours(0, 0, 0, 0);
-                    
-                    if (deliveryDate && deliveryDate < today) {
-                        console.log('Tanggal kirim sudah lewat untuk ID:', idMktKp);
-                        
-                        // Update tampilan di tabel
-                        deliveryDateCell.text(todayFormatted);
-                        updatedCount++;
-                        
-                        // Update di database via AJAX
-                        updateDeliveryDateInDatabase(idMktKp, todayFormatted);
+                if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900 || year > 2100) {
+                    return null;
+                }
+
+                return new Date(year, month - 1, day);
+            }
+
+            function isValidDate(dateString) {
+                if (!dateString || dateString === '01/01/1970' || dateString === '00/00/0000') return false;
+                var dateObj = parseDateFromInput(dateString);
+                return dateObj !== null && dateObj instanceof Date && !isNaN(dateObj);
+            }
+
+            // ========== FUNGSI CHECKBOX KODE PRINT ==========
+            $('#use_print').change(function () {
+                if ($(this).is(':checked')) {
+                    $('.print-section').slideDown(300);
+                    var id_customer = $('#id_customer').val();
+                    if (id_customer) {
+                        loadPrintsByCustomer(id_customer, '');
                     }
+                } else {
+                    $('.print-section').slideUp(300);
+                    $('#id_master_print').val('').trigger('chosen:updated');
+                    $('#kode_print').val('');
+                    $('#logo_print').val('');
                 }
             });
-            
-            if (updatedCount > 0) {
-                showNotification(updatedCount + ' tanggal kirim telah disesuaikan ke hari ini', 'info');
-            }
-        }
 
-        // Fungsi untuk update tanggal kirim di database
-        function updateDeliveryDateInDatabase(idMktKp, newDate) {
-            console.log('Update database untuk ID:', idMktKp, 'dengan tanggal:', newDate);
-            
-            $.ajax({
-                url: "<?= base_url() ?>marketing/konfirmasi_pesanan/update_delivery_date",
-                type: "POST",
-                data: {
-                    id_mkt_kp: idMktKp,
-                    tgl_kirim: newDate,
-                    updated_by: "<?= $this->session->userdata('id_user') ?>"
-                },
-                dataType: "json",
-                success: function(response) {
-                    if (response.success) {
-                        console.log('Tanggal kirim berhasil diupdate untuk ID: ' + idMktKp);
-                    } else {
-                        console.error('Gagal update tanggal kirim:', response.message);
-                        showNotification('Gagal update tanggal kirim: ' + response.message, 'danger');
+            $('#e-use_print').change(function () {
+                if ($(this).is(':checked')) {
+                    $('.e-print-section').slideDown(300);
+                    var id_customer = $('#e-id_customer').val();
+                    if (id_customer) {
+                        loadPrintsByCustomer(id_customer, 'e-');
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error update tanggal kirim:', error);
-                    showNotification('Error update tanggal kirim: ' + error, 'danger');
+                } else {
+                    $('.e-print-section').slideUp(300);
+                    $('#e-id_master_print').val('').trigger('chosen:updated');
+                    $('#e-kode_print').val('');
+                    $('#e-logo_print').val('');
                 }
             });
-        }
 
-        // Fungsi untuk mengatur tanggal kirim otomatis di form input
-        function setAutoDeliveryDate(inputElement) {
-            var selectedDate = $(inputElement).val();
-            
-            if (isValidDate(selectedDate)) {
-                var selectedDateObj = parseDateFromInput(selectedDate);
-                var today = new Date();
-                
-                if (selectedDateObj) {
-                    // Reset waktu untuk perbandingan yang akurat
-                    today.setHours(0, 0, 0, 0);
-                    selectedDateObj.setHours(0, 0, 0, 0);
-                    
-                    // Jika tanggal yang dipilih sudah lewat dari hari ini
-                    if (selectedDateObj < today) {
-                        // Set ke tanggal hari ini
-                        var formattedDate = formatDateForInput(new Date());
-                        $(inputElement).val(formattedDate);
-                        
-                        // Beri notifikasi kepada user
-                        showNotification('Tanggal kirim telah disesuaikan ke tanggal hari ini karena tanggal yang dipilih sudah lewat.', 'info');
-                    }
+            // Format input angka
+            $('#jumlah_kp, #harga_kp, #e-jumlah_kp, #e-harga_kp').on('input', function () {
+                let value = this.value.replace(/[^0-9]/g, '');
+                this.value = formatRupiah(value);
+            });
+
+            // Load data kode print berdasarkan customer
+            function loadPrintsByCustomer(id_customer, prefix) {
+                if (id_customer) {
+                    $.ajax({
+                        url: "<?= base_url() ?>marketing/konfirmasi_pesanan/get_prints_by_customer",
+                        type: "POST",
+                        data: { id_customer: id_customer },
+                        dataType: "json",
+                        success: function (response) {
+                            var printSelect = $('#' + prefix + 'id_master_print');
+                            printSelect.empty().append('<option value="">- Pilih Kode Print -</option>');
+
+                            if (response && response.length > 0) {
+                                $.each(response, function (index, print) {
+                                    printSelect.append('<option value="' + print.id_master_print + '" data-kode="' + print.kode_print + '" data-logo="' + (print.logo_print || '') + '">' + print.kode_print + '</option>');
+                                });
+                            }
+                            printSelect.trigger("chosen:updated");
+                        }
+                    });
                 }
-            } else if (selectedDate && !isValidDate(selectedDate)) {
-                // Jika tanggal tidak valid, set ke hari ini
-                var formattedDate = formatDateForInput(new Date());
-                $(inputElement).val(formattedDate);
-                showNotification('Tanggal kirim tidak valid, telah disesuaikan ke tanggal hari ini.', 'warning');
             }
-        }
 
-        // ========== JALANKAN AUTO UPDATE ==========
+            // Handle perubahan kode print
+            $('#id_master_print').change(function () {
+                var selectedOption = $(this).find('option:selected');
+                $('#kode_print').val(selectedOption.data('kode'));
+                $('#logo_print').val(selectedOption.data('logo') || '');
+            });
 
-        // Jalankan auto-update saat page load
-        setTimeout(function() {
-            updateDeliveryDateIfPassed();
-        }, 1000);
-        
-        // Juga jalankan saat filter diubah
-        $('#lihat').click(function() {
-            setTimeout(function() {
-                updateDeliveryDateIfPassed();
-            }, 1500);
-        });
+            $('#e-id_master_print').change(function () {
+                var selectedOption = $(this).find('option:selected');
+                $('#e-kode_print').val(selectedOption.data('kode'));
+                $('#e-logo_print').val(selectedOption.data('logo') || '');
+            });
 
-        // ========== EVENT HANDLER TANGGAL KIRIM ==========
+            // Handle perubahan kode warna
+            $('#id_master_kw_cap').change(function () {
+                var selectedOption = $(this).find('option:selected');
+                $('#kode_warna_cap').val(selectedOption.data('kode'));
+                $('#warna_cap').val(selectedOption.data('warna'));
+            });
 
-        // Event handler untuk tanggal kirim di form tambah
-        $('#tgl_kirim').on('change', function() {
-            setAutoDeliveryDate(this);
-        });
+            $('#e-id_master_kw_cap').change(function () {
+                var selectedOption = $(this).find('option:selected');
+                $('#e-kode_warna_cap').val(selectedOption.data('kode'));
+                $('#e-warna_cap').val(selectedOption.data('warna'));
+            });
 
-        // Event handler untuk tanggal kirim di form edit
-        $('#e-tgl_kirim').on('change', function() {
-            setAutoDeliveryDate(this);
-        });
+            $('#id_master_kw_body').change(function () {
+                var selectedOption = $(this).find('option:selected');
+                $('#kode_warna_body').val(selectedOption.data('kode'));
+                $('#warna_body').val(selectedOption.data('warna'));
+            });
 
-        // Set default tanggal kirim saat modal tambah dibuka
-        $('#add').on('show.bs.modal', function() {
-            // Set default tanggal kirim ke hari ini
-            var formattedDate = formatDateForInput(new Date());
-            $('#tgl_kirim').val(formattedDate);
-        });
+            $('#e-id_master_kw_body').change(function () {
+                var selectedOption = $(this).find('option:selected');
+                $('#e-kode_warna_body').val(selectedOption.data('kode'));
+                $('#e-warna_body').val(selectedOption.data('warna'));
+            });
 
-        // ========== FUNGSI CHECKBOX KODE PRINT ==========
+            // ========== FUNGSI FILTER ==========
+            $('#lihat').click(function () {
+                var filter_customer = $('#filter_customer').find(':selected').val();
+                var filter_tgl = $('#filter_tgl').val();
+                var filter_tgl2 = $('#filter_tgl2').val();
 
-        // Toggle kode print section untuk tambah
-        $('#use_print').change(function() {
-            if ($(this).is(':checked')) {
-                $('.print-section').slideDown(300);
-                // Load data kode print jika customer sudah dipilih
+                if (filter_tgl == '' && filter_tgl2 != '') {
+                    alert('Dari tanggal belum diisi');
+                } else if (filter_tgl != '' && filter_tgl2 == '') {
+                    alert('Sampai tanggal belum diisi');
+                } else {
+                    const query = new URLSearchParams({
+                        nama_customer: filter_customer,
+                        date_from: filter_tgl,
+                        date_until: filter_tgl2
+                    })
+                    window.location = "<?= base_url() ?>marketing/konfirmasi_pesanan/index?" + query.toString()
+                }
+            });
+
+            // ========== MODAL FUNCTIONALITY ==========
+            // Detail modal
+            $('#detail').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var modal = $(this);
+                
+                modal.find('#v-id_mkt_kp').val(button.data('id_mkt_kp'));
+                modal.find('#v-no_kp').val(button.data('no_kp'));
+                modal.find('#v-tgl_kp').val(isValidDate(button.data('tgl_kp')) ? button.data('tgl_kp') : '-');
+                modal.find('#v-nama_customer').val(button.data('nama_customer') || '-');
+                modal.find('#v-kode_customer').val(button.data('kode_customer') || '-');
+                modal.find('#v-spek_kapsul').val(button.data('spek_kapsul') || '-');
+                modal.find('#v-kode_print').val(button.data('kode_print') || '-');
+                modal.find('#v-logo_print').val(button.data('logo_print') || '-');
+                modal.find('#v-kode_warna_cap').val(button.data('kode_warna_cap') || '-');
+                modal.find('#v-kode_warna_body').val(button.data('kode_warna_body') || '-');
+                modal.find('#v-jumlah_kp').val(formatRupiah(button.data('jumlah_kp').toString()) + ' pcs');
+                modal.find('#v-harga_kp').val('Rp ' + formatRupiah(button.data('harga_kp').toString()));
+                modal.find('#v-no_po').val(button.data('no_po') || '-');
+                modal.find('#v-tgl_po').val(isValidDate(button.data('tgl_po')) ? button.data('tgl_po') : '-');
+                modal.find('#v-jenis_pack').val(button.data('jenis_pack') || '-');
+                modal.find('#v-size_machine').val(button.data('size_machine') || '-');
+                modal.find('#v-tgl_kirim').val(isValidDate(button.data('tgl_kirim')) ? button.data('tgl_kirim') : '-');
+                modal.find('#v-ket_kp').val(button.data('ket_kp') || '-');
+                modal.find('#v-created_by').val(button.data('created_by') || '-');
+            });
+
+            // Edit modal functionality
+            $('#edit').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var modal = $(this);
+                
+                modal.find('#e-id_mkt_kp').val(button.data('id_mkt_kp'));
+                console.log(button.data('id_mkt_kp'));
+                modal.find('#e-no_kp').val(button.data('no_kp'));
+                modal.find('#e-tgl_kp').val(isValidDate(button.data('tgl_kp')) ? button.data('tgl_kp') : formatDateForInput(new Date()));
+                modal.find('#e-id_customer').val(button.data('id_customer')).trigger("chosen:updated");
+                modal.find('#e-no_po').val(button.data('no_po') || '');
+                modal.find('#e-tgl_po').val(isValidDate(button.data('tgl_po')) ? button.data('tgl_po') : '');
+                modal.find('#e-spek_kapsul').val(button.data('spek_kapsul')).trigger("chosen:updated");
+                modal.find('#e-size_machine').val(button.data('size_machine')).trigger("chosen:updated");
+               
+                modal.find('#e-jumlah_kp').val(formatRupiah(button.data('jumlah_kp').toString()));
+                modal.find('#e-harga_kp').val(formatRupiah(button.data('harga_kp').toString()));
+                modal.find('#e-jenis_pack').val(button.data('jenis_pack')).trigger("chosen:updated");
+                modal.find('#e-ket_kp').val(button.data('ket_kp') || '');
+
+                 modal.find('#e-tgl_po').datepicker().on('show.bs.modal', function (event) {
+                    event.stopPropagation();
+                });
+
+                modal.find('#e-tgl_kp').datepicker().on('show.bs.modal', function (event) {
+                    event.stopPropagation();
+                });
+
+                
+
+                // Handle kode print
+                if (button.data('kode_print') && button.data('kode_print') !== '' && button.data('kode_print') !== '-') {
+                    $('#e-use_print').prop('checked', true);
+                    $('.e-print-section').show();
+                    $('#e-kode_print').val(button.data('kode_print'));
+                    $('#e-logo_print').val(button.data('logo_print') || '');
+                    setTimeout(function () {
+                        loadPrintsByCustomer(button.data('id_customer'), 'e-');
+                        setTimeout(function () {
+                            $('#e-id_master_print').val(button.data('kode_print')).trigger('chosen:updated');
+                        }, 500);
+                    }, 300);
+                } else {
+                    $('#e-use_print').prop('checked', false);
+                    $('.e-print-section').hide();
+                }
+
+                // Handle kode warna
+                if (button.data('kode_warna_cap')) {
+                    $('#e-id_master_kw_cap').val(button.data('kode_warna_cap')).trigger('chosen:updated');
+                }
+                if (button.data('kode_warna_body')) {
+                    $('#e-id_master_kw_body').val(button.data('kode_warna_body')).trigger('chosen:updated');
+                }
+            });
+
+            // Edit Tanggal modal functionality
+            $('#edit-tanggal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var modal = $(this);
+                
+                modal.find('#et-id_mkt_kp').val(button.data('id_mkt_kp'));
+                modal.find('#et-no_kp').val(button.data('no_kp'));
+                modal.find('#et-tgl_kirim').val(isValidDate(button.data('tgl_kirim')) ? button.data('tgl_kirim') : formatDateForInput(new Date()));
+
+                modal.find('#et-tgl_kirim').datepicker().on('show.bs.modal', function (event) {
+                    event.stopPropagation();
+                });
+                
+            });
+
+            // ========== VALIDASI NO KP ==========
+            $("#no_kp").keyup(function () {
+                var no_kp = $("#no_kp").val();
+                if (no_kp.length > 0) {
+                    jQuery.ajax({
+                        url: "<?= base_url() ?>marketing/konfirmasi_pesanan/cek_no_kp",
+                        dataType: 'text',
+                        type: "post",
+                        data: { no_kp: no_kp },
+                        success: function (response) {
+                            if (response == "true") {
+                                $("#no_kp").addClass("is-invalid");
+                                $("#simpan").attr("disabled", "disabled");
+                            } else {
+                                $("#no_kp").removeClass("is-invalid");
+                                $("#simpan").removeAttr("disabled");
+                            }
+                        }
+                    });
+                } else {
+                    $("#no_kp").removeClass("is-invalid");
+                    $("#simpan").removeAttr("disabled");
+                }
+            });
+
+            $("#e-no_kp").keyup(function () {
+                var no_kp = $("#e-no_kp").val();
+                if (no_kp.length > 0) {
+                    jQuery.ajax({
+                        url: "<?= base_url() ?>marketing/konfirmasi_pesanan/cek_no_kp",
+                        dataType: 'text',
+                        type: "post",
+                        data: { no_kp: no_kp },
+                        success: function (response) {
+                            if (response == "true") {
+                                $("#e-no_kp").addClass("is-invalid");
+                                $("#update").attr("disabled", "disabled");
+                            } else {
+                                $("#e-no_kp").removeClass("is-invalid");
+                                $("#update").removeAttr("disabled");
+                            }
+                        }
+                    });
+                } else {
+                    $("#e-no_kp").removeClass("is-invalid");
+                    $("#update").removeAttr("disabled");
+                }
+            });
+
+            // ========== RESET FORM ==========
+            $('#add').on('hidden.bs.modal', function () {
+                $(this).find('form')[0].reset();
+                $('.chosen-select').trigger('chosen:updated');
+                $('#simpan').removeAttr('disabled');
+                $('#use_print').prop('checked', false);
+                $('.print-section').hide();
+                $('#no_kp').removeClass('is-invalid');
+            });
+
+            $('#edit').on('hidden.bs.modal', function () {
+                $('#update').removeAttr('disabled');
+                $('#e-use_print').prop('checked', false);
+                $('.e-print-section').hide();
+                $('#e-no_kp').removeClass('is-invalid');
+            });
+
+            // ========== KONFIRMASI SUBMIT ==========
+            $('#form-add').submit(function (e) {
+                var no_kp = $('#no_kp').val();
+                var tgl_kp = $('#tgl_kp').val();
                 var id_customer = $('#id_customer').val();
-                if (id_customer) {
-                    loadPrintsByCustomer(id_customer, '');
-                }
-            } else {
-                $('.print-section').slideUp(300);
-                // Reset nilai kode print dan logo print
-                $('#id_master_print').val('').trigger('chosen:updated');
-                $('#kode_print').val('');
-                $('#logo_print').val('');
-            }
-        });
+                var jumlah_kp = $('#jumlah_kp').val();
+                var harga_kp = $('#harga_kp').val();
 
-        // Toggle kode print section untuk edit - SAMA DENGAN TAMBAH
-        $('#e-use_print').change(function() {
-            if ($(this).is(':checked')) {
-                $('.e-print-section').slideDown(300);
-                // Load data kode print jika customer sudah dipilih
+                if (!no_kp || !tgl_kp || !id_customer || !jumlah_kp || !harga_kp) {
+                    alert('Harap lengkapi semua field yang wajib diisi!');
+                    return false;
+                }
+
+                if (!isValidDate(tgl_kp)) {
+                    alert('Tanggal KP tidak valid!');
+                    $('#tgl_kp').focus();
+                    return false;
+                }
+
+                return confirm('Apakah Anda yakin ingin menyimpan data Konfirmasi Pesanan ini?');
+            });
+
+            $('#form-edit').submit(function (e) {
+                var no_kp = $('#e-no_kp').val();
+                var tgl_kp = $('#e-tgl_kp').val();
                 var id_customer = $('#e-id_customer').val();
-                if (id_customer) {
-                    loadPrintsByCustomer(id_customer, 'e-');
+                var jumlah_kp = $('#e-jumlah_kp').val();
+                var harga_kp = $('#e-harga_kp').val();
+
+                if (!no_kp || !tgl_kp || !id_customer || !jumlah_kp || !harga_kp) {
+                    alert('Harap lengkapi semua field yang wajib diisi!');
+                    return false;
                 }
-            } else {
-                $('.e-print-section').slideUp(300);
-                // Reset nilai kode print dan logo print
-                $('#e-id_master_print').val('').trigger('chosen:updated');
-                $('#e-kode_print').val('');
-                $('#e-logo_print').val('');
-            }
+
+                if (!isValidDate(tgl_kp)) {
+                    alert('Tanggal KP tidak valid!');
+                    $('#e-tgl_kp').focus();
+                    return false;
+                }
+
+                $('#e-jumlah_kp').val($('#e-jumlah_kp').val().replace(/[^0-9]/g, ''));
+$('#e-harga_kp').val($('#e-harga_kp').val().replace(/[^0-9]/g, ''));
+
+
+                return confirm('Apakah Anda yakin ingin mengupdate data Konfirmasi Pesanan ini?');
+            });
+
+            $('#form-edit-tanggal').submit(function (e) {
+                var tgl_kirim = $('#et-tgl_kirim').val();
+
+                if (!tgl_kirim) {
+                    alert('Tanggal Kirim harus diisi!');
+                    return false;
+                }
+
+                if (!isValidDate(tgl_kirim)) {
+                    alert('Tanggal Kirim tidak valid!');
+                    $('#et-tgl_kirim').focus();
+                    return false;
+                }
+
+                return confirm('Apakah Anda yakin ingin mengupdate tanggal kirim?');
+            });
+
+            console.log('JavaScript Konfirmasi Pesanan loaded successfully');
         });
-
-        // Format input angka dengan benar
-        $('#jumlah_kp, #harga_kp, #e-jumlah_kp, #e-harga_kp').on('input', function () {
-            let value = this.value.replace(/[^0-9]/g, '');
-            this.value = formatRupiah(value);
-        });
-
-        // Load data kode print berdasarkan customer (Tambah)
-        $('#id_customer').change(function () {
-            var id_customer = $(this).val();
-            // Jika checkbox kode print dicentang, load data print
-            if ($('#use_print').is(':checked')) {
-                loadPrintsByCustomer(id_customer, '');
-            }
-        });
-
-        // Load data kode print berdasarkan customer (Edit) - SAMA DENGAN TAMBAH
-        $('#e-id_customer').change(function () {
-            var id_customer = $(this).val();
-            // Jika checkbox kode print dicentang, load data print
-            if ($('#e-use_print').is(':checked')) {
-                loadPrintsByCustomer(id_customer, 'e-');
-            }
-        });
-
-        // Load kode print berdasarkan customer
-        function loadPrintsByCustomer(id_customer, prefix) {
-            if (id_customer) {
-                $.ajax({
-                    url: "<?= base_url() ?>marketing/konfirmasi_pesanan/get_prints_by_customer",
-                    type: "POST",
-                    data: { id_customer: id_customer },
-                    dataType: "json",
-                    success: function (response) {
-                        var printSelect = $('#' + prefix + 'id_master_print');
-                        printSelect.empty().append('<option value="">- Pilih Kode Print -</option>');
-
-                        if (response && response.length > 0) {
-                            $.each(response, function (index, print) {
-                                printSelect.append('<option value="' + print.id_master_print + '" data-kode="' + print.kode_print + '" data-logo="' + (print.logo_print || '') + '">' + print.kode_print + '</option>');
-                            });
-                        }
-                        printSelect.trigger("chosen:updated");
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("Error loading prints data: " + error);
-                        showNotification('Gagal memuat data kode print', 'danger');
-                    }
-                });
-            }
-        }
-
-        // Handle perubahan kode print (Tambah)
-        $('#id_master_print').change(function () {
-            var selectedOption = $(this).find('option:selected');
-            var kodePrint = selectedOption.data('kode');
-            var logoPrint = selectedOption.data('logo');
-
-            $('#kode_print').val(kodePrint);
-            $('#logo_print').val(logoPrint || '');
-        });
-
-        // Handle perubahan kode print (Edit) - SAMA DENGAN TAMBAH
-        $('#e-id_master_print').change(function () {
-            var selectedOption = $(this).find('option:selected');
-            var kodePrint = selectedOption.data('kode');
-            var logoPrint = selectedOption.data('logo');
-
-            $('#e-kode_print').val(kodePrint);
-            $('#e-logo_print').val(logoPrint || '');
-        });
-
-        // Handle perubahan kode warna cap (Tambah)
-        $('#id_master_kw_cap').change(function () {
-            var selectedOption = $(this).find('option:selected');
-            var kodeWarna = selectedOption.data('kode');
-            var warnaCap = selectedOption.data('warna');
-            $('#kode_warna_cap').val(kodeWarna);
-            $('#warna_cap').val(warnaCap);
-        });
-
-        // Handle perubahan kode warna cap (Edit) - SAMA DENGAN TAMBAH
-        $('#e-id_master_kw_cap').change(function () {
-            var selectedOption = $(this).find('option:selected');
-            var kodeWarna = selectedOption.data('kode');
-            var warnaCap = selectedOption.data('warna');
-            $('#e-kode_warna_cap').val(kodeWarna);
-            $('#e-warna_cap').val(warnaCap);
-        });
-
-        // Handle perubahan kode warna body (Tambah)
-        $('#id_master_kw_body').change(function () {
-            var selectedOption = $(this).find('option:selected');
-            var kodeWarna = selectedOption.data('kode');
-            var warnaBody = selectedOption.data('warna');
-            $('#kode_warna_body').val(kodeWarna);
-            $('#warna_body').val(warnaBody);
-        });
-
-        // Handle perubahan kode warna body (Edit) - SAMA DENGAN TAMBAH
-        $('#e-id_master_kw_body').change(function () {
-            var selectedOption = $(this).find('option:selected');
-            var kodeWarna = selectedOption.data('kode');
-            var warnaBody = selectedOption.data('warna');
-            $('#e-kode_warna_body').val(kodeWarna);
-            $('#e-warna_body').val(warnaBody);
-        });
-
-        // ========== FUNGSI FILTER ==========
-
-        // Filter functionality
-        $('#lihat').click(function () {
-            var filter_customer = $('#filter_customer').find(':selected').val();
-            var filter_tgl = $('#filter_tgl').val();
-            var filter_tgl2 = $('#filter_tgl2').val();
-
-            if (filter_tgl == '' && filter_tgl2 != '') {
-                alert('Dari tanggal belum diisi');
-            } else if (filter_tgl != '' && filter_tgl2 == '') {
-                alert('Sampai tanggal belum diisi');
-            } else {
-                const query = new URLSearchParams({
-                    nama_customer: filter_customer,
-                    date_from: filter_tgl,
-                    date_until: filter_tgl2
-                })
-                window.location = "<?= base_url() ?>marketing/konfirmasi_pesanan/index?" + query.toString()
-            }
-        });
-
-        // ========== MODAL FUNCTIONALITY ==========
-
-        // Detail modal functionality
-        $('#detail').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var id_mkt_kp = button.data('id_mkt_kp');
-            var no_kp = button.data('no_kp');
-            var tgl_kp = button.data('tgl_kp');
-            var nama_customer = button.data('nama_customer');
-            var kode_customer = button.data('kode_customer');
-            var spek_kapsul = button.data('spek_kapsul');
-            var kode_print = button.data('kode_print');
-            var logo_print = button.data('logo_print');
-            var kode_warna_cap = button.data('kode_warna_cap');
-            var warna_cap = button.data('warna_cap');
-            var kode_warna_body = button.data('kode_warna_body');
-            var warna_body = button.data('warna_body');
-            var jumlah_kp = button.data('jumlah_kp');
-            var harga_kp = button.data('harga_kp');
-            var size_machine = button.data('size_machine');
-            var no_po = button.data('no_po');
-            var tgl_po = button.data('tgl_po');
-            var jenis_pack = button.data('jenis_pack');
-            var tgl_kirim = button.data('tgl_kirim');
-            var ket_kp = button.data('ket_kp');
-            var created_by = button.data('created_by');
-
-            var modal = $(this);
-            modal.find('#v-id_mkt_kp').val(id_mkt_kp);
-            modal.find('#v-no_kp').val(no_kp);
-            
-            // Handle tanggal dengan validasi
-            modal.find('#v-tgl_kp').val(isValidDate(tgl_kp) ? tgl_kp : '-');
-            modal.find('#v-tgl_po').val(isValidDate(tgl_po) ? tgl_po : '-');
-            modal.find('#v-tgl_kirim').val(isValidDate(tgl_kirim) ? tgl_kirim : '-');
-            
-            modal.find('#v-nama_customer').val(nama_customer || '-');
-            modal.find('#v-kode_customer').val(kode_customer || '-');
-            modal.find('#v-spek_kapsul').val(spek_kapsul || '-');
-            modal.find('#v-kode_print').val(kode_print || '-');
-            modal.find('#v-logo_print').val(logo_print || '-');
-            modal.find('#v-size_machine').val(size_machine || '-');
-            
-            // Format kode warna dengan nama warna
-            var kodeWarnaCap = (kode_warna_cap && warna_cap) ? kode_warna_cap + ' - ' + warna_cap : '-';
-            var kodeWarnaBody = (kode_warna_body && warna_body) ? kode_warna_body + ' - ' + warna_body : '-';
-            modal.find('#v-kode_warna_cap').val(kodeWarnaCap);
-            modal.find('#v-kode_warna_body').val(kodeWarnaBody);
-            
-            modal.find('#v-jumlah_kp').val(formatRupiah(jumlah_kp.toString()) + ' pcs');
-            modal.find('#v-harga_kp').val('Rp ' + formatRupiah(harga_kp.toString()));
-            modal.find('#v-no_po').val(no_po || '-');
-            modal.find('#v-jenis_pack').val(jenis_pack || '-');
-            modal.find('#v-ket_kp').val(ket_kp || '-');
-            modal.find('#v-created_by').val(created_by || '-');
-        });
-
-        // Edit modal functionality dengan penanganan yang SAMA DENGAN TAMBAH
-       // Edit modal functionality dengan penanganan yang SAMA DENGAN TAMBAH
-$('#edit').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget);
-    console.log('Button data:', button.data()); // Debug
-    
-    var id_mkt_kp = button.data('id_mkt_kp');
-    var no_kp = button.data('no_kp');
-    var tgl_kp = button.data('tgl_kp');
-    var id_customer = button.data('id_customer');
-    var nama_customer = button.data('nama_customer');
-    var kode_customer = button.data('kode_customer');
-    var spek_kapsul = button.data('spek_kapsul');
-    var kode_print = button.data('kode_print');
-    var logo_print = button.data('logo_print');
-    var kode_warna_cap = button.data('kode_warna_cap');
-    var warna_cap = button.data('warna_cap');
-    var kode_warna_body = button.data('kode_warna_body');
-    var warna_body = button.data('warna_body');
-    var jumlah_kp = button.data('jumlah_kp');
-    var harga_kp = button.data('harga_kp');
-    var no_po = button.data('no_po');
-    var tgl_po = button.data('tgl_po');
-    var jenis_pack = button.data('jenis_pack');
-    var tgl_kirim = button.data('tgl_kirim');
-    var ket_kp = button.data('ket_kp');
-    var updated_by = button.data('updated_by');
-
-    console.log('ID MKT KP:', id_mkt_kp); // Debug
-    console.log('No KP:', no_kp); // Debug
-
-    var modal = $(this);
-    modal.find('#e-id_mkt_kp').val(id_mkt_kp);
-    modal.find('#e-no_kp').val(no_kp);
-    
-    // Handle tanggal KP
-    if (isValidDate(tgl_kp)) {
-        modal.find('#e-tgl_kp').val(tgl_kp);
-    } else {
-        modal.find('#e-tgl_kp').val(formatDateForInput(new Date()));
-    }
-    
-    modal.find('#e-id_customer').val(id_customer).trigger("chosen:updated");
-    modal.find('#e-no_po').val(no_po || '');
-    
-    // Handle tanggal PO
-    if (isValidDate(tgl_po)) {
-        modal.find('#e-tgl_po').val(tgl_po);
-    } else {
-        modal.find('#e-tgl_po').val('');
-    }
-    
-    modal.find('#e-spek_kapsul').val(spek_kapsul).trigger("chosen:updated");
-    
-    // Handle tanggal kirim dengan lebih baik
-    if (isValidDate(tgl_kirim)) {
-        var today = new Date();
-        var deliveryDate = parseDateFromInput(tgl_kirim);
-        
-        if (deliveryDate) {
-            today.setHours(0, 0, 0, 0);
-            deliveryDate.setHours(0, 0, 0, 0);
-            
-            if (deliveryDate < today) {
-                // Jika tanggal kirim sudah lewat, set ke hari ini
-                modal.find('#e-tgl_kirim').val(formatDateForInput(new Date()));
-                showNotification('Tanggal kirim telah disesuaikan ke tanggal hari ini karena tanggal sebelumnya sudah lewat.', 'info');
-            } else {
-                // Jika masih valid, gunakan tanggal asli
-                modal.find('#e-tgl_kirim').val(tgl_kirim);
-            }
-        } else {
-            // Jika parsing gagal, set default hari ini
-            modal.find('#e-tgl_kirim').val(formatDateForInput(new Date()));
-        }
-    } else {
-        // Jika tidak ada tanggal kirim atau tanggal invalid, set default hari ini
-        modal.find('#e-tgl_kirim').val(formatDateForInput(new Date()));
-    }
-    
-    // Set checkbox kode print berdasarkan apakah ada kode print - SAMA DENGAN TAMBAH
-    if (kode_print && kode_print !== '' && kode_print !== '-') {
-        $('#e-use_print').prop('checked', true);
-        $('.e-print-section').show();
-        modal.find('#e-kode_print').val(kode_print);
-        modal.find('#e-logo_print').val(logo_print || '');
-        // Load data kode print untuk edit
-        setTimeout(function() {
-            loadPrintsByCustomer(id_customer, 'e-');
-            // Set nilai yang dipilih setelah data dimuat
-            setTimeout(function() {
-                $('#e-id_master_print').val(kode_print).trigger('chosen:updated');
-            }, 500);
-        }, 300);
-    } else {
-        $('#e-use_print').prop('checked', false);
-        $('.e-print-section').hide();
-    }
-
-    // Set kode warna - SAMA DENGAN TAMBAH
-    modal.find('#e-kode_warna_cap').val(kode_warna_cap || '');
-    modal.find('#e-warna_cap').val(warna_cap || '');
-    modal.find('#e-kode_warna_body').val(kode_warna_body || '');
-    modal.find('#e-warna_body').val(warna_body || '');
-    
-    // Set nilai dropdown kode warna jika ada - SAMA DENGAN TAMBAH
-    if (kode_warna_cap) {
-        $('#e-id_master_kw_cap').val(kode_warna_cap).trigger('chosen:updated');
-    }
-    if (kode_warna_body) {
-        $('#e-id_master_kw_body').val(kode_warna_body).trigger('chosen:updated');
-    }
-    
-    modal.find('#e-jumlah_kp').val(formatRupiah(jumlah_kp.toString()));
-    modal.find('#e-harga_kp').val(formatRupiah(harga_kp.toString()));
-    modal.find('#e-jenis_pack').val(jenis_pack).trigger("chosen:updated");
-    modal.find('#e-ket_kp').val(ket_kp || '');
-    modal.find('#e-updated_by').val(updated_by);
-
-    // Handle datepicker conflict dengan modal
-    modal.find('#e-tgl_po').datepicker().on('show.bs.modal', function(event) {
-        event.stopPropagation();
-    });
-    
-    modal.find('#e-tgl_kp').datepicker().on('show.bs.modal', function(event) {
-        event.stopPropagation();
-    });
-
-    modal.find('#e-tgl_kirim').datepicker().on('show.bs.modal', function(event) {
-        event.stopPropagation();
-    });
-});
-        // ========== VALIDASI NO KP ==========
-
-        // Cek No KP untuk tambah
-        $("#no_kp").keyup(function () {
-            var no_kp = $("#no_kp").val();
-            if (no_kp.length > 0) {
-                jQuery.ajax({
-                    url: "<?= base_url() ?>marketing/konfirmasi_pesanan/cek_no_kp",
-                    dataType: 'text',
-                    type: "post",
-                    data: { no_kp: no_kp },
-                    success: function (response) {
-                        if (response == "true") {
-                            $("#no_kp").addClass("is-invalid");
-                            $("#simpan").attr("disabled", "disabled");
-                        } else {
-                            $("#no_kp").removeClass("is-invalid");
-                            $("#simpan").removeAttr("disabled");
-                        }
-                    },
-                    error: function() {
-                        $("#no_kp").removeClass("is-invalid");
-                        $("#simpan").removeAttr("disabled");
-                    }
-                });
-            } else {
-                $("#no_kp").removeClass("is-invalid");
-                $("#simpan").removeAttr("disabled");
-            }
-        });
-
-        // Cek No KP untuk edit - SAMA DENGAN TAMBAH
-        $("#e-no_kp").keyup(function () {
-            var no_kp = $("#e-no_kp").val();
-            if (no_kp.length > 0) {
-                jQuery.ajax({
-                    url: "<?= base_url() ?>marketing/konfirmasi_pesanan/cek_no_kp",
-                    dataType: 'text',
-                    type: "post",
-                    data: { no_kp: no_kp },
-                    success: function (response) {
-                        if (response == "true") {
-                            $("#e-no_kp").addClass("is-invalid");
-                            $("#update").attr("disabled", "disabled");
-                        } else {
-                            $("#e-no_kp").removeClass("is-invalid");
-                            $("#update").removeAttr("disabled");
-                        }
-                    },
-                    error: function() {
-                        $("#e-no_kp").removeClass("is-invalid");
-                        $("#update").removeAttr("disabled");
-                    }
-                });
-            } else {
-                $("#e-no_kp").removeClass("is-invalid");
-                $("#update").removeAttr("disabled");
-            }
-        });
-
-        // ========== RESET FORM ==========
-
-        // Reset form saat modal tambah ditutup
-        $('#add').on('hidden.bs.modal', function () {
-            $(this).find('form')[0].reset();
-            $('.chosen-select').trigger('chosen:updated');
-            $('#simpan').removeAttr('disabled');
-            // Reset checkbox dan sembunyikan section kode print
-            $('#use_print').prop('checked', false);
-            $('.print-section').hide();
-            // Hapus class invalid
-            $('#no_kp').removeClass('is-invalid');
-        });
-
-        // Reset form saat modal edit ditutup - SAMA DENGAN TAMBAH
-        $('#edit').on('hidden.bs.modal', function () {
-            $('#update').removeAttr('disabled');
-            // Reset checkbox dan sembunyikan section kode print
-            $('#e-use_print').prop('checked', false);
-            $('.e-print-section').hide();
-            // Hapus class invalid
-            $('#e-no_kp').removeClass('is-invalid');
-        });
-
-        // ========== KONFIRMASI SUBMIT ==========
-
-        // Konfirmasi submit untuk form tambah dengan validasi tanggal
-        $('#form-add').submit(function(e) {
-            // Validasi field wajib
-            var no_kp = $('#no_kp').val();
-            var tgl_kp = $('#tgl_kp').val();
-            var id_customer = $('#id_customer').val();
-            var jumlah_kp = $('#jumlah_kp').val();
-            var harga_kp = $('#harga_kp').val();
-            
-            if (!no_kp || !tgl_kp || !id_customer || !jumlah_kp || !harga_kp) {
-                alert('Harap lengkapi semua field yang wajib diisi!');
-                return false;
-            }
-            
-            // Validasi tanggal
-            if (!isValidDate(tgl_kp)) {
-                alert('Tanggal KP tidak valid!');
-                $('#tgl_kp').focus();
-                return false;
-            }
-            
-            var tgl_kirim = $('#tgl_kirim').val();
-            if (tgl_kirim && !isValidDate(tgl_kirim)) {
-                alert('Tanggal Kirim tidak valid!');
-                $('#tgl_kirim').focus();
-                return false;
-            }
-            
-            var tgl_po = $('#tgl_po').val();
-            if (tgl_po && !isValidDate(tgl_po)) {
-                alert('Tanggal PO tidak valid!');
-                $('#tgl_po').focus();
-                return false;
-            }
-            
-            return confirm('Apakah Anda yakin ingin menyimpan data Konfirmasi Pesanan ini?');
-        });
-
-        // Konfirmasi submit untuk form edit dengan validasi tanggal - SAMA DENGAN TAMBAH
-        $('#form-edit').submit(function(e) {
-    // Validasi field wajib
-    var no_kp = $('#e-no_kp').val();
-    var tgl_kp = $('#e-tgl_kp').val();
-    var id_customer = $('#e-id_customer').val();
-    var jumlah_kp = $('#e-jumlah_kp').val();
-    var harga_kp = $('#e-harga_kp').val();
-    
-    if (!no_kp || !tgl_kp || !id_customer || !jumlah_kp || !harga_kp) {
-        alert('Harap lengkapi semua field yang wajib diisi!');
-        return false;
-    }
-    
-    // Validasi tanggal
-    if (!isValidDate(tgl_kp)) {
-        alert('Tanggal KP tidak valid!');
-        $('#e-tgl_kp').focus();
-        return false;
-    }
-    
-    var tgl_kirim = $('#e-tgl_kirim').val();
-    if (tgl_kirim && !isValidDate(tgl_kirim)) {
-        alert('Tanggal Kirim tidak valid!');
-        $('#e-tgl_kirim').focus();
-        return false;
-    }
-    
-    var tgl_po = $('#e-tgl_po').val();
-    if (tgl_po && !isValidDate(tgl_po)) {
-        alert('Tanggal PO tidak valid!');
-        $('#e-tgl_po').focus();
-        return false;
-    }
-    
-    // Format angka sebelum submit (hapus titik)
-    $('#e-jumlah_kp').val($('#e-jumlah_kp').val().replace(/\./g, ''));
-    $('#e-harga_kp').val($('#e-harga_kp').val().replace(/\./g, ''));
-    
-    return confirm('Apakah Anda yakin ingin mengupdate data Konfirmasi Pesanan ini?');
-});
-
-        // ========== EKSPORT FUNCTIONALITY ==========
-
-        // Export functionality
-        $('#export').click(function () {
-            var filter_customer = $('#filter_customer').find(':selected').val();
-            var filter_tgl = $('#filter_tgl').val();
-            var filter_tgl2 = $('#filter_tgl2').val();
-
-            if (filter_tgl == '' && filter_tgl2 != '') {
-                alert('Dari tanggal belum diisi');
-            } else if (filter_tgl != '' && filter_tgl2 == '') {
-                alert('Sampai tanggal belum diisi');
-            } else {
-                const query = new URLSearchParams({
-                    nama_customer: filter_customer,
-                    date_from: filter_tgl,
-                    date_until: filter_tgl2,
-                    export: 'true'
-                })
-                window.location = "<?= base_url() ?>marketing/konfirmasi_pesanan/export?" + query.toString()
-            }
-        });
-
-        // ========== INISIALISASI TAMBAHAN ==========
-
-        // Auto-focus pada input pertama di modal tambah
-        $('#add').on('shown.bs.modal', function () {
-            $('#no_kp').focus();
-        });
-
-        // Auto-focus pada input pertama di modal edit - SAMA DENGAN TAMBAH
-        $('#edit').on('shown.bs.modal', function () {
-            $('#e-no_kp').focus();
-        });
-
-        // Handle escape key untuk close modal
-        $(document).keyup(function(e) {
-            if (e.key === "Escape") {
-                $('.modal').modal('hide');
-            }
-        });
-
-        console.log('JavaScript Konfirmasi Pesanan loaded successfully');
-    });
-</script>
+    </script>
 </body>
- 
 </html>

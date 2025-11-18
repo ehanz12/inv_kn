@@ -41,8 +41,8 @@
 
         /* Styling untuk tabel utama */
         #schedule-table th {
-            background-color: #ffa07a; /* lightsalmon */
-            color: #000080; /* darkblue */
+            background-color: #7abcffff; /* lightsalmon */
+            color: #ffffffff; /* darkblue */
             font-weight: bold;
             text-align: center;
             font-size: 9px;
@@ -166,10 +166,10 @@
             foreach ($mesins as $mesin) {
                 $no = 1;
                 
-                // Filter data berdasarkan mesin
+                // Filter data berdasarkan mesin - menggunakan mesin_prd dari tb_mkt_schedule
                 $detail_per_mesin = array();
                 foreach ($detail as $item) {
-                    if ($item['mesin'] === $mesin) {
+                    if ($item['mesin_prd'] === $mesin) {
                         $detail_per_mesin[] = $item;
                     }
                 }
@@ -192,35 +192,51 @@
 
                 // Tampilkan data untuk mesin ini
                 foreach ($detail_per_mesin as $k) {
-                    $tgl_sch = explode('-', $k['tgl_sch'])[2] . "-" . explode('-', $k['tgl_sch'])[1] . "-" . explode('-', $k['tgl_sch'])[0];
-                    $tgl_kirim = explode('-', $k['tgl_kirim'])[2] . "-" . explode('-', $k['tgl_kirim'])[1] . "-" . explode('-', $k['tgl_kirim'])[0];
+                    $tgl_sch = !empty($k['tgl_sch']) ? date('d-m-Y', strtotime($k['tgl_sch'])) : '-';
+                    $tgl_kirim = !empty($k['tgl_kirim']) ? date('d-m-Y', strtotime($k['tgl_kirim'])) : '-';
                     
                     // Format jumlah dengan separator
-                    $jumlah = number_format($k['jumlah'], 0, ',', '.');
-                    $sisa = $k['sisa'] != 0 ? number_format($k['sisa'], 0, ',', '.') : '-';
+                    $jumlah = !empty($k['jumlah_prd']) ? number_format($k['jumlah_prd'], 0, ',', '.') : '-';
+                    $sisa = !empty($k['sisa']) && $k['sisa'] != 0 ? number_format($k['sisa'], 0, ',', '.') : '-';
+                    
+                    // Handle data warna - sesuaikan dengan field dari tb_mkt_schedule
+                    $kode_warna_cap = !empty($k['kode_warna_cap']) ? $k['kode_warna_cap'] : '-';
+                    $kode_warna_body = !empty($k['kode_warna_body']) ? $k['kode_warna_body'] : '-';
+                    $warna_cap = !empty($k['warna_cap']) ? $k['warna_cap'] : '-';
+                    $warna_body = !empty($k['warna_body']) ? $k['warna_body'] : '-';
+                    
+                    // Data lainnya
+                    $print = !empty($k['print']) ? $k['print'] : '-';
+                    $tinta = !empty($k['tinta']) ? $k['tinta'] : '-';
+                    $minyak = !empty($k['minyak']) ? $k['minyak'] : '-';
+                    $no_cr = !empty($k['no_cr']) ? $k['no_cr'] : '-';
+                    $jenis_box = !empty($k['jenis_box']) ? $k['jenis_box'] : '-';
+                    $jenis_zak = !empty($k['jenis_zak']) ? $k['jenis_zak'] : '-';
+                    $no_batch = !empty($k['no_batch']) ? $k['no_batch'] : '-';
+                    $size = !empty($k['size_machine']) ? $k['size_machine'] : '-';
                 ?>
                     <tr class="mesin-<?= $mesin ?>">
                         <?php if ($no === 1) { ?>
-                            <td class="mesin-header text-center"><?= $k['mesin'] ?></td>
+                            <td class="mesin-header text-center"><?= $k['mesin_prd'] ?></td>
                         <?php } else { ?>
                             <td class="text-center"></td>
                         <?php } ?>
                         <td class="text-center"><?= $no++ ?></td>
                         <td class="customer-name"><?= $k['nama_customer'] ?></td>
-                        <td class="text-center"><?= $k['size'] ?></td>
-                        <td class="text-center"><?= $k['kode_warna_cap'] ?>-<?= $k['kode_warna_body'] ?></td>
-                        <td class="text-center"><?= $k['warna_cap'] ?>-<?= $k['warna_body'] ?></td>
-                        <td class="text-center"><?= $k['print'] ?></td>
-                        <td class="text-center"><?= $k['tinta'] ?></td>
-                        <td class="text-center"><?= $k['minyak'] ?></td>
+                        <td class="text-center"><?= $size ?></td>
+                        <td class="text-center"><?= $kode_warna_cap ?>-<?= $kode_warna_body ?></td>
+                        <td class="text-center"><?= $warna_cap ?>-<?= $warna_body ?></td>
+                        <td class="text-center"><?= $print ?></td>
+                        <td class="text-center"><?= $tinta ?></td>
+                        <td class="text-center"><?= $minyak ?></td>
                         <td class="text-center"><?= $jumlah ?></td>
                         <td class="text-center"><?= $sisa ?></td>
                         <td class="text-center"><?= $tgl_sch ?></td>
-                        <td class="text-center"><?= $k['no_cr'] ?></td>
+                        <td class="text-center"><?= $no_cr ?></td>
                         <td class="text-center"><?= $tgl_kirim ?></td>
-                        <td class="text-center"><?= $k['jenis_box'] ?></td>
-                        <td class="text-center"><?= $k['jenis_zak'] ?></td>
-                        <td class="text-center"><?= $k['no_batch'] ?></td>
+                        <td class="text-center"><?= $jenis_box ?></td>
+                        <td class="text-center"><?= $jenis_zak ?></td>
+                        <td class="text-center"><?= $no_batch ?></td>
                     </tr>
                 <?php } ?>
                 

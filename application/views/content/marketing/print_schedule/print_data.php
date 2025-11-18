@@ -67,7 +67,7 @@
                             <th>Tgl Sch</th>
                             <th>Customer</th>
                             <th>Mesin</th>
-                            <th>No CR</th>
+                            <th class="text-center">No CR</th>
                             <th>No Batch</th>
                             
                             <th>Jumlah</th>
@@ -110,6 +110,7 @@
                           
                                       data-tinta="<?= $k['tinta'] ?>" 
                                       data-jenis_box="<?= $k['jenis_box'] ?>" 
+                                      data-jenis_grv="<?= $k['jenis_grv'] ?>" 
                                       data-jenis_zak="<?= $k['jenis_zak'] ?>" 
                                       data-tgl_kirim="<?= $tgl_kirim ?>" 
                                       data-tgl_prd="<?= $tgl_prd ?>" 
@@ -182,13 +183,13 @@
               <input type="text" class="form-control" id="v-tgl_sch" name="tgl_sch" placeholder="Tanggal Schedule" autocomplete="off" readonly>
             </div>
           </div>
-          <!-- <div class="col-md-6">
+          <div class="col-md-6">
             <div class="form-group">
               <label for="size">Size</label>
               <input type="text" class="form-control" id="v-size" name="size" placeholder="Size" autocomplete="off" readonly>
             </div>
-          </div> -->
-          <!-- <div class="col-md-6">
+          </div> 
+           <div class="col-md-6">
             <div class="form-group">
               <label for="kode_warna">Kode Warna Cap</label>
               <div class="input-group">
@@ -205,7 +206,7 @@
                 <input type="text" class="form-control" id="v-warna_body" name="warna_body" placeholder="Nama Warna" autocomplete="off" readonly>
               </div>
             </div>
-          </div> -->
+          </div> 
           <div class="col-md-6">
             <div class="form-group">
               <label for="mesin">Mesin</label>
@@ -221,25 +222,31 @@
           
           
           
-          <!-- <div class="col-md-4">
+           <div class="col-md-6">
             <div class="form-group">
               <label for="jenis_box">Jenis Box</label>
               <input type="text" class="form-control" id="v-jenis_box" name="jenis_box" placeholder="Jenis Box" autocomplete="off" readonly>
             </div>
-          </div> -->
-          <!-- <div class="col-md-4">
+          </div> 
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="v-jenis_grv">Jenis Grv</label>
+              <input type="text" class="form-control" id="v-jenis_grv" readonly>
+            </div>
+          </div>
+           <div class="col-md-6">
             <div class="form-group">
               <label for="jenis_zak">Jenis Zak</label>
               <input type="text" class="form-control" id="v-jenis_zak" name="jenis_zak" placeholder="Jenis Zak" autocomplete="off" readonly>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <div class="form-group">
               <label for="minyak">Minyak N-M</label>
               <input type="text" class="form-control" id="v-minyak" name="minyak" placeholder="Minyak" autocomplete="off" readonly>
             </div>
-          </div> -->
-          <!-- <div class="col-md-6">
+          </div> 
+           <div class="col-md-6">
             <div class="form-group">
               <label for="tgl_kirim">Tanggal Kirim</label>
               <input type="text" class="form-control" id="v-tgl_kirim" name="tgl_kirim" placeholder="Tanggal Kirim" autocomplete="off" readonly>
@@ -250,7 +257,7 @@
               <label for="tgl_prd">Tanggal PRD</label>
               <input type="text" class="form-control" id="v-tgl_prd" name="tgl_prd" placeholder="Tanggal PRD" autocomplete="off" readonly>
             </div>
-          </div> -->
+          </div> 
           <div class="col-md-12">
             <div class="form-group">
               <label for="keterangan">Keterangan</label>
@@ -293,6 +300,7 @@
       var mesin = button.data('mesin');
       var jumlah = button.data('jumlah');
       var cek_print = button.data('cek_print');
+      var jenis_grv= button.data('jenis_grv');
       var print = button.data('print');
       var tinta = button.data('tinta');
       var jenis_box = button.data('jenis_box');
@@ -326,6 +334,7 @@
       $('#v-print').val(print);
       $('#v-tinta').val(tinta);
       $('#v-jenis_box').val(jenis_box);
+      $('#v-jenis_grv').val(jenis_grv);
       $('#v-jenis_zak').val(jenis_zak);
       $('#v-minyak').val(minyak);
       $('#v-tgl_kirim').val(tgl_kirim);

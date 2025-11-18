@@ -45,12 +45,12 @@
                           <tr>
                             <th>#</th>
                             <th>Tanggal Schedule</th>
-                            <th>No CR</th>
+                            <th class="text-center">No CR</th>
                             <th>No Batch</th>
                             <th>No KP</th>
                             <th>Nama Customer</th>
                             
-                            <th class="text-center">Detail</th>
+                           
                             <th class="text-center">Aksi</th>
                           </tr>
                         </thead>
@@ -67,15 +67,10 @@
                             <tr>
                               <th scope="row"><?= $no++ ?></th>
                               <td><?= $tgl_sch ?></td>
-                              <td><?= $k['no_cr'] ?></td>
-                              <td><?= $k['no_batch'] ?></td>
-                              <td><?= $k['no_kp'] ?? '-' ?></td>
-                              <td><?= $k['nama_customer'] ?></td>
-                             
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal"
-                                    data-target="#view" data-id_mkt_schedule="<?= $k['id_mkt_schedule'] ?>"
+                                  <span type="button"style="cursor: pointer;" class="badge badge-primary" data-toggle="modal" data-target="#view" 
+                                    data-id_mkt_schedule="<?= $k['id_mkt_schedule'] ?>"
                                     data-id_mkt_kp="<?= $k['id_mkt_kp'] ?>" data-id_customer="<?= $k['id_customer'] ?>"
                                     data-id_master_kw_cap="<?= $k['id_master_kw_cap'] ?>"
                                     data-id_master_kw_body="<?= $k['id_master_kw_body'] ?>"
@@ -92,10 +87,15 @@
                                     data-tgl_kirim="<?= $tgl_kirim ?>" data-tgl_prd="<?= $tgl_prd ?>"
                                     
                                     data-minyak="<?= $k['minyak'] ?>" data-ket_prd="<?= $k['ket_prd'] ?>">
-                                    <i class="feather icon-eye"></i>Detail
-                                  </button>
+                                    <i class=""></i><?= $k['no_cr'] ?>
+                                  </span>
                                 </div>
                               </td>
+                              <td><?= $k['no_batch'] ?></td>
+                              <td><?= $k['no_kp'] ?? '-' ?></td>
+                              <td><?= $k['nama_customer'] ?></td>
+                             
+                              
                               <td class="text-center">
                                 <?php if ($level === "admin") { ?>
                                   <div class="btn-group" role="group">

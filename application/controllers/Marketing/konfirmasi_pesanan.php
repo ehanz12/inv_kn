@@ -66,8 +66,6 @@ class Konfirmasi_pesanan extends CI_Controller {
             }
         }
     }
-    
-    
 
     /**
      * Convert date from dd/mm/yyyy to Y-m-d for database
@@ -136,6 +134,7 @@ class Konfirmasi_pesanan extends CI_Controller {
 
     public function add() {
         if ($_POST) {
+            
             // Format angka (hapus titik)
             $jumlah_kp = str_replace('.', '', $this->input->post('jumlah_kp'));
             $harga_kp = str_replace('.', '', $this->input->post('harga_kp'));
@@ -185,11 +184,13 @@ class Konfirmasi_pesanan extends CI_Controller {
     }
 
    public function update() {
+   
+
     if ($_POST) {
         $id = $this->input->post('id_mkt_kp');
         
-        // Validasi ID
-        if (empty($id)) {
+        // Validasi ID - PERBAIKAN: Cek apakah ID ada dan bukan string kosong
+        if (empty($id) || $id === "" || $id === "0") {
             $this->session->set_flashdata('error', 'ID tidak valid');
             redirect('marketing/konfirmasi_pesanan');
             return;
@@ -212,6 +213,7 @@ class Konfirmasi_pesanan extends CI_Controller {
             'tgl_kp' => $tgl_kp,
             'id_customer' => $this->input->post('id_customer'),
             'spek_kapsul' => $this->input->post('spek_kapsul'),
+            'size_machine' => $this->input->post('size_machine'),
             'id_user' => $this->session->userdata('id_user'),
             'id_master_print' => $this->input->post('id_master_print') ?: null,
             'kode_print' => $this->input->post('kode_print') ?: null,
@@ -225,11 +227,11 @@ class Konfirmasi_pesanan extends CI_Controller {
             'no_po' => $this->input->post('no_po') ?: null,
             'tgl_po' => $tgl_po,
             'jenis_pack' => $this->input->post('jenis_pack') ?: null,
-            'tgl_kirim' => $tgl_kirim,
+            
             'ket_kp' => $this->input->post('ket_kp') ?: null
         );
         
-        // Debug data sebelum update
+        // DEBUG: Tampilkan data sebelum update
         echo "<pre style='background: #f0f0f0; padding: 20px; border: 1px solid blue;'>";
         echo "=== DEBUG CONTROLLER UPDATE ===\n";
         echo "ID: " . $id . "\n";
@@ -246,8 +248,9 @@ class Konfirmasi_pesanan extends CI_Controller {
     }
 }
 
-    public function delete($id, $data) {
-        if ($this->M_konfirmasi_pesanan->delete($data)) {
+    public function delete($id) {
+    $data = ['id_mkt_kp' => $id];
+    if ($this->M_konfirmasi_pesanan->delete($data)) {
             $this->session->set_flashdata('success', 'Data berhasil dihapus');
         } else {
             $this->session->set_flashdata('error', 'Data gagal dihapus');
@@ -259,6 +262,42 @@ class Konfirmasi_pesanan extends CI_Controller {
         $no_kp = $this->input->post('no_kp');
         $cek = $this->M_konfirmasi_pesanan->cek_no_kp($no_kp);
         echo $cek ? "true" : "false";
+    }
+
+    public function update_tanggal_kirim() {
+        if ($_POST) {
+            $id = $this->input->post('id_mkt_kp');
+            $tgl_kirim = $this->input->post('tgl_kirim');
+            
+            // Validasi input
+            if (empty($id) || empty($tgl_kirim)) {
+                $this->session->set_flashdata('error', 'ID dan Tanggal Kirim harus diisi');
+                redirect('marketing/konfirmasi_pesanan');
+                return;
+            }
+
+            // Convert tanggal dari dd/mm/yyyy ke Y-m-d
+            $tgl_kirim_db = $this->convertDateToDb($tgl_kirim);
+            
+            // Validasi tanggal kirim - jika sudah lewat, set ke hari ini
+            if ($tgl_kirim_db && $tgl_kirim_db < date('Y-m-d')) {
+                $tgl_kirim_db = date('Y-m-d');
+            }
+            
+            $data = array(
+                'tgl_kirim' => $tgl_kirim_db,
+                'updated_by' => $this->session->userdata('id_user'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            
+            // Update hanya tanggal kirim
+            if ($this->M_konfirmasi_pesanan->update_tanggal_kirim($id, $data)) {
+                $this->session->set_flashdata('success', 'Tanggal kirim berhasil diupdate');
+            } else {
+                $this->session->set_flashdata('error', 'Tanggal kirim gagal diupdate');
+            }
+            redirect('marketing/konfirmasi_pesanan');
+        }
     }
     
     // Fungsi AJAX untuk mendapatkan data kode print berdasarkan customer

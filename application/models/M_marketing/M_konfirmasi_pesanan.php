@@ -13,46 +13,49 @@ class M_konfirmasi_pesanan extends CI_Model {
     }
     
     // Get all data dengan join customer
-    public function get_all($nama_customer = null, $date_from = null, $date_until = null) {
-        $sql = "
-            SELECT 
-                a.*,
-                b.id_master_print, 
-                b.kode_print,
-                b.logo_print,
-                c.nama_customer,
-                c.kode_customer,
-                c.id_customer, 
-                d.id_master_kw_cap, 
-                d.kode_warna_cap,
-                d.warna_cap,
-                e.id_master_kw_body,
-                e.kode_warna_body,
-                e.warna_body
-            FROM tb_mkt_kp a
-            LEFT JOIN tb_mkt_master_customer c ON a.id_customer = c.id_customer
-            LEFT JOIN tb_mkt_master_print b ON a.id_master_print = b.id_master_print
-            LEFT JOIN tb_mkt_master_kw_cap d ON a.id_master_kw_cap = d.id_master_kw_cap
-            LEFT JOIN tb_mkt_master_kw_body e ON a.id_master_kw_body = e.id_master_kw_body
-            WHERE a.is_deleted = 0 
-        ";
-        
-        // Apply filters
-        if ($nama_customer && $nama_customer != '') {
-            $sql .= " AND c.nama_customer = '" . $this->db->escape_str($nama_customer) . "'";
-        }
-        
-        // Konversi tanggal filter dari dd/mm/yyyy ke Y-m-d
-        if ($date_from && $date_until && $date_from != '' && $date_until != '') {
-            $tgl_mulai = $this->convertFilterDate($date_from);
-            $tgl_akhir = $this->convertFilterDate($date_until);
-            $sql .= " AND a.tgl_kp >= '" . $tgl_mulai . "' AND a.tgl_kp <= '" . $tgl_akhir . "'";
-        }
-        
-        $sql .= " ORDER BY a.tgl_kp DESC";
-        
-        return $this->db->query($sql)->result_array();
+   public function get_all($nama_customer = null, $date_from = null, $date_until = null) {
+    $sql = "
+        SELECT 
+            a.*,
+            b.id_master_print, 
+            b.kode_print,
+            b.logo_print,
+            c.nama_customer,
+            c.kode_customer,
+            c.id_customer, 
+            d.id_master_kw_cap, 
+            d.kode_warna_cap,
+            d.warna_cap,
+            e.id_master_kw_body,
+            e.kode_warna_body,
+            e.warna_body,
+            COALESCE(SUM(p.jumlah_prd), 0) as jumlah_prd
+        FROM tb_mkt_kp a
+        LEFT JOIN tb_mkt_master_customer c ON a.id_customer = c.id_customer
+        LEFT JOIN tb_mkt_master_print b ON a.id_master_print = b.id_master_print
+        LEFT JOIN tb_mkt_master_kw_cap d ON a.id_master_kw_cap = d.id_master_kw_cap
+        LEFT JOIN tb_mkt_master_kw_body e ON a.id_master_kw_body = e.id_master_kw_body
+        LEFT JOIN tb_mkt_schedule p ON a.id_mkt_kp = p.id_mkt_kp AND p.is_deleted = 0
+        WHERE a.is_deleted = 0
+    ";
+
+    // Filter customer
+    if ($nama_customer && $nama_customer != '') {
+        $sql .= " AND c.nama_customer = '" . $this->db->escape_str($nama_customer) . "'";
     }
+
+    // Filter tanggal (konversi format)
+    if ($date_from && $date_until && $date_from != '' && $date_until != '') {
+        $tgl_mulai = $this->convertFilterDate($date_from);
+        $tgl_akhir = $this->convertFilterDate($date_until);
+        $sql .= " AND a.tgl_kp BETWEEN '$tgl_mulai' AND '$tgl_akhir'";
+    }
+
+    $sql .= " GROUP BY a.id_mkt_kp";
+    $sql .= " ORDER BY a.tgl_kp DESC";
+
+    return $this->db->query($sql)->result_array();
+}
 
     /**
      * Convert filter date from dd/mm/yyyy to Y-m-d
@@ -109,82 +112,74 @@ class M_konfirmasi_pesanan extends CI_Model {
     
     // PERBAIKAN: Update data yang benar
     public function update($id, $data) {
-        $id_user = $this->id_user();
-        
-        $sql = "
-            UPDATE tb_mkt_kp 
-            SET 
-                no_kp = ?,
-                tgl_kp = ?,
-                id_customer = ?,
-                spek_kapsul = ?,
-                id_user = ?,
-                id_master_print = ?,
-                kode_print = ?,
-                logo_print = ?,
-                id_master_kw_cap = ?,
-                kode_warna_cap = ?,
-                id_master_kw_body = ?,
-                kode_warna_body = ?,
-                jumlah_kp = ?,
-                harga_kp = ?,
-                no_po = ?,
-                tgl_po = ?,
-                jenis_pack = ?,
-                tgl_kirim = ?,
-                ket_kp = ?,
-                updated_by = ?,
-                updated_at = NOW()
-            WHERE id_mkt_kp = ? AND is_deleted = 0
-        ";
-        
-        return $this->db->query($sql, [
-            $data['no_kp'],
-            $data['tgl_kp'],
-            $data['id_customer'],
-            $data['spek_kapsul'],
-            $data['id_user'],
-            $data['id_master_print'],
-            $data['kode_print'],
-            $data['logo_print'],
-            $data['id_master_kw_cap'],
-            $data['kode_warna_cap'],
-            $data['id_master_kw_body'],
-            $data['kode_warna_body'],
-            $data['jumlah_kp'],
-            $data['harga_kp'],
-            $data['no_po'],
-            $data['tgl_po'],
-            $data['jenis_pack'],
-            $data['tgl_kirim'],
-            $data['ket_kp'],
-            $id_user,
-            $id
-        ]);
+    // Validasi ID di model juga
+    if (empty($id) || $id === "" || $id === "0") {
+        return false;
     }
     
-    // Delete data (soft delete)
-    // public function delete($id) {
-    //     $id_user = $this->id_mkt_kp();
-        
-    //     $sql = "
-    //         UPDATE tb_mkt_kp 
-    //         SET is_deleted = 1, updated_at = NOW(), updated_by = ?
-    //         WHERE id_mkt_kp = ?
-    //     ";
-        
-    //     return $this->db->query($sql, [$id_user, $id]);
-    // }
+    $id_user = $this->id_user();
     
-    public function delete($id, $data)
-    {
+    // Gunakan query builder CI untuk menghindari error
+    $this->db->where('id_mkt_kp', $id);
+    $this->db->where('is_deleted', 0);
+    
+    $update_data = array(
+        'no_kp' => $data['no_kp'],
+        'tgl_kp' => $data['tgl_kp'],
+        'id_customer' => $data['id_customer'],
+        'spek_kapsul' => $data['spek_kapsul'],
+        'size_machine' => $data['size_machine'],
+        'id_user' => $data['id_user'],
+        'id_master_print' => $data['id_master_print'],
+        'kode_print' => $data['kode_print'],
+        'logo_print' => $data['logo_print'],
+        'id_master_kw_cap' => $data['id_master_kw_cap'],
+        'kode_warna_cap' => $data['kode_warna_cap'],
+        'id_master_kw_body' => $data['id_master_kw_body'],
+        'kode_warna_body' => $data['kode_warna_body'],
+        'jumlah_kp' => $data['jumlah_kp'],
+        'harga_kp' => $data['harga_kp'],
+        'no_po' => $data['no_po'],
+        'tgl_po' => $data['tgl_po'],
+        'jenis_pack' => $data['jenis_pack'],
+        'tgl_kirim' => $data['tgl_kirim'],
+        'ket_kp' => $data['ket_kp'],
+        'updated_by' => $id_user,
+        'updated_at' => date('Y-m-d H:i:s')
+    );
+    
+    $result = $this->db->update('tb_mkt_kp', $update_data);
+    
+    // Debug query
+    if (!$result) {
+        echo "Error: " . $this->db->error()['message'];
+    }
+    
+    return $result;
+} //hanya tanggal kirim
+    public function update_tanggal_kirim($id, $data) {
+        $this->db->where('id_mkt_kp', $id);
+        $this->db->where('is_deleted', 0);
+        
+        $update_data = array(
+            'tgl_kirim' => $data['tgl_kirim'],
+            'updated_by' => $data['updated_by'],
+            'updated_at' => date('Y-m-d H:i:s')
+        );
+        
+        return $this->db->update('tb_mkt_kp', $update_data);
+    }
+    
+    // Delete data
+    public function delete($data) {
         $id_user = $this->id_user();
         $sql = "
         DELETE FROM `tb_mkt_kp`
-        WHERE `id_mkt_kp`='$data[id_mkt_kp]'
+        WHERE `id_mkt_kp` = ?
         ";
-        return $this->db->query($sql);
+        return $this->db->query($sql, [$data['id_mkt_kp']]);
     }
+    
     // Cek No KP sudah ada
     public function cek_no_kp($no_kp) {
         $this->db->where('no_kp', $no_kp);

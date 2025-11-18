@@ -26,40 +26,40 @@ class Print_schedule extends CI_Controller
 		$this->template->load('template', 'content/marketing/print_schedule/print_data', $data);
 	}
 
-	public function add()
-	{
-		$print = ($data['print']);
-		if ($print != 0) {
-			$print;
-		} else {
-			$print = "";
-		}
-		$data['id_customer'] = $this->input->post('id_customer', TRUE);
-		$data['id_kw_cap'] = $this->input->post('id_kw_cap', TRUE);
-		$data['id_kw_body'] = $this->input->post('id_kw_body', TRUE);
-		$data['no_cr'] = $this->input->post('no_cr', TRUE);
-		$data['no_batch'] = $this->input->post('no_batch', TRUE);
-		$data['tgl_sch'] = $this->convertDate($this->input->post('tgl_sch', TRUE));
-		$data['size'] = $this->input->post('size', TRUE);
-		$data['mesin'] = $this->input->post('mesin', TRUE);
-		$data['jumlah'] = $this->input->post('jumlah', TRUE);
-		$data['cek_print'] = $this->input->post('cek_print', TRUE);
-		$data['print'] = $print;
-		$data['tinta'] = $this->input->post('tinta', TRUE);
-		$data['jenis_box'] = $this->input->post('jenis_box', TRUE);
-		$data['jenis_zak'] = $this->input->post('jenis_zak', TRUE);
-		$data['minyak'] = $this->input->post('minyak', TRUE);
-		$data['tgl_kirim'] = $this->convertDate($this->input->post('tgl_kirim', TRUE));
-		$data['tgl_prd'] = $this->convertDate($this->input->post('tgl_prd', TRUE));
-		$data['keterangan'] = $this->input->post('keterangan', TRUE);
-		$respon = $this->M_tambah_schedule->add($data);
+	// public function add()
+	// {
+	// 	$print = ($data['print']);
+	// 	if ($print != 0) {
+	// 		$print;
+	// 	} else {
+	// 		$print = "";
+	// 	}
+	// 	$data['id_customer'] = $this->input->post('id_customer', TRUE);
+	// 	$data['id_kw_cap'] = $this->input->post('id_kw_cap', TRUE);
+	// 	$data['id_kw_body'] = $this->input->post('id_kw_body', TRUE);
+	// 	$data['no_cr'] = $this->input->post('no_cr', TRUE);
+	// 	$data['no_batch'] = $this->input->post('no_batch', TRUE);
+	// 	$data['tgl_sch'] = $this->convertDate($this->input->post('tgl_sch', TRUE));
+	// 	$data['size'] = $this->input->post('size', TRUE);
+	// 	$data['mesin'] = $this->input->post('mesin', TRUE);
+	// 	$data['jumlah'] = $this->input->post('jumlah', TRUE);
+	// 	$data['cek_print'] = $this->input->post('cek_print', TRUE);
+	// 	$data['print'] = $print;
+	// 	$data['tinta'] = $this->input->post('tinta', TRUE);
+	// 	$data['jenis_box'] = $this->input->post('jenis_box', TRUE);
+	// 	$data['jenis_zak'] = $this->input->post('jenis_zak', TRUE);
+	// 	$data['minyak'] = $this->input->post('minyak', TRUE);
+	// 	$data['tgl_kirim'] = $this->convertDate($this->input->post('tgl_kirim', TRUE));
+	// 	$data['tgl_prd'] = $this->convertDate($this->input->post('tgl_prd', TRUE));
+	// 	$data['keterangan'] = $this->input->post('keterangan', TRUE);
+	// 	$respon = $this->M_tambah_schedule->add($data);
 
-		if ($respon) {
-			header('location:' . base_url('tambah_schedule') . '?alert=success&msg=Selamat anda berhasil menambah Schedule Marketing');
-		} else {
-			header('location:' . base_url('tambah_schedule') . '?alert=success&msg=Maaf anda gagal menambah Schedule Marketing');
-		}
-	}
+	// 	if ($respon) {
+	// 		header('location:' . base_url('tambah_schedule') . '?alert=success&msg=Selamat anda berhasil menambah Schedule Marketing');
+	// 	} else {
+	// 		header('location:' . base_url('tambah_schedule') . '?alert=success&msg=Maaf anda gagal menambah Schedule Marketing');
+	// 	}
+	// }
 	public function update()
 	{
 		$data['id_sch'] = $this->input->post('id_sch', TRUE);
