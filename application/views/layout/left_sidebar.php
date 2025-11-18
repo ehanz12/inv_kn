@@ -248,7 +248,7 @@
                             <li class="nav-item <?= $uri == 'PO Reg' ? 'active' : '' ?>"><a
                                     href="<?= base_url('Purchasing/purchasing_rh/purchasing_rh') ?>" class="">Rincian Harga</a></li>
                             <li class="nav-item <?= $uri == 'PO Reg' ? 'active' : '' ?>"><a
-                                    href="<?= base_url('Purchasing/Prc_dpb/Prc_dpb') ?>" class="">Rencana Belanja</a></li>
+                                    href="<?= base_url('Purchasing/purchasing_rb/purchasing_rb') ?>" class="">Rencana Belanja</a></li>
                             <li class="nav-item <?= $uri == 'PO Reg' ? 'active' : '' ?>"><a
                                     href="<?= base_url('Purchasing/Prc_dpb/Prc_dpb') ?>" class="">DPB</a></li>
 

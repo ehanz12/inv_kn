@@ -239,10 +239,10 @@
     <table class="signature-table">
         <thead>
             <tr>
-                <th style="width:20%;">Cicadas, <?= date('d M Y', strtotime($ppb->tgl_ppb ?? date('Y-m-d'))) ?></th>
-                <th style="width:20%;">Diperiksa,</th>
+                <th style="width:20%;">Cicadas <?= date('Y m D') ?>,</th>
                 <th style="width:20%;">Mengetahui,</th>
                 <th style="width:20%;">Menyetujui,</th>
+                <th style="width:20%;">Disetujui,</th>
                 <?php if ($ppb->jenis_ppb == "Non-Budget"): ?>
                     <th style="width:20%;">Disetujui,</th>
                 <?php endif; ?>
@@ -257,8 +257,8 @@
                     <?php else: ?>
                         <div class="ttd-space"></div>
                     <?php endif; ?>
-                    <div class="signature-line"></div>
-                    <div class="ttd-name">( <?= $ppb->ttd_adm ?? 'Adm / Stock Keeper' ?> )</div>
+                    <div class="signature-line">Approved</div>
+                    <div class="ttd-name">( <?= $ppb->ttd_admin ?? 'Adm / Stock Keeper' ?> )</div>
                 </td>
 
                 <!-- Supy / Kasie -->
@@ -268,7 +268,7 @@
                     <?php else: ?>
                         <div class="ttd-space"></div>
                     <?php endif; ?>
-                    <div class="signature-line"></div>
+                    <div class="signature-line"><?= $ppb->acc_spv ?></div>
                     <div class="ttd-name">( <?= $ppb->ttd_supy ?? 'Supv / Kasie' ?> )</div>
                 </td>
 
@@ -279,7 +279,7 @@
                     <?php else: ?>
                         <div class="ttd-space"></div>
                     <?php endif; ?>
-                    <div class="signature-line"></div>
+                    <div class="signature-line"><?= $ppb->acc_manager ?></div>
                     <div class="ttd-name">( <?= $ppb->ttd_manager ?? 'Manager Dept.' ?> )</div>
                 </td>
 
@@ -290,7 +290,7 @@
                     <?php else: ?>
                         <div class="ttd-space"></div>
                     <?php endif; ?>
-                    <div class="signature-line"></div>
+                    <div class="signature-line"><?= $ppb->acc_pm ?></div>
                     <div class="ttd-name">( <?= $ppb->ttd_plant ?? 'Plant Manager' ?> )</div>
                 </td>
 
@@ -302,7 +302,7 @@
                     <?php else: ?>
                         <div class="ttd-space"></div>
                     <?php endif; ?>
-                    <div class="signature-line"></div>
+                    <div class="signature-line"><?= $ppb->acc_direktur ?></div>
                     <div class="ttd-name">( <?= $ppb->ttd_direktur ?? 'Direktur' ?> )</div>
                 </td>
                 <?php endif; ?>

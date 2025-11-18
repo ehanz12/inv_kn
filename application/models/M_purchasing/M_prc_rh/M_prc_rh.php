@@ -21,6 +21,44 @@ class M_prc_rh extends CI_Model
         return $this->db->query($sql);
     }
 
+    public function get_detail_barang_rb($no_rb)
+    {
+        $sql = "SELECT a.*, a.id_prc_rh, b.*,c.id_prc_master_barang, c.no_budget,d.nama_barang, d.satuan, d.kode_barang, e.nama_supplier 
+        FROM tb_prc_rb a 
+        LEFT JOIN tb_prc_rh b ON a.id_prc_rh = b.id_prc_rh 
+        LEFT JOIN tb_prc_ppb c ON b.id_prc_ppb = c.id_prc_ppb 
+        LEFT JOIN tb_prc_master_barang d ON c.id_prc_master_barang = d.id_prc_master_barang 
+        LEFT JOIN tb_prc_master_supplier e ON d.id_prc_master_supplier = e.id_prc_master_supplier
+        WHERE a.is_deleted = 0 AND a.no_rb = '$no_rb'
+        ORDER BY a.id_prc_rb ASC";
+        return $this->db->query($sql);
+    }
+
+    public function res_barang()
+    {
+        $sql = "SELECT a.*, b.nama_barang, b.kode_barang, b.spek FROM tb_prc_rh a
+        LEFT JOIN tb_prc_ppb c ON a.id_prc_ppb = c.id_prc_ppb
+        LEFT JOIN tb_prc_master_barang b ON c.id_prc_master_barang = b.id_prc_master_barang
+        WHERE a.is_deleted = 0 AND c.is_deleted = 0 AND b.is_deleted = 0
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM tb_prc_rb d
+            WHERE d.id_prc_rh = a.id_prc_rh AND d.is_deleted = 0
+        )
+        ORDER BY a.id_prc_rh ASC";
+        return $this->db->query($sql);
+    }
+
+    public function get_detail_barang($id_prc_rh)
+    {
+        $sql = "SELECT a.*, b.nama_barang, b.satuan, b.kode_barang, b.spek FROM tb_prc_rh a
+        LEFT JOIN tb_prc_ppb c ON a.id_prc_ppb = c.id_prc_ppb
+        LEFT JOIN tb_prc_master_barang b ON c.id_prc_master_barang = b.id_prc_master_barang
+        WHERE a.is_deleted = 0 AND c.is_deleted = 0 AND b.is_deleted = 0 AND a.id_prc_rh = '$id_prc_rh'
+        ORDER BY a.id_prc_rh ASC";
+        return $this->db->query($sql);
+    }
+
     public function get_ppb()
     {
         $sql = "
