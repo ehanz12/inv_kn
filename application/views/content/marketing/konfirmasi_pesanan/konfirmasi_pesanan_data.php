@@ -569,11 +569,13 @@
                                                         <th>Tgl KP</th>
                                                         <th>No KP</th>
                                                         <th>Customer</th>
+                                                        <th>Outstanding</th>
                                                         <th>Jumlah KP</th>
                                                         <th>Tanggal Kirim</th>
                                                         <th class="text-center">Aksi</th>
                                                     </tr>
                                                 </thead>
+                                                <!-- Di bagian tbody tabel -->
                                                 <tbody>
                                                     <?php
                                                     $level = $this->session->userdata('departement');
@@ -603,7 +605,13 @@
                                                             $warna_cap = isset($k['warna_cap']) ? $k['warna_cap'] : '';
                                                             $warna_body = isset($k['warna_body']) ? $k['warna_body'] : '';
                                                             $kode_warna_body = isset($k['kode_warna_body']) ? $k['kode_warna_body'] : '';
+
+                                                            // PERUBAHAN: Jumlah KP adalah jumlah awal/pesanan asli dari tabel tb_mkt_kp
                                                             $jumlah_kp = isset($k['jumlah_kp']) ? $k['jumlah_kp'] : 0;
+
+                                                            // PERUBAHAN: Outstanding adalah sisa yang belum diproduksi (dihitung dari subquery)
+                                                            $outstanding = isset($k['outstanding']) ? $k['outstanding'] : $jumlah_kp;
+
                                                             $harga_kp = isset($k['harga_kp']) ? $k['harga_kp'] : 0;
                                                             $size_machine = isset($k['size_machine']) ? $k['size_machine'] : '';
                                                             $no_po = isset($k['no_po']) ? $k['no_po'] : '';
@@ -630,10 +638,8 @@
                                                                         data-spek_kapsul="<?= $spek_kapsul ?>"
                                                                         data-kode_print="<?= $kode_print ?>"
                                                                         data-logo_print="<?= $logo_print ?>"
-                                                                        data-kode_warna_cap="<?= $kode_warna_cap ?>"
-                                                                        data-warna_cap="<?= $warna_cap ?>"
-                                                                        data-kode_warna_body="<?= $kode_warna_body ?>"
-                                                                        data-warna_body="<?= $warna_body ?>"
+                                                                        data-kode_warna_cap="<?= $kode_warna_cap ?> - <?= $warna_cap ?> "  
+                                                                        data-kode_warna_body="<?= $kode_warna_body ?> - <?= $warna_body ?>"
                                                                         data-jumlah_kp="<?= $jumlah_kp ?>"
                                                                         data-harga_kp="<?= $harga_kp ?>"
                                                                         data-size_machine="<?= $size_machine ?>"
@@ -642,20 +648,36 @@
                                                                         data-tgl_kirim="<?= $tgl_kirim ?>"
                                                                         data-ket_kp="<?= $ket_kp ?>"
                                                                         data-created_by="<?= $created_by ?>"
-                                                                        data-jumlah_prd="<?= $jumlah_prd ?>">
+                                                                        data-jumlah_prd="<?= $jumlah_prd ?>"
+                                                                        data-outstanding="<?= $outstanding ?>">
                                                                         <?= $k['no_kp'] ?>
                                                                     </span>
                                                                 </td>
                                                                 <td><?= $nama_customer ?></td>
+
+                                                                <!-- PERUBAHAN: Kolom Outstanding (sisa) - YANG BERKURANG -->
                                                                 <td class="text-right">
-                                                                    <?= number_format($jumlah_kp, 0, ",", ".") ?> pcs
+                                                                    <?= number_format($outstanding, 0, ",", ".") ?> pcs
                                                                     <?php if ($jumlah_prd > 0): ?>
                                                                         <br>
                                                                         <small class="text-muted">
-                                                                            (Produksi: <?= number_format($jumlah_prd, 0, ",", ".") ?> pcs)
+                                                                            (Produksi:
+                                                                            <?= number_format($jumlah_prd, 0, ",", ".") ?> pcs)
                                                                         </small>
                                                                     <?php endif; ?>
+
+                                                                    <!-- Tampilkan badge jika outstanding 0 (selesai) -->
+                                                                    <?php if ($outstanding <= 0): ?>
+                                                                        <br>
+                                                                        <span class="badge badge-success">Selesai</span>
+                                                                    <?php endif; ?>
                                                                 </td>
+
+                                                                <!-- PERUBAHAN: Kolom Jumlah KP (jumlah awal) - TETAP -->
+                                                                <td class="text-right">
+                                                                    <?= number_format($jumlah_kp, 0, ",", ".") ?> pcs
+                                                                </td>
+
                                                                 <td><?= $tgl_kirim ?></td>
                                                                 <td class="text-center">
                                                                     <div class="action-buttons">
@@ -665,7 +687,6 @@
                                                                                 class="btn btn-warning btn-sm btn-action"
                                                                                 data-toggle="modal" data-target="#edit"
                                                                                 data-id_mkt_kp="<?= $k['id_mkt_kp'] ?>"
-
                                                                                 data-no_kp="<?= $k['no_kp'] ?>"
                                                                                 data-tgl_kp="<?= $k['tgl_kp'] ?>"
                                                                                 data-id_customer="<?= $k['id_customer'] ?>"
@@ -678,31 +699,30 @@
                                                                                 data-warna_cap="<?= $k['warna_cap'] ?>"
                                                                                 data-kode_warna_body="<?= $k['kode_warna_body'] ?>"
                                                                                 data-warna_body="<?= $k['warna_body'] ?>"
-                                                                                data-jumlah_kp="<?= $k['jumlah_kp'] ?>"
+                                                                                data-jumlah_kp="<?= $jumlah_kp ?>"
                                                                                 data-harga_kp="<?= $k['harga_kp'] ?>"
                                                                                 data-size_machine="<?= $k['size_machine'] ?>"
                                                                                 data-no_po="<?= $k['no_po'] ?>"
                                                                                 data-tgl_po="<?= $k['tgl_po'] ?>"
                                                                                 data-jenis_pack="<?= $k['jenis_pack'] ?>"
-                                                                                
                                                                                 data-ket_kp="<?= $k['ket_kp'] ?>"
-                                                                                data-jumlah_prd="<?= $k['jumlah_prd'] ?>">
+                                                                                data-jumlah_prd="<?= $k['jumlah_prd'] ?>"
+                                                                                data-outstanding="<?= $outstanding ?>">
                                                                                 <i class="fas fa-edit"></i> Edit
                                                                             </button>
                                                                         <?php endif; ?>
 
-                                                                        
-                                                                            <!-- Tombol Edit Tanggal Kirim (muncul jika sudah ada produksi) -->
-                                                                            <button type="button"
-                                                                                class="btn btn-info btn-sm btn-action"
-                                                                                data-toggle="modal" data-target="#edit-tanggal"
-                                                                                data-id_mkt_kp="<?= $k['id_mkt_kp'] ?>"
-                                                                                data-no_kp="<?= $k['no_kp'] ?>"
-                                                                                data-tgl_kirim="<?= $k['tgl_kirim'] ?>"
-                                                                                data-jumlah_prd="<?= $k['jumlah_prd'] ?>">
-                                                                                <i class="fas fa-calendar-alt"></i> Edit Tanggal
-                                                                            </button>
-                                                                        
+                                                                        <!-- Tombol Edit Tanggal Kirim -->
+                                                                        <button type="button"
+                                                                            class="btn btn-info btn-sm btn-action"
+                                                                            data-toggle="modal" data-target="#edit-tanggal"
+                                                                            data-id_mkt_kp="<?= $k['id_mkt_kp'] ?>"
+                                                                            data-no_kp="<?= $k['no_kp'] ?>"
+                                                                            data-tgl_kirim="<?= $k['tgl_kirim'] ?>"
+                                                                            data-jumlah_prd="<?= $k['jumlah_prd'] ?>"
+                                                                            data-outstanding="<?= $outstanding ?>">
+                                                                            <i class="fas fa-calendar-alt"></i> Edit Tanggal
+                                                                        </button>
 
                                                                         <?php if ($level === "admin" || $level == "marketing"): ?>
                                                                             <?php if ($jumlah_prd == 0): ?>
@@ -720,7 +740,7 @@
                                                             <?php
                                                         }
                                                     } else {
-                                                        echo '<tr><td colspan="14" class="text-center">Tidak ada data</td></tr>';
+                                                        echo '<tr><td colspan="15" class="text-center">Tidak ada data</td></tr>';
                                                     }
                                                     ?>
                                                 </tbody>
@@ -1024,24 +1044,31 @@
                         </div>
 
                         <!-- Kode Warna Cap dan Body di Detail -->
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Kode Warna Cap</label>
                                 <input type="text" class="form-control" id="v-kode_warna_cap" readonly>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Kode Warna Body</label>
                                 <input type="text" class="form-control" id="v-kode_warna_body" readonly>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Jumlah KP</label>
                                 <input type="text" class="form-control" id="v-jumlah_kp" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Outstanding</label>
+                                <input type="text" class="form-control" id="v-outstanding" readonly>
                             </div>
                         </div>
 
@@ -1119,8 +1146,8 @@
                     </button>
                 </div>
                 <form method="post" action="<?= base_url() ?>marketing/konfirmasi_pesanan/update" id="form-edit">
-                    
-    <input type="hidden" id="e-id_mkt_kp" name="id_mkt_kp">
+
+                    <input type="hidden" id="e-id_mkt_kp" name="id_mkt_kp">
 
                     <div class="modal-body">
                         <div class="row">
@@ -1172,7 +1199,7 @@
                                 </div>
                             </div>
 
-                            
+
 
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -1341,7 +1368,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="<?= base_url() ?>marketing/konfirmasi_pesanan/update_tanggal_kirim" id="form-edit-tanggal">
+                <form method="post" action="<?= base_url() ?>marketing/konfirmasi_pesanan/update_tanggal_kirim"
+                    id="form-edit-tanggal">
                     <input type="hidden" id="et-id_mkt_kp" name="id_mkt_kp">
                     <div class="modal-body">
                         <div class="row">
@@ -1354,18 +1382,18 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Tanggal Kirim</label>
-                                    <input type="text" class="form-control datepicker" id="et-tgl_kirim" name="tgl_kirim"
-                                        placeholder="Tanggal Kirim" autocomplete="off" required>
+                                    <input type="text" class="form-control datepicker" id="et-tgl_kirim"
+                                        name="tgl_kirim" placeholder="Tanggal Kirim" autocomplete="off" required>
                                 </div>
                             </div>
-                            
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Update Tanggal
-                        </button>
-                    </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Update Tanggal
+                            </button>
+                        </div>
                 </form>
             </div>
         </div>
@@ -1556,7 +1584,7 @@
             $('#detail').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var modal = $(this);
-                
+
                 modal.find('#v-id_mkt_kp').val(button.data('id_mkt_kp'));
                 modal.find('#v-no_kp').val(button.data('no_kp'));
                 modal.find('#v-tgl_kp').val(isValidDate(button.data('tgl_kp')) ? button.data('tgl_kp') : '-');
@@ -1568,6 +1596,7 @@
                 modal.find('#v-kode_warna_cap').val(button.data('kode_warna_cap') || '-');
                 modal.find('#v-kode_warna_body').val(button.data('kode_warna_body') || '-');
                 modal.find('#v-jumlah_kp').val(formatRupiah(button.data('jumlah_kp').toString()) + ' pcs');
+                modal.find('#v-outstanding').val(formatRupiah(button.data('outstanding').toString()) + ' pcs');
                 modal.find('#v-harga_kp').val('Rp ' + formatRupiah(button.data('harga_kp').toString()));
                 modal.find('#v-no_po').val(button.data('no_po') || '-');
                 modal.find('#v-tgl_po').val(isValidDate(button.data('tgl_po')) ? button.data('tgl_po') : '-');
@@ -1582,7 +1611,7 @@
             $('#edit').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var modal = $(this);
-                
+
                 modal.find('#e-id_mkt_kp').val(button.data('id_mkt_kp'));
                 console.log(button.data('id_mkt_kp'));
                 modal.find('#e-no_kp').val(button.data('no_kp'));
@@ -1592,13 +1621,13 @@
                 modal.find('#e-tgl_po').val(isValidDate(button.data('tgl_po')) ? button.data('tgl_po') : '');
                 modal.find('#e-spek_kapsul').val(button.data('spek_kapsul')).trigger("chosen:updated");
                 modal.find('#e-size_machine').val(button.data('size_machine')).trigger("chosen:updated");
-               
+
                 modal.find('#e-jumlah_kp').val(formatRupiah(button.data('jumlah_kp').toString()));
                 modal.find('#e-harga_kp').val(formatRupiah(button.data('harga_kp').toString()));
                 modal.find('#e-jenis_pack').val(button.data('jenis_pack')).trigger("chosen:updated");
                 modal.find('#e-ket_kp').val(button.data('ket_kp') || '');
 
-                 modal.find('#e-tgl_po').datepicker().on('show.bs.modal', function (event) {
+                modal.find('#e-tgl_po').datepicker().on('show.bs.modal', function (event) {
                     event.stopPropagation();
                 });
 
@@ -1606,7 +1635,7 @@
                     event.stopPropagation();
                 });
 
-                
+
 
                 // Handle kode print
                 if (button.data('kode_print') && button.data('kode_print') !== '' && button.data('kode_print') !== '-') {
@@ -1638,7 +1667,7 @@
             $('#edit-tanggal').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var modal = $(this);
-                
+
                 modal.find('#et-id_mkt_kp').val(button.data('id_mkt_kp'));
                 modal.find('#et-no_kp').val(button.data('no_kp'));
                 modal.find('#et-tgl_kirim').val(isValidDate(button.data('tgl_kirim')) ? button.data('tgl_kirim') : formatDateForInput(new Date()));
@@ -1646,7 +1675,7 @@
                 modal.find('#et-tgl_kirim').datepicker().on('show.bs.modal', function (event) {
                     event.stopPropagation();
                 });
-                
+
             });
 
             // ========== VALIDASI NO KP ==========
@@ -1756,7 +1785,7 @@
                 }
 
                 $('#e-jumlah_kp').val($('#e-jumlah_kp').val().replace(/[^0-9]/g, ''));
-$('#e-harga_kp').val($('#e-harga_kp').val().replace(/[^0-9]/g, ''));
+                $('#e-harga_kp').val($('#e-harga_kp').val().replace(/[^0-9]/g, ''));
 
 
                 return confirm('Apakah Anda yakin ingin mengupdate data Konfirmasi Pesanan ini?');
@@ -1783,4 +1812,5 @@ $('#e-harga_kp').val($('#e-harga_kp').val().replace(/[^0-9]/g, ''));
         });
     </script>
 </body>
+
 </html>

@@ -100,7 +100,8 @@
                                 <?php if ($level === "admin") { ?>
                                   <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal"
-                                      data-target="#edit" data-id_mkt_schedule="<?= $k['id_mkt_schedule'] ?>"
+                                      data-target="#edit"
+                                       data-id_mkt_schedule="<?= $k['id_mkt_schedule'] ?>"
                                       data-id_mkt_kp="<?= $k['id_mkt_kp'] ?>" data-id_customer="<?= $k['id_customer'] ?>"
                                       data-id_master_kw_cap="<?= $k['id_master_kw_cap'] ?>"
                                       data-id_master_kw_body="<?= $k['id_master_kw_body'] ?>"
@@ -189,16 +190,6 @@
               </div>
             </div>
 
-            <!-- Size -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="size_machine">Size</label>
-                <input type="text" class="form-control text-uppercase" id="size_machine" name="size_machine"
-                  placeholder="Size" autocomplete="off" readonly>
-              </div>
-            </div>
-
-            <!-- Print Information -->
             <div class="col-md-6">
               <div class="form-group">
                 <label for="print">Nama Print</label>
@@ -207,8 +198,20 @@
               </div>
             </div>
 
+            <!-- Size -->
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="size_machine">Size</label>
+                <input type="text" class="form-control text-uppercase" id="size_machine" name="size_machine"
+                  placeholder="Size" autocomplete="off" readonly>
+              </div>
+            </div>
+
+           
+            
+
             <!-- Logo Print -->
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="logo_print">Logo Print</label>
                 <input type="text" class="form-control text-uppercase" id="logo_print" name="logo_print"
@@ -254,10 +257,17 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="jumlah_kp">Jumlah KP</label>
                 <input type="text" id="jumlah_kp" name="jumlah_kp" class="form-control" placeholder="Jumlah KP" readonly>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="jumlah_kp">Outstanding</label>
+                <input type="text" id="outstanding" name="outstanding" class="form-control" placeholder="Outstanding" readonly>
               </div>
             </div>
 
@@ -323,7 +333,7 @@
                 <input type="number" class="form-control" id="jumlah_prd" name="jumlah_prd" placeholder="Jumlah" aria-describedby="validationServer03Feedback" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase() "
                   autocomplete="off" min="1" required>
                   <div id="validationServer03Feedback" class="invalid-feedback">
-                  Maaf Jumlah tidak boleh lebih dari Jumlah KP.
+                  Maaf Jumlah tidak boleh lebih dari Jumlah Outstanding.
                 </div>
               </div>
                             
@@ -390,7 +400,7 @@
 
 
             <!-- Tanggal Kirim -->
-            <div class="col-md-4">
+            <div class="col-md-6">
               <div class="form-group">
                 <label for="tgl_kirim">Tanggal Kirim</label>
                 <input type="text" class="form-control datepicker" id="tgl_kirim" name="tgl_kirim"
@@ -570,6 +580,7 @@
 </div>
 
 <!-- Modal Edit - DIPERBAIKI agar sama dengan Add -->
+<!-- Modal Edit - DIPERBAIKI agar sama dengan Add -->
 <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editScheduleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -581,7 +592,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="<?= base_url() ?>Marketing/Tambah_schedule/update">
+      <form method="post" action="<?= base_url() ?>Marketing/Tambah_schedule/update" id="editScheduleForm">
         <div class="modal-body">
           <div class="row">
             <!-- No KP -->
@@ -592,7 +603,7 @@
                   <option value="">- Pilih No KP -</option>
                   <?php foreach ($res_no_kp as $nk) { ?>
                     <option value="<?= $nk['id_mkt_kp'] ?>">
-                      <?= $nk['no_kp'] ?> - <?= $nk['nama_customer'] ?? '' ?>
+                      <?= $nk['no_kp'] ?> - <?= $nk['nama_customer'] ?? '' ?> (Jumlah: <?= number_format($nk['jumlah_kp'], 0, ',', '.') ?>)
                     </option>
                   <?php } ?>
                 </select>
@@ -603,18 +614,8 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="e_id_customer">Customer</label>
-                <input type="text" class="form-control" id="e_id_customer" name="id_customer" placeholder="Customer"
-                  readonly>
+                <input type="text" class="form-control" id="e_id_customer" name="id_customer" placeholder="Customer" readonly>
                 <input type="hidden" id="e_hidden_id_customer" name="hidden_id_customer">
-              </div>
-            </div>
-
-            <!-- Size -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="e_size_machine">Size</label>
-                <input type="text" class="form-control text-uppercase" id="e_size_machine" name="size_machine"
-                  placeholder="Size" autocomplete="off" readonly>
               </div>
             </div>
 
@@ -622,17 +623,23 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="e_print">Nama Print</label>
-                <input type="text" class="form-control text-uppercase" id="e_print" name="print" placeholder="Print"
-                  autocomplete="off" readonly>
+                <input type="text" class="form-control text-uppercase" id="e_print" name="print" placeholder="Print" autocomplete="off" readonly>
+              </div>
+            </div>
+
+            <!-- Size -->
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="e_size_machine">Size</label>
+                <input type="text" class="form-control text-uppercase" id="e_size_machine" name="size_machine" placeholder="Size" autocomplete="off" readonly>
               </div>
             </div>
 
             <!-- Logo Print -->
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="e_logo_print">Logo Print</label>
-                <input type="text" class="form-control text-uppercase" id="e_logo_print" name="logo_print"
-                  placeholder="Logo Print" autocomplete="off" readonly>
+                <input type="text" class="form-control text-uppercase" id="e_logo_print" name="logo_print" placeholder="Logo Print" autocomplete="off" readonly>
               </div>
             </div>
 
@@ -640,8 +647,7 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label for="e_id_master_kw_cap">Kode Warna Cap</label>
-                <input type="text" class="form-control" id="e_id_master_kw_cap" name="id_master_kw_cap"
-                  placeholder="Kode Warna Cap" readonly>
+                <input type="text" class="form-control" id="e_id_master_kw_cap" name="id_master_kw_cap" placeholder="Kode Warna Cap" readonly>
                 <input type="hidden" id="e_hidden_id_master_kw_cap" name="hidden_id_master_kw_cap">
               </div>
             </div>
@@ -650,8 +656,7 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label for="e_warna_cap">Warna Cap</label>
-                <input type="text" class="form-control" id="e_warna_cap" name="warna_cap" placeholder="Warna Cap"
-                  readonly>
+                <input type="text" class="form-control" id="e_warna_cap" name="warna_cap" placeholder="Warna Cap" readonly>
               </div>
             </div>
 
@@ -659,8 +664,7 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label for="e_id_master_kw_body">Kode Warna Body</label>
-                <input type="text" class="form-control" id="e_id_master_kw_body" name="id_master_kw_body"
-                  placeholder="Kode Warna Body" readonly>
+                <input type="text" class="form-control" id="e_id_master_kw_body" name="id_master_kw_body" placeholder="Kode Warna Body" readonly>
                 <input type="hidden" id="e_hidden_id_master_kw_body" name="hidden_id_master_kw_body">
               </div>
             </div>
@@ -669,16 +673,23 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label for="e_warna_body">Warna Body</label>
-                <input type="text" class="form-control" id="e_warna_body" name="warna_body" placeholder="Warna Body"
-                  readonly>
+                <input type="text" class="form-control" id="e_warna_body" name="warna_body" placeholder="Warna Body" readonly>
               </div>
             </div>
 
             <!-- Jumlah KP -->
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="e_jumlah_kp">Jumlah KP</label>
                 <input type="text" id="e_jumlah_kp" name="jumlah_kp" class="form-control" placeholder="Jumlah KP" readonly>
+              </div>
+            </div>
+
+            <!-- Outstanding -->
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="e_outstanding">Outstanding</label>
+                <input type="text" id="e_outstanding" name="outstanding" class="form-control" placeholder="Outstanding" readonly>
               </div>
             </div>
 
@@ -690,15 +701,12 @@
               </div>
             </div>
 
-            
-
             <!-- Nomor CR -->
             <div class="col-md-6">
               <div class="form-group">
                 <label for="e_no_cr">Nomor CR</label>
                 <input type="hidden" id="e_id_mkt_schedule" name="id_mkt_schedule">
-                <input type="text" class="form-control text-uppercase" id="e_no_cr" name="no_cr" placeholder="Nomor CR"
-                  autocomplete="off" required>
+                <input type="text" class="form-control text-uppercase" id="e_no_cr" name="no_cr" placeholder="Nomor CR" autocomplete="off" required>
                 <div class="invalid-feedback" id="e_cr-feedback">
                   Maaf No. CR sudah ada.
                 </div>
@@ -709,8 +717,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="e_no_batch">Nomor Batch</label>
-                <input type="text" class="form-control text-uppercase" id="e_no_batch" name="no_batch"
-                  placeholder="No. Batch" autocomplete="off" required>
+                <input type="text" class="form-control text-uppercase" id="e_no_batch" name="no_batch" placeholder="No. Batch" autocomplete="off" required>
               </div>
             </div>
 
@@ -718,8 +725,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="e_tgl_sch">Tanggal Schedule</label>
-                <input type="text" class="form-control datepicker" id="e_tgl_sch" name="tgl_sch"
-                  placeholder="Tanggal Schedule" autocomplete="off" required>
+                <input type="text" class="form-control datepicker" id="e_tgl_sch" name="tgl_sch" placeholder="Tanggal Schedule" autocomplete="off" required>
               </div>
             </div>
 
@@ -745,7 +751,7 @@
                   aria-describedby="e_validationServer03Feedback" style="text-transform:uppercase" 
                   onkeyup="this.value = this.value.toUpperCase()" autocomplete="off" min="1" required>
                 <div id="e_validationServer03Feedback" class="invalid-feedback">
-                  Maaf Jumlah tidak boleh lebih dari Jumlah KP.
+                  Maaf Jumlah tidak boleh lebih dari Jumlah Outstanding.
                 </div>
               </div>
             </div>
@@ -805,8 +811,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="e_tgl_prd">Tanggal PRD</label>
-                <input type="text" class="form-control datepicker" id="e_tgl_prd" name="tgl_prd" placeholder="Tanggal PRD"
-                  autocomplete="off" required>
+                <input type="text" class="form-control datepicker" id="e_tgl_prd" name="tgl_prd" placeholder="Tanggal PRD" autocomplete="off" required>
               </div>
             </div>
 
@@ -814,8 +819,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="e_tgl_kirim">Tanggal Kirim</label>
-                <input type="text" class="form-control datepicker" id="e_tgl_kirim" name="tgl_kirim"
-                  placeholder="Tanggal Kirim" autocomplete="off" required>
+                <input type="text" class="form-control datepicker" id="e_tgl_kirim" name="tgl_kirim" placeholder="Tanggal Kirim" autocomplete="off" required>
               </div>
             </div>
 
@@ -823,8 +827,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="e_ket_prd">Keterangan</label>
-                <textarea class="form-control text-uppercase" id="e_ket_prd" name="ket_prd" placeholder="Keterangan"
-                  autocomplete="off" rows="3"></textarea>
+                <textarea class="form-control text-uppercase" id="e_ket_prd" name="ket_prd" placeholder="Keterangan" autocomplete="off" rows="3"></textarea>
               </div>
             </div>
 
@@ -833,8 +836,9 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-primary"
-            onclick="if (! confirm('Apakah Anda Yakin Untuk Mengupdate Data Ini?')) { return false; }">Update Schedule</button>
+          <button type="submit" id="e_simpan" class="btn btn-primary">
+            Update Schedule
+          </button>
         </div>
       </form>
     </div>
@@ -966,6 +970,7 @@
                         $('#jumlah_kp').val(formatNumber(data.jumlah_kp) || '');
                         $('#print').val(data.kode_print || '');
                         $('#logo_print').val(data.logo_print || '');
+                        $('#outstanding').val(formatNumber(response.sisa_kp) || formatNumber(data.jumlah_kp));
 
                         // Set hidden values untuk ID
                         $('#hidden_id_customer').val(data.id_customer || '');
@@ -1026,8 +1031,10 @@
                         $('#e_size_machine').val(data.size_kp || '');
                         $('#e_minyak').val(data.spek_kapsul || '');
                         $('#e_jumlah_kp').val(formatNumber(data.jumlah_kp) || '');
-                        $('#e_print').val(data.kode_print || '');
-                        $('#e_logo_print').val(data.logo_print || '');
+                        $('#e_print').val(data.kode_print || '-');
+                        $('#e_logo_print').val(data.logo_print || '-');
+                        $('#e_outstanding').val(formatNumber(response.sisa_kp) || formatNumber(data.jumlah_kp));
+                        
 
                         // Set hidden values untuk ID
                         $('#e_hidden_id_customer').val(data.id_customer || '');
@@ -1058,9 +1065,9 @@
     // Fungsi validasi jumlah produksi untuk ADD modal
     function validateJumlahPrd() {
         var jumlah_prd = parseInt($('#jumlah_prd').val()) || 0;
-        var jumlah_kp = parseInt($('#jumlah_kp').val().replace(/\./g, '')) || 0;
+        var outstanding = parseInt($('#outstanding').val().replace(/\./g, '')) || 0;
         
-        if (jumlah_prd > jumlah_kp) {
+        if (jumlah_prd > outstanding) {
             $('#jumlah_prd').addClass("is-invalid");
             $('#simpan').attr("disabled", "disabled");
             $('#validationServer03Feedback').show();
@@ -1074,9 +1081,9 @@
     // Fungsi validasi jumlah produksi untuk EDIT modal
     function validateJumlahPrdEdit() {
         var jumlah_prd = parseInt($('#e_jumlah_prd').val()) || 0;
-        var jumlah_kp = parseInt($('#e_jumlah_kp').val().replace(/\./g, '')) || 0;
+        var outstanding = parseInt($('#e_outstanding').val().replace(/\./g, '')) || 0;
         
-        if (jumlah_prd > jumlah_kp) {
+        if (jumlah_prd > outstanding) {
             $('#e_jumlah_prd').addClass("is-invalid");
             $('button[type="submit"]').attr("disabled", "disabled");
             $('#e_validationServer03Feedback').show();
@@ -1257,8 +1264,8 @@
         var warna_body = button.data('warna_body');
         var mesin_prd = button.data('mesin_prd');
         var jumlah_prd = button.data('jumlah_prd');
-        
-        var print = button.data('print');
+        var id_customer = button.data('id_customer');
+        var print = button.data(('print') || '-');
         var tinta = button.data('tinta');
         var jenis_grv = button.data('jenis_grv');
         var customer = button.data('nama_customer');
@@ -1294,82 +1301,92 @@
     });
 
     // Edit Modal functionality dengan PERBAIKAN datepicker
-    $('#edit').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
+   // Edit Modal functionality - PERBAIKI BAGIAN INI
+$('#edit').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
 
-        var id_mkt_schedule = button.data('id_mkt_schedule');
-        var id_mkt_kp = button.data('id_mkt_kp');
-        var no_cr = button.data('no_cr');
-        var no_batch = button.data('no_batch');
-        var tgl_sch = button.data('tgl_sch');
-        var size_machine = button.data('size_machine');
-        var id_master_kw_cap = button.data('id_master_kw_cap');
-        var id_master_kw_body = button.data('id_master_kw_body');
-        var kode_warna_cap = button.data('kode_warna_cap');
-        var kode_warna_body = button.data('kode_warna_body');
-        var warna_cap = button.data('warna_cap');
-        var warna_body = button.data('warna_body');
-        var mesin_prd = button.data('mesin_prd');
-        var jumlah_prd = button.data('jumlah_prd');
-        var print = button.data('print');
-        var tinta = button.data('tinta');
-        var jenis_grv = button.data('jenis_grv');
-        var id_customer = button.data('id_customer');
-        var jenis_box = button.data('jenis_box');
-        var jenis_zak = button.data('jenis_zak');
-        var minyak = button.data('minyak');
-        var tgl_kirim = button.data('tgl_kirim');
-        var tgl_prd = button.data('tgl_prd');
-        var ket_prd = button.data('ket_prd');
+    var id_mkt_schedule = button.data('id_mkt_schedule');
+    var id_mkt_kp = button.data('id_mkt_kp');
+    var no_cr = button.data('no_cr');
+    var no_batch = button.data('no_batch');
+    var tgl_sch = button.data('tgl_sch');
+    var size_machine = button.data('size_machine');
+    var id_master_kw_cap = button.data('id_master_kw_cap');
+    var id_master_kw_body = button.data('id_master_kw_body');
+    var kode_warna_cap = button.data('kode_warna_cap');
+    var kode_warna_body = button.data('kode_warna_body');
+    var warna_cap = button.data('warna_cap');
+    var warna_body = button.data('warna_body');
+    var mesin_prd = button.data('mesin_prd');
+    var jumlah_prd = button.data('jumlah_prd');
+    var print = button.data('print') || '-';
+    var logo_print = button.data('logo_print') || '-';
+    var tinta = button.data('tinta');
+    var jenis_grv = button.data('jenis_grv');
+    var id_customer = button.data('id_customer');
+    var nama_customer = button.data('nama_customer');
+    var jenis_box = button.data('jenis_box');
+    var jenis_zak = button.data('jenis_zak');
+    var minyak = button.data('minyak');
+    var tgl_kirim = button.data('tgl_kirim');
+    var tgl_prd = button.data('tgl_prd');
+    var ket_prd = button.data('ket_prd');
 
-        var modal = $(this);
-        modal.find('#e_id_mkt_schedule').val(id_mkt_schedule);
-        modal.find('#e_id_mkt_kp').val(id_mkt_kp).trigger('chosen:updated');
-        modal.find('#e_no_cr').val(no_cr);
-        modal.find('#e_no_batch').val(no_batch);
-        modal.find('#e_tgl_sch').val(tgl_sch);
-        modal.find('#e_size_machine').val(size_machine);
-        modal.find('#e_id_master_kw_cap').val(kode_warna_cap);
-        modal.find('#e_warna_cap').val(warna_cap);
-        modal.find('#e_id_master_kw_body').val(kode_warna_body);
-        modal.find('#e_warna_body').val(warna_body);
-        modal.find('#e_mesin_prd').val(mesin_prd).trigger('chosen:updated');
-        modal.find('#e_jumlah_prd').val(jumlah_prd);
-       
-        modal.find('#e_jenis_grv').val(jenis_grv).trigger('chosen:updated');
-        modal.find('#e_id_customer').val(button.data('nama_customer'));
-        modal.find('#e_jenis_box').val(jenis_box).trigger('chosen:updated');
-        modal.find('#e_jenis_zak').val(jenis_zak).trigger('chosen:updated');
-        modal.find('#e_minyak').val(minyak);
-        modal.find('#e_tgl_kirim').val(tgl_kirim);
-        modal.find('#e_tgl_prd').val(tgl_prd);
-        modal.find('#e_ket_prd').val(ket_prd);
-        modal.find('#e_print').val(print);
-        modal.find('#e_tinta').val(tinta).trigger('chosen:updated');
+    var modal = $(this);
+    
+    // Set values langsung dari data schedule (JANGAN dari KP)
+    modal.find('#e_id_mkt_schedule').val(id_mkt_schedule);
+    modal.find('#e_id_mkt_kp').val(id_mkt_kp).trigger('chosen:updated');
+    modal.find('#e_no_cr').val(no_cr);
+    modal.find('#e_no_batch').val(no_batch);
+    modal.find('#e_tgl_sch').val(tgl_sch);
+    modal.find('#e_size_machine').val(size_machine);
+    
+    // SET DATA CUSTOMER & WARNA DARI SCHEDULE (bukan dari KP)
+    modal.find('#e_id_customer').val(nama_customer);
+    modal.find('#e_id_master_kw_cap').val(kode_warna_cap);
+    modal.find('#e_warna_cap').val(warna_cap);
+    modal.find('#e_id_master_kw_body').val(kode_warna_body);
+    modal.find('#e_warna_body').val(warna_body);
+    
+    modal.find('#e_mesin_prd').val(mesin_prd).trigger('chosen:updated');
+    modal.find('#e_jumlah_prd').val(jumlah_prd);
+    modal.find('#e_jenis_grv').val(jenis_grv).trigger('chosen:updated');
+    modal.find('#e_jenis_box').val(jenis_box).trigger('chosen:updated');
+    modal.find('#e_jenis_zak').val(jenis_zak).trigger('chosen:updated');
+    modal.find('#e_minyak').val(minyak);
+    modal.find('#e_tgl_kirim').val(tgl_kirim);
+    modal.find('#e_tgl_prd').val(tgl_prd);
+    modal.find('#e_ket_prd').val(ket_prd);
+    modal.find('#e_print').val(print);
+    modal.find('#e_logo_print').val(logo_print);
+    modal.find('#e_tinta').val(tinta).trigger('chosen:updated');
 
-        // Set hidden values
-        modal.find('#e_hidden_id_customer').val(id_customer);
-        modal.find('#e_hidden_id_master_kw_cap').val(id_master_kw_cap);
-        modal.find('#e_hidden_id_master_kw_body').val(id_master_kw_body);
+    // SET HIDDEN VALUES DARI DATA SCHEDULE
+    modal.find('#e_hidden_id_customer').val(id_customer);
+    modal.find('#e_hidden_id_master_kw_cap').val(id_master_kw_cap);
+    modal.find('#e_hidden_id_master_kw_body').val(id_master_kw_body);
 
-        // Enable GRV jika tinta sudah dipilih
-        if (tinta) {
-            modal.find('#e_jenis_grv').prop('disabled', false);
-        }
+    // Enable GRV jika tinta sudah dipilih
+    if (tinta) {
+        modal.find('#e_jenis_grv').prop('disabled', false);
+    }
 
-        // PERBAIKAN: Handle datepicker conflict dengan modal
-        modal.find('#e_tgl_sch').datepicker().on('show.bs.modal', function(event) {
-            event.stopPropagation();
+    // Load Outstanding untuk KP yang dipilih
+    if (id_mkt_kp) {
+        $.ajax({
+            url: "<?= base_url('Marketing/Tambah_schedule/get_remaining_kp') ?>",
+            type: "POST",
+            data: { id_mkt_kp: id_mkt_kp },
+            dataType: "json",
+            success: function(response) {
+                if (response.sisa_kp !== undefined) {
+                    $('#e_outstanding').val(formatNumber(response.sisa_kp));
+                }
+            }
         });
-        
-        modal.find('#e_tgl_kirim').datepicker().on('show.bs.modal', function(event) {
-            event.stopPropagation();
-        });
-        
-        modal.find('#e_tgl_prd').datepicker().on('show.bs.modal', function(event) {
-            event.stopPropagation();
-        });
-    });
+    }
+});
 
     // ========== RESET FORM ==========
 
@@ -1409,11 +1426,11 @@
     // Validasi form submit
     $('#scheduleForm').submit(function(e) {
         var jumlah_prd = parseInt($('#jumlah_prd').val()) || 0;
-        var jumlah_kp = parseInt($('#jumlah_kp').val().replace(/\./g, '')) || 0;
+        var outstanding = parseInt($('#outstanding').val().replace(/\./g, '')) || 0;
         
-        if (jumlah_prd > jumlah_kp) {
+        if (jumlah_prd > outstanding) {
             e.preventDefault();
-            alert('Jumlah produksi tidak boleh melebihi jumlah KP!');
+            alert('Jumlah produksi tidak boleh melebihi Outstanding!');
             return false;
         }
         

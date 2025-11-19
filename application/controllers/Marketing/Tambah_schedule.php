@@ -61,39 +61,47 @@ class Tambah_schedule extends CI_Controller
     }
 
     public function update()
-    {
-        $data['id_mkt_schedule'] = $this->input->post('id_mkt_schedule', TRUE);
-        $data['id_mkt_kp'] = $this->input->post('id_mkt_kp', TRUE);
-        $data['id_customer'] = $this->input->post('id_customer', TRUE);
-        $data['id_master_kw_cap'] = $this->input->post('id_master_kw_cap', TRUE);
-        $data['id_master_kw_body'] = $this->input->post('id_master_kw_body', TRUE);
-        $data['no_cr'] = $this->input->post('no_cr', TRUE);
-        $data['no_batch'] = $this->input->post('no_batch', TRUE);
-        $data['tgl_sch'] = $this->convertDate($this->input->post('tgl_sch', TRUE));
-        $data['size_machine'] = $this->input->post('size_machine', TRUE);
-        $data['mesin_prd'] = $this->input->post('mesin_prd', TRUE);
-        $data['jumlah_prd'] = $this->input->post('jumlah_prd', TRUE);
-        $data['sisa'] = $this->input->post('sisa', TRUE);
-        $data['cek_print'] = $this->input->post('cek_print', TRUE);
-        $data['print'] = $this->input->post('print', TRUE);
-        $data['tinta'] = $this->input->post('tinta', TRUE);
-        $data['jenis_grv'] = $this->input->post('jenis_grv', TRUE);
-        $data['jenis_box'] = $this->input->post('jenis_box', TRUE);
-        $data['jenis_zak'] = $this->input->post('jenis_zak', TRUE);
-        $data['minyak'] = $this->input->post('minyak', TRUE);
-        $data['tgl_kirim'] = $this->convertDate($this->input->post('tgl_kirim', TRUE));
-        $data['tgl_prd'] = $this->convertDate($this->input->post('tgl_prd', TRUE));
-        $data['ket_prd'] = $this->input->post('ket_prd', TRUE);
-        
-        $respon = $this->M_tambah_schedule->update($data);
-        
-        if ($respon['success']) {
-            header('location:' . base_url('Marketing/Tambah_schedule') . '?alert=success&msg=' . urlencode($respon['message']));
-        } else {
-            header('location:' . base_url('Marketing/Tambah_schedule') . '?alert=error&msg=' . urlencode($respon['message']));
-        }
+{
+    $data['id_mkt_schedule'] = $this->input->post('id_mkt_schedule', TRUE);
+    $data['id_mkt_kp'] = $this->input->post('id_mkt_kp', TRUE);
+    
+    // GUNAKAN FIELD HIDDEN - ini yang penting!
+    $data['id_customer'] = $this->input->post('hidden_id_customer', TRUE);
+    $data['id_master_kw_cap'] = $this->input->post('hidden_id_master_kw_cap', TRUE);
+    $data['id_master_kw_body'] = $this->input->post('hidden_id_master_kw_body', TRUE);
+    
+    // Debug: cek apa yang diterima
+    error_log("Update Data: " . print_r([
+        'id_customer' => $data['id_customer'],
+        'id_master_kw_cap' => $data['id_master_kw_cap'],
+        'id_master_kw_body' => $data['id_master_kw_body']
+    ], true));
+    
+    $data['no_cr'] = $this->input->post('no_cr', TRUE);
+    $data['no_batch'] = $this->input->post('no_batch', TRUE);
+    $data['tgl_sch'] = $this->convertDate($this->input->post('tgl_sch', TRUE));
+    $data['size_machine'] = $this->input->post('size_machine', TRUE);
+    $data['mesin_prd'] = $this->input->post('mesin_prd', TRUE);
+    $data['jumlah_prd'] = $this->input->post('jumlah_prd', TRUE);
+    $data['sisa'] = $this->input->post('jumlah_prd', TRUE); // atau sisa jika ada fieldnya
+    $data['print'] = $this->input->post('print', TRUE);
+    $data['tinta'] = $this->input->post('tinta', TRUE);
+    $data['jenis_grv'] = $this->input->post('jenis_grv', TRUE);
+    $data['jenis_box'] = $this->input->post('jenis_box', TRUE);
+    $data['jenis_zak'] = $this->input->post('jenis_zak', TRUE);
+    $data['minyak'] = $this->input->post('minyak', TRUE);
+    $data['tgl_kirim'] = $this->convertDate($this->input->post('tgl_kirim', TRUE));
+    $data['tgl_prd'] = $this->convertDate($this->input->post('tgl_prd', TRUE));
+    $data['ket_prd'] = $this->input->post('ket_prd', TRUE);
+    
+    $respon = $this->M_tambah_schedule->update($data);
+    
+    if ($respon['success']) {
+        header('location:' . base_url('Marketing/Tambah_schedule') . '?alert=success&msg=' . urlencode($respon['message']));
+    } else {
+        header('location:' . base_url('Marketing/Tambah_schedule') . '?alert=error&msg=' . urlencode($respon['message']));
     }
-
+}
     public function cek_no_cr()
     {
         $no_cr = $this->input->post('no_cr', TRUE);

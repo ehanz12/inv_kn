@@ -54,12 +54,10 @@ class M_tambah_schedule extends CI_Model
                 kw_body.id_master_kw_body,
                 kw_body.kode_warna_body,
                 kw_body.short_name AS short_body
-               
             FROM tb_mkt_kp kp
             LEFT JOIN tb_mkt_master_customer cust ON kp.id_customer = cust.id_customer
             LEFT JOIN tb_mkt_master_kw_cap kw_cap ON kp.id_master_kw_cap = kw_cap.id_master_kw_cap
             LEFT JOIN tb_mkt_master_kw_body kw_body ON kp.id_master_kw_body = kw_body.id_master_kw_body
-           
             WHERE kp.id_mkt_kp = ? AND kp.is_deleted = 0
         ";
 
@@ -84,10 +82,11 @@ class M_tambah_schedule extends CI_Model
         $sql = "
             SELECT 
                 kp.jumlah_kp,
-                COALESCE(SUM(sch.jumlah_prd), 0) as total_scheduled
+                COALESCE(SUM(sch.jumlah_prd), 0) as total_scheduled,
+                (kp.jumlah_kp - COALESCE(SUM(sch.jumlah_prd), 0)) as sisa_kp
             FROM tb_mkt_kp kp
             LEFT JOIN tb_mkt_schedule sch ON kp.id_mkt_kp = sch.id_mkt_kp AND sch.is_deleted = 0
-            WHERE kp.id_mkt_kp = ?
+            WHERE kp.id_mkt_kp = ? AND kp.is_deleted = 0
             GROUP BY kp.id_mkt_kp
         ";
         return $this->db->query($sql, [$id_mkt_kp])->row_array();
@@ -102,17 +101,18 @@ class M_tambah_schedule extends CI_Model
         
         // 1. Validasi apakah jumlah_prd tidak melebihi sisa KP
         $remaining = $this->get_remaining_kp($data['id_mkt_kp']);
-        $jumlah_kp = $remaining['jumlah_kp'];
+        $sisa_kp = $remaining['sisa_kp'];
         
-        if ($data['jumlah_prd'] > $jumlah_kp) {
+        if ($data['jumlah_prd'] > $sisa_kp) {
             $this->db->trans_rollback();
             return [
                 'success' => false,
-                'message' => "Jumlah produksi ({$data['jumlah_prd']}) melebihi sisa KP yang tersedia ({$jumlah_kp})"
+                'message' => "Jumlah produksi (" . number_format($data['jumlah_prd']) . 
+                            ") melebihi sisa KP yang tersedia (" . number_format($sisa_kp) . ")"
             ];
         }
         
-        // 2. Insert schedule
+        // 2. Insert schedule (TANPA mengupdate jumlah_kp di master)
         $sql = "
         INSERT INTO `tb_mkt_schedule`(
             `id_mkt_kp`, `id_customer`, `id_master_kw_cap`, `id_master_kw_body`,
@@ -121,7 +121,7 @@ class M_tambah_schedule extends CI_Model
             `jenis_box`, `jenis_zak`, `tgl_kirim`, `ket_prd`, `tgl_prd`, 
             `minyak`, `sisa`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`
         ) VALUES (
-            ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, '0000-00-00 00:00:00', '', 0
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, '0000-00-00 00:00:00', '', 0
         )";
         
         $params = [
@@ -129,7 +129,6 @@ class M_tambah_schedule extends CI_Model
             $data['id_customer'],
             $data['id_master_kw_cap'],
             $data['id_master_kw_body'],
-            
             $data['no_cr'],
             $data['no_batch'],
             $data['tgl_sch'],
@@ -160,17 +159,8 @@ class M_tambah_schedule extends CI_Model
             ];
         }
         
-        // 3. Update jumlah_kp di tabel KP (dikurangi dengan jumlah_prd)
-        $update_kp_sql = "UPDATE tb_mkt_kp SET jumlah_kp = jumlah_kp - ? WHERE id_mkt_kp = ?";
-        $update_kp = $this->db->query($update_kp_sql, [$data['jumlah_prd'], $data['id_mkt_kp']]);
-        
-        if (!$update_kp) {
-            $this->db->trans_rollback();
-            return [
-                'success' => false,
-                'message' => 'Gagal mengupdate jumlah KP'
-            ];
-        }
+        // DIHAPUS: Tidak perlu update jumlah_kp di tabel master
+        // $update_kp_sql = "UPDATE tb_mkt_kp SET jumlah_kp = jumlah_kp - ? WHERE id_mkt_kp = ?";
         
         $this->db->trans_complete();
         
@@ -184,7 +174,7 @@ class M_tambah_schedule extends CI_Model
         
         return [
             'success' => true,
-            'message' => 'Schedule berhasil ditambahkan dan jumlah KP telah dikurangi'
+            'message' => 'Schedule berhasil ditambahkan'
         ];
     }
 
@@ -212,13 +202,14 @@ class M_tambah_schedule extends CI_Model
         // 3. Validasi jika selisih positif (penambahan jumlah)
         if ($selisih_jumlah > 0) {
             $remaining = $this->get_remaining_kp($data['id_mkt_kp']);
-            $sisa_kp = $remaining['jumlah_kp'];
+            $sisa_kp = $remaining['sisa_kp'];
             
             if ($selisih_jumlah > $sisa_kp) {
                 $this->db->trans_rollback();
                 return [
                     'success' => false,
-                    'message' => "Penambahan jumlah produksi ({$selisih_jumlah}) melebihi sisa KP yang tersedia ({$sisa_kp})"
+                    'message' => "Penambahan jumlah produksi (" . number_format($selisih_jumlah) . 
+                                ") melebihi sisa KP yang tersedia (" . number_format($sisa_kp) . ")"
                 ];
             }
         }
@@ -287,19 +278,10 @@ class M_tambah_schedule extends CI_Model
             ];
         }
         
-        // 5. Update jumlah_kp di tabel KP berdasarkan selisih
-        if ($selisih_jumlah != 0) {
-            $update_kp_sql = "UPDATE tb_mkt_kp SET jumlah_kp = jumlah_kp - ? WHERE id_mkt_kp = ?";
-            $update_kp = $this->db->query($update_kp_sql, [$selisih_jumlah, $data['id_mkt_kp']]);
-            
-            if (!$update_kp) {
-                $this->db->trans_rollback();
-                return [
-                    'success' => false,
-                    'message' => 'Gagal mengupdate jumlah KP'
-                ];
-            }
-        }
+        // DIHAPUS: Tidak perlu update jumlah_kp di tabel master berdasarkan selisih
+        // if ($selisih_jumlah != 0) {
+        //     $update_kp_sql = "UPDATE tb_mkt_kp SET jumlah_kp = jumlah_kp - ? WHERE id_mkt_kp = ?";
+        // }
         
         $this->db->trans_complete();
         
@@ -313,18 +295,8 @@ class M_tambah_schedule extends CI_Model
         
         return [
             'success' => true,
-            'message' => 'Schedule berhasil diupdate' . ($selisih_jumlah != 0 ? ' dan jumlah KP telah disesuaikan' : '')
+            'message' => 'Schedule berhasil diupdate'
         ];
-    }
-    
-
-    public function cek_no_cr($no_cr)
-    {
-        $sql = "
-            SELECT COUNT(a.no_cr) as count_cr 
-            FROM tb_mkt_schedule a
-            WHERE a.no_cr = ? AND a.is_deleted = 0";
-        return $this->db->query($sql, [$no_cr]);
     }
 
     public function delete($data)
@@ -360,17 +332,8 @@ class M_tambah_schedule extends CI_Model
             ];
         }
         
-        // 2. Kembalikan jumlah_kp di tabel KP (ditambahkan kembali)
-        $update_kp_sql = "UPDATE tb_mkt_kp SET jumlah_kp = jumlah_kp + ? WHERE id_mkt_kp = ?";
-        $update_kp = $this->db->query($update_kp_sql, [$schedule['jumlah_prd'], $schedule['id_mkt_kp']]);
-        
-        if (!$update_kp) {
-            $this->db->trans_rollback();
-            return [
-                'success' => false,
-                'message' => 'Gagal mengembalikan jumlah KP'
-            ];
-        }
+        // DIHAPUS: Tidak perlu mengembalikan jumlah_kp di tabel master
+        // $update_kp_sql = "UPDATE tb_mkt_kp SET jumlah_kp = jumlah_kp + ? WHERE id_mkt_kp = ?";
         
         $this->db->trans_complete();
         
@@ -384,12 +347,12 @@ class M_tambah_schedule extends CI_Model
         
         return [
             'success' => true,
-            'message' => 'Schedule berhasil dihapus dan jumlah KP telah dikembalikan'
+            'message' => 'Schedule berhasil dihapus'
         ];
     }
 
-    // Fungsi untuk mendapatkan data KP yang tersedia (belum fully scheduled)
-   public function get_available_kp()
+    // Fungsi untuk mendapatkan data KP yang tersedia (masih ada sisa)
+    public function get_available_kp()
     {
         $sql = "
             SELECT 
@@ -397,18 +360,22 @@ class M_tambah_schedule extends CI_Model
                 kp.no_kp,
                 kp.tgl_kp,
                 kp.jumlah_kp,
-                cust.nama_customer
+                cust.nama_customer,
+                COALESCE(SUM(sch.jumlah_prd), 0) as total_scheduled,
+                (kp.jumlah_kp - COALESCE(SUM(sch.jumlah_prd), 0)) as sisa_kp
             FROM tb_mkt_kp kp
             LEFT JOIN tb_mkt_master_customer cust ON kp.id_customer = cust.id_customer
-            WHERE kp.is_deleted = 0 
-            AND kp.jumlah_kp > 0  
+            LEFT JOIN tb_mkt_schedule sch ON kp.id_mkt_kp = sch.id_mkt_kp AND sch.is_deleted = 0
+            WHERE kp.is_deleted = 0
+            GROUP BY kp.id_mkt_kp, kp.no_kp, kp.tgl_kp, kp.jumlah_kp, cust.nama_customer
+            HAVING sisa_kp > 0
             ORDER BY kp.tgl_kp DESC
         ";
         
         return $this->db->query($sql)->result_array();
     }
 
-    // Fungsi untuk mendapatkan semua KP yang aktif (jumlah_kp > 0) untuk dropdown edit
+    // Fungsi untuk mendapatkan semua KP yang aktif
     public function get_active_kp()
     {
         $sql = "
@@ -417,17 +384,20 @@ class M_tambah_schedule extends CI_Model
                 kp.no_kp,
                 kp.tgl_kp,
                 kp.jumlah_kp,
-                cust.nama_customer
+                cust.nama_customer,
+                COALESCE(SUM(sch.jumlah_prd), 0) as total_scheduled,
+                (kp.jumlah_kp - COALESCE(SUM(sch.jumlah_prd), 0)) as sisa_kp
             FROM tb_mkt_kp kp
             LEFT JOIN tb_mkt_master_customer cust ON kp.id_customer = cust.id_customer
-            WHERE kp.is_deleted = 0 
-            AND kp.jumlah_kp > 0  
+            LEFT JOIN tb_mkt_schedule sch ON kp.id_mkt_kp = sch.id_mkt_kp AND sch.is_deleted = 0
+            WHERE kp.is_deleted = 0
+            GROUP BY kp.id_mkt_kp, kp.no_kp, kp.tgl_kp, kp.jumlah_kp, cust.nama_customer
+            HAVING sisa_kp > 0
             ORDER BY kp.tgl_kp DESC
         ";
         
         return $this->db->query($sql)->result_array();
     }
-
 
     // Fungsi untuk cek no_cr pada edit (exclude current schedule)
     public function cek_no_cr_edit($no_cr, $id_mkt_schedule)
