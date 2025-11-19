@@ -44,7 +44,7 @@
                           <button class="btn btn-secondary btn-sm" id="lihat" type="button">Lihat</button>
                         </div>
                         <div class="btn-group">
-                          <a href="<?= base_url() ?>Purchasing/purchasing_rh/purchasing_rh" style="width: 40px;" class="btn btn-warning"  type="button"><i class="feather icon-refresh-ccw"></i></a>
+                          <a href="<?= base_url() ?>Purchasing/purchasing_rh/purchasing_rh" style="width: 40px;" class="btn btn-warning" type="button"><i class="feather icon-refresh-ccw"></i></a>
                         </div>
                       </div>
                     </div>
@@ -75,24 +75,29 @@
                               <th scope="row"><?= $no++ ?></th>
                               <td><?= $tgl_rh ?></td>
                               <td><?= $k['no_budget'] ?></td>
-                              <td class="text-center"><?= $k['harga_rh'] ?></td>
-                              <td class="text-center"><?= $k['jumlah_rh'] ?></td>
+                              <td class="text-center">Rp <?= number_format($k['harga_rh'], 0, ",", ".") ?></td>
+                              <td class="text-center"><?= number_format($k['jumlah_rh'], 0, ",", ".") ?></td>
 
                               <td class="text-center">
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                  <a type="button" class="btn btn-primary btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>accounting/accounting_ppb/pdf_cetak/<?= str_replace('/', '--', $k['no_ppb']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); "
-                                    data-no_ppb="<?= $k['no_ppb'] ?>"
-                                    data-harga_rh="<?= $k['harga_rh'] ?>"
-                                    data-tgl_rh="<?= $k['tgl_rh'] ?>"
-                                    data-total_rh="<?= $k['total_rh'] ?>">
-                                    <i class="feather icon-file"></i>Edit
-                                  </a>
-                                </div>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                  <a type="button" class="btn btn-danger btn-square text-light btn-sm" href="<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb/delete/<?= str_replace('/', '--', $k['no_ppb']) ?>" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
-                                    <i class="feather icon-trash-2"></i>Delete
-                                  </a>
-                                </div>
+                                <?php if ($k['no_rb'] == null) : ?>
+                                  <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button" class="btn btn-primary btn-square btn-sm text-light"
+                                      data-toggle="modal"
+                                      data-target="#edit"
+                                      data-id_prc_rh="<?= $k['id_prc_rh'] ?>"
+                                      data-tgl_rh="<?= $tgl_rh ?>"
+                                      data-id_prc_ppb="<?= $k['id_prc_ppb'] ?>"
+                                      data-no_ppb="<?= $k['no_ppb'] ?>"><i class="feather icon-file"></i>Edit
+                                    </a>
+                                  </div>
+                                  <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button" class="btn btn-danger btn-square text-light btn-sm" href="<?= base_url() ?>purchasing/purchasing_rh/purchasing_rh/delete/<?= str_replace('/', '--', $k['id_prc_rh']) ?>" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
+                                      <i class="feather icon-trash-2"></i>Delete
+                                    </a>
+                                  </div>
+                                <?php else : ?>
+                                  <span class="text-muted">Proses...</span>
+                                <?php endif; ?>
                               </td>
                             </tr>
                           <?php } ?>
@@ -221,10 +226,20 @@
     $('#add').on('show.bs.modal', function(event) {
 
       $(this).find('#tgl_rh').datepicker().on('show.bs.modal', function(event) {
-      event.stopImmediatePropagation();
-    });
+        event.stopImmediatePropagation();
+      });
+
       // Ketika dropdown no_rh berubah
       $("#no_rh").change(function() {
+        // Function format Rupiah
+        function formatAngka(angka) {
+          if (!angka) return 'Rp 0';
+
+          // Convert ke number jika string
+          var number = parseInt(angka) || 0;
+
+          return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
         let no_ppb = $(this).val();
 
         // Set form type otomatis
@@ -255,7 +270,7 @@
                             <td>${item.nama_barang}</td>
                             <td>${item.spek}</td>
                             <td>${item.satuan}</td>
-                            <td class="text-center">${item.jumlah_ppb}</td>
+                            <td class="text-center">${formatAngka(item.jumlah_ppb)}</td>
                             
                             <td><input
                                   type="text"
@@ -295,34 +310,34 @@
       });
 
       // Format Rupiah
-function formatRupiah(angka) {
-    return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
+      function formatRupiah(angka) {
+        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
 
       // Hitung total
-      $(document).on('keyup', '.harga-input', function () {
-          let i = $(this).data('index');
+      $(document).on('keyup', '.harga-input', function() {
+        let i = $(this).data('index');
 
-          let jumlah = parseInt($("#jumlah_" + i).val());
+        let jumlah = parseInt($("#jumlah_" + i).val());
 
-          // harga asli (angka)
-          let raw = $(this).val().replace(/[^0-9]/g, '');
-          let harga = parseInt(raw || 0);
+        // harga asli (angka)
+        let raw = $(this).val().replace(/[^0-9]/g, '');
+        let harga = parseInt(raw || 0);
 
-          // Hitung total
-          let total = jumlah * harga;
+        // Hitung total
+        let total = jumlah * harga;
 
-          // Tampilkan rupiah di view
-          $("#total_view_" + i).text(formatRupiah(total));
+        // Tampilkan rupiah di view
+        $("#total_view_" + i).text(formatRupiah(total));
 
-          // Format input harga (biar cakep)
-          $(this).val(formatRupiah(raw));
+        // Format input harga (biar cakep)
+        $(this).val(formatRupiah(raw));
 
-          // Simpan angka asli ke hidden input
-          $("#total_" + i).val(total);
+        // Simpan angka asli ke hidden input
+        $("#total_" + i).val(total);
       });
     });
-    
+
   });
 </script>
 
@@ -412,11 +427,20 @@ function formatRupiah(angka) {
     $('#add_budget').on('show.bs.modal', function(event) {
 
       $(this).find('#b-tgl_rh').datepicker().on('show.bs.modal', function(event) {
-      event.stopImmediatePropagation();
-    });
+        event.stopImmediatePropagation();
+      });
       // Ketika dropdown no_rh berubah
       $("#b-no_rh").change(function() {
         let no_ppb = $(this).val();
+        // Function format Rupiah
+        function formatAngka(angka) {
+          if (!angka) return 'Rp 0';
+
+          // Convert ke number jika string
+          var number = parseInt(angka) || 0;
+
+          return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
 
         // Set form type otomatis
         let form_type = $(this).find(":selected").data("jenis_form_ppb");
@@ -448,7 +472,7 @@ function formatRupiah(angka) {
                             <td>${item.satuan}</td>
                             <td>${item.no_budget}</td>
 
-                            <td class="text-center">${item.jumlah_ppb}</td>
+                            <td class="text-center">${formatRupiah(item.jumlah_ppb)}</td>
 
                             <!-- Input Harga -->
                             <td class="text-center">
@@ -481,84 +505,75 @@ function formatRupiah(angka) {
       });
 
       // Format Rupiah
-function formatRupiah(angka) {
-    return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
+      function formatRupiah(angka) {
+        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+
 
       // Hitung total
-      $(document).on('keyup', '.harga-input', function () {
-          let i = $(this).data('index');
+      $(document).on('keyup', '.harga-input', function() {
+        let i = $(this).data('index');
 
-          let jumlah = parseInt($("#b-jumlah_" + i).val());
+        let jumlah = parseInt($("#jumlah_" + i).val());
 
-          // harga asli (angka)
-          let raw = $(this).val().replace(/[^0-9]/g, '');
-          let harga = parseInt(raw || 0);
+        // harga asli (angka)
+        let raw = $(this).val().replace(/[^0-9]/g, '');
+        let harga = parseInt(raw || 0);
 
-          // Hitung total
-          let total = jumlah * harga;
+        // Hitung total
+        let total = jumlah * harga;
 
-          // Tampilkan rupiah di view
-          $("#b-total_view_" + i).text(formatRupiah(total));
+        // Tampilkan rupiah di view
+        $("#b-total_view_" + i).text(formatRupiah(total));
 
-          // Format input harga (biar cakep)
-          $(this).val(formatRupiah(raw));
+        // Format input harga (biar cakep)
+        $(this).val(formatRupiah(raw));
 
-          // Simpan angka asli ke hidden input
-          $("#b-total_" + i).val(total);
+        // Simpan angka asli ke hidden input
+        $("#b-total_" + i).val(total);
       });
+
     });
-    
+
   });
 </script>
 <!-- Modal Details -->
-<div class="modal fade" id="detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Detail Accounting PPB</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit Rincian Harga</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="<?= base_url() ?>M_accounting/M_accounting_ppb/">
-
+      <form method="post" action="<?= base_url() ?>Purchasing/Purchasing_rh/purchasing_rh/update">
+        <input type="hidden" name="id_prc_rh" id="e-id_prc_rh">
         <div class="modal-body">
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
-                <label for="v-jenis_ppb">Jenis PPB</label>
-                <input type="text" class="form-control" id="v-jenis_ppb" name="jenis_ppb" placeholder="Budget/Non-budget" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-form_ppb">Form A/C</label>
-                <input type="text" class="form-control" id="v-form_ppb" name="form_ppb" placeholder="Form A/C" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-departement">Departement</label>
-                <input type="text" class="form-control" id="v-departement" name="v-departement" placeholder="Departement" maxlength="20" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-no_ppb_accounting">No PPB</label>
-                <input type="text" class="form-control" id="v-no_ppb_accounting" name="no_ppb_accounting" placeholder="No PPB" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-tgl_ppb">Tanggal PPB</label>
-                <input type="text" class="form-control" id="v-tgl_ppb" name="tgl_ppb" placeholder="Tanggal PPB" readonly>
+                <label for="tgl_rh">Tanggal Rincian</label>
+                <input type="text" class="form-control datepicker" id="e-tgl_rh" name="tgl_rh" placeholder="Tanggal Rincian" autocomplete="off" required>
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="no_rh">No Rincian</label>
+                <input class="form-control" id="e-no_rh" name="no_rh" placeholder="Pilih Nomor Rincian" readonly>
+              </div>
             </div>
+
+            <!-- <div class="col-md-4">
+              <div class="form-group">
+                <label for="a-form_ppb">Jenis Form</label>
+                <input type="text" class="form-control" id="a-form_ppb" name="form_ppb" placeholder="Form A/C" readonly>
+              </div>
+            </div> -->
+
           </div>
+
           <div class="table-responsive">
             <table class="table table-bordered table-sm">
               <thead>
@@ -566,66 +581,29 @@ function formatRupiah(angka) {
                   <th>Kode Barang</th>
                   <th>Nama Barang</th>
                   <th>Spek</th>
-                  <th class="text-right">Jumlah</th>
-                  <th>Nama Supplier</th>
-
-
+                  <th>Satuan</th>
+                  <th class="text-center">Jumlah</th>
+                  <th>No Budget</th>
+                  <th class="text-center">Harga</th>
+                  <th class="text-right">Total</th>
                 </tr>
               </thead>
-              <tbody id="v-ppb_barang">
-              </tbody>
+              <tbody id="e-ppb_barang"></tbody>
             </table>
           </div>
-        </div>
-        <div class="modal-body">
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
-                <label for="v-tgl_pakai">Tanggal Kebutuhan</label>
-                <input type="text" class="form-control" id="v-tgl_pakai" name="tgl_pakai" placeholder="Tanggal Kebutuhan" readonly>
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-ket">Keterangan</label>
-                <input type="text" class="form-control" id="v-ket" name="ket" placeholder="Keterangan" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-nama_admin">Accounting Admin</label>
-                <input type="text" class="form-control" id="v-nama_admin" name="nama_admin" placeholder="Admin" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-nama_spv">Nama Supervisor</label>
-                <input type="text" class="form-control" id="v-nama_spv" name="nama_spv" placeholder="Nama Supervisor" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-nama_manager">Nama Manager</label>
-                <input type="text" class="form-control" id="v-nama_manager" name="nama_manager" placeholder="Nama Manager" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-nama_pm">Nama Plant Manager</label>
-                <input type="text" class="form-control" id="v-nama_pm" name="nama_pm" placeholder="Nama Plant Manager" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-nama_direktur">Nama Direktur</label>
-                <input type="text" class="form-control" id="v-nama_direktur" name="nama_direktur" placeholder="-" readonly>
+                <label for="prc_admin">Prc Admin</label>
+                <input type="text" class="form-control" id="prc_admin" name="prc_admin" value="<?= $this->session->userdata('nama_operator') ?>" maxlength="20" readonly>
               </div>
             </div>
           </div>
         </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" id="simpan" class="btn btn-primary" onclick="return confirm('Apakah Anda Yakin Untuk Menyimpan Data Ini? Tolong Untuk Di Cek Kembali. Dan Jangan Lupa Untuk Menginputkan Barangnya');">Simpan</button>
         </div>
       </form>
     </div>
@@ -634,57 +612,125 @@ function formatRupiah(angka) {
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $('#detail').on('show.bs.modal', function(event) {
-      var jenis_ppb = $(event.relatedTarget).data('jenis_ppb')
-      var form_ppb = $(event.relatedTarget).data('form_ppb')
-      var departement = $(event.relatedTarget).data('departement')
-      var no_ppb_accounting = $(event.relatedTarget).data('no_ppb_accounting')
-      var tgl_ppb = $(event.relatedTarget).data('tgl_ppb')
-      var tgl_pakai = $(event.relatedTarget).data('tgl_pakai')
-      var ket = $(event.relatedTarget).data('ket')
-      var nama_admin = $(event.relatedTarget).data('nama_admin')
-      var nama_spv = $(event.relatedTarget).data('nama_spv')
-      var nama_manager = $(event.relatedTarget).data('nama_manager')
-      var nama_pm = $(event.relatedTarget).data('nama_pm')
-      var nama_direktur = $(event.relatedTarget).data('nama_direktur')
+    $('#edit').on('show.bs.modal', function(event) {
+      var id_prc_rh = $(event.relatedTarget).data('id_prc_rh')
+      var id_prc_ppb = $(event.relatedTarget).data('id_prc_ppb')
+      var tgl_rh = $(event.relatedTarget).data('tgl_rh')
+      var no_ppb = $(event.relatedTarget).data('no_ppb')
 
-      $(this).find('#v-jenis_ppb').val(jenis_ppb)
-      $(this).find('#v-form_ppb').val(form_ppb)
-      $(this).find('#v-departement').val(departement)
-      $(this).find('#v-no_ppb_accounting').val(no_ppb_accounting)
-      $(this).find('#v-tgl_ppb').val(tgl_ppb)
-      $(this).find('#v-tgl_pakai').val(tgl_pakai)
-      $(this).find('#v-ket').val(ket)
-      $(this).find('#v-nama_admin').val(nama_admin)
-      $(this).find('#v-nama_spv').val(nama_spv)
-      $(this).find('#v-nama_manager').val(nama_manager)
-      $(this).find('#v-nama_pm').val(nama_pm)
-      $(this).find('#v-nama_direktur').val(nama_direktur)
+      $(this).find('#e-tgl_rh').val(tgl_rh);
+      $(this).find('#e-no_rh').val(no_ppb);
+      $(this).find('#e-id_prc_rh').val(id_prc_rh)
 
-      jQuery.ajax({
-        url: "<?= base_url() ?>accounting/accounting_ppb/data_ppb_barang",
-        dataType: 'json',
-        type: "post",
+      $(this).find('#e-tgl_rh').datepicker().on('show.bs.modal', function(event) {
+        event.stopImmediatePropagation();
+      });
+
+      // helper: format tanpa Rp (ribuan dengan titik)
+      function formatNumber(n) {
+        n = parseInt(n) || 0;
+        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+
+      // helper: format rupiah dengan Rp
+      function formatRupiahView(n) {
+        n = parseInt(n) || 0;
+        return "Rp " + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+
+      // convert string seperti "2.000" atau "Rp 2.000" -> number
+      function toNumber(str) {
+        if (str === undefined || str === null) return 0;
+        str = String(str);
+        // hilangkan semua non digit
+        var onlyDigits = str.replace(/[^0-9]/g, '');
+        return parseInt(onlyDigits || 0);
+      }
+
+        // pastikan handler keyup hanya satu kali terpasang
+        $(document).off('keyup', '.harga-input').on('keyup', '.harga-input', function() {
+
+          var jumlahRaw = $("#e-jumlah").val(); // harus ada karena kita akan render hidden jumlah
+          var jumlah = toNumber(jumlahRaw);
+
+          var hargaRaw = $(this).val();
+          var harga = toNumber(hargaRaw);
+
+          var total = jumlah * harga;
+
+          $("#e-total_view").text(formatRupiahView(total));
+          $("#e-total").val(total);
+
+          // tampilkan harga yang rapi pada input
+          $(this).val(formatRupiahView(harga));
+        });
+
+
+      // AJAX load barang (di dalam show.bs.modal)
+      $.ajax({
+        url: "<?= base_url('Purchasing/Purchasing_rh/Purchasing_rh/get_barang') ?>",
+        type: "POST",
         data: {
-          no_ppb_accounting: no_ppb_accounting
+          id_prc_ppb: id_prc_ppb
         },
-        success: function(response) {
-          var data = response;
-          var $id = $('#v-ppb_barang');
-          $id.empty();
+        dataType: "json",
+        success: function(data) {
 
-          for (var i = 0; i < data.length; i++) {
-            $id.append(`
-              <tr>
-                <td>` + data[i].kode_barang + `</td>
-                <td>` + data[i].nama_barang + `</td>
-                <td>` + data[i].spek + `</td>
-                <td>` + data[i].no_budget + `</td>
-                <td class="text-right">` + data[i].jumlah + "&nbsp" + data[i].satuan + `</td>
-                <td>` + data[i].nama_po_supplier + `</td> 
-              </tr>
-            `);
+          if (!data || data.length === 0) {
+            $("#e-ppb_barang").html("<tr><td colspan='8' class='text-center'>Tidak ada data</td></tr>");
+            return;
           }
+
+          var item = data[0];
+
+          // pastikan jumlah (hidden) ada supaya pembulatan bekerja
+          var html = `
+            <tr>
+              <input type="hidden" name="id_prc_ppb" value="${item.id_prc_ppb}">
+              <input type="hidden" name="jumlah_rh" value="${item.jumlah_ppb}" id="e-jumlah">
+
+              <td>${item.kode_barang}</td>
+              <td>${item.nama_barang}</td>
+              <td>${item.spek}</td>
+              <td>${item.satuan || '-'}</td>
+              <td class="text-center">${formatNumber(item.jumlah_ppb)}</td>
+
+              <td>
+                <input type="text"
+                      name="no_budget"
+                      class="form-control"
+                      placeholder="masukan no budget"
+                      value="${item.no_budget || ''}" required>
+              </td>
+
+              <td class="text-center">
+                <input type="text"
+                      class="form-control harga-input"
+                      name="harga_rh"
+                      value="${ item.harga_rh ? formatRupiahView(item.harga_rh) : 'Rp 0' }"
+                      id="e-harga"
+                      placeholder="Masukkan harga">
+              </td>
+
+              <td class="text-center">
+                <span id="e-total_view">${ item.total_rh ? formatRupiahView(item.total_rh) : 'Rp 0' }</span>
+                <input type="hidden" name="total_rh" id="e-total" value="${ item.total_rh ? item.total_rh : 0 }">
+              </td>
+            </tr>
+          `;
+
+          $("#e-ppb_barang").html(html);
+
+          // jika sudah ada harga & total pada item (dari DB), pastikan nilai tampil rapi
+          if (item.harga_rh) {
+            // harga input sudah diisi di atas; total di span sudah diisi
+            // tapi untuk safety, kita pastikan hidden total berisi angka
+            $("#e-total").val(item.total_rh || 0);
+          }
+        },
+        error: function(xhr, status, err) {
+          console.error('AJAX error', err);
+          $("#e-ppb_barang").html("<tr><td colspan='8' class='text-center'>Gagal memuat data</td></tr>");
         }
       });
     });

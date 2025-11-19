@@ -117,8 +117,10 @@ class Purchasing_rb extends CI_Controller
     $this->M_prc_rb->update($data);
 
     // Hapus semua barang RB lama
-    $this->M_prc_rb->delete_barang($data['no_rb']);
-
+    $respon = $this->M_prc_rb->delete_barang($data['no_rb']);
+    if(!$respon) {
+        header('location:' . base_url('purchasing/purchasing_rb/purchasing_rb') . '?alert=success&msg=Selamat anda berhasil mengupdate rencana belanja');
+    }
     // Insert ulang semua barang
     if (!empty($data['id_prc_rh'])) {
 
@@ -136,9 +138,9 @@ class Purchasing_rb extends CI_Controller
 
             $this->M_prc_rb->update_barang($insert);
         }
-                header('location:' . base_url('purchasing/purchasing_rb/purchasing_rb') . '?alert=success&msg=Selamat anda berhasil mengupdate rencana belanja');
+        header('location:' . base_url('purchasing/purchasing_rb/purchasing_rb') . '?alert=success&msg=Selamat anda berhasil mengupdate rencana belanja');
         } else {
-            header('location:' . base_url('purchasing/purchasing_rh') . '?alert=success&msg=Maaf anda gagal mengupdate rencana belanja');
+            header('location:' . base_url('purchasing/purchasing_rb/purchasing_rb') . '?alert=success&msg=Selamat Anda Berhasil mengupdate rencana belanja');
         }
     }
 

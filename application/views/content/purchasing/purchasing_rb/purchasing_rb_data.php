@@ -14,7 +14,7 @@
                 <ul class="breadcrumb">
                   <li class="breadcrumb-item"><a href="<?= base_url() ?>"><i class="feather icon-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="javascript:">Purchasing</a></li>
-                  <li class="breadcrumb-item"><a href="<?= base_url('Purchasing/Purchasing_rh/purchasing_rh') ?>">Rincian Harga</a></li>
+                  <li class="breadcrumb-item"><a href="<?= base_url('Purchasing/Purchasing_rb/purchasing_rb') ?>">Rencana Belanja</a></li>
                 </ul>
               </div>
             </div>
@@ -233,8 +233,26 @@
       $(this).find('#tgl_rh').datepicker().on('show.bs.modal', function(event) {
       event.stopImmediatePropagation();
     });
-        // Load barang via AJAX
-        $("#id_prc_rh").change(function () {
+
+    // Load barang via AJAX
+    $("#id_prc_rh").change(function () {
+          // Function format Rupiah
+              function formatAngka(angka) {
+                  if (!angka) return 'Rp 0';
+                  
+                  // Convert ke number jika string
+                  var number = parseInt(angka) || 0;
+                  
+                  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+              }
+              function formatRupiah(angka) {
+                  if (!angka) return 'Rp 0';
+                  
+                  // Convert ke number jika string
+                  var number = parseInt(angka) || 0;
+                  
+                  return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+              }
             let id = $(this).val();
             let text = $("#id_prc_rh option:selected").text();
 
@@ -269,9 +287,9 @@
                             <td>${item.nama_barang}</td>
                             <td>${item.spek}</td>
                             <td>${item.satuan}</td>
-                            <td class="text-center">${item.jumlah_rh}</td>
-                            <td class="text-center">${item.harga_rh}</td>
-                            <td class="text-right">${item.total_rh}</td>
+                            <td class="text-center">${formatAngka(item.jumlah_rh)}</td>
+                            <td class="text-center">${formatRupiah(item.harga_rh)}</td>
+                            <td class="text-right">${formatRupiah(item.total_rh)}</td>
 
                             <td class="text-center">
                                 <button type="button" 
@@ -426,7 +444,7 @@
                 } else {
                     $id.append(`
                         <tr>
-                            <td colspan="7" class="text-center">Tidak ada data barang</td>
+                            <td colspan="9" class="text-center">Tidak ada data barang</td>
                         </tr>
                     `);
                 }
@@ -544,6 +562,23 @@ $(document).ready(function() {
     // === LOAD DATA EDIT ===
     $("#edit").on("show.bs.modal", function(e){
 
+      function formatRupiah(angka) {
+            if (!angka) return 'Rp 0';
+            
+            // Convert ke number jika string
+            var number = parseInt(angka) || 0;
+            
+            return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+      function formatAngka(angka) {
+            if (!angka) return 'Rp 0';
+            
+            // Convert ke number jika string
+            var number = parseInt(angka) || 0;
+            
+            return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
         let tgl_rb = $(e.relatedTarget).data("tgl_rb");
         $("#edit_tgl_rb").val(tgl_rb);
         let no_rb = $(e.relatedTarget).data("no_rb");
@@ -558,6 +593,7 @@ $(document).ready(function() {
         // Clear disabled options
         $("#edit_id_prc_rh option").prop("disabled", false);
 
+        
         // AJAX load barang lama
         $.ajax({
             url: "<?= base_url('Purchasing/Purchasing_rb/Purchasing_rb/get_barang_rb') ?>",
@@ -580,9 +616,9 @@ $(document).ready(function() {
                             <td>${item.nama_barang}</td>
                             <td>${item.spek || ''}</td>
                             <td>${item.satuan}</td>
-                            <td class="text-center">${item.jumlah_rh}</td>
-                            <td class="text-center">${item.harga_rh}</td>
-                            <td class="text-right">${item.total_rh}</td>
+                            <td class="text-center">${formatAngka(item.jumlah_rh) || '0'}</td>
+                            <td class="text-center">${formatRupiah(item.harga_rh)|| '0'}</td>
+                            <td class="text-right">${formatRupiah(item.total_rh) || '0'}</td>
 
                             <td class="text-center">
                                 <button type="button" class="btn btn-danger btn-sm edit-remove-row" data-id="${item.id_prc_rh}">
@@ -601,9 +637,18 @@ $(document).ready(function() {
 
     });
 
+    
     // === ADD BARANG BARU KE EDIT ===
     $("#edit_id_prc_rh").change(function(){
-
+      
+      function formatRupiah(angka) {
+            if (!angka) return 'Rp 0';
+            
+            // Convert ke number jika string
+            var number = parseInt(angka) || 0;
+            
+            return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
         let id = $(this).val();
 
         // Check duplicate
@@ -638,8 +683,8 @@ $(document).ready(function() {
                         <td>${item.spek || ''}</td>
                         <td>${item.satuan}</td>
                         <td class="text-center">${item.jumlah_rh}</td>
-                        <td class="text-center">${item.harga_rh}</td>
-                        <td class="text-right">${item.total_rh}</td>
+                        <td class="text-center">${formatRupiah(item.harga_rh) || '0'}</td>
+                        <td class="text-right">${formatRupiah(item.total_rh) || '0'}</td>
 
                         <td class="text-center">
                             <button type="button" class="btn btn-danger btn-sm edit-remove-row" data-id="${item.id_prc_rh}">

@@ -142,18 +142,11 @@ class M_prc_rb extends CI_Model
         $sql = "SELECT a.*,
         b.id_prc_rh,
         c.id_prc_ppb,
-        e.no_ppb,
-        d.acc_spv,
-        d.acc_manager,
-        d.jenis_ppb,
-        d.jenis_form_ppb,
-        d.acc_direktur,
-        d.acc_pm
+        e.no_ppb
         FROM tb_prc_rb_tf a 
         LEFT JOIN tb_prc_rb b ON a.no_rb = b.no_rb
         LEFT JOIN tb_prc_rh c ON b.id_prc_rh = c.id_prc_rh
         LEFT JOIN tb_prc_ppb e ON c.id_prc_ppb = e.id_prc_ppb
-        LEFT JOIN tb_prc_ppb_tf d ON d.no_ppb = e.no_ppb
         WHERE a.no_rb = '$no_rb' AND a.is_deleted = 0";
         return $this->db->query($sql)->row();
     }

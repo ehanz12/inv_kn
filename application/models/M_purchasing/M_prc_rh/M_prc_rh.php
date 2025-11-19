@@ -15,8 +15,10 @@ class M_prc_rh extends CI_Model
 
     public function get()
     {
-        $sql = "SELECT a.*, b.no_ppb, b.no_budget FROM tb_prc_rh a
+        $sql = "SELECT a.*, b.no_ppb, b.no_budget, c.no_rb FROM tb_prc_rh a
         LEFT JOIN tb_prc_ppb b ON a.id_prc_ppb = b.id_prc_ppb
+        LEFT JOIN tb_prc_rb c ON a.id_prc_rh = c.id_prc_rh
+        WHERE a.is_deleted = 0
         ORDER BY a.id_prc_rh ASC";
         return $this->db->query($sql);
     }
@@ -105,23 +107,41 @@ class M_prc_rh extends CI_Model
         return $this->db->query($sql);
     }
 
-    public function data_ppb_barang($no_ppb)
+    public function data_ppb_barang($no_ppb=null, $id_prc_ppb=null)
     {
-       return $this->db->query("
-        SELECT 
+        if ($no_ppb == null) {
+            $where[] = "";
+        } else {
+            $where[] = "AND a.no_ppb = '$no_ppb'";
+        }
+
+        if ($id_prc_ppb == null) {
+            $where[] = "";
+        } else {
+            $where[] = "AND a.id_prc_ppb = '$id_prc_ppb'";
+        }
+
+        $where = implode(" ", $where);
+
+
+        $sql = "SELECT 
             a.id_prc_ppb,
             b.kode_barang,
             b.nama_barang,
             b.spek,
             b.satuan,
             a.no_budget,
-            a.jumlah_ppb
+            a.jumlah_ppb,
+            c.harga_rh,
+            c.total_rh
         FROM tb_prc_ppb a
         LEFT JOIN tb_prc_master_barang b
             ON a.id_prc_master_barang = b.id_prc_master_barang
-        WHERE a.no_ppb = '$no_ppb'
+        LEFT JOIN tb_prc_rh c ON a.id_prc_ppb = c.id_prc_ppb
+        WHERE a.is_deleted = 0 $where
         ORDER BY a.id_prc_ppb ASC
-    ")->result_array();
+    ";
+    return $this->db->query($sql)->result_array();
     }
 
     public function add($data)
@@ -160,6 +180,33 @@ class M_prc_rh extends CI_Model
         WHERE id_prc_ppb = '" . $data['id_prc_ppb'] . "'";
         $this->db->query($sql2);
         return TRUE;
+    }
+
+    public function update($data)
+    {
+        $id_user = $this->id_user();
+        $sql1 = "
+        UPDATE tb_prc_rh
+        SET
+        harga_rh = '$data[harga_rh]',
+        jumlah_rh = '$data[jumlah_rh]',
+        total_rh = '$data[total_rh]',
+        tgl_rh = '$data[tgl_rh]',
+        updated_at = NOW(),
+        updated_by = '$id_user'
+        WHERE id_prc_rh = '$data[id_prc_rh]'
+        ";
+        $this->db->query($sql1);
+
+        $sql = "
+        UPDATE tb_prc_ppb
+        SET no_budget = '$data[no_budget]',
+        updated_at = NOW(),
+        updated_by = '$id_user'
+        WHERE id_prc_ppb = '$data[id_prc_ppb]'
+        ";
+
+        return $this->db->query($sql);
     }
 }
 ?>

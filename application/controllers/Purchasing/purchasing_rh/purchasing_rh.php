@@ -50,8 +50,9 @@ class Purchasing_rh extends CI_Controller
     public function get_barang()
     {
         $no_ppb = $this->input->post('no_ppb', TRUE);
+        $id_prc_ppb = $this->input->post('id_prc_ppb', TRUE);
 
-        $result = $this->M_prc_rh->data_ppb_barang($no_ppb);
+        $result = $this->M_prc_rh->data_ppb_barang($no_ppb, $id_prc_ppb);
 
         echo json_encode($result);
     }
@@ -124,6 +125,36 @@ class Purchasing_rh extends CI_Controller
             header('location:' . base_url('purchasing/purchasing_rh') . '?alert=success&msg=Maaf anda gagal menambah receiving harian');
         }
 
+    }
+
+    public function delete($id)
+    {
+        $this->db->where('id_prc_rh', $id);
+        $respon = $this->db->delete('tb_prc_rh');
+        if ($respon) {
+            header('location:' . base_url('purchasing/purchasing_rh/purchasing_rh') . '?alert=success&msg=Selamat anda berhasil menghapus rincian harga');
+        }else {
+            header('location:' . base_url('purchasing/purchasing_rh/purchasing_rh') . '?alert=error&msg=Maaf anda gagal menghapus rincian harga');
+        }
+    }
+
+    public function update()
+    {
+        $data['id_prc_rh'] = $this->input->post('id_prc_rh', TRUE);
+        $data['id_prc_ppb'] = $this->input->post('id_prc_ppb', TRUE);
+        $data['tgl_rh'] = $this->convertDate($this->input->post('tgl_rh', TRUE));
+        $data['harga_rh']  = preg_replace('/[^0-9]/', '', $this->input->post('harga_rh'));
+        $data['jumlah_rh'] = preg_replace('/[^0-9]/', '', $this->input->post('jumlah_rh'));
+        $data['total_rh']  = preg_replace('/[^0-9]/', '', $this->input->post('total_rh'));
+        $data['no_budget'] = $this->input->post('no_budget', TRUE);
+
+        $respon = $this->M_prc_rh->update($data);
+
+        if ($respon) {
+            header('location:' . base_url('purchasing/purchasing_rh/purchasing_rh') . '?alert=success&msg=Selamat anda berhasil mengupdate rincian harga');
+        }else {
+            header('location:' . base_url('purchasing/purchasing_rh/purchasing_rh') . '?alert=error&msg=Maaf anda gagal mengupdate rincian harga');
+        }
     }
  
 }

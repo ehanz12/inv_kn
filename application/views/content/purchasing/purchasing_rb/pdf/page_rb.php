@@ -197,9 +197,9 @@
                 <td><?= $b['nama_barang'] ?></td>
                 <td><?= $b['spek'] ?></td>
                 <td><?= $b['satuan'] ?></td>
-                <td><?= $b['jumlah_rh'] ?></td>
-                <td><?= number_format($b['harga_rh']) ?></td>
-                <td><?= number_format($b['total_rh']) ?></td>
+                <td><?= number_format($b['jumlah_rh'], 0, ",", ".") ?></td>
+                <td><?= number_format($b['harga_rh'], 0, ",", ".") ?></td>
+                <td><?= number_format($b['total_rh'], 0, ",", ".") ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
@@ -212,11 +212,6 @@
             <th>Cicadas, <?= date('Y m D') ?></th>
             <th>Mengetahui</th>
             <th>Menyetujui</th>
-            <th>Menyetujui</th>
-
-            <?php if ($rb->jenis_ppb == "Non-Budget"): ?>
-                <th>Disetujui</th>
-            <?php endif; ?>
         </tr>
     </thead>
 
@@ -241,11 +236,11 @@
                 <?php if (file_exists(FCPATH.'assets/tanda_tangan/mengetahui.png')): ?>
                     <img src="<?= base_url('assets/tanda_tangan/mengetahui.png') ?>" height="70"><br>
                 <?php else: ?>
-                    <div style="height:70px;"><?= $rb->acc_spv ?></div>
+                    <div style="height:70px;">Approved</div>
                 <?php endif; ?>
 
                 <div class="signature-line"></div>
-                <div>( <?= $rb->ttd_mengetahui ?? 'Supervisor' ?> )</div>
+                <div>( <?= $rb->ttd_mengetahui ?? 'ka.Purchasing' ?> )</div>
             </td>
 
             <!-- ========== MENYETUJUI ========== -->
@@ -253,38 +248,12 @@
                 <?php if (file_exists(FCPATH.'assets/tanda_tangan/menyetujui.png')): ?>
                     <img src="<?= base_url('assets/tanda_tangan/menyetujui.png') ?>" height="70"><br>
                 <?php else: ?>
-                    <div style="height:70px;"><?= $rb->acc_manager ?></div>
+                    <div style="height:70px;">Approved</div>
                 <?php endif; ?>
 
                 <div class="signature-line"></div>
-                <div>( <?= $rb->ttd_menyetujui ?? 'Manager' ?> )</div>
+                <div>( <?= $rb->ttd_menyetujui ?? 'Ass.Dirut' ?> )</div>
             </td>
-
-            <!-- ========== MENYETUJUI ========== -->
-            <td>
-                <?php if (file_exists(FCPATH.'assets/tanda_tangan/menyetujui.png')): ?>
-                    <img src="<?= base_url('assets/tanda_tangan/menyetujui.png') ?>" height="70"><br>
-                <?php else: ?>
-                    <div style="height:70px;"><?= $rb->acc_pm ?></div>
-                <?php endif; ?>
-
-                <div class="signature-line"></div>
-                <div>( <?= $rb->ttd_menyetujui ?? 'Plant Manager' ?> )</div>
-            </td>
-
-            <!-- ========== DIREKTUR (NON-BUDGET ONLY) ========== -->
-            <?php if ($rb->jenis_ppb == "Non-Budget"): ?>
-            <td>
-                <?php if (file_exists(FCPATH.'assets/tanda_tangan/direktur.png')): ?>
-                    <img src="<?= base_url('assets/tanda_tangan/direktur.png') ?>" height="70"><br>
-                <?php else: ?>
-                    <div style="height:70px;"><?= $rb->acc_direktur ?></div>
-                <?php endif; ?>
-
-                <div class="signature-line"></div>
-                <div>( <?= $rb->ttd_direktur ?? 'Direktur' ?> )</div>
-            </td>
-            <?php endif; ?>
 
         </tr>
     </tbody>
