@@ -39,6 +39,17 @@
             line-height: 1;
         }
 
+        /* CLASS UNTUK TEXT BIRU */
+        .blue-text {
+            color: rgba(31, 119, 201, 0.4);
+            font-weight: bold;
+        }
+
+        /* CLASS UNTUK TEXT HITAM (default) */
+        .black-text {
+            color: black;
+        }
+
         /* Styling untuk tabel utama */
         #schedule-table th {
             background-color: #7abcffff; /* lightsalmon */
@@ -214,6 +225,9 @@
                     $jenis_zak = !empty($k['jenis_zak']) ? $k['jenis_zak'] : '-';
                     $no_batch = !empty($k['no_batch']) ? $k['no_batch'] : '-';
                     $size = !empty($k['size_machine']) ? $k['size_machine'] : '-';
+                    
+                    // Tentukan class untuk warna teks
+                    $textClass = (!empty($k['print']) && $k['print'] != '-' && $k['print'] != '0') ? 'blue-text' : 'black-text';
                 ?>
                     <tr class="mesin-<?= $mesin ?>">
                         <?php if ($no === 1) { ?>
@@ -221,22 +235,22 @@
                         <?php } else { ?>
                             <td class="text-center"></td>
                         <?php } ?>
-                        <td class="text-center"><?= $no++ ?></td>
-                        <td class="customer-name"><?= $k['nama_customer'] ?></td>
-                        <td class="text-center"><?= $size ?></td>
-                        <td class="text-center"><?= $kode_warna_cap ?>-<?= $kode_warna_body ?></td>
-                        <td class="text-center"><?= $warna_cap ?>-<?= $warna_body ?></td>
-                        <td class="text-center"><?= $print ?></td>
-                        <td class="text-center"><?= $tinta ?></td>
-                        <td class="text-center"><?= $minyak ?></td>
-                        <td class="text-center"><?= $jumlah ?></td>
-                        <td class="text-center"><?= $sisa ?></td>
-                        <td class="text-center"><?= $tgl_sch ?></td>
-                        <td class="text-center"><?= $no_cr ?></td>
-                        <td class="text-center"><?= $tgl_kirim ?></td>
-                        <td class="text-center"><?= $jenis_box ?></td>
-                        <td class="text-center"><?= $jenis_zak ?></td>
-                        <td class="text-center"><?= $no_batch ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $no++ ?></td>
+                        <td class="customer-name <?= $textClass ?>"><?= $k['nama_customer'] ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $size ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $kode_warna_cap ?>-<?= $kode_warna_body ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $warna_cap ?>-<?= $warna_body ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $print ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $tinta ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $minyak ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $jumlah ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $sisa ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $tgl_sch ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $no_cr ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $tgl_kirim ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $jenis_box ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $jenis_zak ?></td>
+                        <td class="text-center <?= $textClass ?>"><?= $no_batch ?></td>
                     </tr>
                 <?php } ?>
                 

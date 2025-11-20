@@ -2,6 +2,10 @@
 $notif = $this->M_barang_masuk->get()->result_array();
 ?>
 <!-- [ Header ] start -->
+<?php
+$notif = $this->M_barang_masuk->get()->result_array();
+?>
+<!-- [ Header ] start -->
 <header class="navbar pcoded-header navbar-expand-lg navbar-light">
     <div class="m-header">
         <a class="mobile-menu" id="mobile-collapse1" href="javascript:"><span></span></a>
@@ -21,7 +25,31 @@ $notif = $this->M_barang_masuk->get()->result_array();
         </ul>
         <ul class="navbar-nav ml-auto">
             <li>
-            </li>
+                
+                <div class="nav-item" style="margin-right: 15px;">
+    <span class="navbar-text">
+        <i class="feather icon-user"></i>
+        <?php 
+        $nama = $this->session->userdata('nama_operator');
+        $level = $this->session->userdata('level');
+        
+        // Tampilkan avatar berdasarkan level
+        if ($level === "lab") { ?>
+            <img src="<?= base_url('assets/images/user/avatar-1.jpg') ?>" class="img-radius" alt="User-Profile-Image">
+        <?php } elseif ($level === "gudang") { ?>
+            <img src="<?= base_url('assets/images/user/avatar-4.jpg') ?>" class="img-radius" alt="User-Profile-Image">
+        <?php } elseif ($level === "marketing") { ?>
+            <img src="<?= base_url('assets/images/user/avatar-5.jpg') ?>" class="img-radius" alt="User-Profile-Image">
+        <?php } elseif ($level === "melting") { ?>
+            <img src="<?= base_url('assets/images/user/avatar-2.jpg') ?>" class="img-radius" alt="User-Profile-Image">
+        <?php } elseif ($level === "utility") { ?>
+            <img src="<?= base_url('assets/images/user/avatar-3.jpg') ?>" class="img-radius" alt="User-Profile-Image">
+        <?php } ?>
+        
+        <span><?= htmlspecialchars($nama); ?></span>
+    </span>
+</div>
+</li>
             <li>
                 <div class="dropdown drp-user">
                     <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">
@@ -29,24 +57,7 @@ $notif = $this->M_barang_masuk->get()->result_array();
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-notification">
                         <div class="pro-head">
-                            <?php $nama = $this->session->userdata('nama_operator');
-                            $level = $this->session->userdata('level') ?>
-                            <?php if ($level === "lab") { ?>
-                                <img src="<?= base_url('assets/images/user/avatar-1.jpg') ?>" class="img-radius" alt="User-Profile-Image">
-                            <?php }
-                            if ($level === "gudang") { ?>
-                                <img src="<?= base_url('assets/images/user/avatar-4.jpg') ?>" class="img-radius" alt="User-Profile-Image">
-                            <?php }
-                            if ($level === "marketing") { ?>
-                                <img src="<?= base_url('assets/images/user/avatar-5.jpg') ?>" class="img-radius" alt="User-Profile-Image">
-                            <?php }
-                            if ($level === "melting") { ?>
-                                <img src="<?= base_url('assets/images/user/avatar-2.jpg') ?>" class="img-radius" alt="User-Profile-Image">
-                            <?php }
-                            if ($level === "utility") { ?>
-                                <img src="<?= base_url('assets/images/user/avatar-3.jpg') ?>" class="img-radius" alt="User-Profile-Image">
-                            <?php } ?>
-                            <span><?= $nama; ?></span>
+                           
                             <a href="<?= base_url('auth/signout') ?>" class="dud-logout" title="Logout">
                                 <i class="feather icon-log-out"></i>
                             </a>
@@ -62,7 +73,6 @@ $notif = $this->M_barang_masuk->get()->result_array();
     </div>
 </header>
 <!-- [ Header ] end -->
-
 <!-- Modal -->
 <div class="modal fade" id="profil" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
