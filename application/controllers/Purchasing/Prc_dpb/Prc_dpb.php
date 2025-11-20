@@ -58,6 +58,7 @@ class Prc_dpb extends CI_Controller
         $data['jml_disc'] = preg_replace('/[^0-9]/', '',$this->input->post('jml_disc', TRUE));
         $data['no_dpb'] = $this->input->post('no_dpb', TRUE);
         $data['no_sjl'] = $this->input->post('no_sjl', TRUE);
+        $data['no_po'] = $this->input->post('no_po', TRUE);
         $data['id_prc_rb'] = $this->input->post('id_prc_rb', TRUE);
 
         $this->M_prc_dpb->add($data);
@@ -67,6 +68,7 @@ class Prc_dpb extends CI_Controller
                 $data_rh = [
                     'id_prc_rb'  => $data['id_prc_rb'][$i],
                     'no_dpb'   => $data['no_dpb'],
+                    'no_po'   => $data['no_po'],
                     'jml_beli' => $data['jml_beli'],
                     'jml_ongkir' => $data['jml_ongkir'],
                     'jml_ppn' => $data['jml_ppn'],
@@ -81,6 +83,16 @@ class Prc_dpb extends CI_Controller
             header('location:' . base_url('purchasing/prc_dpb/prc_dpb') . '?alert=success&msg=Selamat anda berhasil menambahkan Data DPB');
         }else {
             header('location:' . base_url('purchasing/prc_dpb/prc_dpb') . '?alert=success&msg=Selamat anda gagal menambahkan Data DPB');
+        }
+    }
+
+    public function delete($no_dpb)
+    {
+        $respon = $this->M_prc_dpb->delete($no_dpb);
+        if($respon) {
+             header('location:' . base_url('purchasing/prc_dpb/prc_dpb') . '?alert=success&msg=Selamat anda berhasil menghapus Data DPB');
+        }else {
+            header('location:' . base_url('purchasing/prc_dpb/prc_dpb') . '?alert=success&msg=Selamat anda gagal menghapus Data DPB');
         }
     }
 }

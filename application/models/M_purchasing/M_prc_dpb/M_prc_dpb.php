@@ -64,8 +64,8 @@ class M_prc_dpb extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO tb_prc_dpb_tf (no_dpb, tgl_dpb, jenis_bayar, no_sjl, prc_admin, created_at)
-        VALUES ('$data[no_dpb]', '$data[tgl_dpb]', '$data[jenis_bayar]', '$data[no_sjl]', '$id_user', NOW())
+        INSERT INTO tb_prc_dpb_tf (no_dpb, tgl_dpb, jenis_bayar, no_sjl, prc_admin, created_at, created_by)
+        VALUES ('$data[no_dpb]', '$data[tgl_dpb]', '$data[jenis_bayar]', '$data[no_sjl]', '$id_user', NOW(), '$id_user')
         ";
         return $this->db->query($sql);
     }
@@ -73,6 +73,14 @@ class M_prc_dpb extends CI_Model
     public function add_barang($data)
     {
         return $this->db->insert('tb_prc_dpb', $data);
+    }
+
+    public function delete($no_dpb)
+    {
+       $sql ="DELETE FROM tb_prc_dpb WHERE no_dpb='$no_dpb'";
+       $this->db->query($sql);
+       $sql = "DELETE  FROM tb_prc_dpb_tf WHERE no_dpb='$no_dpb'";
+       return $this->db->query($sql);
     }
 }
 ?>

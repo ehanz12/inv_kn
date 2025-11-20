@@ -69,7 +69,7 @@
                         </thead>
                         <tbody>
                           <?php
-                          $level = $this->session->userdata('level');
+                          $level = $this->session->userdata('departement');
 
                           $no = 1;
                           foreach ($result as $k) {
@@ -86,8 +86,9 @@
                               <td class="text-center">
                                 <?php if ($level === "admin") { ?>
                                   <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a type="button" class="btn btn-success btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>purchasing/prc_dpb/prc_dpb/pdf_cetak_dpb/<?= str_replace('/', '--', $k['no_dpb']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); ">
-                                      <i class="feather icon-file"></i>Cetak
+                                    <a type="button" class="btn btn-danger btn-square btn-sm text-light" href="<?= base_url() ?>purchasing/prc_dpb/prc_dpb/delete/<?= str_replace('/', '--', $k['no_dpb']) ?>"
+                                    onclick="return confirm('apakah kamu ingin menghapusnya?')">
+                                      <i class="feather icon-trash"></i>Hapus
                                     </a>
                                   </div>
                                 <?php } ?>
@@ -155,7 +156,7 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label for="tgl_dpb">Tanggal DPB</label>
-                <input type="text" class="form-control datepicker" id="tgl_dpb" name="tgl_dpb" placeholder="Tanggal DPB" required>
+                <input autocomplete="off" class="form-control datepicker" id="tgl_dpb" name="tgl_dpb" placeholder="Tanggal DPB" required>
               </div>
             </div>
             <div class="col-md-3">
@@ -202,6 +203,12 @@
                 </thead>
                 <tbody id="a-ppb_barang"></tbody>
               </table>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="jenis_bayar">No Po</label>
+                <input class="form-control" id="no_po" name="no_po" placeholder="No Po" required>
+              </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
