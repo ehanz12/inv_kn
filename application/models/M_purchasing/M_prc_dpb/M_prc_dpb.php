@@ -50,7 +50,7 @@ class M_prc_dpb extends CI_Model
 
     public function data_no_budget($no_rb)
     {
-        $sql = "SELECT a.no_rb, a.is_deleted, b.id_prc_rh, b.id_prc_rb, c.id_prc_ppb, c.jumlah_rh, c.harga_rh, c.total_rh, d.no_budget, e.nama_barang, e.spek, e.satuan FROM tb_prc_rb_tf a
+        $sql = "SELECT a.no_rb, a.is_deleted, b.id_prc_rh, b.id_prc_rb, c.id_prc_ppb, c.jumlah_rh, c.harga_rh, c.total_rh, d.no_budget,e.kode_barang, e.nama_barang, e.spek, e.satuan FROM tb_prc_rb_tf a
         LEFT JOIN tb_prc_rb b ON a.no_rb = b.no_rb
         LEFT JOIN tb_prc_rh c ON b.id_prc_rh = c.id_prc_rh
         LEFT JOIN tb_prc_ppb d ON c.id_prc_ppb = d.id_prc_ppb
@@ -60,12 +60,25 @@ class M_prc_dpb extends CI_Model
         return $this->db->query($sql)->result_array();
     }
 
+    public function data_barang_dpb($no_dpb)
+    {
+        $sql = "SELECT a.id_prc_dpb, a.no_po, a.jenis_bayar ,a.is_deleted, a.id_prc_rb, a.no_dpb, a.jml_beli, a.jml_materi, a.jml_ongkir, a.jml_ppn, a.jml_disc, 
+        b.id_prc_rh, c.id_prc_ppb, d.id_prc_master_barang, d.no_budget, e.nama_barang, e.kode_barang,e.spek, e.satuan FROM tb_prc_dpb a
+        LEFT JOIN tb_prc_rb b ON a.id_prc_rb = b.id_prc_rb
+        LEFT JOIN tb_prc_rh c ON b.id_prc_rh = c.id_prc_rh
+        LEFT JOIN tb_prc_ppb d ON c.id_prc_ppb = d.id_prc_ppb
+        LEFT JOIN tb_prc_master_barang e ON d.id_prc_master_barang = e.id_prc_master_barang
+        WHERE a.is_deleted = 0 AND a.no_dpb = '$no_dpb'";
+        
+        return $this->db->query($sql)->result_array();
+    }
+
     public function add($data)
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO tb_prc_dpb_tf (no_dpb, tgl_dpb, jenis_bayar, no_sjl, prc_admin, created_at, created_by)
-        VALUES ('$data[no_dpb]', '$data[tgl_dpb]', '$data[jenis_bayar]', '$data[no_sjl]', '$id_user', NOW(), '$id_user')
+        INSERT INTO tb_prc_dpb_tf (no_dpb, tgl_dpb, no_sjl, prc_admin, created_at, created_by)
+        VALUES ('$data[no_dpb]', '$data[tgl_dpb]','$data[no_sjl]', '$id_user', NOW(), '$id_user')
         ";
         return $this->db->query($sql);
     }
@@ -82,5 +95,6 @@ class M_prc_dpb extends CI_Model
        $sql = "DELETE  FROM tb_prc_dpb_tf WHERE no_dpb='$no_dpb'";
        return $this->db->query($sql);
     }
+
 }
 ?>
