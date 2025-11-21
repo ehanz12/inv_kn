@@ -42,7 +42,7 @@
                         </div>
 
                         <div class="btn-group">
-                          <a href="<?= base_url() ?>Purchasing/Prc_dpb/Prc_dpb" style="width: 40px;" class="btn btn-warning" id="export" type="button"><i class="feather icon-refresh-ccw"></i></a>
+                          <a href="<?= base_url() ?>Purchasing/Prc_dpb/Prc_dpb" style="width: 40px;" class="btn btn-warning" type="button"><i class="feather icon-refresh-ccw"></i></a>
                         </div>
 
                         <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add">
@@ -143,14 +143,26 @@
     });
 
     $('#lihat').click(function() {
+
       var filter_tgl = $('#filter_tgl').val();
       var filter_tgl2 = $('#filter_tgl2').val();
-      if (filter_tgl == '' || filter_tgl2 == '') {
-        alert('Pilih kedua tanggal untuk melihat data.');
+      var newFilterTgl = filter_tgl.split("/")[2] + "-" + filter_tgl.split("/")[1] + "-" + filter_tgl.split("/")[0];
+      var newFilterTgl2 = filter_tgl2.split("/")[2] + "-" + filter_tgl2.split("/")[1] + "-" + filter_tgl2.split("/")[0];
+
+      if (filter_tgl == '' && filter_tgl2 != '') {
+        window.location = "<?= base_url() ?>purchasing/prc_dpb/prc_dpb?alert=warning&msg=dari tanggal belum diisi";
+      } else if (filter_tgl != '' && filter_tgl2 == '') {
+        window.location = "<?= base_url() ?>purchasing/prc_dpb/prc_dpb?alert=warning&msg=sampai tanggal belum diisi";
       } else {
-        window.location.href = "<?= base_url() ?>Account/Account_ppbfilter_tg=" + filter_tgl + "&filter_tgl2=" + filter_tgl2;
+        const query = new URLSearchParams({
+          date_from: filter_tgl,
+          date_until: filter_tgl2
+        })
+
+        window.location = "<?= base_url() ?>purchasing/prc_dpb/prc_dpb/index?" + query.toString()
+
       }
-    });
+    })
   });
 </script>
 
@@ -279,7 +291,7 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label for="no_po">No Po</label>
-                <input type="text" class="form-control" id="no_po" placeholder="No Po" required>
+                <input type="text" class="form-control" id="no_po" placeholder="No Po" autocomplete="off" required>
               </div>
             </div>
             <div class="col-md-3">
@@ -630,6 +642,7 @@
           alert('Gagal memuat data PO.');
         }
       });
+
       function formatRupiah(v) {
         return new Intl.NumberFormat('id-ID').format(v);
       }

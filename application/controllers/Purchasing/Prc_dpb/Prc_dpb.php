@@ -29,7 +29,7 @@ class Prc_dpb extends CI_Controller
     {
         $tgl = $this->input->get('date_from');
         $tgl2 = $this->input->get('date_until');
-        $data['result'] = $this->M_prc_dpb->get()->result_array();
+        $data['result'] = $this->M_prc_dpb->get($tgl, $tgl2)->result_array();
         $data['res_rb'] = $this->M_prc_dpb->get_rb()->result_array();
         $data['generate_no_dpb'] = $this->M_prc_dpb->generate_no_dpb();
         $data['tgl'] = $tgl;
