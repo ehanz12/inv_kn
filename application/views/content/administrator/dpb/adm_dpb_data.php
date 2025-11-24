@@ -129,7 +129,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <select class="form-control chosen-select" id="no_dpb" name="no_dpb" required>
                   <option value="" disabled selected hidden> - Pilih No DPB -</option>
                   <?php foreach ($res_kode as $rk) : ?>
-                    <option value="<?= $rk['no_dpb'] ?>"><?= $rk['no_dpb'] ?></option>
+                    <option value="<?= $rk['no_dpb'] ?>"
+                    data-no_dpb="<?= $rk['no_dpb'] ?>"><?= $rk['no_dpb'] ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
@@ -146,6 +147,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <input type="text" class="form-control" id="tgl_dpb" name="tgl_dpb" readonly>
               </div>
             </div>
+                <input type="hidden" class="form-control" id="d-no_dpb" name="no_dpb" readonly>
+                <!-- <input type="hidden" class="form-control" id="no_dpb" name="no_dpb" readonly> -->
 
 
              <div class="col-md-3">
@@ -317,7 +320,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
     // Event ketika No DPB dipilih di modal Add
     $('#no_dpb').on('change', function() {
       const no_dpb = $(this).val();
-      
+      let selected = $(this).find('option:selected');
+      $('#d-no_dpb').val(selected.data('no_dpb'));
       if (no_dpb) {
         // Tampilkan loading
         $('#detail-barang').html('<tr><td colspan="7" class="text-center"><div class="spinner-border spinner-border-sm text-primary" role="status"></div> Memuat data barang...</td></tr>');

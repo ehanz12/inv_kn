@@ -1,4 +1,4 @@
-<?php
+    <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_adm_dpb extends CI_Model
@@ -25,15 +25,14 @@ public function get_dpb_detail_with_relations($no_dpb)
 {
     $sql = "SELECT a.id_prc_dpb, a.no_po, a.jenis_bayar, a.is_deleted, a.id_prc_rb, a.no_dpb, a.jml_beli, a.jml_materi, a.jml_ongkir, a.jml_ppn, a.jml_disc, 
         b.id_prc_rh, c.id_prc_ppb, d.id_prc_master_barang, d.no_budget, e.nama_barang, e.id_prc_master_supplier, e.kode_barang, e.spek, e.satuan, 
-        f.id_prc_dpb_tf, f.tgl_dpb, f.id_prc_dpb_tf, g.nama_supplier, h.jml_diterima AS jumlah_diterima 
+        f.id_prc_dpb_tf, f.tgl_dpb, f.id_prc_dpb_tf, g.nama_supplier 
         FROM tb_prc_dpb a
         LEFT JOIN tb_prc_rb b ON a.id_prc_rb = b.id_prc_rb
         LEFT JOIN tb_prc_rh c ON b.id_prc_rh = c.id_prc_rh
         LEFT JOIN tb_prc_ppb d ON c.id_prc_ppb = d.id_prc_ppb
         LEFT JOIN tb_prc_master_barang e ON d.id_prc_master_barang = e.id_prc_master_barang
-        LEFT JOIN tb_prc_dpb_tf f ON f.id_prc_dpb_tf = a.id_prc_dpb_tf
+        LEFT JOIN tb_prc_dpb_tf f ON a.no_dpb = a.no_dpb
         LEFT JOIN tb_prc_master_supplier g ON e.id_prc_master_supplier = g.id_prc_master_supplier
-        LEFT JOIN tb_adm_dpb h ON f.id_prc_dpb_tf = h.id_prc_dpb_tf
         WHERE a.is_deleted = 0 AND a.no_dpb = '$no_dpb'";
     
     return $this->db->query($sql)->result_array();
@@ -87,8 +86,8 @@ public function get_dpb_detail_with_relations($no_dpb)
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO tb_adm_dpb ( tgl_dpb, jml_diterima, no_batch, created_at, created_by)
-        VALUES ('$data[tgl_dpb]', '$data[jml_diterima]',  '$data[no_batch]', NOW(), '$id_user')
+        INSERT INTO tb_adm_dpb ( tgl_dpb, jml_diterima, no_dpb, id_user,no_batch, created_at, created_by)
+        VALUES ('$data[tgl_dpb]', '$data[jml_diterima]','$data[no_dpb]','$id_user','$data[no_batch]', NOW(), '$id_user')
         ";
         return $this->db->query($sql);
     }
