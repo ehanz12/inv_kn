@@ -33,14 +33,16 @@
                     <h5>Data PPB</h5>
                     <div class="float-right">
                       <div class="input-group">
-
-
+                        <select class="form-control chosen-select" id="filter_status" name="filter_status">
+                          <option value="" disabled selected hidden>- Pilih Status -</option>
+                          <option value="proses">Proses</option>
+                          <option value="selesai">Selesai</option>
+                        </select>
                         <input type="text" id="filter_tgl" value="<?= $tgl == null ? '' : $tgl ?>" class="form-control datepicker" placeholder="Filter Dari Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
                         <input type="text" id="filter_tgl2" value="<?= $tgl2 == null ? '' : $tgl2 ?>" class="form-control datepicker" placeholder="Filter Sampai Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
                         <div class="btn-group">
                           <button class="btn btn-secondary btn-sm" id="lihat" type="button">Lihat</button>
                         </div>
-
                         <div class="btn-group">
                           <a href="<?= base_url() ?>Purchasing/Prc_dpb/Prc_dpb" style="width: 40px;" class="btn btn-warning" type="button"><i class="feather icon-refresh-ccw"></i></a>
                         </div>
@@ -62,6 +64,7 @@
                             <th class="text-center">Tanggal Dpb</th>
                             <th class="text-center">No DPB</th>
                             <th class="text-center">No Surat Jalan</th>
+                            <th class="text-center">Status</th>
 
                             <th class="text-center">Aksi</th>
                           </tr>
@@ -73,8 +76,6 @@
                           $no = 1;
                           foreach ($result as $k) {
                             $tgl_dpb =  explode('-', $k['tgl_dpb'])[2] . "/" . explode('-', $k['tgl_dpb'])[1] . "/" . explode('-', $k['tgl_dpb'])[0];
-                            // $tgl_pakai =  explode('-', $k['tgl_pakai'])[2] . "/" . explode('-', $k['tgl_pakai'])[1] . "/" . explode('-', $k['tgl_pakai'])[0];
-                            // $formatted_tgl = $tgl[2] . "/" . $tgl[1] . "/" . $tgl[0];
                           ?>
                             <tr>
                               <th scope="row"><?= $no++ ?></th>
@@ -86,11 +87,13 @@
                                   data-no_dpb="<?= $k['no_dpb'] ?>"
                                   data-tgl_dpb="<?= $tgl_dpb ?>"
                                   data-no_sjl="<?= $k['no_sjl'] ?>"
+                                  data-status="<?= $k['status_dpb'] ?>"
                                   data-prc_admin="<?= $k['prc_admin'] ?>">
                                   <?= $k['no_dpb'] ?>
                                 </span>
                               </td>
                               <td><?= $k['no_sjl'] ?></td>
+                              <td class="text-center"><?= $k['status_dpb'] ?></td>
                               <td class="text-center">
                                 <?php if ($level === "admin") { ?>
                                   <div class="btn-group" role="group" aria-label="Basic example">
@@ -101,6 +104,7 @@
                                       data-no_dpb="<?= $k['no_dpb'] ?>"
                                       data-tgl_dpb="<?= $tgl_dpb ?>"
                                       data-no_sjl="<?= $k['no_sjl'] ?>"
+                                      data-status="<?= $k['status_dpb'] ?>"
                                       data-prc_admin="<?= $k['prc_admin'] ?>">
                                       <i class="fas fa-edit"></i>Edit
                                     </button>
@@ -143,7 +147,7 @@
     });
 
     $('#lihat').click(function() {
-
+      var filterstatus = $('#filter_status').val();
       var filter_tgl = $('#filter_tgl').val();
       var filter_tgl2 = $('#filter_tgl2').val();
       var newFilterTgl = filter_tgl.split("/")[2] + "-" + filter_tgl.split("/")[1] + "-" + filter_tgl.split("/")[0];
@@ -156,11 +160,10 @@
       } else {
         const query = new URLSearchParams({
           date_from: filter_tgl,
-          date_until: filter_tgl2
+          date_until: filter_tgl2,
+          status: filterstatus
         })
-
         window.location = "<?= base_url() ?>purchasing/prc_dpb/prc_dpb/index?" + query.toString()
-
       }
     })
   });
@@ -324,8 +327,8 @@
                     <th class="text-center">Jml Beli</th>
                     <th class="text-center">Jml materi</th>
                     <th class="text-center">Jml Ongkir</th>
-                    <th class="text-center">Jml PPN</th>
-                    <th class="text-center">Jml Disc</th>
+                    <th class="text-center">PPN</th>
+                    <th class="text-center">Disc</th>
                     <th class="text-right">Total</th>
                     <th class="text-center">Aksi</th>
                   </tr>
@@ -432,12 +435,16 @@
         return;
       }
 
-      // Hitung total
+      let subtotal2 = convert(jml_beli);
+
+      let ppn2 = subtotal2 * (convert(jml_ppn) / 100)
+      let disc2 = subtotal2 * (convert(jml_disc) / 100)
+
       let total =
-        convert(jml_beli) +
+        subtotal2 +
         convert(jml_ongkir) +
-        convert(jml_ppn) -
-        convert(jml_disc);
+        ppn2 -
+        disc2;
 
       // --------------------------------------
       // CEK DUPLIKAT
@@ -505,148 +512,49 @@
       return new Intl.NumberFormat('id-ID').format(v);
     }
 
-    document.getElementById('jml_beli', 'jml_ongkir', 'jml_ppn', 'jml_materi', 'jml_disc').addEventListener('keyup', function(e) {
-      let value = this.value.replace(/\D/g, '');
-      value = new Intl.NumberFormat('id-ID').format(value);
-      this.value = value;
+    function hitungTotal() {
+      let beli = Number(document.getElementById("jml_beli").value.replace(/\./g, ""));
+      let materi = Number(document.getElementById("jml_materi").value.replace(/\./g, ""));
+      let ongkir = Number(document.getElementById("jml_ongkir").value.replace(/\./g, ""));
+      let ppnPercent = Number(document.getElementById("jml_ppn").value);
+      let discPercent = Number(document.getElementById("jml_disc").value);
+
+      // Hitung nilai PPN dan Diskon
+      let ppn = beli * (ppnPercent / 100);
+      let disc = beli * (discPercent / 100);
+
+      let total = beli + ongkir + ppn - disc;
+
+      document.getElementById("total").value = total.toLocaleString("id-ID");
+    }
+
+
+    document.getElementById("jml_ppn").addEventListener("input", function() {
+      let v = Number(this.value);
+      if (v > 100) this.value = 100;
+      if (v < 1) this.value = "";
     });
-    document.getElementById('jml_ongkir').addEventListener('keyup', function(e) {
-      let value = this.value.replace(/\D/g, '');
-      value = new Intl.NumberFormat('id-ID').format(value);
-      this.value = value;
+
+    document.getElementById("jml_disc").addEventListener("input", function() {
+      let v = Number(this.value);
+      if (v > 100) this.value = 100;
+      if (v = 0) this.value = "";
     });
-    document.getElementById('jml_ppn').addEventListener('keyup', function(e) {
-      let value = this.value.replace(/\D/g, '');
-      value = new Intl.NumberFormat('id-ID').format(value);
-      this.value = value;
-    });
+
     document.getElementById('jml_materi').addEventListener('keyup', function(e) {
       let value = this.value.replace(/\D/g, '');
-      value = new Intl.NumberFormat('id-ID').format(value);
-      this.value = value;
+      this.value = new Intl.NumberFormat('id-ID').format(value);
     });
-    document.getElementById('jml_disc').addEventListener('keyup', function(e) {
-      let value = this.value.replace(/\D/g, '');
-      value = new Intl.NumberFormat('id-ID').format(value);
-      this.value = value;
-    });
-  });
-</script>
 
 
-<!-- Modal Detail -->
-<div class="modal fade" id="detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Detail data DPB</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form method="post" action="<?= base_url() ?>purchasing/prc_dpb/prc_dpb/add">
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-3">
-              <div class="form-group">
-                <label for="tgl_dpb">Tanggal DPB</label>
-                <input autocomplete="off" class="form-control datepicker" id="d-tgl_dpb" name="tgl_dpb" placeholder="Tanggal DPB" readonly>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label for="no_dpb">No DPB</label>
-                <input type="text" class="form-control" id="d-no_dpb" name="no_dpb" autocomplete="off" placeholder="No DPB" maxlength="20" readonly>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label for="no_sjl">No surat Jalan</label>
-                <input type="text" class="form-control" id="d-no_sjl" name="no_sjl" placeholder="Masukan NO Surat" readonly autocomplete="off">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="table-responsive">
-              <table class="table table-bordered table-sm">
-                <thead>
-                  <tr>
-                    <th>No Budget</th>
-                    <th>Kode Barang</th>
-                    <th>Nama Barang</th>
-                    <th>No PO</th>
-                    <th>Jenis Bayar</th>
-                    <th class="text-center">Jml Beli</th>
-                    <th class="text-center">Jml Ongkir</th>
-                    <th class="text-center">Jml Materi</th>
-                    <th class="text-center">Jml PPN</th>
-                    <th class="text-center">Jml Disc</th>
-                    <th class="text-center">Total</th>
-                  </tr>
-                </thead>
-                <tbody id="v-ppb_barang"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-    </div>
-    </form>
-  </div>
-</div>
-</div>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('#detail').on('show.bs.modal', function(event) {
-      var no_dpb = $(event.relatedTarget).data('no_dpb');
-      var tgl_dpb = $(event.relatedTarget).data('tgl_dpb');
-      var jenis_bayar = $(event.relatedTarget).data('jenis_bayar');
-      var no_sjl = $(event.relatedTarget).data('no_sjl');
-      $(this).find('#d-no_sjl').val(no_sjl);
-      $(this).find('#d-jenis_bayar').val(jenis_bayar);
-      $(this).find('#d-tgl_dpb').val(tgl_dpb);
-      $(this).find('#d-no_dpb').val(no_dpb);
-      $.ajax({
-        url: "<?= base_url('purchasing/prc_dpb/prc_dpb/get_by_no_dpb') ?>",
-        dataType: "json",
-        type: "POST",
-        data: {
-          no_dpb: no_dpb
-        },
-        success: function(data) {
-          var $id = $('#v-ppb_barang');
-          $id.empty();
-          for (var i = 0; i < data.length; i++) {
-            $id.append(`
-              <tr>
-                <td>` + data[i].no_budget + `</td>
-                <td>` + data[i].kode_barang + `</td>
-                <td>` + data[i].nama_barang + `</td>
-                <td>` + data[i].no_po + `</td>
-                <td>` + data[i].jenis_bayar + `</td>
-                
-                <td>` + formatRupiah(data[i].jml_beli) + `</td>
-                <td>` + formatRupiah(data[i].jml_ongkir) + `</td>
-                <td>` + formatRupiah(data[i].jml_materi) + `</td>
-                <td>` + formatRupiah(data[i].jml_ppn) + `</td>
-                <td>` + formatRupiah(data[i].jml_disc) + `</td>
-                <td class="text-right">` + formatRupiah(data[i].total) + "&nbsp" + `</td>
-              </tr>
-            `);
-          }
-        },
-        error: function() {
-          alert('Gagal memuat data PO.');
-        }
+    ['jml_beli', 'jml_ppn', 'jml_ongkir', 'jml_disc'].forEach(id => {
+      document.getElementById(id).addEventListener("input", hitungTotal);
+      document.getElementById(id).addEventListener('keyup', function(e) {
+        let value = this.value.replace(/\D/g, '');
+        this.value = new Intl.NumberFormat('id-ID').format(value);
       });
-
-      function formatRupiah(v) {
-        return new Intl.NumberFormat('id-ID').format(v);
-      }
     });
+
   });
 </script>
 
@@ -802,8 +710,8 @@
                     <th class="text-center">Jml Beli</th>
                     <th class="text-center">Jml materi</th>
                     <th class="text-center">Jml Ongkir</th>
-                    <th class="text-center">Jml PPN</th>
-                    <th class="text-center">Jml Disc</th>
+                    <th class="text-center">PPN</th>
+                    <th class="text-center">Disc</th>
                     <th class="text-right">Total</th>
                     <th class="text-center">Aksi</th>
                   </tr>
@@ -866,36 +774,41 @@
 
           res.forEach(row => {
 
+            let subtotal = Number(row.jml_beli);
+
+            let ppn = subtotal * (Number(row.jml_ppn) / 100);
+            let disc = subtotal * (Number(row.jml_disc) / 100);
+
             let total =
-              Number(row.jml_beli) +
+              subtotal +
               Number(row.jml_ongkir) +
-              Number(row.jml_ppn) -
-              Number(row.jml_disc);
+              ppn -
+              disc;
 
             $('#e-ppb_barang').append(`
-                        <tr>
-                            <input type="hidden" name="id_prc_rb[]" value="${row.id_prc_rb}">
-                            <input type="hidden" name="jml_beli[]" value="${row.jml_beli}">
-                            <input type="hidden" name="jml_materi[]" value="${row.jml_materi}">
-                            <input type="hidden" name="jml_ongkir[]" value="${row.jml_ongkir}">
-                            <input type="hidden" name="jml_ppn[]" value="${row.jml_ppn}">
-                            <input type="hidden" name="jml_disc[]" value="${row.jml_disc}">
-                            <input type="hidden" name="no_po[]" value="${row.no_po}">
-                            <input type="hidden" name="jenis_bayar[]" value="${row.jenis_bayar}">
-                            <td>${row.no_budget}</td>
-                            <td>${row.kode_barang}</td>
-                            <td>${row.nama_barang}</td>
-                            <td>${row.no_po}</td>
-                            <td>${row.jenis_bayar}</td>
-                            <td>${formatRupiah(row.jml_beli) || ''}</td>
-                            <td>${formatRupiah(row.jml_materi) || ''}</td>
-                            <td>${formatRupiah(row.jml_ongkir) || ''}</td>
-                            <td>${formatRupiah(row.jml_ppn) || ''}</td>
-                            <td>${formatRupiah(row.jml_disc) || ''}</td>
-                            <td class="text-right">${formatRupiah(total)}</td>
-                            <td><button class="btn btn-danger btn-sm btn-hapus">Hapus</button></td>
-                        </tr>
-                    `);
+                <tr>
+                    <input type="hidden" name="id_prc_rb[]" value="${row.id_prc_rb}">
+                    <input type="hidden" name="jml_beli[]" value="${row.jml_beli}">
+                    <input type="hidden" name="jml_materi[]" value="${row.jml_materi}">
+                    <input type="hidden" name="jml_ongkir[]" value="${row.jml_ongkir}">
+                    <input type="hidden" name="jml_ppn[]" value="${row.jml_ppn}">
+                    <input type="hidden" name="jml_disc[]" value="${row.jml_disc}">
+                    <input type="hidden" name="no_po[]" value="${row.no_po}">
+                    <input type="hidden" name="jenis_bayar[]" value="${row.jenis_bayar}">
+                    <td>${row.no_budget}</td>
+                    <td>${row.kode_barang}</td>
+                    <td>${row.nama_barang}</td>
+                    <td>${row.no_po}</td>
+                    <td>${row.jenis_bayar}</td>
+                    <td>${formatRupiah(row.jml_beli) || ''}</td>
+                    <td>${formatRupiah(row.jml_materi) || ''}</td>
+                    <td>${formatRupiah(row.jml_ongkir) || ''}</td>
+                    <td>${formatRupiah(row.jml_ppn) || ''}</td>
+                    <td>${formatRupiah(row.jml_disc) || ''}</td>
+                    <td class="text-right">${formatRupiah(total)}</td>
+                    <td><button class="btn btn-danger btn-sm btn-hapus">Hapus</button></td>
+                </tr>
+              `);
           });
 
         }
@@ -997,11 +910,17 @@
         return;
       }
 
+
+      let subtotal2 = convert(jml_beli);
+
+      let ppn2 = subtotal2 * (convert(jml_ppn) / 100)
+      let disc2 = subtotal2 * (convert(jml_disc) / 100)
+
       let total =
-        convert(jml_beli) +
+        subtotal2 +
         convert(jml_ongkir) +
-        convert(jml_ppn) -
-        convert(jml_disc);
+        ppn2 -
+        disc2;
 
       // CEK DUPLIKAT (EDIT)
       let dupe = false;
@@ -1051,7 +970,169 @@
     return Number(v.replace(/\./g, '').replace(/,/g, '')) || 0;
   }
 
+  function hitungTotal() {
+    let beli = Number(document.getElementById("e-jml_beli").value.replace(/\./g, ""));
+    let materi = Number(document.getElementById("e-jml_materi").value.replace(/\./g, ""));
+    let ongkir = Number(document.getElementById("e-jml_ongkir").value.replace(/\./g, ""));
+    let ppnPercent = Number(document.getElementById("e-jml_ppn").value);
+    let discPercent = Number(document.getElementById("e-jml_disc").value);
+
+    // Hitung nilai PPN dan Diskon
+    let ppn = beli * (ppnPercent / 100);
+    let disc = beli * (discPercent / 100);
+
+    let total = beli + ongkir + ppn - disc;
+
+    document.getElementById("e-total").value = total.toLocaleString("id-ID");
+  }
+
+  document.getElementById('e-jml_materi').addEventListener('keyup', function(e) {
+    let value = this.value.replace(/\D/g, '');
+    this.value = new Intl.NumberFormat('id-ID').format(value);
+  });
+
+
+  ['e-jml_beli', 'e-jml_ppn', 'e-jml_ongkir', 'e-jml_disc'].forEach(id => {
+    document.getElementById(id).addEventListener("input", hitungTotal);
+    document.getElementById(id).addEventListener('keyup', function(e) {
+      let value = this.value.replace(/\D/g, '');
+      this.value = new Intl.NumberFormat('id-ID').format(value);
+    });
+  });
+
+
   function formatRupiah(v) {
     return new Intl.NumberFormat('id-ID').format(v);
   }
+</script>
+
+<!-- Modal Detail -->
+<div class="modal fade" id="detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Detail data DPB</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post" action="<?= base_url() ?>purchasing/prc_dpb/prc_dpb/add">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="tgl_dpb">Tanggal DPB</label>
+                <input autocomplete="off" class="form-control datepicker" id="d-tgl_dpb" name="tgl_dpb" placeholder="Tanggal DPB" readonly>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="no_dpb">No DPB</label>
+                <input type="text" class="form-control" id="d-no_dpb" name="no_dpb" autocomplete="off" placeholder="No DPB" maxlength="20" readonly>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="no_sjl">No surat Jalan</label>
+                <input type="text" class="form-control" id="d-no_sjl" name="no_sjl" placeholder="Masukan NO Surat" readonly autocomplete="off">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="status">Status</label>
+                <input type="text" class="form-control" id="d-status" name="status" placeholder="status" readonly autocomplete="off">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm">
+                <thead>
+                  <tr>
+                    <th>No Budget</th>
+                    <th>Kode Barang</th>
+                    <th>Nama Barang</th>
+                    <th>No PO</th>
+                    <th>Jenis Bayar</th>
+                    <th class="text-center">Jml Beli</th>
+                    <th class="text-center">Jml Ongkir</th>
+                    <th class="text-center">Jml Materi</th>
+                    <th class="text-center">PPN</th>
+                    <th class="text-center">Disc</th>
+                    <th class="text-center">Total</th>
+                  </tr>
+                </thead>
+                <tbody id="v-ppb_barang"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#detail').on('show.bs.modal', function(event) {
+      var no_dpb = $(event.relatedTarget).data('no_dpb');
+      var tgl_dpb = $(event.relatedTarget).data('tgl_dpb');
+      var jenis_bayar = $(event.relatedTarget).data('jenis_bayar');
+      var no_sjl = $(event.relatedTarget).data('no_sjl');
+      var status = $(event.relatedTarget).data('status');
+      $(this).find('#d-status').val(status)
+      $(this).find('#d-no_sjl').val(no_sjl);
+      $(this).find('#d-jenis_bayar').val(jenis_bayar);
+      $(this).find('#d-tgl_dpb').val(tgl_dpb);
+      $(this).find('#d-no_dpb').val(no_dpb);
+      $.ajax({
+        url: "<?= base_url('purchasing/prc_dpb/prc_dpb/get_by_no_dpb') ?>",
+        dataType: "json",
+        type: "POST",
+        data: {
+          no_dpb: no_dpb
+        },
+        success: function(data) {
+          var $id = $('#v-ppb_barang');
+          $id.empty();
+          for (var i = 0; i < data.length; i++) {
+            let beli = Number(data[i].jml_beli);
+            let ongkir = Number(data[i].jml_ongkir);
+
+            let ppn = beli * (Number(data[i].jml_ppn) / 100);
+            let disc = beli * (Number(data[i].jml_disc) / 100);
+
+            let total = beli + ongkir + ppn - disc;
+            $id.append(`
+              <tr>
+                <td>` + data[i].no_budget + `</td>
+                <td>` + data[i].kode_barang + `</td>
+                <td>` + data[i].nama_barang + `</td>
+                <td>` + data[i].no_po + `</td>
+                <td>` + data[i].jenis_bayar + `</td>
+                
+                <td>` + formatRupiah(data[i].jml_beli) + `</td>
+                <td>` + formatRupiah(data[i].jml_ongkir) + `</td>
+                <td>` + formatRupiah(data[i].jml_materi) + `</td>
+                <td>` + formatRupiah(data[i].jml_ppn) + `</td>
+                <td>` + formatRupiah(data[i].jml_disc) + `</td>
+                <td class="text-right">` + formatRupiah(total) + "&nbsp" + `</td>
+              </tr>
+            `);
+          }
+        },
+        error: function() {
+          alert('Gagal memuat data PO.');
+        }
+      });
+
+      function formatRupiah(v) {
+        return new Intl.NumberFormat('id-ID').format(v);
+      }
+    });
+  });
 </script>

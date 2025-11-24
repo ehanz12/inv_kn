@@ -13,25 +13,31 @@ class M_prc_dpb extends CI_Model
         return $this->session->userdata("id_user");
     }
 
-    public function get($tgl=null, $tgl2=null)
+    public function get($tgl = null, $tgl2 = null, $status = null)
     {
-        if ($tgl != null && $tgl2 != null) {
-            $tgl = explode("/", $tgl);
-            $tgl = "$tgl[2]-$tgl[1]-$tgl[0]";
-            $tgl2 = explode("/", $tgl2);
-            $tgl2 = "$tgl2[2]-$tgl2[1]-$tgl2[0]";
-            $where[] = "AND tgl_dpb >= '$tgl' AND  tgl_dpb <= '$tgl2'";
-        } else if ($tgl == null && $tgl2 == null) {
-            $where[] = "";
-        } else {
-            return array();
+        // Default status jika tidak ada filter = proses
+        if ($status == null) {
+            $status = "proses";
         }
 
-        $where = implode(" ", $where);
+        $where = [];
+        // Filter tanggal
+        if ($tgl != null && $tgl2 != null) {
+            $tgl  = explode("/", $tgl);
+            $tgl  = "$tgl[2]-$tgl[1]-$tgl[0]";
 
-        $sql = "SELECT * FROM tb_prc_dpb_tf  WHERE is_deleted = 0 $where";
+            $tgl2 = explode("/", $tgl2);
+            $tgl2 = "$tgl2[2]-$tgl2[1]-$tgl2[0]";
+
+            $where[] = "tgl_dpb >= '$tgl' AND tgl_dpb <= '$tgl2'";
+        }
+        $where[] = "status_dpb = '$status'";
+        $where[] = "is_deleted = 0";
+        $where = implode(" AND ", $where);
+        $sql = "SELECT * FROM tb_prc_dpb_tf WHERE $where";
         return $this->db->query($sql);
     }
+
 
     public function get_rb()
     {
@@ -40,7 +46,7 @@ class M_prc_dpb extends CI_Model
         return $this->db->query($sql);
     }
 
-     public function generate_no_dpb()
+    public function generate_no_dpb()
     {
         $this->db->select('no_dpb');
         $this->db->from('tb_prc_dpb_tf');
@@ -88,7 +94,6 @@ class M_prc_dpb extends CI_Model
     a.jml_ongkir, 
     a.jml_ppn, 
     a.jml_disc,
-    (a.jml_beli + a.jml_ongkir + a.jml_ppn - a.jml_disc) AS total,
     b.id_prc_rh, 
     c.id_prc_ppb, 
     d.id_prc_master_barang, 
@@ -103,7 +108,7 @@ class M_prc_dpb extends CI_Model
     LEFT JOIN tb_prc_ppb d ON c.id_prc_ppb = d.id_prc_ppb
     LEFT JOIN tb_prc_master_barang e ON d.id_prc_master_barang = e.id_prc_master_barang
     WHERE a.is_deleted = 0 AND a.no_dpb = '$no_dpb'";
-        
+
         return $this->db->query($sql)->result_array();
     }
 
@@ -111,8 +116,8 @@ class M_prc_dpb extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO tb_prc_dpb_tf (no_dpb, tgl_dpb, no_sjl, prc_admin, created_at, created_by)
-        VALUES ('$data[no_dpb]', '$data[tgl_dpb]','$data[no_sjl]', '$id_user', NOW(), '$id_user')
+        INSERT INTO tb_prc_dpb_tf (no_dpb, tgl_dpb, no_sjl,status_dpb ,prc_admin, created_at, created_by)
+        VALUES ('$data[no_dpb]', '$data[tgl_dpb]','$data[no_sjl]', 'proses','$id_user', NOW(), '$id_user')
         ";
         return $this->db->query($sql);
     }
@@ -120,7 +125,7 @@ class M_prc_dpb extends CI_Model
     public function update($data)
     {
         $id_user = $this->id_user();
-        $sql ="UPDATE tb_prc_dpb_tf
+        $sql = "UPDATE tb_prc_dpb_tf
         SET tgl_dpb='$data[tgl_dpb]',
             no_sjl='$data[no_sjl]',
             prc_admin='$id_user',
@@ -128,7 +133,7 @@ class M_prc_dpb extends CI_Model
             updated_by='$id_user'
             WHERE no_dpb='$data[no_dpb]'";
 
-        return $this->db->query($sql); 
+        return $this->db->query($sql);
     }
 
     public function add_barang($data)
@@ -138,10 +143,10 @@ class M_prc_dpb extends CI_Model
 
     public function delete($no_dpb)
     {
-       $sql ="DELETE FROM tb_prc_dpb WHERE no_dpb='$no_dpb'";
-       $this->db->query($sql);
-       $sql = "DELETE  FROM tb_prc_dpb_tf WHERE no_dpb='$no_dpb'";
-       return $this->db->query($sql);
+        $sql = "DELETE FROM tb_prc_dpb WHERE no_dpb='$no_dpb'";
+        $this->db->query($sql);
+        $sql = "DELETE  FROM tb_prc_dpb_tf WHERE no_dpb='$no_dpb'";
+        return $this->db->query($sql);
     }
 
     public function delete_barang($data)
@@ -149,6 +154,4 @@ class M_prc_dpb extends CI_Model
         $this->db->where('no_dpb', $data['no_dpb']);
         return $this->db->delete('tb_prc_dpb');
     }
-
 }
-?>

@@ -16,7 +16,7 @@
                   <li class="breadcrumb-item"><a href="javascript:">Purchasing</a></li>
                   <li class="breadcrumb-item"><a href="javascript:">Purchasing PPB</a></li>
                   <li class="breadcrumb-item"><a href="<?= base_url('Purchasing/Purchasing_ppb') ?>">PPB</a></li>
-                </ul> 
+                </ul>
               </div>
             </div>
           </div>
@@ -44,7 +44,7 @@
                       </div>
                     </div>
                     <br><br>
-                  </div> 
+                  </div>
                   <div class="card-block table-border-style">
                     <div class="table-responsive">
                       <table class="table datatable table-bordered table-hover table-striped table-sm">
@@ -61,64 +61,62 @@
                         </thead>
                         <tbody>
                           <?php
-                          $level = $this->session->userdata('level');
+                          $level = $this->session->userdata('departement');
                           $jabatan = $this->session->userdata('jabatan');
                           $no = 1;
                           foreach ($result as $k) {
                             $tgl_ppb =  explode('-', $k['tgl_ppb'])[2] . "/" . explode('-', $k['tgl_ppb'])[1] . "/" . explode('-', $k['tgl_ppb'])[0];
                             $tgl_pakai =  explode('-', $k['tgl_pakai'])[2] . "/" . explode('-', $k['tgl_pakai'])[1] . "/" . explode('-', $k['tgl_pakai'])[0];
-                            ?>
-                            <tr>                                                                                                                                                                                                          
+                          ?>
+                            <tr>
                               <th scope="row"><?= $no++ ?></th>
                               <td><?= $tgl_ppb ?></td>
                               <td><?= $k['no_ppb'] ?></td>
                               <td class="text-center"><?= $k['departement'] ?></td>
-                              
+
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail" 
-                                      data-no_ppb="<?= $k['no_ppb'] ?>",
-                                      data-departement="<?= $k['departement'] ?>",
-                                      data-form_ppb="<?= $k['jenis_form_ppb']?>",
-                                      data-jenis_ppb="<?= $k['jenis_ppb']?>",
-                                      data-tgl_ppb="<?= $tgl_ppb ?>",
-                                      data-tgl_pakai="<?= $tgl_pakai ?>",
-                                      data-ket="<?= $k['ket']?>",
-                                       >
+                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail"
+                                    data-no_ppb="<?= $k['no_ppb'] ?>" ,
+                                    data-departement="<?= $k['departement'] ?>" ,
+                                    data-form_ppb="<?= $k['jenis_form_ppb'] ?>" ,
+                                    data-jenis_ppb="<?= $k['jenis_ppb'] ?>" ,
+                                    data-tgl_ppb="<?= $tgl_ppb ?>" ,
+                                    data-tgl_pakai="<?= $tgl_pakai ?>" ,
+                                    data-ket="<?= $k['ket'] ?>" ,>
                                     <i class="feather icon-eye"></i>Details
                                   </button>
                                 </div>
-                              </td> 
-                              
+                              </td>
+
                               <td class="text-center">
-                                  <?= $k['status'] === 'selesai' ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Proses</span>'; ?>
+                                <?= $k['status'] === 'selesai' ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Proses</span>'; ?>
                               </td>
 
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <a type="button" class="btn btn-success btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>accounting/accounting_ppb/pdf_cetak/<?= str_replace('/', '--', $k['no_ppb']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); " 
-                                  data-id_prc_ppb_tf="<?= $k['id_prc_ppb_tf'] ?>" 
-                                  data-form_ppb="<?= $k['jenis_form_ppb'] ?>" 
-                                  data-jenis_ppb="<?= $k['jenis_ppb'] ?>"
-                                  data-tgl_ppb="<?= $k['tgl_ppb'] ?>"
-                                  data-tgl_pakai="<?= $k['tgl_pakai'] ?>"
-                                  data-ket="<?= $k['ket'] ?>">
-                                      <i class="feather icon-file"></i>Cetak
-                                  </a>  
+                                  <a type="button" class="btn btn-success btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>accounting/accounting_ppb/pdf_cetak/<?= str_replace('/', '--', $k['no_ppb']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); "
+                                    data-id_prc_ppb_tf="<?= $k['id_prc_ppb_tf'] ?>"
+                                    data-form_ppb="<?= $k['jenis_form_ppb'] ?>"
+                                    data-jenis_ppb="<?= $k['jenis_ppb'] ?>"
+                                    data-tgl_ppb="<?= $k['tgl_ppb'] ?>"
+                                    data-tgl_pakai="<?= $k['tgl_pakai'] ?>"
+                                    data-ket="<?= $k['ket'] ?>">
+                                    <i class="feather icon-file"></i>Cetak
+                                  </a>
                                 </div>
 
 
                                 <?php if ($level === "admin" && $k['acc_spv'] !== "Approved" && $k['acc_manager'] !== "Approved" && $k['acc_pm'] !== "Approved") { ?>
                                   <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" 
+                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit"
                                       data-no_ppb="<?= $k['no_ppb'] ?>"
                                       data-departement="<?= $k['departement'] ?>"
-                                      data-form_ppb="<?= $k['jenis_form_ppb']?>"
-                                      data-jenis_ppb="<?= $k['jenis_ppb']?>"
+                                      data-form_ppb="<?= $k['jenis_form_ppb'] ?>"
+                                      data-jenis_ppb="<?= $k['jenis_ppb'] ?>"
                                       data-tgl_ppb="<?= $tgl_ppb ?>"
                                       data-tgl_pakai="<?= $tgl_pakai ?>"
-                                      data-ket="<?= $k['ket']?>"
-                                    >
+                                      data-ket="<?= $k['ket'] ?>">
                                       <i class="feather icon-edit-2"></i>Edit
                                     </button>
                                   </div>
@@ -129,7 +127,7 @@
                                   </div>
                                 <?php } ?>
                               </td>
-                            </tr>      
+                            </tr>
                           <?php } ?>
                         </tbody>
                       </table>
@@ -146,8 +144,7 @@
 </section>
 
 <script type="text/javascript">
-  $('#export').click(function() {
-    var filter_nama = $('#filter_barang').find(':selected').val();
+  $('#lihat').click(function() {
     var filter_tgl = $('#filter_tgl').val();
     var filter_tgl2 = $('#filter_tgl2').val();
 
@@ -155,251 +152,29 @@
     var newFilterTgl2 = filter_tgl2.split("/")[2] + "-" + filter_tgl2.split("/")[1] + "-" + filter_tgl2.split("/")[0];
 
     if (filter_tgl === '' && filter_tgl2 !== '') {
-      window.location = "<?= base_url() ?>gudang_bahanbaku/Laporan_barang_masuk?alert=warning&msg=dari tanggal belum diisi";
-      alert("Dari tanggal belum diisi")                              
-    } else if (filter_tgl !== '' && filter_tgl2 === ''){
-      window.location = "<?= base_url() ?>gudang_bahanbaku/Laporan_barang_masuk?alert=warning&msg=sampai tanggal belum diisi";
+      window.location = "<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb?alert=warning&msg=dari tanggal belum diisi";
+      alert("Dari tanggal belum diisi")
+    } else if (filter_tgl !== '' && filter_tgl2 === '') {
+      window.location = "<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb?alert=warning&msg=sampai tanggal belum diisi";
     } else {
-      const query = new URLSearchParams({ 
-        name: filter_nama,
+      const query = new URLSearchParams({
         date_from: newFilterTgl,
         date_until: newFilterTgl2
       });
-      var url = "<?= base_url() ?>gudang_bahanbaku/Laporan_barang_masuk/pdf_laporan_barang_masuk?" + query.toString();
-      window.open(url, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes');
+      window.location = "<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb/index?" + query.toString();
     }
   });
 </script>
 
-<div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambah Data</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <input type="hidden" name="id_accounting_ppb_tf" id="a-id_accounting_ppb_tf">
-      <form method="post" action="<?= base_url() ?>Purchasing/Purchasing_ppb/Purchasing_ppb/add">
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-jenis_ppb">Jenis PPB</label>
-                <input type="text" class="form-control" id="a-jenis_ppb" name="jenis_ppb" placeholder="Budget/Non-budget" readonly>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-form_ppb">Form A/C</label>
-                <input type="text" class="form-control" id="a-form_ppb" name="form_ppb" placeholder="Form A/C" readonly>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-departement">Departement</label>
-                <input type="text" class="form-control" id="a-departement" name="v-departement" placeholder="Departement" maxlength="20" readonly>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-no_ppb_accounting">No PPB</label>
-                <input type="text" class="form-control" id="a-no_ppb_accounting" name="no_ppb_accounting" placeholder="No PPB" readonly>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-tgl_ppb">Tanggal PPB</label>
-                <input type="text" class="form-control" id="a-tgl_ppb" name="tgl_ppb" placeholder="Tanggal PPB" readonly>
-              </div>
-            </div>
-          </div>   
-          
-          <div class="table-responsive">
-            <table class="table table-bordered table-sm">
-              <thead>
-                <tr>
-                  <th>Kode Barang</th>
-                  <th>Nama Barang</th>
-                  <th>Spek</th>
-                  <th class="text-right">Jumlah</th>
-                  <th>Nama Supplier</th>
-                </tr>
-              </thead>
-              <tbody id="a-ppb_barang"></tbody>
-            </table>
-          </div>
-          
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-tgl_pakai">Tanggal Kebutuhan</label>
-                <input type="text" class="form-control" id="a-tgl_pakai" name="tgl_pakai" placeholder="Tanggal Kebutuhan" readonly>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-ket">Keterangan</label>
-                <input type="text" class="form-control" id="a-ket" name="ket" placeholder="Keterangan" readonly>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-nama_admin">Accounting Admin</label>
-                <input type="text" class="form-control" id="a-nama_admin" name="nama_admin" placeholder="Admin" readonly>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-nama_spv">Nama Supervisor</label>
-                <input type="text" class="form-control" id="a-nama_spv" name="nama_spv" placeholder="Nama Supervisor" readonly>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-nama_manager">Nama Manager</label>
-                <input type="text" class="form-control" id="a-nama_manager" name="nama_manager" placeholder="Nama Manager" readonly>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-nama_pm">Nama Plant Manager</label>
-                <input type="text" class="form-control" id="a-nama_pm" name="nama_pm" placeholder="Nama Plant Manager" readonly>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="a-nama_direktur">Nama Direktur</label>
-                <input type="text" class="form-control" id="a-nama_direktur" name="nama_direktur" placeholder="-" readonly>
-              </div>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-md-3">
-              <div class="form-group">
-                <label for="tgl_diterima">Tanggal Diterima</label>
-                <input type="text" class="form-control datepicker" id="tgl_diterima" name="tgl_diterima" placeholder="Tanggal Diterima" autocomplete="off" required>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="no_dpb">No DPB</label>
-                <input type="text" class="form-control" id="no_dpb" name="no_dpb" placeholder="No DPB" autocomplete="off" required>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="no_jj_dpb">NO JJ DPB</label>
-                <input type="text" class="form-control" id="no_jj_dpb" name="no_jj_dpb" placeholder="NO JJ DPB" autocomplete="off" required>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="no_rb">NO RB</label>
-                <input type="text" class="form-control" id="no_rb" name="no_rb" placeholder="NO RB" autocomplete="off" required>
-              </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                 <label for="prc_admin">Prc Admin</label>
-                 <input type="text" class="form-control" id="prc_admin" name="prc_admin" value="<?= $this->session->userdata('nama_operator') ?>" maxlength="20" readonly>
-                </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" id="simpan" class="btn btn-primary" onclick="return confirm('Apakah Anda Yakin Untuk Menyimpan Data Ini? Tolong Untuk Di Cek Kembali. Dan Jangan Lupa Untuk Menginputkan Barangnya');">Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('#add').on('show.bs.modal', function(event) {
-      var id_accounting_ppb_tf = $(event.relatedTarget).data('id_accounting_ppb_tf')
-      var jenis_ppb = $(event.relatedTarget).data('jenis_ppb')
-      var form_ppb = $(event.relatedTarget).data('form_ppb')
-      var departement = $(event.relatedTarget).data('departement')
-      var no_ppb_accounting = $(event.relatedTarget).data('no_ppb_accounting')
-      var tgl_ppb = $(event.relatedTarget).data('tgl_ppb')
-      var tgl_pakai = $(event.relatedTarget).data('tgl_pakai')
-      var ket = $(event.relatedTarget).data('ket')
-      var nama_admin = $(event.relatedTarget).data('nama_admin')
-      var nama_spv = $(event.relatedTarget).data('nama_spv')
-      var nama_manager = $(event.relatedTarget).data('nama_manager')
-      var nama_pm = $(event.relatedTarget).data('nama_pm')
-      var nama_direktur = $(event.relatedTarget).data('nama_direktur')
 
-      $(this).find('#a-id_accounting_ppb_tf').val(id_accounting_ppb_tf)
-      $(this).find('#a-jenis_ppb').val(jenis_ppb)
-      $(this).find('#a-form_ppb').val(form_ppb)
-      $(this).find('#a-departement').val(departement)
-      $(this).find('#a-no_ppb_accounting').val(no_ppb_accounting)
-      $(this).find('#a-tgl_ppb').val(tgl_ppb)
-      $(this).find('#a-tgl_pakai').val(tgl_pakai)
-      $(this).find('#a-ket').val(ket)
-      $(this).find('#a-nama_admin').val(nama_admin)
-      $(this).find('#a-nama_spv').val(nama_spv)
-      $(this).find('#a-nama_manager').val(nama_manager)
-      $(this).find('#a-nama_pm').val(nama_pm)
-      $(this).find('#a-nama_direktur').val(nama_direktur)
-      
-      jQuery.ajax({
-        url: "<?= base_url() ?>accounting/accounting_ppb/data_ppb_barang",
-        dataType: 'json',
-        type: "post",
-        data: {
-         no_ppb_accounting:no_ppb_accounting
-        },
-        success: function(response) {
-          var data = response;
-          var $id = $('#a-ppb_barang');
-          $id.empty(); 
 
-          for (var i = 0; i < data.length; i++) {
-            $id.append(`
-              <tr>
-                <td>` + data[i].kode_barang + `</td>
-                <td>` + data[i].nama_barang + `</td>
-                <td>` + data[i].spek + `</td>
-                <td class="text-right">` + data[i].jumlah + "&nbsp" + data[i].satuan + `</td>
-                <td>` + data[i].nama_po_supplier + `</td> 
-              </tr>
-            `);
-          }
-        }
-      });
-    });
-    $(this).find('#tgl_diterima').datepicker().on('show.bs.modal', function(event) {
-    event.stopImmediatePropagation();
-  });
-  });
-</script>
-             
 <!-- Modal Details -->
 <div class="modal fade" id="detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Detail Accounting PPB</h5>
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Detail Data PPB</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -428,8 +203,8 @@
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label for="v-no_ppb_accounting">No PPB</label>
-                <input type="text" class="form-control" id="v-no_ppb_accounting" name="no_ppb_accounting" placeholder="No PPB" readonly>
+                <label for="v-no_ppb">No PPB</label>
+                <input type="text" class="form-control" id="v-no_ppb" name="no_ppb" placeholder="No PPB" readonly>
               </div>
             </div>
             <div class="col-md-4">
@@ -438,7 +213,7 @@
                 <input type="text" class="form-control" id="v-tgl_ppb" name="tgl_ppb" placeholder="Tanggal PPB" readonly>
               </div>
             </div>
-          
+
             <div class="col-md-6">
             </div>
           </div>
@@ -449,10 +224,8 @@
                   <th>Kode Barang</th>
                   <th>Nama Barang</th>
                   <th>Spek</th>
-                  <th class="text-right">Jumlah</th>
                   <th>Nama Supplier</th>
-                  
-                  
+                  <th class="text-right">Jumlah</th>
                 </tr>
               </thead>
               <tbody id="v-ppb_barang">
@@ -462,49 +235,26 @@
         </div>
         <div class="modal-body">
           <div class="row">
-          <div class="col-md-4">
+            <div class="col-md-4">
               <div class="form-group">
                 <label for="v-tgl_pakai">Tanggal Kebutuhan</label>
                 <input type="text" class="form-control" id="v-tgl_pakai" name="tgl_pakai" placeholder="Tanggal Kebutuhan" readonly>
               </div>
             </div>
-          
-          <div class="col-md-4">
+
+            <div class="col-md-4">
               <div class="form-group">
                 <label for="v-ket">Keterangan</label>
                 <input type="text" class="form-control" id="v-ket" name="ket" placeholder="Keterangan" readonly>
               </div>
-          </div>
-          <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
               <div class="form-group">
-                <label for="v-nama_admin">Accounting Admin</label>
+                <label for="v-nama_admin">Prc Admin</label>
                 <input type="text" class="form-control" id="v-nama_admin" name="nama_admin" placeholder="Admin" readonly>
               </div>
-          </div>
-          <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-nama_spv">Nama Supervisor</label>
-                <input type="text" class="form-control" id="v-nama_spv" name="nama_spv" placeholder="Nama Supervisor" readonly>
-              </div>
-          </div>
-          <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-nama_manager">Nama Manager</label>
-                <input type="text" class="form-control" id="v-nama_manager" name="nama_manager" placeholder="Nama Manager" readonly>
-              </div>
-          </div>
-          <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-nama_pm">Nama Plant Manager</label>
-                <input type="text" class="form-control" id="v-nama_pm" name="nama_pm" placeholder="Nama Plant Manager" readonly>
-              </div>
-          </div>
-          <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-nama_direktur">Nama Direktur</label>
-                <input type="text" class="form-control" id="v-nama_direktur" name="nama_direktur" placeholder="-" readonly>
-              </div>
-          </div>
+            </div>
+
           </div>
         </div>
         <div class="modal-footer">
@@ -521,7 +271,7 @@
       var jenis_ppb = $(event.relatedTarget).data('jenis_ppb')
       var form_ppb = $(event.relatedTarget).data('form_ppb')
       var departement = $(event.relatedTarget).data('departement')
-      var no_ppb_accounting = $(event.relatedTarget).data('no_ppb_accounting')
+      var no_ppb = $(event.relatedTarget).data('no_ppb')
       var tgl_ppb = $(event.relatedTarget).data('tgl_ppb')
       var tgl_pakai = $(event.relatedTarget).data('tgl_pakai')
       var ket = $(event.relatedTarget).data('ket')
@@ -534,7 +284,7 @@
       $(this).find('#v-jenis_ppb').val(jenis_ppb)
       $(this).find('#v-form_ppb').val(form_ppb)
       $(this).find('#v-departement').val(departement)
-      $(this).find('#v-no_ppb_accounting').val(no_ppb_accounting)
+      $(this).find('#v-no_ppb').val(no_ppb)
       $(this).find('#v-tgl_ppb').val(tgl_ppb)
       $(this).find('#v-tgl_pakai').val(tgl_pakai)
       $(this).find('#v-ket').val(ket)
@@ -543,18 +293,18 @@
       $(this).find('#v-nama_manager').val(nama_manager)
       $(this).find('#v-nama_pm').val(nama_pm)
       $(this).find('#v-nama_direktur').val(nama_direktur)
-      
+
       jQuery.ajax({
-        url: "<?= base_url() ?>accounting/accounting_ppb/data_ppb_barang",
+        url: "<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb/data_ppb_barang",
         dataType: 'json',
         type: "post",
         data: {
-          no_ppb_accounting: no_ppb_accounting
+          no_ppb: no_ppb
         },
         success: function(response) {
           var data = response;
           var $id = $('#v-ppb_barang');
-          $id.empty(); 
+          $id.empty();
 
           for (var i = 0; i < data.length; i++) {
             $id.append(`
@@ -562,8 +312,8 @@
                 <td>` + data[i].kode_barang + `</td>
                 <td>` + data[i].nama_barang + `</td>
                 <td>` + data[i].spek + `</td>
-                <td class="text-right">` + data[i].jumlah + "&nbsp" + data[i].satuan + `</td>
-                <td>` + data[i].nama_po_supplier + `</td> 
+                <td>` + data[i].nama_supplier + `</td> 
+                <td class="text-right">` + data[i].jumlah_ppb + "&nbsp" + data[i].satuan + `</td>
               </tr>
             `);
           }

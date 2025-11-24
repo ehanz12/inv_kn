@@ -82,8 +82,21 @@ class M_purchasing_ppb extends CI_Model
         return $this->db->get()->row_array();
     }
 
-    public function get($id = null)
+    public function get($tgl=null, $tgl2=null)
     {
+        if ($tgl != null && $tgl2 != null) {
+            $tgl = explode("/", $tgl);
+            $tgl = "$tgl[2]-$tgl[1]-$tgl[0]";
+            $tgl2 = explode("/", $tgl2);
+            $tgl2 = "$tgl2[2]-$tgl2[1]-$tgl2[0]";
+            $where[] = "AND tgl_ppb >= '$tgl' AND  tgl_ppb <= '$tgl2'";
+        } else if ($tgl == null && $tgl2 == null) {
+            $where[] = "";
+        } else {
+            return array();
+        }
+
+        $where = implode(" ", $where);
         $sql = " 
             SELECT a.*
             FROM tb_prc_ppb_tf a 
@@ -91,6 +104,7 @@ class M_purchasing_ppb extends CI_Model
                 AND a.acc_spv = 'Approved'
                 AND a.acc_manager = 'Approved'
                 AND a.acc_pm = 'Approved'
+                $where
             ORDER BY a.id_prc_ppb_tf ASC
         ";
     
@@ -122,12 +136,12 @@ class M_purchasing_ppb extends CI_Model
     public function data_ppb_barang($no_ppb_accounting)
     {
         $sql = "
-            SELECT a.*, b.nama_barang, b.kode_barang, b.spek, b.satuan, c.nama_po_supplier, d.status
+            SELECT a.*, b.nama_barang, b.kode_barang, b.spek, b.satuan, c.nama_supplier, d.status
             FROM tb_prc_ppb a
             LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
-            LEFT JOIN tb_prc_ppb_supplier c ON b.id_prc_ppb_supplier = c.id_prc_ppb_supplier
-            LEFT JOIN tb_prc_ppb_tf d ON a.no_ppb_accounting = a.no_ppb_accounting
-            WHERE a.no_ppb_accounting = '$no_ppb_accounting' ORDER BY a.id_accounting_ppb ASC";
+            LEFT JOIN tb_prc_master_supplier c ON b.id_prc_master_supplier = c.id_prc_master_supplier
+            LEFT JOIN tb_prc_ppb_tf d ON a.no_ppb = a.no_ppb
+            WHERE a.no_ppb = '$no_ppb_accounting' ORDER BY a.id_prc_ppb ASC";
         return $this->db->query($sql); 
     }
     public function ambil_label($no_ppb_accounting)

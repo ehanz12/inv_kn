@@ -29,11 +29,13 @@ class Prc_dpb extends CI_Controller
     {
         $tgl = $this->input->get('date_from');
         $tgl2 = $this->input->get('date_until');
-        $data['result'] = $this->M_prc_dpb->get($tgl, $tgl2)->result_array();
+        $status = $this->input->get('status');
+        $data['result'] = $this->M_prc_dpb->get($tgl, $tgl2, $status)->result_array();
         $data['res_rb'] = $this->M_prc_dpb->get_rb()->result_array();
         $data['generate_no_dpb'] = $this->M_prc_dpb->generate_no_dpb();
         $data['tgl'] = $tgl;
         $data['tgl2'] = $tgl2;
+        $data['status'] = $status;
 
         $this->template->load('template', 'content/purchasing/prc_dpb/prc_dpb', $data);
     }

@@ -46,41 +46,20 @@ class Purchasing_ppb extends CI_Controller
 
     public function index()
     {
-        $data['tgl'] = $this->input->get('tgl') ?? null;
-        $data['tgl2'] = $this->input->get('tgl2') ?? null;
+        $tgl = $this->input->get('date_from');
+        $tgl2 = $this->input->get('date_until');
+        $data['tgl'] = $tgl;
+        $data['tgl2'] = $tgl2;
         $data['fil_barang'] = $this->M_purchasing_ppb->get_filter_brng();
         $data['res_barang'] = $this->M_purchasing_ppb->get_master_barang();
         $cek_status = $this->M_purchasing_ppb->cek_status()->row_array(0);
         $data['nama_admin'] = $this->session->userdata('nama_admin');
-        $data['result'] = $this->M_purchasing_ppb->get()->result_array();
+        $data['result'] = $this->M_purchasing_ppb->get($tgl, $tgl2)->result_array();
         $data['pm'] = $this->M_prc_ppb_masterbarang->get()->result_array();
         $data['name'] = 'Nama Barang yang Terpilih';
 
         $this->template->load('template', 'content/purchasing/purchasing_ppb/purchasing_ppb', $data);
     }
-
-    public function add()
-{
-    $data = [
-        'tgl_diterima' => $this->convertDate($this->input->post('tgl_diterima', TRUE)),
-        'no_ppb_accounting' => $this->input->post('no_ppb_accounting', TRUE),
-        'no_dpb' => $this->input->post('no_dpb', TRUE),
-        'no_jj_dpb' => $this->input->post('no_jj_dpb', TRUE),
-        'no_rb' => $this->input->post('no_rb', TRUE),
-        'prc_admin' => $this->input->post('prc_admin', TRUE),
-    ];
-
-    $respon = $this->M_purchasing_ppb->add($data);
-
-    if ($respon) {
-        $this->M_purchasing_ppb->update_status($data['no_ppb_accounting'], 'selesai');
-
-        header('location:' . base_url('Purchasing/Purchasing_ppb/Purchasing_ppb') . '?alert=success&msg=Selamat anda berhasil menambah Barang');
-    } else {
-        header('location:' . base_url('Purchasing/Purchasing_ppb/Purchasing_ppb') . '?alert=error&msg=Maaf anda gagal menambah Barang');
-    }
-}
-
 
 
     public function get_barang_detail()
@@ -112,7 +91,7 @@ class Purchasing_ppb extends CI_Controller
 
     public function data_ppb_barang()
     {
-        $no_ppb_accounting = $this->input->post('no_ppb_accounting', TRUE);
+        $no_ppb_accounting = $this->input->post('no_ppb', TRUE);
 
         $result = $this->M_purchasing_ppb->data_ppb_barang($no_ppb_accounting)->result_array();
 
