@@ -83,16 +83,16 @@ class adm_dpb extends CI_Controller
         $data['no_dpb'] = $this->input->post('no_dpb', TRUE);
         $data['tgl_dpb'] = $this->input->post('tgl_dpb', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
-        $data['jml_diterima'] = $this->input->post('no_batch', TRUE);
+        $data['jml_diterima'] = $this->input->post('jumlah', TRUE);
         $data['id_user'] = $this->session->userdata('id_user', );
+        $data['no_dpb'] = $this->input->post('no_dpb', TRUE);
         
-        // Ambil data dari DPB yang dipilih
-        $dpb_detail = $this->M_adm_dpb->get_dpb_detail_with_relations($data['no_dpb']);
+        // // Ambil data dari DPB yang dipilih
+        // $dpb_detail = $this->M_adm_dpb->get_dpb_detail_with_relations($data['no_dpb']);
         
-        if (!empty($dpb_detail)) {
-            $data['tgl_dpb'] = $dpb_detail[0]['tgl_dpb'];
-            $data['jenis_bayar'] = $dpb_detail[0]['jenis_bayar'];
-            $data['no_sjl'] = $dpb_detail[0]['no_sjl'];
+        // if (!empty($dpb_detail)) {
+        //     $data['tgl_dpb'] = $dpb_detail[0]['tgl_dpb'];
+            
             
             // Simpan data
             $result = $this->M_adm_dpb->add($data);
@@ -102,9 +102,9 @@ class adm_dpb extends CI_Controller
             } else {
                 header('location:' . base_url('administrator/adm_dpb') . '?alert=error&msg=Maaf anda gagal menambahkan Data DPB');
             }
-        } else {
-            header('location:' . base_url('administrator/adm_dpb') . '?alert=error&msg=Data DPB tidak ditemukan');
-        }
+        // } else {
+        //     header('location:' . base_url('administrator/adm_dpb') . '?alert=error&msg=Data DPB tidak ditemukan');
+        // }
     }
 
     public function delete($id_adm_dpb)

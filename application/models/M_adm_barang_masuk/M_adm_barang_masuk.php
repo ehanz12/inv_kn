@@ -1,77 +1,91 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_adm_barang_masuk extends CI_Model {
-    function __construct() {
+class M_adm_barang_masuk extends CI_Model
+{
+    function __construct()
+    {
         parent::__construct();
     }
-    
-    function id_user(){
+
+    function id_user()
+    {
         return $this->session->userdata("id_user");
     }
 
+    // public function get2()
+    // {
+    //     $sql = "
+    //     a.id_adm_dpb,
+    //     a.no_batch,
+    //     a.id_prc_dpb_tf,
+    //     a.created_at,
+    //     b.no_sjl,
+    //     b.tgl_dpb,
+    //     c.jenis_bayar,
+    //     f.no_budget,
+    //     g.nama_barang,
+    //     g.kode_barang,
+    //     g.spek,
+    //     g.satuan,
+    //     h.nama_supplier
+    //     FROM tb_adm_dpb a
+    //     LEFT JOIN";
+    // }
+
     // Fungsi utama untuk mendapatkan data barang masuk HANYA yang memiliki no_batch
     public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
-{
-    $this->db->distinct(); // <-- FIX UTAMA | cegah duplikat tanpa GROUP BY
-
-    $this->db->select('
-        a.*,
-        b.id_prc_dpb_tf,
+    {
+        $this->db->select('
+        a.id_adm_dpb,
+        a.no_batch,
+        a.no_dpb,
+        a.created_at,
         b.no_sjl,
         b.tgl_dpb,
-        c.id_prc_dpb,
-        c.jenis_bayar, 
-        d.id_prc_rh,
-        e.id_prc_ppb,
-        f.id_prc_master_barang,
+        c.jenis_bayar,
         f.no_budget,
-        g.nama_barang, 
-        g.id_prc_master_supplier,
+        g.nama_barang,
         g.kode_barang,
-        g.spek, 
+        g.spek,
         g.satuan,
         h.nama_supplier
     ');
 
-    // TABEL UTAMA
-    $this->db->from('tb_adm_dpb a');
+        $this->db->from('tb_adm_dpb a');
+        $this->db->join('tb_prc_dpb_tf b', 'a.no_dpb = b.no_dpb', 'left');
+        $this->db->join('tb_prc_dpb c', 'a.no_dpb = c.no_dpb', 'left');
+        $this->db->join('tb_prc_rb d', 'c.id_prc_rb = d.id_prc_rb', 'left');
+        $this->db->join('tb_prc_rh e', 'd.id_prc_rh = e.id_prc_rh', 'left');
+        $this->db->join('tb_prc_ppb f', 'e.id_prc_ppb = f.id_prc_ppb', 'left');
+        $this->db->join('tb_prc_master_barang g', 'f.id_prc_master_barang = g.id_prc_master_barang', 'left');
+        $this->db->join('tb_prc_master_supplier h', 'g.id_prc_master_supplier = h.id_prc_master_supplier', 'left');
 
-    // JOIN BENAR
-    $this->db->join('tb_prc_dpb_tf b', 'b.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
-    $this->db->join('tb_prc_dpb c', 'a.id_prc_dpb_tf = c.id_prc_dpb_tf', 'left');
-    $this->db->join('tb_prc_rb d', 'c.id_prc_rb = d.id_prc_rb', 'left');
-    $this->db->join('tb_prc_rh e', 'd.id_prc_rh = e.id_prc_rh', 'left');
-    $this->db->join('tb_prc_ppb f', 'e.id_prc_ppb = f.id_prc_ppb', 'left');
-    $this->db->join('tb_prc_master_barang g', 'f.id_prc_master_barang = g.id_prc_master_barang', 'left');
-    $this->db->join('tb_prc_master_supplier h', 'g.id_prc_master_supplier = h.id_prc_master_supplier', 'left');
+        // FILTER UTAMA
+        $this->db->where('a.is_deleted', 0);
+        $this->db->where('b.is_deleted', 0);
+        $this->db->where('a.no_batch IS NOT NULL');
+        $this->db->where('a.no_batch !=', '');
 
-    // FILTER WAJIB
-    $this->db->where('a.no_batch IS NOT NULL');
-    $this->db->where('a.no_batch !=', '');
-    $this->db->where('a.is_deleted', 0);
-    $this->db->where('b.is_deleted', 0);
+        // FILTER OPSIONAL
+        if (!empty($no_dpb)) {
+            $this->db->like('b.no_dpb', $no_dpb);
+        }
 
-    // FILTER OPTIONAL
-    if (!empty($no_dpb)) {
-        $this->db->like('b.no_dpb', $no_dpb);
+        if (!empty($tgl_mulai)) {
+            $this->db->where('b.tgl_dpb >=', date('Y-m-d', strtotime($tgl_mulai)));
+        }
+
+        if (!empty($tgl_selesai)) {
+            $this->db->where('b.tgl_dpb <=', date('Y-m-d', strtotime($tgl_selesai)));
+        }
+
+        // ORDER BY SEDERHANA
+        $this->db->order_by('a.created_at', 'DESC');
+
+        return $this->db->get();
     }
 
-    if (!empty($tgl_mulai)) {
-        $tgl_mulai_db = date('Y-m-d', strtotime($tgl_mulai));
-        $this->db->where('b.tgl_dpb >=', $tgl_mulai_db);
-    }
-
-    if (!empty($tgl_selesai)) {
-        $tgl_selesai_db = date('Y-m-d', strtotime($tgl_selesai));
-        $this->db->where('b.tgl_dpb <=', $tgl_selesai_db);
-    }
-
-    // NO GROUP BY → MENCEGAH ERROR 1055
-    $this->db->order_by('a.created_at', 'DESC');
-
-    return $this->db->get();
-}
 
 
     // Fungsi untuk mendapatkan rincian DPB berdasarkan no_batch
@@ -88,15 +102,15 @@ class M_adm_barang_masuk extends CI_Model {
             b.created_at,
             b.created_by
         ');
-        
+
         $this->db->from('tb_adm_dpb b');
         $this->db->join('tb_prc_dpb_tf a', 'a.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
-        
+
         $this->db->where('b.no_batch IS NOT NULL');
         $this->db->where('b.no_batch !=', '');
         $this->db->where('b.is_deleted', 0);
         $this->db->where('a.is_deleted', 0);
-        
+
         if (!empty($no_dpb)) {
             $this->db->where('a.no_dpb', $no_dpb);
         }
@@ -107,7 +121,7 @@ class M_adm_barang_masuk extends CI_Model {
         }
 
         $this->db->order_by('b.tgl_dpb', 'ASC');
-        
+
         return $this->db->get();
     }
 
@@ -120,15 +134,15 @@ class M_adm_barang_masuk extends CI_Model {
             MIN(b.tgl_dpb) as tanggal_awal,
             MAX(b.tgl_dpb) as tanggal_akhir
         ');
-        
+
         $this->db->from('tb_adm_dpb b');
         $this->db->join('tb_prc_dpb_tf a', 'a.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
-        
+
         $this->db->where('b.no_batch IS NOT NULL');
         $this->db->where('b.no_batch !=', '');
         $this->db->where('b.is_deleted', 0);
         $this->db->where('a.is_deleted', 0);
-        
+
         if (!empty($no_dpb)) {
             $this->db->where('a.no_dpb', $no_dpb);
         }
@@ -137,7 +151,7 @@ class M_adm_barang_masuk extends CI_Model {
             $tgl_mulai_db = date('Y-m-d', strtotime($tgl_mulai));
             $this->db->where('b.tgl_dpb >=', $tgl_mulai_db);
         }
-        
+
         if (!empty($tgl_selesai)) {
             $tgl_selesai_db = date('Y-m-d', strtotime($tgl_selesai));
             $this->db->where('b.tgl_dpb <=', $tgl_selesai_db);
@@ -145,7 +159,7 @@ class M_adm_barang_masuk extends CI_Model {
 
         $this->db->group_by('a.no_dpb');
         $this->db->order_by('tanggal_awal', 'ASC');
-        
+
         return $this->db->get();
     }
 
@@ -163,31 +177,31 @@ class M_adm_barang_masuk extends CI_Model {
             b.created_at,
             b.created_by
         ');
-        
+
         $this->db->from('tb_adm_dpb b');
         $this->db->join('tb_prc_dpb_tf a', 'a.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
-        
+
         $this->db->where('b.no_batch IS NOT NULL');
         $this->db->where('b.no_batch !=', '');
         $this->db->where('b.is_deleted', 0);
         $this->db->where('a.is_deleted', 0);
-        
+
         if (!empty($filter['no_dpb'])) {
             $this->db->where('a.no_dpb', $filter['no_dpb']);
         }
-        
+
         if (!empty($filter['tgl_mulai'])) {
             $tgl_mulai_db = date('Y-m-d', strtotime($filter['tgl_mulai']));
             $this->db->where('b.tgl_dpb >=', $tgl_mulai_db);
         }
-        
+
         if (!empty($filter['tgl_selesai'])) {
             $tgl_selesai_db = date('Y-m-d', strtotime($filter['tgl_selesai']));
             $this->db->where('b.tgl_dpb <=', $tgl_selesai_db);
         }
 
         $this->db->order_by('b.tgl_dpb ASC, a.no_dpb ASC');
-            
+
         return $this->db->get();
     }
 
@@ -203,7 +217,7 @@ class M_adm_barang_masuk extends CI_Model {
         $this->db->where('a.is_deleted', 0);
         $this->db->order_by('a.no_dpb', 'ASC');
         $query = $this->db->get();
-        
+
         $result = [];
         if ($query->num_rows() > 0) {
             foreach ($query->result_array() as $row) {
@@ -213,7 +227,7 @@ class M_adm_barang_masuk extends CI_Model {
                 ];
             }
         }
-        
+
         return $result;
     }
 
