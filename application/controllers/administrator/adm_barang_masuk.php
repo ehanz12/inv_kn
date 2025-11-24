@@ -21,20 +21,20 @@ class adm_barang_masuk extends CI_Controller
     public function index()
     {
         $no_dpb = $this->input->get('no_dbb');
-        $jenis_bayar = $this->input->get('jenis_bayar');
+        
         $tgl_mulai = $this->input->get('tgl_mulai');
         $tgl_selesai = $this->input->get('tgl_selesai');
 
         // Simpan filter di session untuk cetak
         $this->session->set_userdata('filter_laporan', [
             'no_dpb' => $no_dpb,
-            'jenis_bayar' => $jenis_bayar,
+            
             'tgl_mulai' => $tgl_mulai,
             'tgl_selesai' => $tgl_selesai
         ]);
 
         // Ambil data dari tabel tb_prc_dpb_tf
-        $result = $this->M_adm_barang_masuk->get($no_dpb, $jenis_bayar, $tgl_mulai, $tgl_selesai);
+        $result = $this->M_adm_barang_masuk->get($no_dpb, $tgl_mulai, $tgl_selesai);
         
         // Pastikan $result adalah array
         if (is_object($result)) {
@@ -44,7 +44,7 @@ class adm_barang_masuk extends CI_Controller
         }
 
         $data['no_dpb'] = $no_dpb;
-        $data['jenis_bayar'] = $jenis_bayar;
+       
         $data['tgl_mulai'] = $tgl_mulai;
         $data['tgl_selesai'] = $tgl_selesai;
 
@@ -54,12 +54,12 @@ class adm_barang_masuk extends CI_Controller
     public function get_rincian_dpb()
     {
         $no_dpb = $this->input->post('no_dpb');
-        $jenis_bayar = $this->input->post('jenis_bayar');
+       
         $tgl_mulai = $this->input->post('tgl_mulai');
         $tgl_selesai = $this->input->post('tgl_selesai');
 
         // Ambil data dari model
-        $result = $this->M_adm_barang_masuk->get_rincian_dpb_by_no($no_dpb, $jenis_bayar, $tgl_mulai, $tgl_selesai);
+        $result = $this->M_adm_barang_masuk->get_rincian_dpb_by_no($no_dpb,  $tgl_mulai, $tgl_selesai);
 
         if ($result && $result->num_rows() > 0) {
             $data = $result->result_array();
@@ -68,6 +68,29 @@ class adm_barang_masuk extends CI_Controller
             echo json_encode([]);
         }
     }
+
+    // Tambahkan di controller adm_barang_masuk
+public function get_no_dpb_list()
+{
+    $this->db->select('DISTINCT(no_dpb), tgl_dpb', false);
+    $this->db->from('tb_prc_dpb_tf');
+    $this->db->where('is_deleted', 0);
+    $this->db->order_by('no_dpb', 'ASC');
+    $query = $this->db->get();
+    
+    $result = [];
+    if ($query->num_rows() > 0) {
+        foreach ($query->result_array() as $row) {
+            $result[] = [
+                'no_dpb' => $row['no_dpb'],
+                'tgl_dpb' => $row['tgl_dpb']
+            ];
+        }
+    }
+    
+    header('Content-Type: application/json');
+    echo json_encode($result);
+}
 
     public function delete($id_prc_dpb_tf)
     {
@@ -108,7 +131,7 @@ class adm_barang_masuk extends CI_Controller
             // Ambil data summary untuk header
             $summary = $this->M_adm_barang_masuk->get_dpb_grouped(
                 $filter['no_dpb'] ?? null, 
-                $filter['jenis_bayar'] ?? null, 
+
                 $filter['tgl_mulai'] ?? null, 
                 $filter['tgl_selesai'] ?? null
             );
@@ -137,14 +160,14 @@ class adm_barang_masuk extends CI_Controller
     public function export_pdf()
     {
         $no_dpb = $this->input->get('no_dpb');
-        $jenis_bayar = $this->input->get('jenis_bayar');
+      
         $tgl_mulai = $this->input->get('tgl_mulai');
         $tgl_selesai = $this->input->get('tgl_selesai');
 
         // Set filter untuk PDF
         $this->session->set_userdata('filter_laporan', [
             'no_dpb' => $no_dpb,
-            'jenis_bayar' => $jenis_bayar,
+            
             'tgl_mulai' => $tgl_mulai,
             'tgl_selesai' => $tgl_selesai
         ]);

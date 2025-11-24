@@ -10,157 +10,211 @@ class M_adm_barang_masuk extends CI_Model {
         return $this->session->userdata("id_user");
     }
 
-    // Fungsi untuk mendapatkan data dari tb_prc_dpb_tf
-    public function get($no_dpb = null, $jenis_bayar = null, $tgl_mulai = null, $tgl_selesai = null)
-    {
-        $where = "WHERE is_deleted = 0";
-        
-        if ($no_dpb != null && $no_dpb != '') {
-            $where .= " AND no_dpb LIKE '%$no_dpb%'";
-        }
-        
-        if ($jenis_bayar != null && $jenis_bayar != '') {
-            $where .= " AND jenis_bayar = '$jenis_bayar'";
-        }
-        
-        if ($tgl_mulai != null && $tgl_mulai != '') {
-            $tgl_mulai_db = date('Y-m-d', strtotime($tgl_mulai));
-            $where .= " AND tgl_dpb >= '$tgl_mulai_db'";
-        }
-        
-        if ($tgl_selesai != null && $tgl_selesai != '') {
-            $tgl_selesai_db = date('Y-m-d', strtotime($tgl_selesai));
-            $where .= " AND tgl_dpb <= '$tgl_selesai_db'";
-        }
+    // Fungsi utama untuk mendapatkan data barang masuk HANYA yang memiliki no_batch
+    public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
+{
+    $this->db->distinct(); // <-- FIX UTAMA | cegah duplikat tanpa GROUP BY
 
-        $sql = "
-        SELECT 
-            id_prc_dpb_tf,
-            no_dpb,
-            tgl_dpb,
-            jenis_bayar,
-            no_sjl,
-            prc_admin,
-            created_at,
-            created_by
-        FROM tb_prc_dpb_tf
-        $where
-        ORDER BY created_at DESC
-        ";
+    $this->db->select('
+        a.*,
+        b.id_prc_dpb_tf,
+        b.no_sjl,
+        b.tgl_dpb,
+        c.id_prc_dpb,
+        c.jenis_bayar, 
+        d.id_prc_rh,
+        e.id_prc_ppb,
+        f.id_prc_master_barang,
+        f.no_budget,
+        g.nama_barang, 
+        g.id_prc_master_supplier,
+        g.kode_barang,
+        g.spek, 
+        g.satuan,
+        h.nama_supplier
+    ');
 
-        return $this->db->query($sql);
+    // TABEL UTAMA
+    $this->db->from('tb_adm_dpb a');
+
+    // JOIN BENAR
+    $this->db->join('tb_prc_dpb_tf b', 'b.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
+    $this->db->join('tb_prc_dpb c', 'a.id_prc_dpb_tf = c.id_prc_dpb_tf', 'left');
+    $this->db->join('tb_prc_rb d', 'c.id_prc_rb = d.id_prc_rb', 'left');
+    $this->db->join('tb_prc_rh e', 'd.id_prc_rh = e.id_prc_rh', 'left');
+    $this->db->join('tb_prc_ppb f', 'e.id_prc_ppb = f.id_prc_ppb', 'left');
+    $this->db->join('tb_prc_master_barang g', 'f.id_prc_master_barang = g.id_prc_master_barang', 'left');
+    $this->db->join('tb_prc_master_supplier h', 'g.id_prc_master_supplier = h.id_prc_master_supplier', 'left');
+
+    // FILTER WAJIB
+    $this->db->where('a.no_batch IS NOT NULL');
+    $this->db->where('a.no_batch !=', '');
+    $this->db->where('a.is_deleted', 0);
+    $this->db->where('b.is_deleted', 0);
+
+    // FILTER OPTIONAL
+    if (!empty($no_dpb)) {
+        $this->db->like('b.no_dpb', $no_dpb);
     }
 
-    public function get_rincian_dpb_by_no($no_dpb = null, $jenis_bayar = null, $tgl_mulai = null, $tgl_selesai = null)
+    if (!empty($tgl_mulai)) {
+        $tgl_mulai_db = date('Y-m-d', strtotime($tgl_mulai));
+        $this->db->where('b.tgl_dpb >=', $tgl_mulai_db);
+    }
+
+    if (!empty($tgl_selesai)) {
+        $tgl_selesai_db = date('Y-m-d', strtotime($tgl_selesai));
+        $this->db->where('b.tgl_dpb <=', $tgl_selesai_db);
+    }
+
+    // NO GROUP BY → MENCEGAH ERROR 1055
+    $this->db->order_by('a.created_at', 'DESC');
+
+    return $this->db->get();
+}
+
+
+    // Fungsi untuk mendapatkan rincian DPB berdasarkan no_batch
+    public function get_rincian_dpb_by_no($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
     {
-        $where = "is_deleted = 0";
+        $this->db->select('
+            a.id_prc_dpb_tf,
+            a.no_dpb,
+            b.tgl_dpb,
+            a.no_sjl,
+            a.prc_admin,
+            b.no_batch,
+            b.jml_diterima,
+            b.created_at,
+            b.created_by
+        ');
+        
+        $this->db->from('tb_adm_dpb b');
+        $this->db->join('tb_prc_dpb_tf a', 'a.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
+        
+        $this->db->where('b.no_batch IS NOT NULL');
+        $this->db->where('b.no_batch !=', '');
+        $this->db->where('b.is_deleted', 0);
+        $this->db->where('a.is_deleted', 0);
         
         if (!empty($no_dpb)) {
-            $where .= " AND no_dpb = '$no_dpb'";
-        }
-
-        if (!empty($jenis_bayar)) {
-            $where .= " AND jenis_bayar = '$jenis_bayar'";
+            $this->db->where('a.no_dpb', $no_dpb);
         }
 
         if (!empty($tgl_mulai) && !empty($tgl_selesai)) {
-            $where .= " AND DATE(tgl_dpb) BETWEEN '$tgl_mulai' AND '$tgl_selesai'";
+            $this->db->where('DATE(b.tgl_dpb) >=', $tgl_mulai);
+            $this->db->where('DATE(b.tgl_dpb) <=', $tgl_selesai);
         }
 
-        $sql = "
-        SELECT 
-            id_prc_dpb_tf,
-            no_dpb,
-            tgl_dpb,
-            jenis_bayar,
-            no_sjl,
-            prc_admin,
-            created_at,
-            created_by
-        FROM tb_prc_dpb_tf
-        WHERE $where
-        ORDER BY tgl_dpb ASC
-        ";
-
-        return $this->db->query($sql);
+        $this->db->order_by('b.tgl_dpb', 'ASC');
+        
+        return $this->db->get();
     }
 
-    public function get_dpb_grouped($no_dpb = null, $jenis_bayar = null, $tgl_mulai = null, $tgl_selesai = null)
+    // Fungsi untuk mendapatkan data DPB yang dikelompokkan (dengan no_batch)
+    public function get_dpb_grouped($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
     {
-        $where = "WHERE is_deleted = 0";
+        $this->db->select('
+            a.no_dpb,
+            COUNT(*) as total_record,
+            MIN(b.tgl_dpb) as tanggal_awal,
+            MAX(b.tgl_dpb) as tanggal_akhir
+        ');
+        
+        $this->db->from('tb_adm_dpb b');
+        $this->db->join('tb_prc_dpb_tf a', 'a.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
+        
+        $this->db->where('b.no_batch IS NOT NULL');
+        $this->db->where('b.no_batch !=', '');
+        $this->db->where('b.is_deleted', 0);
+        $this->db->where('a.is_deleted', 0);
         
         if (!empty($no_dpb)) {
-            $where .= " AND no_dpb = '$no_dpb'";
-        }
-
-        if (!empty($jenis_bayar)) {
-            $where .= " AND jenis_bayar = '$jenis_bayar'";
+            $this->db->where('a.no_dpb', $no_dpb);
         }
 
         if (!empty($tgl_mulai)) {
             $tgl_mulai_db = date('Y-m-d', strtotime($tgl_mulai));
-            $where .= " AND tgl_dpb >= '$tgl_mulai_db'";
+            $this->db->where('b.tgl_dpb >=', $tgl_mulai_db);
         }
         
         if (!empty($tgl_selesai)) {
             $tgl_selesai_db = date('Y-m-d', strtotime($tgl_selesai));
-            $where .= " AND tgl_dpb <= '$tgl_selesai_db'";
+            $this->db->where('b.tgl_dpb <=', $tgl_selesai_db);
         }
 
-        $sql = "
-        SELECT 
-            no_dpb,
-            COUNT(*) as total_record,
-            MIN(tgl_dpb) as tanggal_awal,
-            MAX(tgl_dpb) as tanggal_akhir,
-            GROUP_CONCAT(DISTINCT jenis_bayar) as jenis_bayar_list
-        FROM tb_prc_dpb_tf
-        $where
-        GROUP BY no_dpb
-        ORDER BY tanggal_awal ASC
-        ";
-
-        return $this->db->query($sql);
+        $this->db->group_by('a.no_dpb');
+        $this->db->order_by('tanggal_awal', 'ASC');
+        
+        return $this->db->get();
     }
 
+    // Fungsi untuk data detail DPB (dengan no_batch)
     public function data_dpb_detail($filter = [])
     {
-        $where = "WHERE is_deleted = 0";
+        $this->db->select('
+            a.id_prc_dpb_tf,
+            a.no_dpb,
+            b.tgl_dpb,
+            a.no_sjl,
+            a.prc_admin,
+            b.no_batch,
+            b.jml_diterima,
+            b.created_at,
+            b.created_by
+        ');
+        
+        $this->db->from('tb_adm_dpb b');
+        $this->db->join('tb_prc_dpb_tf a', 'a.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
+        
+        $this->db->where('b.no_batch IS NOT NULL');
+        $this->db->where('b.no_batch !=', '');
+        $this->db->where('b.is_deleted', 0);
+        $this->db->where('a.is_deleted', 0);
         
         if (!empty($filter['no_dpb'])) {
-            $where .= " AND no_dpb = '{$filter['no_dpb']}'";
-        }
-        
-        if (!empty($filter['jenis_bayar'])) {
-            $where .= " AND jenis_bayar = '{$filter['jenis_bayar']}'";
+            $this->db->where('a.no_dpb', $filter['no_dpb']);
         }
         
         if (!empty($filter['tgl_mulai'])) {
             $tgl_mulai_db = date('Y-m-d', strtotime($filter['tgl_mulai']));
-            $where .= " AND tgl_dpb >= '$tgl_mulai_db'";
+            $this->db->where('b.tgl_dpb >=', $tgl_mulai_db);
         }
         
         if (!empty($filter['tgl_selesai'])) {
             $tgl_selesai_db = date('Y-m-d', strtotime($filter['tgl_selesai']));
-            $where .= " AND tgl_dpb <= '$tgl_selesai_db'";
+            $this->db->where('b.tgl_dpb <=', $tgl_selesai_db);
         }
 
-        $sql = "
-        SELECT 
-            id_prc_dpb_tf,
-            no_dpb,
-            tgl_dpb,
-            jenis_bayar,
-            no_sjl,
-            prc_admin,
-            created_at,
-            created_by
-        FROM tb_prc_dpb_tf
-        $where
-        ORDER BY tgl_dpb ASC, no_dpb ASC
-        ";
+        $this->db->order_by('b.tgl_dpb ASC, a.no_dpb ASC');
             
-        return $this->db->query($sql);
+        return $this->db->get();
+    }
+
+    // Fungsi untuk mendapatkan list No. DPB untuk autocomplete (hanya yang memiliki no_batch)
+    public function get_no_dpb_list()
+    {
+        $this->db->select('DISTINCT(a.no_dpb), b.tgl_dpb', false);
+        $this->db->from('tb_adm_dpb b');
+        $this->db->join('tb_prc_dpb_tf a', 'a.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
+        $this->db->where('b.no_batch IS NOT NULL');
+        $this->db->where('b.no_batch !=', '');
+        $this->db->where('b.is_deleted', 0);
+        $this->db->where('a.is_deleted', 0);
+        $this->db->order_by('a.no_dpb', 'ASC');
+        $query = $this->db->get();
+        
+        $result = [];
+        if ($query->num_rows() > 0) {
+            foreach ($query->result_array() as $row) {
+                $result[] = [
+                    'no_dpb' => $row['no_dpb'],
+                    'tgl_dpb' => $row['tgl_dpb']
+                ];
+            }
+        }
+        
+        return $result;
     }
 
     public function delete($data)

@@ -6,31 +6,20 @@ class adm_dpb extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        $this->load->model('M_dpb/M_adm_dpb');
         $this->load->model('M_purchasing/M_prc_dpb/M_prc_dpb');
-        $this->load->model('M_purchasing/M_prc_ppb/M_prc_ppb_masterbarang');
-        $this->load->model('M_purchasing/M_purchasing_ppb/M_purchasing_ppb');
         $this->load->library('form_validation');
-    }
-
-    private function convertDate($date)
-    {
-        $dateParts = explode('/', $date);
-        if (count($dateParts) == 3) {
-            return $dateParts[2] . "-" . $dateParts[1] . "-" . $dateParts[0];
-        } else {
-            log_message('error', 'Tanggal tidak valid: ' . $date);
-            return null;
-        }
     }
 
     public function index()
     {
         $tgl = $this->input->get('date_from');
         $tgl2 = $this->input->get('date_until');
-        $data['result'] = $this->M_prc_dpb->get()->result_array();
-        $data['res_rb'] = $this->M_prc_dpb->get_rb()->result_array();
+        $data['result'] = $this->M_adm_dpb->get()->result_array();
+
+        $data['res_rb'] = $this->M_adm_dpb->get_rb()->result_array();
         $data['res_kode'] = $this->M_prc_dpb->get()->result_array();
-        $data['generate_no_dpb'] = $this->M_prc_dpb->generate_no_dpb();
+        $data['generate_no_dpb'] = $this->M_adm_dpb->generate_no_dpb();
         $data['tgl'] = $tgl;
         $data['tgl2'] = $tgl2;
 
@@ -40,24 +29,65 @@ class adm_dpb extends CI_Controller
     public function get_dpb_detail()
     {
         $no_dpb = $this->input->post('no_dpb', TRUE);
-        $result = $this->M_prc_dpb->get_dpb_detail($no_dpb);
-        echo json_encode($result);
+        
+        if (empty($no_dpb)) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'No DPB tidak boleh kosong'
+            ]);
+            return;
+        }
+        
+        // Gunakan method yang diperbaiki
+        $result = $this->M_adm_dpb->get_dpb_detail_with_relations($no_dpb);
+        
+        
+        // Debug log
+        error_log("DPB Detail Query for: " . $no_dpb);
+        error_log("Result count: " . count($result));
+        
+        // Format response untuk AJAX
+        if (!empty($result)) {
+            echo json_encode([
+                'success' => true,
+                'data' => $result,
+                'count' => count($result)
+            ]);
+        } else {
+            // Cek apakah DPB exists tapi tidak ada detail barang
+            $dpb_exists = $this->M_adm_dpb->check_dpb_exists($no_dpb);
+            if ($dpb_exists) {
+                echo json_encode([
+                    'success' => true,
+                    'data' => [],
+                    'message' => 'DPB ditemukan tetapi tidak ada detail barang'
+                ]);
+            } else {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Data DPB tidak ditemukan'
+                ]);
+            }
+        }
     }
 
     public function get_by_no_rb()
     {
         $no_rb = $this->input->post('no_rb', TRUE);
-        $result = $this->M_prc_dpb->data_no_budget($no_rb);
+        $result = $this->M_adm_dpb->data_no_budget($no_rb);
         echo json_encode($result);
     }
 
     public function add()
     {
         $data['no_dpb'] = $this->input->post('no_dpb', TRUE);
+        $data['tgl_dpb'] = $this->input->post('tgl_dpb', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
+        $data['jml_diterima'] = $this->input->post('no_batch', TRUE);
+        $data['id_user'] = $this->session->userdata('id_user', );
         
         // Ambil data dari DPB yang dipilih
-        $dpb_detail = $this->M_prc_dpb->get_dpb_detail($data['no_dpb']);
+        $dpb_detail = $this->M_adm_dpb->get_dpb_detail_with_relations($data['no_dpb']);
         
         if (!empty($dpb_detail)) {
             $data['tgl_dpb'] = $dpb_detail[0]['tgl_dpb'];
@@ -65,25 +95,25 @@ class adm_dpb extends CI_Controller
             $data['no_sjl'] = $dpb_detail[0]['no_sjl'];
             
             // Simpan data
-            $result = $this->M_prc_dpb->add($data);
+            $result = $this->M_adm_dpb->add($data);
             
             if ($result) {
-                header('location:' . base_url('purchasing/prc_dpb/prc_dpb') . '?alert=success&msg=Selamat anda berhasil menambahkan Data DPB');
+                header('location:' . base_url('administrator/adm_dpb') . '?alert=success&msg=Selamat anda berhasil menambahkan Data DPB');
             } else {
-                header('location:' . base_url('purchasing/prc_dpb/prc_dpb') . '?alert=error&msg=Maaf anda gagal menambahkan Data DPB');
+                header('location:' . base_url('administrator/adm_dpb') . '?alert=error&msg=Maaf anda gagal menambahkan Data DPB');
             }
         } else {
-            header('location:' . base_url('purchasing/prc_dpb/prc_dpb') . '?alert=error&msg=Data DPB tidak ditemukan');
+            header('location:' . base_url('administrator/adm_dpb') . '?alert=error&msg=Data DPB tidak ditemukan');
         }
     }
 
-    public function delete($no_dpb)
+    public function delete($id_adm_dpb)
     {
-        $respon = $this->M_prc_dpb->delete($no_dpb);
+        $respon = $this->M_adm_dpb->delete($id_adm_dpb);
         if($respon) {
-             header('location:' . base_url('purchasing/prc_dpb/prc_dpb') . '?alert=success&msg=Selamat anda berhasil menghapus Data DPB');
+             header('location:' . base_url('administrator/adm_dpb') . '?alert=success&msg=Selamat anda berhasil menghapus Data DPB');
         }else {
-            header('location:' . base_url('purchasing/prc_dpb/prc_dpb') . '?alert=error&msg=Maaf anda gagal menghapus Data DPB');
+            header('location:' . base_url('administrator/adm_dpb') . '?alert=error&msg=Maaf anda gagal menghapus Data DPB');
         }
     }
 }

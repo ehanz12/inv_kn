@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Data DPB</title>
+    <title>Laporan Barang Masuk</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <style>
         /* CSS styles tetap sama seperti sebelumnya */
         :root {
@@ -186,53 +188,25 @@
             border-radius: 20px;
             font-weight: 600;
             font-size: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-primary {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(67, 97, 238, 0.2);
         }
 
         .badge-success {
             background-color: rgba(76, 201, 240, 0.1);
             color: var(--success);
             border: 1px solid rgba(76, 201, 240, 0.2);
-        }
-
-        .badge-warning {
-            background-color: rgba(247, 37, 133, 0.1);
-            color: var(--warning);
-            border: 1px solid rgba(247, 37, 133, 0.2);
-        }
-
-        .badge-danger {
-            background-color: rgba(230, 57, 70, 0.1);
-            color: var(--danger);
-            border: 1px solid rgba(230, 57, 70, 0.2);
-        }
-
-        .modal-content {
-            border: none;
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-radius: var(--border-radius) var(--border-radius) 0 0;
-            padding: 20px 25px;
-        }
-
-        .modal-title {
-            font-weight: 700;
-            font-size: 18px;
-            color: white;
-        }
-
-        .close {
-            color: white;
-            opacity: 0.8;
-        }
-
-        .close:hover {
-            color: white;
-            opacity: 1;
         }
 
         .filter-section {
@@ -255,6 +229,7 @@
             flex: 1;
             min-width: 250px;
             margin-bottom: 0;
+            position: relative;
         }
 
         .filter-actions {
@@ -293,6 +268,80 @@
             box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
         }
 
+        /* Autocomplete Styles */
+        .autocomplete-container {
+            position: relative;
+        }
+
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            box-shadow: var(--box-shadow);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .autocomplete-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--light-gray);
+            transition: var(--transition);
+        }
+
+        .autocomplete-item:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item.active {
+            background-color: rgba(67, 97, 238, 0.2);
+        }
+
+        /* Datepicker Styles */
+        .datepicker {
+            border-radius: 8px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .datepicker table tr td.active, 
+        .datepicker table tr td.active:hover {
+            background-color: var(--primary);
+        }
+
+        .datepicker table tr td.today {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        /* Modal Detail Styles */
+        .detail-item {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--dark);
+            min-width: 150px;
+        }
+
+        .detail-value {
+            color: var(--gray);
+        }
+
         @media (max-width: 768px) {
             .card-header {
                 flex-direction: column;
@@ -318,6 +367,10 @@
             .filter-actions .btn {
                 flex: 1;
             }
+
+            .detail-label {
+                min-width: 120px;
+            }
         }
     </style>
 </head>
@@ -336,12 +389,12 @@
                             <div class="col-md-12">
                                 <div class="page-header-title">
                                     <h5 class="m-b-10 page-title">
-                                        <i class="fas fa-file-invoice"></i>Laporan Data DPB
+                                        <i class="fas fa-boxes"></i>Laporan Barang Masuk
                                     </h5>
                                 </div>
                                 <ul class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="<?= base_url() ?>"><i class="fas fa-home"></i></a></li>
-                                    <li class="breadcrumb-item"><a href="javascript:">Laporan Data DPB</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript:">Laporan Barang Masuk</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -357,103 +410,116 @@
                                 
                                 <!-- Filter Section -->
                                 <div class="filter-section">
-                                    <div class="filter-row">
-                                        <div class="filter-group">
-                                            <label class="form-label">
-                                                <i class="fas fa-search"></i>No. DPB
-                                            </label>
-                                            <input type="text" class="form-control" id="filter_no_dpb" name="filter_no_dpb" value="<?= $no_dpb ?? '' ?>" placeholder="Masukkan No. DPB">
+                                    <form method="GET" action="<?= base_url('administrator/adm_barang_masuk') ?>" id="filterForm">
+                                        <div class="filter-row">
+                                            <div class="filter-group autocomplete-container">
+                                                <label class="form-label">
+                                                    <i class="fas fa-search"></i>No. DPB
+                                                </label>
+                                                <input type="text" class="form-control" id="filter_no_dpb" name="no_dpb" value="<?= htmlspecialchars($no_dpb ?? '') ?>" placeholder="Masukkan No. DPB" autocomplete="off">
+                                                <div class="autocomplete-list" id="no_dpb_suggestions"></div>
+                                            </div>
+                                            
+                                            <div class="filter-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-calendar"></i>Tanggal Mulai
+                                                </label>
+                                                <input type="text" class="form-control datepicker" id="filter_tgl_mulai" name="tgl_mulai" value="<?= htmlspecialchars($tgl_mulai ?? '') ?>" placeholder="Pilih tanggal mulai" readonly>
+                                            </div>
+                                            
+                                            <div class="filter-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-calendar"></i>Tanggal Selesai
+                                                </label>
+                                                <input type="text" class="form-control datepicker" id="filter_tgl_selesai" name="tgl_selesai" value="<?= htmlspecialchars($tgl_selesai ?? '') ?>" placeholder="Pilih tanggal selesai" readonly>
+                                            </div>
+                                            
+                                            <div class="filter-actions">
+                                                <button class="btn btn-secondary" type="submit">
+                                                    <i class="fas fa-eye mr-1"></i> Lihat
+                                                </button>
+                                                <button type="button" class="btn btn-primary" id="btn-cetak-semua">
+                                                    <i class="fas fa-file-pdf mr-1"></i> Cetak PDF
+                                                </button>
+                                                <a href="<?= base_url('administrator/adm_barang_masuk/') ?>" class="btn btn-warning" type="button">
+                                                    <i class="fas fa-sync-alt mr-1"></i> Reset
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div class="filter-group">
-                                            <label class="form-label">
-                                                <i class="fas fa-money-bill-wave"></i>Jenis Bayar
-                                            </label>
-                                            <select class="form-control" id="filter_jenis_bayar" name="filter_jenis_bayar">
-                                                <option value="">-- Semua Jenis Bayar --</option>
-                                                <option value="Tunai" <?= ($jenis_bayar ?? '') == 'Tunai' ? 'selected' : '' ?>>Tunai</option>
-                                                <option value="Kredit" <?= ($jenis_bayar ?? '') == 'Kredit' ? 'selected' : '' ?>>Kredit</option>
-                                                <option value="Transfer" <?= ($jenis_bayar ?? '') == 'Transfer' ? 'selected' : '' ?>>Transfer</option>
-                                            </select>
-                                        </div>
-                                        <div class="filter-actions">
-                                            <button class="btn btn-secondary" id="lihat" type="button">
-                                                <i class="fas fa-eye mr-1"></i> Lihat
-                                            </button>
-                                            <button type="button" class="btn btn-primary" id="btn-cetak-semua">
-                                                <i class="fas fa-file-pdf mr-1"></i> Cetak PDF
-                                            </button>
-                                            <a href="<?= base_url() ?>administrator/adm_barang_masuk/" class="btn btn-warning" type="button">
-                                                <i class="fas fa-sync-alt mr-1"></i> Reset
-                                            </a>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
 
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5><i class="fas fa-table mr-2"></i>Data DPB</h5>
+                                        <h5><i class="fas fa-table mr-2"></i>Data Barang Masuk</h5>
                                         <div class="total-records">
                                             <span class="badge badge-primary">Total: <?= count($result) ?> Data</span>
+                                            <span class="badge badge-success ms-2">Hanya data dengan No. Batch</span>
                                         </div>
                                     </div>
                                     
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table datatable table-hover table-striped table-sm">
+                                            <table class="table table-hover table-striped table-sm">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>No. DPB</th>
-                                                        <th>Tanggal DPB</th>
-                                                        <th>Jenis Bayar</th>
-                                                        <th>No. Surat Jalan</th>
-                                                        <th>Admin</th>
-                                                        <th>Tanggal Input</th>
-                                                        <th class="text-center">Aksi</th>
+                                                        <th>No. Batch</th>
+                                                        <th>Tanggal Diterima</th>
+                                                        <th>Jumlah Diterima</th>
+                                                       
+                                                        
+                                                        <th>Nama Barang</th>
+                                                        <th>Supplier</th>
+                                                        <th>Kode Barang</th>
+                                                       
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <?php
                                                     $no = 1;
-                                                    if (!empty($result)) {
+                                                    if (!empty($result) && is_array($result)) {
                                                         foreach ($result as $k) {
                                                     ?>
                                                             <tr>
                                                                 <td><?= $no++ ?></td>
-                                                                <td class="font-weight-medium"><?= htmlspecialchars($k['no_dpb']) ?></td>
-                                                                <td><?= date('d/m/Y', strtotime($k['tgl_dpb'])) ?></td>
                                                                 <td>
-                                                                    <span class="badge <?= $k['jenis_bayar'] == 'Tunai' ? 'badge-success' : ($k['jenis_bayar'] == 'Kredit' ? 'badge-warning' : 'badge-info') ?>">
-                                                                        <?= htmlspecialchars($k['jenis_bayar']) ?>
+                                                                    <span class="badge badge-success btn-batch-detail" 
+                                                                          style="cursor: pointer;"
+                                                                          data-batch="<?= htmlspecialchars($k['no_batch'] ?? '') ?>"
+                                                                          data-dpb="<?= htmlspecialchars($k['no_dpb'] ?? '') ?>"
+                                                                          data-tgl="<?= !empty($k['tgl_dpb']) ? date('Y-m-d', strtotime($k['tgl_dpb'])) : '' ?>"
+                                                                          data-jumlah="<?= $k['jml_diterima'] ?? 0 ?>"
+                                                                          data-jenis-bayar="<?= htmlspecialchars($k['jenis_bayar'] ?? '') ?>"
+                                                                          data-surat-jalan="<?= htmlspecialchars($k['no_sjl'] ?? '') ?>"
+                                                                          data-admin="<?= htmlspecialchars($k['prc_admin'] ?? '') ?>"
+                                                                          data-barang="<?= htmlspecialchars($k['nama_barang'] ?? '') ?>"
+                                                                          data-supplier="<?= htmlspecialchars($k['nama_supplier'] ?? '') ?>"
+                                                                          data-kode="<?= htmlspecialchars($k['kode_barang'] ?? '') ?>"
+                                                                          data-spek="<?= htmlspecialchars($k['spek'] ?? '') ?>"
+                                                                          data-satuan="<?= htmlspecialchars($k['satuan'] ?? '') ?>"
+                                                                          data-created="<?= !empty($k['created_at']) ? date('Y-m-d H:i:s', strtotime($k['created_at'])) : '' ?>">
+                                                                        <?= htmlspecialchars($k['no_batch'] ?? '-') ?>
                                                                     </span>
                                                                 </td>
-                                                                <td><?= htmlspecialchars($k['no_sjl']) ?></td>
-                                                                <td><?= htmlspecialchars($k['prc_admin']) ?></td>
-                                                                <td><?= date('d/m/Y H:i', strtotime($k['created_at'])) ?></td>
-                                                                <td class="text-center">
-                                                                    <button type="button"
-                                                                        class="btn btn-info btn-sm btn-rincian"
-                                                                        data-no-dpb="<?= $k['no_dpb'] ?>"
-                                                                        data-jenis-bayar="<?= htmlspecialchars($k['jenis_bayar']) ?>"
-                                                                        data-toggle="modal"
-                                                                        data-target="#detail">
-                                                                        <i class="fas fa-eye mr-1"></i> Detail
-                                                                    </button>
-                                                                    <!-- <a href="<?= base_url('administrator/adm_barang_masuk/delete/' . str_replace('/', '--', $k['id_prc_dpb_tf'])) ?>" 
-                                                                       class="btn btn-danger btn-sm" 
-                                                                       onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                                                        <i class="fas fa-trash mr-1"></i> Hapus
-                                                                    </a> -->
-                                                                </td>
+                                                                <td><?= !empty($k['tgl_dpb']) ? date('d/m/Y', strtotime($k['tgl_dpb'])) : '-' ?></td>
+                                                                <td><?= number_format($k['jml_diterima'] ?? 0, 0, ',', '.') ?></td>
+                                                                
+                                                                <td><?= htmlspecialchars($k['nama_barang'] ?? '-') ?></td>
+                                                                <td><?= htmlspecialchars($k['nama_supplier'] ?? '-') ?></td>
+                                                                <td><?= htmlspecialchars($k['kode_barang'] ?? '-') ?></td>
+                                                                
                                                             </tr>
                                                         <?php
                                                         }
                                                     } else { ?>
                                                         <tr>
-                                                            <td colspan="8" class="text-center py-4">
+                                                            <td colspan="11" class="text-center py-4">
                                                                 <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
                                                                 <br>
-                                                                <span class="text-muted">Tidak ada data DPB</span>
+                                                                <span class="text-muted">Tidak ada data barang masuk</span>
+                                                                <br>
+                                                                <small class="text-muted">Data hanya muncul jika sudah memiliki No. Batch di Admin DPB</small>
                                                             </td>
                                                         </tr>
                                                     <?php } ?>
@@ -473,126 +539,289 @@
     </div>
 </section>
 
-<!-- Modal Detail -->
-<div class="modal fade" id="detail" tabindex="-1" aria-labelledby="detailLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+<!-- Modal Detail Batch -->
+<div class="modal fade" id="batchDetailModal" tabindex="-1" aria-labelledby="batchDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="detailLabel">Rincian Data DPB</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="batchDetailModalLabel">
+                    <i class="fas fa-info-circle me-2"></i>Detail Barang Masuk
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-sm mb-0">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th width="5%">#</th>
-                                <th width="15%">No. DPB</th>
-                                <th width="15%">Tanggal DPB</th>
-                                <th width="15%">Jenis Bayar</th>
-                                <th width="20%">No. Surat Jalan</th>
-                                <th width="15%">Admin</th>
-                                <th width="15%">Tanggal Input</th>
-                            </tr>
-                        </thead>
-                        <tbody id="detail-body">
-                            <tr>
-                                <td colspan="7" class="text-center py-3">Pilih data untuk melihat rincian...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">No. Batch:</span>
+                            <span class="detail-value" id="detail-batch">-</span>
+                        </div>
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">No. DPB:</span>
+                            <span class="detail-value" id="detail-dpb">-</span>
+                        </div>
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">Tanggal Diterima:</span>
+                            <span class="detail-value" id="detail-tanggal">-</span>
+                        </div>
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">Jumlah Diterima:</span>
+                            <span class="detail-value" id="detail-jumlah">-</span>
+                        </div>
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">Jenis Bayar:</span>
+                            <span class="detail-value" id="detail-jenis-bayar">-</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">No. Surat Jalan:</span>
+                            <span class="detail-value" id="detail-surat-jalan">-</span>
+                        </div>
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">Admin:</span>
+                            <span class="detail-value" id="detail-admin">-</span>
+                        </div>
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">Nama Barang:</span>
+                            <span class="detail-value" id="detail-barang">-</span>
+                        </div>
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">Supplier:</span>
+                            <span class="detail-value" id="detail-supplier">-</span>
+                        </div>
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">Tanggal Input:</span>
+                            <span class="detail-value" id="detail-created">-</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">Kode Barang:</span>
+                            <span class="detail-value" id="detail-kode">-</span>
+                        </div>
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">Spesifikasi:</span>
+                            <span class="detail-value" id="detail-spek">-</span>
+                        </div>
+                        <div class="detail-item d-flex">
+                            <span class="detail-label">Satuan:</span>
+                            <span class="detail-value" id="detail-satuan">-</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal">
-                    <i class="fas fa-times mr-1"></i> Tutup
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Tutup
                 </button>
             </div>
         </div>
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.id.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        // Fungsi untuk lihat data dengan filter
-        $('#lihat').click(function() {
-            var no_dpb = $('#filter_no_dpb').val();
-            var jenis_bayar = $('#filter_jenis_bayar').val();
-            var url = '<?= base_url('administrator/adm_barang_masuk') ?>?';
+        // Inisialisasi datepicker
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            language: 'id',
+            todayHighlight: true,
+            autoclose: true
+        });
+
+        // Variabel untuk menyimpan data autocomplete
+        let noDpbList = [];
+
+        // Fungsi untuk mengambil data No. DPB untuk autocomplete
+        function loadNoDpbSuggestions() {
+            $.ajax({
+                url: "<?= base_url('administrator/adm_barang_masuk/get_no_dpb_list') ?>",
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    noDpbList = response;
+                },
+                error: function(xhr, status, error) {
+                    console.error('Gagal memuat data No. DPB:', error);
+                }
+            });
+        }
+
+        // Panggil fungsi untuk memuat data saat halaman dimuat
+        loadNoDpbSuggestions();
+
+        // Autocomplete untuk No. DPB
+        $('#filter_no_dpb').on('input', function() {
+            const searchTerm = $(this).val().toLowerCase();
+            const suggestionsContainer = $('#no_dpb_suggestions');
             
-            if (no_dpb) {
-                url += 'no_dpb=' + no_dpb + '&';
+            if (searchTerm.length < 2) {
+                suggestionsContainer.hide();
+                return;
             }
-            
-            if (jenis_bayar) {
-                url += 'jenis_bayar=' + jenis_bayar + '&';
+
+            const filteredSuggestions = noDpbList.filter(item => 
+                item.no_dpb.toLowerCase().includes(searchTerm)
+            );
+
+            if (filteredSuggestions.length > 0) {
+                let suggestionsHTML = '';
+                filteredSuggestions.slice(0, 10).forEach(item => {
+                    suggestionsHTML += `<div class="autocomplete-item" data-value="${item.no_dpb}">${item.no_dpb}</div>`;
+                });
+                suggestionsContainer.html(suggestionsHTML).show();
+            } else {
+                suggestionsContainer.hide();
             }
+        });
+
+        // Handle klik pada item autocomplete
+        $(document).on('click', '.autocomplete-item', function() {
+            const selectedValue = $(this).data('value');
+            $('#filter_no_dpb').val(selectedValue);
+            $('#no_dpb_suggestions').hide();
+        });
+
+        // Sembunyikan autocomplete ketika klik di luar
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.autocomplete-container').length) {
+                $('#no_dpb_suggestions').hide();
+            }
+        });
+
+        // Navigasi keyboard untuk autocomplete
+        let currentFocus = -1;
+        $('#filter_no_dpb').on('keydown', function(e) {
+            const items = $('.autocomplete-item');
             
-            window.location.href = url.slice(0, -1); // Remove last & or ?
+            if (e.keyCode === 40) { // Arrow down
+                currentFocus++;
+                setActive(items);
+            } else if (e.keyCode === 38) { // Arrow up
+                currentFocus--;
+                setActive(items);
+            } else if (e.keyCode === 13) { // Enter
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    if (items[currentFocus]) {
+                        $(items[currentFocus]).click();
+                    }
+                }
+            }
+        });
+
+        function setActive(items) {
+            if (!items) return false;
+            removeActive(items);
+            if (currentFocus >= items.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = items.length - 1;
+            $(items[currentFocus]).addClass('active');
+        }
+
+        function removeActive(items) {
+            items.removeClass('active');
+        }
+
+        // Auto-fill tanggal berdasarkan No. DPB yang dipilih
+        $(document).on('click', '.autocomplete-item', function() {
+            const selectedNoDpb = $(this).data('value');
+            
+            // Cari data lengkap berdasarkan No. DPB
+            const selectedData = noDpbList.find(item => item.no_dpb === selectedNoDpb);
+            
+            if (selectedData && selectedData.tgl_dpb) {
+                // Isi otomatis tanggal mulai dan selesai berdasarkan tanggal DPB
+                const tglDpb = selectedData.tgl_dpb;
+                $('#filter_tgl_mulai').val(tglDpb);
+                $('#filter_tgl_selesai').val(tglDpb);
+            }
         });
 
         // Fungsi untuk cetak PDF berdasarkan filter
         $('#btn-cetak-semua').click(function() {
             var no_dpb = $('#filter_no_dpb').val();
-            var jenis_bayar = $('#filter_jenis_bayar').val();
+            var tgl_mulai = $('#filter_tgl_mulai').val();
+            var tgl_selesai = $('#filter_tgl_selesai').val();
             
             var url = '<?= base_url('administrator/adm_barang_masuk/export_pdf') ?>?';
             
             if (no_dpb) {
-                url += 'no_dpb=' + no_dpb + '&';
+                url += 'no_dpb=' + encodeURIComponent(no_dpb) + '&';
             }
             
-            if (jenis_bayar) {
-                url += 'jenis_bayar=' + jenis_bayar + '&';
+            if (tgl_mulai) {
+                url += 'tgl_mulai=' + encodeURIComponent(tgl_mulai) + '&';
             }
             
-            window.open(url.slice(0, -1), '_blank'); // Remove last & or ?
+            if (tgl_selesai) {
+                url += 'tgl_selesai=' + encodeURIComponent(tgl_selesai) + '&';
+            }
+            
+            window.open(url.slice(0, -1), '_blank');
         });
 
-        // Modal detail
-        $('.btn-rincian').on('click', function() {
-            let no_dpb = $(this).data('no-dpb');
-            let jenis_bayar = $(this).data('jenis-bayar');
+        // Modal detail ketika klik No. Batch
+        $(document).on('click', '.btn-batch-detail', function() {
+            const batch = $(this).data('batch');
+            const dpb = $(this).data('dpb');
+            const tgl = $(this).data('tgl');
+            const jumlah = $(this).data('jumlah');
+            const jenisBayar = $(this).data('jenis-bayar');
+            const suratJalan = $(this).data('surat-jalan');
+            const admin = $(this).data('admin');
+            const barang = $(this).data('barang');
+            const supplier = $(this).data('supplier');
+            const kode = $(this).data('kode');
+            const spek = $(this).data('spek');
+            const satuan = $(this).data('satuan');
+            const created = $(this).data('created');
 
-            $('#detailLabel').text('Rincian DPB: ' + no_dpb);
-            $('#detail-body').html('<tr><td colspan="7" class="text-center py-3">Memuat data...</td></tr>');
+            // Isi data ke modal
+            $('#detail-batch').text(batch || '-');
+            $('#detail-dpb').text(dpb || '-');
+            $('#detail-tanggal').text(tgl ? formatDate(tgl) : '-');
+            $('#detail-jumlah').text(jumlah ? numberFormat(jumlah) : '0');
+            $('#detail-jenis-bayar').text(jenisBayar || '-');
+            $('#detail-surat-jalan').text(suratJalan || '-');
+            $('#detail-admin').text(admin || '-');
+            $('#detail-barang').text(barang || '-');
+            $('#detail-supplier').text(supplier || '-');
+            $('#detail-kode').text(kode || '-');
+            $('#detail-spek').text(spek || '-');
+            $('#detail-satuan').text(satuan || '-');
+            $('#detail-created').text(created ? formatDateTime(created) : '-');
 
-            $.ajax({
-                url: "<?= base_url('administrator/adm_barang_masuk/get_rincian_dpb') ?>",
-                type: "POST",
-                data: {
-                    no_dpb: no_dpb,
-                    jenis_bayar: jenis_bayar
-                },
-                dataType: "json",
-                success: function(res) {
-                    if (res.length > 0) {
-                        let rows = '';
-                        $.each(res, function(i, item) {
-                            rows += `
-                            <tr>
-                                <td>${i+1}</td>
-                                <td>${item.no_dpb || '-'}</td>
-                                <td>${item.tgl_dpb ? new Date(item.tgl_dpb).toLocaleDateString('id-ID') : '-'}</td>
-                                <td>${item.jenis_bayar || '-'}</td>
-                                <td>${item.no_sjl || '-'}</td>
-                                <td>${item.prc_admin || '-'}</td>
-                                <td>${item.created_at ? new Date(item.created_at).toLocaleString('id-ID') : '-'}</td>
-                            </tr>`;
-                        });
+            // Update judul modal
+            $('#batchDetailModalLabel').html(`<i class="fas fa-info-circle me-2"></i>Detail Barang Masuk - Batch: ${batch}`);
 
-                        $('#detail-body').html(rows);
-                    } else {
-                        $('#detail-body').html('<tr><td colspan="7" class="text-center py-3">Tidak ada data DPB</td></tr>');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    $('#detail-body').html('<tr><td colspan="7" class="text-center py-3 text-danger">Gagal memuat data. Error: ' + error + '</td></tr>');
-                }
-            });
+            // Tampilkan modal
+            const modal = new bootstrap.Modal(document.getElementById('batchDetailModal'));
+            modal.show();
         });
+
+        // Fungsi format tanggal
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID');
+        }
+
+        // Fungsi format tanggal dan waktu
+        function formatDateTime(dateTimeString) {
+            const date = new Date(dateTimeString);
+            return date.toLocaleString('id-ID');
+        }
+
+        // Fungsi format number
+        function numberFormat(number) {
+            return new Intl.NumberFormat('id-ID').format(number);
+        }
     });
 </script>
 </body>

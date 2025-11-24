@@ -15,29 +15,36 @@ class M_adm_dpb extends CI_Model
 
     public function get()
     {
-        $sql = "SELECT * FROM tb_prc_dpb_tf WHERE is_deleted = 0 ORDER BY created_at DESC";
+        $sql = "SELECT * FROM tb_adm_dpb WHERE is_deleted = 0 ORDER BY created_at DESC";
         return $this->db->query($sql);
     }
 
-    public function get_dpb_detail($no_dpb)
+    // METHOD YANG DIPERBAIKI: Ambil detail barang dengan relasi lengkap
+   // METHOD YANG DIPERBAIKI: Ambil detail barang dengan relasi lengkap
+public function get_dpb_detail_with_relations($no_dpb)
+{
+    $sql = "SELECT a.id_prc_dpb, a.no_po, a.jenis_bayar, a.is_deleted, a.id_prc_rb, a.no_dpb, a.jml_beli, a.jml_materi, a.jml_ongkir, a.jml_ppn, a.jml_disc, 
+        b.id_prc_rh, c.id_prc_ppb, d.id_prc_master_barang, d.no_budget, e.nama_barang, e.id_prc_master_supplier, e.kode_barang, e.spek, e.satuan, 
+        f.id_prc_dpb_tf, f.tgl_dpb, f.id_prc_dpb_tf, g.nama_supplier, h.jml_diterima AS jumlah_diterima 
+        FROM tb_prc_dpb a
+        LEFT JOIN tb_prc_rb b ON a.id_prc_rb = b.id_prc_rb
+        LEFT JOIN tb_prc_rh c ON b.id_prc_rh = c.id_prc_rh
+        LEFT JOIN tb_prc_ppb d ON c.id_prc_ppb = d.id_prc_ppb
+        LEFT JOIN tb_prc_master_barang e ON d.id_prc_master_barang = e.id_prc_master_barang
+        LEFT JOIN tb_prc_dpb_tf f ON f.id_prc_dpb_tf = a.id_prc_dpb_tf
+        LEFT JOIN tb_prc_master_supplier g ON e.id_prc_master_supplier = g.id_prc_master_supplier
+        LEFT JOIN tb_adm_dpb h ON f.id_prc_dpb_tf = h.id_prc_dpb_tf
+        WHERE a.is_deleted = 0 AND a.no_dpb = '$no_dpb'";
+    
+    return $this->db->query($sql)->result_array();
+}
+
+    // METHOD BARU: Cek apakah data ada
+    public function check_dpb_exists($no_dpb)
     {
-        $sql = "SELECT 
-                    a.no_dpb,
-                    a.tgl_dpb,
-                    DATE_FORMAT(a.tgl_dpb, '%d/%m/%Y') as tgl_dpb_formatted,
-                    a.jenis_bayar,
-                    a.no_sjl,
-                    b.kode_material,
-                    b.nama_material,
-                    b.satuan,
-                    b.supplier,
-                    b.jumlah
-                FROM tb_prc_dpb_tf a
-                LEFT JOIN tb_prc_dpb b ON a.no_dpb = b.no_dpb
-                WHERE a.no_dpb = '$no_dpb' AND a.is_deleted = 0
-                ORDER BY b.nama_material ASC";
-        
-        return $this->db->query($sql)->result_array();
+        $sql = "SELECT COUNT(*) as total FROM tb_prc_dpb_tf WHERE no_dpb = '$no_dpb' AND is_deleted = 0";
+        $result = $this->db->query($sql)->row_array();
+        return $result['total'] > 0;
     }
 
     public function get_rb()
@@ -80,8 +87,8 @@ class M_adm_dpb extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO tb_prc_dpb_tf (no_dpb, tgl_dpb, jenis_bayar, no_sjl, prc_admin, created_at, created_by)
-        VALUES ('$data[no_dpb]', '$data[tgl_dpb]', '$data[jenis_bayar]', '$data[no_sjl]', '$id_user', NOW(), '$id_user')
+        INSERT INTO tb_adm_dpb ( tgl_dpb, jml_diterima, no_batch, created_at, created_by)
+        VALUES ('$data[tgl_dpb]', '$data[jml_diterima]',  '$data[no_batch]', NOW(), '$id_user')
         ";
         return $this->db->query($sql);
     }
@@ -91,11 +98,11 @@ class M_adm_dpb extends CI_Model
         return $this->db->insert('tb_prc_dpb', $data);
     }
 
-    public function delete($no_dpb)
+    public function delete($id_adm_dpb)
     {
-       $sql = "UPDATE tb_prc_dpb_tf SET is_deleted = 1 WHERE no_dpb='$no_dpb'";
+       $sql = "UPDATE tb_adm_dpb SET is_deleted = 1 WHERE id_adm_dpb='$id_adm_dpb'";
        $this->db->query($sql);
-       $sql = "UPDATE tb_prc_dpb SET is_deleted = 1 WHERE no_dpb='$no_dpb'";
+       $sql = "UPDATE tb_adm_dpb SET is_deleted = 1 WHERE id_adm_dpb='$id_adm_dpb'";
        return $this->db->query($sql);
     }
 }
