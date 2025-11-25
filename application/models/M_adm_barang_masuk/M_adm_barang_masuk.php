@@ -39,6 +39,7 @@ class M_adm_barang_masuk extends CI_Model
         $this->db->select('
         a.id_adm_dpb,
         a.no_batch,
+        a.jml_diterima,
         a.no_dpb,
         a.created_at,
         b.no_sjl,
@@ -84,6 +85,17 @@ class M_adm_barang_masuk extends CI_Model
         $this->db->order_by('a.created_at', 'DESC');
 
         return $this->db->get();
+    }
+
+    public function add($data)
+    {
+        $insert = $this->db->insert('tb_adm_barang_masuk', $data);
+
+        if ($insert) {
+            return $this->db->insert_id(); // kembalikan ID record baru
+        } else {
+            return false;
+        }
     }
 
 
@@ -230,6 +242,8 @@ class M_adm_barang_masuk extends CI_Model
 
         return $result;
     }
+
+
 
     public function delete($data)
     {

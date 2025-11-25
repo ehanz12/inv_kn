@@ -13,30 +13,73 @@ class M_adm_dpb extends CI_Model
         return $this->session->userdata("id_user");
     }
 
-    public function get()
-    {
-        $sql = "SELECT * FROM tb_adm_dpb WHERE is_deleted = 0 ORDER BY created_at DESC";
-        return $this->db->query($sql);
-    }
+    // public function get()
+    // {
+    //     $sql = "SELECT * FROM tb_adm_dpb WHERE is_deleted = 0 ORDER BY created_at DESC";
+    //     return $this->db->query($sql);
+    // }
 
     // METHOD YANG DIPERBAIKI: Ambil detail barang dengan relasi lengkap
    // METHOD YANG DIPERBAIKI: Ambil detail barang dengan relasi lengkap
-public function get_dpb_detail_with_relations($no_dpb)
-{
-    $sql = "SELECT a.id_prc_dpb, a.no_po, a.jenis_bayar, a.is_deleted, a.id_prc_rb, a.no_dpb, a.jml_beli, a.jml_materi, a.jml_ongkir, a.jml_ppn, a.jml_disc, 
-        b.id_prc_rh, c.id_prc_ppb, d.id_prc_master_barang, d.no_budget, e.nama_barang, e.id_prc_master_supplier, e.kode_barang, e.spek, e.satuan, 
-        f.id_prc_dpb_tf, f.tgl_dpb, f.id_prc_dpb_tf, g.nama_supplier 
-        FROM tb_prc_dpb a
-        LEFT JOIN tb_prc_rb b ON a.id_prc_rb = b.id_prc_rb
-        LEFT JOIN tb_prc_rh c ON b.id_prc_rh = c.id_prc_rh
-        LEFT JOIN tb_prc_ppb d ON c.id_prc_ppb = d.id_prc_ppb
-        LEFT JOIN tb_prc_master_barang e ON d.id_prc_master_barang = e.id_prc_master_barang
-        LEFT JOIN tb_prc_dpb_tf f ON a.no_dpb = a.no_dpb
-        LEFT JOIN tb_prc_master_supplier g ON e.id_prc_master_supplier = g.id_prc_master_supplier
-        WHERE a.is_deleted = 0 AND a.no_dpb = '$no_dpb'";
+// public function get_dpb_detail_with_relations($no_dpb)
+// {
+//     $sql = "SELECT a.id_prc_dpb, a.no_po, a.jenis_bayar, a.is_deleted, a.id_prc_rb, a.no_dpb, a.jml_beli, a.jml_materi, a.jml_ongkir, a.jml_ppn, a.jml_disc, 
+//         b.id_prc_rh, c.id_prc_ppb, d.id_prc_master_barang, d.no_budget, e.nama_barang, e.id_prc_master_supplier, e.kode_barang, e.spek, e.satuan, 
+//         f.id_prc_dpb_tf, f.tgl_dpb, f.id_prc_dpb_tf, g.nama_supplier 
+//         FROM tb_prc_dpb a
+//         LEFT JOIN tb_prc_rb b ON a.id_prc_rb = b.id_prc_rb
+//         LEFT JOIN tb_prc_rh c ON b.id_prc_rh = c.id_prc_rh
+//         LEFT JOIN tb_prc_ppb d ON c.id_prc_ppb = d.id_prc_ppb
+//         LEFT JOIN tb_prc_master_barang e ON d.id_prc_master_barang = e.id_prc_master_barang
+//         LEFT JOIN tb_prc_dpb_tf f ON a.no_dpb = a.no_dpb
+//         LEFT JOIN tb_prc_master_supplier g ON e.id_prc_master_supplier = g.id_prc_master_supplier
+//         WHERE a.is_deleted = 0 AND a.no_dpb = '$no_dpb'";
     
-    return $this->db->query($sql)->result_array();
-}
+//     return $this->db->query($sql)->result_array();
+// }
+
+ public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
+    {
+        $this->db->select('
+        a.*,
+        b.no_sjl,
+        b.tgl_dpb,
+        e.no_budget,
+        f.id_prc_master_barang,
+        f.nama_barang,
+        f.kode_barang,
+        f.spek,
+        f.satuan,
+        g.no_batch,
+        g.jml_diterima
+       
+    ');
+
+        $this->db->from('tb_prc_dpb a');
+        $this->db->join('tb_prc_dpb_tf b', 'a.no_dpb = b.no_dpb', 'left');
+        $this->db->join('tb_prc_rb c', 'a.id_prc_rb = c.id_prc_rb', 'left');
+        $this->db->join('tb_prc_rh d', 'c.id_prc_rh = d.id_prc_rh', 'left');
+        $this->db->join('tb_prc_ppb e', 'd.id_prc_ppb = e.id_prc_ppb', 'left');
+        $this->db->join('tb_prc_master_barang f', 'e.id_prc_master_barang = f.id_prc_master_barang', 'left');
+         $this->db->join('tb_adm_dpb g', 'a.no_dpb = g.no_dpb', 'left');
+        
+
+       
+
+        if (!empty($tgl_mulai)) {
+            $this->db->where('b.tgl_dpb >=', date('Y-m-d', strtotime($tgl_mulai)));
+        }
+
+        if (!empty($tgl_selesai)) {
+            $this->db->where('b.tgl_dpb <=', date('Y-m-d', strtotime($tgl_selesai)));
+        }
+
+        // ORDER BY SEDERHANA
+        $this->db->order_by('a.created_at', 'DESC');
+
+        return $this->db->get();
+    }
+
 
     // METHOD BARU: Cek apakah data ada
     public function check_dpb_exists($no_dpb)
@@ -83,14 +126,12 @@ public function get_dpb_detail_with_relations($no_dpb)
     }
 
     public function add($data)
-    {
-        $id_user = $this->id_user();
-        $sql = "
-        INSERT INTO tb_adm_dpb ( tgl_dpb, jml_diterima, no_dpb, id_user,no_batch, created_at, created_by)
-        VALUES ('$data[tgl_dpb]', '$data[jml_diterima]','$data[no_dpb]','$id_user','$data[no_batch]', NOW(), '$id_user')
-        ";
-        return $this->db->query($sql);
-    }
+{
+    $id_user = $this->id_user();
+    $sql = "INSERT INTO tb_adm_dpb (tgl_dpb, jml_diterima, no_dpb, id_user, no_batch, created_at, created_by)
+            VALUES ('$data[tgl_dpb]', '$data[jml_diterima]', '$data[no_dpb]', '$id_user', '$data[no_batch]', NOW(), '$id_user')";
+    return $this->db->query($sql);
+}
 
     public function add_barang($data)
     {

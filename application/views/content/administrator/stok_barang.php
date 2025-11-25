@@ -76,7 +76,7 @@
                           $jabatan = $this->session->userdata('jabatan');
                           $no = 1;
                           foreach ($result as $k) {
-                            $stok = $k['in'] - $k['out'];
+                            $stok = $k['jml_diterima'] - 0;
                           ?>
                             <tr>
                               <th scope="row"><?= $no++ ?></th>
@@ -84,8 +84,8 @@
                               <td><?= $k['nama_barang'] ?></td>
                               <td><?= $k['spek'] ?></td>
                               <td><?= $k['satuan'] ?></td>
-                              <td><?= $k['in'] ?? 0 ?></td>
-                              <td><?= $k['out'] ?? 0 ?></td>
+                              <td><?= $k['jml_diterima'] ?? 0 ?></td>
+                              <td> 0 </td>
                               <td><?= $stok ?? 0 ?></td>
                             </tr>
                           <?php

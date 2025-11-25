@@ -44,9 +44,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         <div class="btn-group">
                           <a href="<?= base_url() ?>administrator/dpb/adm_dpb" style="width: 40px;" class="btn btn-warning" id="reset" type="button"><i class="feather icon-refresh-ccw"></i></a>
                         </div>
-                        <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add">
-                          <i class="feather icon-plus"></i> Tambah DPB
-                        </button>
                       </div>
                     </div>
                     <br><br>
@@ -56,12 +53,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
                       <table class="table datatable table-bordered table-hover table-striped table-sm">
                         <thead>
                           <tr>
-                            <th>#</th>
-                            <th class="text-center">Jumlah</th>
-                           
+                            <th class="text-center">#</th>
                             <th class="text-center">Tanggal</th>
-                            <th class="text-center">No Batch</th>
-                            <th class="text-center">Status</th>
+                            <th class="text-center">NO Batch</th>
+                            <th class="text-center">Kode Barang</th>
+                            <th class="text-center">Nama Barang</th>
                             <th class="text-center">Aksi</th>
                           </tr>
                         </thead>
@@ -74,16 +70,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
                             $status = $k['is_deleted'] == 1 ? '<span class="badge badge-danger">Dihapus</span>' : '<span class="badge badge-success">Aktif</span>';
                           ?>
                             <tr>
-                              <th scope="row"><?= $no++ ?></th>
-                              <td class="text-center"><?= $k['jml_diterima'] ?></td>
-                              <!-- <td class="text-center"><?= $k['no_dpb'] ?></td> -->
+                              <th scope="row" class="text-center"><?= $no++ ?></th>
+                               <td class="text-center"><?= $k['tgl_dpb'] ?? '-' ?></td>
+                              <td class="text-center"><?= $k['no_batch'] ?></td>  
+                              <td class="text-center"><?= $k['kode_barang'] ?></td>
+                              <td class="text-center"><?= $k['nama_barang'] ?></td>
                               
-                              <td class="text-center"><?= $k['tgl_dpb'] ?? '-' ?></td>
-                              <td class="text-center"><?= $k['no_batch'] ?></td>
-                              <td class="text-center"><?= $status ?></td>
+                              
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" class="btn btn-info btn-sm view-detail" data-toggle="modal" data-target="#detailModal"  title="Lihat Detail">
+                                  <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add">
+                                    <i class="feather icon-plus"></i> 
+                                  </button>
+                                  <button type="button" class="btn btn-info btn-sm view-detail" data-toggle="modal" data-target="#detailModal" title="Lihat Detail">
                                     <i class="feather icon-eye"></i>
                                   </button>
                                   <?php if ($level === "admin" && $k['is_deleted'] == 0) { ?>
@@ -114,78 +113,60 @@ defined('BASEPATH') or exit('No direct script access allowed');
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addModalLabel">Tambah Data DPB</h5>
+        <h5 class="modal-title text-center w-100" id="addModalLabel">Tambah Data DPB</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <form method="post" action="<?= base_url() ?>administrator/adm_dpb/add">
         <div class="modal-body">
-          <div class="row">
-            <!-- No DPB (Dropdown) -->
+          <!-- Header DPB -->
+          <div class="row mb-4">
             <div class="col-md-3">
-              <div class="form-group">
-                <label for="no_dpb">No DPB *</label>
-                <select class="form-control chosen-select" id="no_dpb" name="no_dpb" required>
-                  <option value="" disabled selected hidden> - Pilih No DPB -</option>
-                  <?php foreach ($res_kode as $rk) : ?>
-                    <option value="<?= $rk['no_dpb'] ?>"
-                    data-no_dpb="<?= $rk['no_dpb'] ?>"><?= $rk['no_dpb'] ?></option>
-                  <?php endforeach; ?>
-                </select>
+              <div class="form-group text-center">
+                <label for="tgl_dpb" class="font-weight-bold">Tanggal DPB</label>
+                <input type="text" class="form-control text-center" id="tgl_dpb" name="tgl_dpb" readonly style="background-color: #f8f9fa; font-weight: bold;">
               </div>
             </div>
-
-            <!-- Tanggal (Readonly) -->
-           
-
-            <!-- Jenis Bayar (Readonly) -->
-           
             <div class="col-md-3">
-              <div class="form-group">
-                <label for="tgl_dpb">Tanggal BDP</label>
-                <input type="text" class="form-control" id="tgl_dpb" name="tgl_dpb" readonly>
+              <div class="form-group text-center">
+                <label for="no_dpb" class="font-weight-bold">No DPB</label>
+                <input type="text" class="form-control text-center" id="no_dpb" name="no_dpb" readonly style="background-color: #f8f9fa; font-weight: bold;">
               </div>
             </div>
-                <input type="hidden" class="form-control" id="d-no_dpb" name="no_dpb" readonly>
-                <!-- <input type="hidden" class="form-control" id="no_dpb" name="no_dpb" readonly> -->
-
-
-             <div class="col-md-3">
-              <div class="form-group">
-                <label for="Jumlah">Jumlah</label>
-                <input type="text" class="form-control" id="jumlah" name="jumlah" >
+            <div class="col-md-3">
+              <div class="form-group text-center">
+                <label for="no_sjl" class="font-weight-bold">No Surat Jalan</label>
+                <input type="text" class="form-control text-center" id="no_sjl" name="no_sjl" readonly style="background-color: #f8f9fa;">
               </div>
             </div>
-
-            <!-- No Surat Jalan (Readonly) -->
             <div class="col-md-3">
-              <div class="form-group">
-                <label for="no_sjl">no batch</label>
-                <input type="text" class="form-control" id="no_batch" name="no_batch" >
+              <div class="form-group text-center">
+                <label for="status" class="font-weight-bold">Status</label>
+                <input type="text" class="form-control text-center" value="0" readonly style="background-color: #f8f9fa; font-weight: bold;">
               </div>
             </div>
           </div>
 
-          <!-- Detail Barang -->
+          <!-- Detail Barang Table -->
           <div class="row">
             <div class="col-md-12">
-              <h6 class="mt-3 mb-2">Detail Barang</h6>
               <div class="table-responsive">
-                <table class="table table-bordered table-sm table-hover">
+                <table class="table table-bordered table-sm table-hover" style="font-size: 14px;">
                   <thead class="bg-light-primary">
                     <tr>
-                      <th class="text-center">#</th>
-                      <th>Kode Material</th>
-                      <th>Nama Material</th>
-                      <th class="text-center">Satuan</th>
-                      <th>Supplier</th>
-                     
+                      <th class="text-center align-middle">Kode Barang</th>
+                      <th class="text-center align-middle">Nama Barang</th>
+                      <th class="text-center align-middle">Jenis Bayar</th>
+                      <th class="text-center align-middle">Jumlah PPB</th>
+                      <th class="text-center align-middle">Jumlah DIterima</th>
                     </tr>
                   </thead>
                   <tbody id="detail-barang">
                     <tr>
-                      <td colspan="7" class="text-center text-muted">Pilih No DPB untuk melihat detail barang</td>
+                      <td colspan="5" class="text-center text-muted py-4">
+                        <i class="feather icon-info"></i> Data akan otomatis terisi
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -194,11 +175,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
           </div>
 
           <!-- Input No Batch -->
-          
-        <div class="modal-footer">
+          <div class="row mt-4">
+            <div class="col-md-12">
+              <div class="form-group text-center">
+                <label for="no_batch" class="font-weight-bold">No Batch </label>
+                <input type="text" class="form-control text-center mx-auto" id="no_batch" name="no_batch" placeholder="Masukkan No Batch" required style="border: 2px solid #4361ee; max-width: 300px;">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-          <button type="submit" id="simpan" class="btn btn-primary" onclick="return confirm('Apakah Anda yakin untuk menyimpan data ini? Pastikan semua data sudah benar dan No Batch sudah diisi.')">
-            <i class="feather icon-save"></i> Simpan
+          <button type="submit" id="simpan" class="btn btn-primary">
+            <i class="feather icon-save"></i> Simpan Data
           </button>
         </div>
       </form>
@@ -211,7 +200,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="detailModalLabel">Detail DPB - <span id="modal-title-no-dpb"></span></h5>
+        <h5 class="modal-title text-center w-100" id="detailModalLabel">Detail DPB - <span id="modal-title-no-dpb"></span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -219,45 +208,45 @@ defined('BASEPATH') or exit('No direct script access allowed');
       <div class="modal-body">
         <div class="row">
           <div class="col-md-3">
-            <div class="form-group">
-              <label><strong>No DPB</strong></label>
-              <p id="detail-no-dpb" class="form-control-plaintext">-</p>
+            <div class="form-group text-center">
+              <label class="font-weight-bold">No DPB</label>
+              <p id="detail-no-dpb" class="form-control-plaintext text-center">-</p>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="form-group">
-              <label><strong>Tanggal DPB</strong></label>
-              <p id="detail-tgl-dpb" class="form-control-plaintext">-</p>
+            <div class="form-group text-center">
+              <label class="font-weight-bold">Tanggal DPB</label>
+              <p id="detail-tgl-dpb" class="form-control-plaintext text-center">-</p>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="form-group">
-              <label><strong>Jenis Bayar</strong></label>
-              <p id="detail-jenis-bayar" class="form-control-plaintext">-</p>
+            <div class="form-group text-center">
+              <label class="font-weight-bold">Jenis Bayar</label>
+              <p id="detail-jenis-bayar" class="form-control-plaintext text-center">-</p>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="form-group">
-              <label><strong>No Surat Jalan</strong></label>
-              <p id="detail-no-sjl" class="form-control-plaintext">-</p>
+            <div class="form-group text-center">
+              <label class="font-weight-bold">No Surat Jalan</label>
+              <p id="detail-no-sjl" class="form-control-plaintext text-center">-</p>
             </div>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-12">
-            <h6 class="mt-3 mb-2">Detail Barang</h6>
+            <h6 class="mt-3 mb-2 text-center">Detail Barang</h6>
             <div class="table-responsive">
               <table class="table table-bordered table-sm table-hover">
                 <thead class="bg-light-info">
                   <tr>
-                    <th class="text-center">#</th>
-                    <th>Kode Material</th>
-                    <th>Nama Material</th>
-                    <th class="text-center">Satuan</th>
-                    <th>Supplier</th>
-                    <th class="text-center">Jumlah</th>
-                    <th class="text-center">Spesifikasi</th>
+                    <th class="text-center align-middle">#</th>
+                    <th class="text-center align-middle">Kode Material</th>
+                    <th class="text-center align-middle">Nama Material</th>
+                    <th class="text-center align-middle">Satuan</th>
+                    <th class="text-center align-middle">Supplier</th>
+                    <th class="text-center align-middle">Jumlah</th>
+                    <th class="text-center align-middle">Spesifikasi</th>
                   </tr>
                 </thead>
                 <tbody id="detail-barang-list">
@@ -270,7 +259,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
           </div>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer justify-content-center">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
       </div>
     </div>
@@ -279,18 +268,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 <!-- CSS Tambahan -->
 <style>
-  .chosen-container {
-    width: 100% !important;
-  }
   .table th {
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    color: white;
     font-weight: 600;
+    border: 1px solid #dee2e6;
+  }
+  .table td {
+    border: 1px solid #dee2e6;
+    vertical-align: middle;
   }
   .bg-light-primary {
     background-color: #e3f2fd !important;
   }
   .bg-light-info {
     background-color: #e1f5fe !important;
+  }
+  .form-control[readonly] {
+    background-color: #f8f9fa !important;
   }
   .btn-group .btn {
     margin-right: 2px;
@@ -299,17 +294,38 @@ defined('BASEPATH') or exit('No direct script access allowed');
     width: 1rem;
     height: 1rem;
   }
+  .jumlah-input {
+    width: 120px;
+    text-align: center;
+    border: 1px solid #28a745;
+    background-color: #f8f9fa;
+    font-weight: bold;
+    margin: 0 auto;
+  }
+  .input-tambahan {
+    width: 120px;
+    text-align: center;
+    border: 1px solid #4361ee;
+    margin: 0 auto;
+  }
+  .text-center {
+    text-align: center !important;
+  }
+  .align-middle {
+    vertical-align: middle !important;
+  }
+  .modal-header .modal-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
+  .form-group label {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
 </style>
 
 <script type="text/javascript">
   $(document).ready(function() {
-    // Inisialisasi chosen select
-    $('.chosen-select').chosen({
-      width: "100%",
-      search_contains: true,
-      no_results_text: "Tidak ditemukan data dengan kata kunci:"
-    });
-    
     // Datepicker
     $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
@@ -317,118 +333,99 @@ defined('BASEPATH') or exit('No direct script access allowed');
       language: 'id'
     });
 
-    // Event ketika No DPB dipilih di modal Add
-    $('#no_dpb').on('change', function() {
-      const no_dpb = $(this).val();
-      let selected = $(this).find('option:selected');
-      $('#d-no_dpb').val(selected.data('no_dpb'));
-      if (no_dpb) {
-        // Tampilkan loading
-        $('#detail-barang').html('<tr><td colspan="7" class="text-center"><div class="spinner-border spinner-border-sm text-primary" role="status"></div> Memuat data barang...</td></tr>');
-        
-        // Reset form fields
-        $('#tgl_dpb').val('');
-        $('#jenis_bayar').val('');
-        $('#no_sjl').val('');
-        
-        // Ambil data DPB berdasarkan no_dpb
-        $.ajax({
-          url: "<?= base_url('administrator/adm_dpb/get_dpb_detail') ?>",
-          type: "POST",
-          data: {
-            no_dpb: no_dpb
-          },
-          dataType: "json",
-          success: function(response) {
-            console.log("DPB Detail Response:", response);
+    // Auto load data ketika modal ADD dibuka
+    $('#add').on('show.bs.modal', function() {
+      loadDpbData();
+    });
+
+    // Fungsi untuk memuat data DPB secara otomatis
+    function loadDpbData() {
+      // Tampilkan loading
+      $('#detail-barang').html('<tr><td colspan="5" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary" role="status"></div> Memuat data DPB...</td></tr>');
+      
+      // Reset field
+      $('#tgl_dpb').val('');
+      $('#no_dpb').val('');
+      $('#no_sjl').val('');
+
+      // Ambil data DPB terbaru atau data default
+      $.ajax({
+        url: "<?= base_url('administrator/adm_dpb/get_latest_dpb') ?>",
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+          console.log("DPB Data Response:", response);
+          
+          if (response.success && response.data && response.data.length > 0) {
+            const data = response.data;
             
-            if (response.success) {
-              const data = response.data;
+            // Isi data header dari record pertama
+            const firstRecord = data[0];
+            $('#tgl_dpb').val(firstRecord.tgl_dpb || '-');
+            $('#no_dpb').val(firstRecord.no_dpb || '-');
+            $('#no_sjl').val(firstRecord.no_sjl || '-');
+            
+            // Isi detail barang dengan jumlah autofill dan input tambahan
+            let html = '';
+            
+            $.each(data, function(i, item) {
+              const kodeBarang = item.kode_barang || '-';
+              const namaBarang = item.nama_barang || '-';
+              const jenisBayar = item.jenis_bayar || '-';
+              const jmlBeli = item.jml_beli ? formatNumber(item.jml_beli) : '0';
+             
               
-              if (data && data.length > 0) {
-                // Isi data header
-                $('#tgl_dpb').val(data[0].tgl_dpb|| '-');
-                $('#jenis_bayar').val(data[0].jenis_bayar || '-');
-                $('#no_sjl').val(data[0].no_sjl || '-');
-                
-                // Isi detail barang
-                let html = '';
-                let no = 1;
-                let totalJumlah = 0;
-                
-                $.each(data, function(i, item) {
-                  const kodeBarang = item.kode_barang || '-';
-                  const namaBarang = item.nama_barang || '-';
-                  const satuan = item.satuan || '-';
-                  
-                  const nama_supplier = item.nama_supplier || '-';
-                 
-                  html += `
-                    <tr>
-                      <td class="text-center">${no++}</td>
-                      <td><strong>${kodeBarang}</strong></td>
-                      <td>${namaBarang}</td>
-                      
-                      <td class="text-center">${satuan}</td>
-                      <td>${nama_supplier}</td>
-                     
-                    </tr>
-                  `;
-                });
-                
-                // Tambahkan baris total jika ada data
-                // if (data.length > 0) {
-                //   html += `
-                //     <tr class="table-active font-weight-bold">
-                //       <td colspan="5" class="text-right">Total Jumlah:</td>
-                //       <td class="text-center"><span class="badge badge-success">${formatNumber(totalJumlah)}</span></td>
-                //       <td></td>
-                //     </tr>
-                //   `;
-                // }
-                
-                $('#detail-barang').html(html);
-                
-                // Enable tombol simpan
-                $('#simpan').prop('disabled', false);
-                
-              } else {
-                // Data header ada tapi tidak ada detail barang
-                $('#detail-barang').html('<tr><td colspan="7" class="text-center text-warning"><i class="feather icon-alert-triangle"></i> DPB ditemukan tetapi tidak ada detail barang</td></tr>');
-                $('#tgl_dpb').val('-');
-                $('#jenis_bayar').val('-');
-                $('#no_sjl').val('-');
-                $('#simpan').prop('disabled', true);
-              }
-              
-            } else {
-              // Response success = false
-              $('#detail-barang').html('<tr><td colspan="7" class="text-center text-danger"><i class="feather icon-x-circle"></i> ' + (response.message || 'Gagal memuat data') + '</td></tr>');
-              $('#tgl_dpb').val('-');
-              $('#jenis_bayar').val('-');
-              $('#no_sjl').val('-');
-              $('#simpan').prop('disabled', true);
-            }
-          },
-          error: function(xhr, status, error) {
-            console.error("AJAX Error:", xhr.responseText);
-            $('#detail-barang').html('<tr><td colspan="7" class="text-center text-danger"><i class="feather icon-x-circle"></i> Gagal memuat data. Error: ' + error + '</td></tr>');
+              html += `
+                <tr>
+                  <td class="text-center align-middle"><strong>${kodeBarang}</strong></td>
+                  <td class="text-center align-middle">${namaBarang}</td>
+                  <td class="text-center align-middle">${jenisBayar}</td>
+                  <td class="text-center align-middle">
+                    <input type="text" 
+                           class="form-control form-control-sm jumlah-input" 
+                           name="jumlah_diterima[]" 
+                           value="${jmlBeli}"
+                           readonly>
+                  </td>
+                  <td class="text-center align-middle">
+                    <input type="text" 
+                           class="form-control form-control-sm input-tambahan" 
+                           name="input_tambahan[]" 
+                           placeholder="Input"
+                           style="text-align: center;">
+                  </td>
+                </tr>
+              `;
+            });
+            
+            $('#detail-barang').html(html);
+            
+            // Enable tombol simpan
+            $('#simpan').prop('disabled', false);
+            
+          } else {
+            $('#detail-barang').html('<tr><td colspan="5" class="text-center text-warning py-4"><i class="feather icon-alert-triangle"></i> ' + (response.message || 'Tidak ada data DPB yang tersedia') + '</td></tr>');
             $('#simpan').prop('disabled', true);
           }
-        });
-      } else {
-        // Reset jika no_dpb kosong
-        $('#tgl_dpb').val('');
-        $('#jenis_bayar').val('');
-        $('#no_sjl').val('');
-        $('#detail-barang').html('<tr><td colspan="7" class="text-center text-muted"><i class="feather icon-info"></i> Pilih No DPB untuk melihat detail barang</td></tr>');
-        $('#simpan').prop('disabled', true);
-      }
-    });
+        },
+        error: function(xhr, status, error) {
+          console.error("AJAX Error:", error);
+          $('#detail-barang').html('<tr><td colspan="5" class="text-center text-danger py-4"><i class="feather icon-x-circle"></i> Gagal memuat data DPB</td></tr>');
+          $('#simpan').prop('disabled', true);
+        }
+      });
+    }
 
     // Event untuk modal detail
     $('.view-detail').on('click', function() {
-      const no_dpb = $(this).data('no-dpb');
+      // Cari no_dpb dari baris yang diklik
+      const row = $(this).closest('tr');
+      const no_dpb = row.find('td').eq(2).text().trim() || $(this).data('no-dpb');
+      
+      if (!no_dpb) {
+        alert('No DPB tidak ditemukan');
+        return;
+      }
       
       // Set judul modal
       $('#modal-title-no-dpb').text(no_dpb);
@@ -444,7 +441,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
       
       // Ambil data detail
       $.ajax({
-        url: "<?= base_url('administrator/dpb/adm_dpb/get_dpb_detail') ?>",
+        url: "<?= base_url('administrator/adm_dpb/get_dpb_detail') ?>",
         type: "POST",
         data: {
           no_dpb: no_dpb
@@ -455,7 +452,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             const data = response.data;
             
             // Isi data header
-            $('#detail-tgl-dpb').text(data[0].tgl_dpb_formatted || '-');
+            $('#detail-tgl-dpb').text(data[0].tgl_dpb || '-');
             $('#detail-jenis-bayar').text(data[0].jenis_bayar || '-');
             $('#detail-no-sjl').text(data[0].no_sjl || '-');
             
@@ -469,19 +466,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
               const namaBarang = item.nama_barang || '-';
               const satuan = item.satuan || '-';
               const nama_supplier = item.nama_supplier || '-';
-              const jumlah = parseFloat(item.jumlah) || 0;
+              const jumlah = parseFloat(item.jml_beli) || 0;
               const noBatch = item.no_batch || '-';
               totalJumlah += jumlah;
               
               html += `
                 <tr>
-                  <td class="text-center">${no++}</td>
-                  <td><strong>${kodeBarang}</strong></td>
-                  <td>${namaBarang}</td>
-                  <td class="text-center">${satuan}</td>
-                  <td>${nama_supplier}</td>
-                  <td class="text-center"><span class="badge badge-primary">${formatNumber(jumlah)}</span></td>
-                  <td class="text-center">${noBatch}</td>
+                  <td class="text-center align-middle">${no++}</td>
+                  <td class="text-center align-middle"><strong>${kodeBarang}</strong></td>
+                  <td class="text-center align-middle">${namaBarang}</td>
+                  <td class="text-center align-middle">${satuan}</td>
+                  <td class="text-center align-middle">${nama_supplier}</td>
+                  <td class="text-center align-middle"><span class="badge badge-primary">${formatNumber(jumlah)}</span></td>
+                  <td class="text-center align-middle">${noBatch}</td>
                 </tr>
               `;
             });
@@ -489,7 +486,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             // Tambah baris total
             html += `
               <tr class="table-active font-weight-bold">
-                <td colspan="5" class="text-right">Total Jumlah:</td>
+                <td colspan="5" class="text-center">Total Jumlah:</td>
                 <td class="text-center"><span class="badge badge-success">${formatNumber(totalJumlah)}</span></td>
                 <td></td>
               </tr>
@@ -521,24 +518,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
       }
     });
 
-    // Reset modal ketika ditutup
-    $('#add').on('hidden.bs.modal', function() {
-      $('#no_dpb').val('').trigger('chosen:updated');
-      $('#tgl_dpb').val('');
-      $('#jenis_bayar').val('');
-      $('#no_sjl').val('');
-      $('#detail-barang').html('<tr><td colspan="7" class="text-center text-muted"><i class="feather icon-info"></i> Pilih No DPB untuk melihat detail barang</td></tr>');
-      $('#no_batch').val('');
-      $('#simpan').prop('disabled', true);
-    });
-
     // Format number function
     function formatNumber(num) {
       if (num === null || num === undefined || isNaN(num)) return '0';
       return parseFloat(num).toLocaleString('id-ID');
     }
 
-    // Inisialisasi: disable tombol simpan sampai data dipilih
+    // Inisialisasi: disable tombol simpan sampai data dimuat
     $('#simpan').prop('disabled', true);
   });
 </script>

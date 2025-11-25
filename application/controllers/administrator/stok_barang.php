@@ -9,6 +9,7 @@ class stok_barang extends CI_Controller
         // Pastikan nama model yang diload benar sesuai dengan struktur folder
         $this->load->model('M_purchasing/M_prc_ppb/M_prc_ppb_masterbarang');
         $this->load->model('M_purchasing/M_prc_ppb/M_po_supplier/M_prc_master_supplier');
+        $this->load->model('M_adm_barang_masuk/M_adm_barang_masuk');
         $this->load->library('form_validation'); // Memuat library form_validation untuk validasi input
     }
 
@@ -19,8 +20,8 @@ class stok_barang extends CI_Controller
     $data['res_barang'] = $this->M_prc_ppb_masterbarang->get_master_barang();
 
     // Ambil data barang
-    $data['result'] = $this->M_prc_ppb_masterbarang->get()->result_array();
-    $data['res_supp'] = $this->M_prc_master_supplier->get()->result_array();
+    $data['result'] = $this->M_adm_barang_masuk->get()->result_array();
+    $data['res_supp'] = $this->M_adm_barang_masuk->get()->result_array();
 
     // Misalnya jika Anda mendapatkan nama barang yang dipilih
     $data['name'] = 'Nama Barang yang Terpilih'; // Setel ini sesuai dengan kebutuhan
