@@ -32,72 +32,153 @@ class M_adm_barang_masuk extends CI_Model
     //     FROM tb_adm_dpb a
     //     LEFT JOIN";
     // }
+    public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null) {
+        $sql = "SELECT 
+    x.no_batch,
+    x.jml_diterima,
+    b.tgl_dpb,
+    sb.nama_barang,
+    sb.kode_barang,
+    sb.spek,
+    sb.satuan,
+    h.nama_supplier
+FROM (
+    SELECT 
+        MIN(id_adm_dpb) AS id_adm_dpb,
+        no_batch,
+        MIN(jml_diterima) AS jml_diterima,
+        MIN(no_dpb) AS no_dpb,
+        MIN(created_at) AS created_at
+    FROM tb_adm_dpb
+    WHERE is_deleted = 0 
+      AND no_batch IS NOT NULL
+      AND no_batch != ''
+    GROUP BY no_batch
+) x
+LEFT JOIN tb_prc_dpb_tf b 
+    ON x.no_dpb = b.no_dpb
+LEFT JOIN tb_prc_dpb c 
+    ON x.no_dpb = c.no_dpb
+LEFT JOIN tb_prc_rb d 
+    ON c.id_prc_rb = d.id_prc_rb
+LEFT JOIN tb_prc_rh e 
+    ON d.id_prc_rh = e.id_prc_rh
+LEFT JOIN tb_prc_ppb f 
+    ON e.id_prc_ppb = f.id_prc_ppb
+LEFT JOIN tb_prc_master_barang g 
+    ON f.id_prc_master_barang = g.id_prc_master_barang
+LEFT JOIN tb_prc_master_supplier h 
+    ON g.id_prc_master_supplier = h.id_prc_master_supplier
+LEFT JOIN (
+    SELECT 
+        a.no_batch,
+        MIN(g.nama_barang) AS nama_barang,
+        MIN(g.kode_barang) AS kode_barang,
+        MIN(g.spek) AS spek,
+        MIN(g.satuan) AS satuan
+    FROM tb_adm_dpb a
+    LEFT JOIN tb_prc_dpb c 
+        ON a.no_dpb = c.no_dpb
+    LEFT JOIN tb_prc_rb d 
+        ON c.id_prc_rb = d.id_prc_rb
+    LEFT JOIN tb_prc_rh e 
+        ON d.id_prc_rh = e.id_prc_rh
+    LEFT JOIN tb_prc_ppb f 
+        ON e.id_prc_ppb = f.id_prc_ppb
+    LEFT JOIN tb_prc_master_barang g 
+        ON f.id_prc_master_barang = g.id_prc_master_barang
+    WHERE a.is_deleted = 0
+    GROUP BY a.no_batch
+) sb 
+    ON sb.no_batch = x.no_batch
+ORDER BY x.created_at DESC;
+"; 
+
+return $this->db->query($sql);
+    }
+
 
     // Fungsi utama untuk mendapatkan data barang masuk HANYA yang memiliki no_batch
-    public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
-    {
-        $this->db->select('
-        a.id_adm_dpb,
-        a.no_batch,
-        a.jml_diterima,
-        a.no_dpb,
-        a.created_at,
-        b.no_sjl,
+   public function get2($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
+{
+    // SUBQUERY UTAMA → Ambil hanya 1 baris per batch
+    $sub = "
+        SELECT 
+            MIN(id_adm_dpb) AS id_adm_dpb,
+            no_batch,
+            MIN(jml_diterima) AS jml_diterima,
+            MIN(no_dpb) AS no_dpb,
+            MIN(created_at) AS created_at
+        FROM tb_adm_dpb
+        WHERE is_deleted = 0
+        AND no_batch IS NOT NULL
+        AND no_batch != ''
+        GROUP BY no_batch
+    ";
+
+    // SUBQUERY AMBIL BARANG
+    $sub_barang = "
+        SELECT 
+            a.no_batch,
+            MIN(g.nama_barang) AS nama_barang,
+            MIN(g.kode_barang) AS kode_barang,
+            MIN(g.spek) AS spek,
+            MIN(g.satuan) AS satuan
+        FROM tb_adm_dpb a
+        LEFT JOIN tb_prc_dpb c ON a.no_dpb = c.no_dpb
+        LEFT JOIN tb_prc_rb d ON c.id_prc_rb = d.id_prc_rb
+        LEFT JOIN tb_prc_rh e ON d.id_prc_rh = e.id_prc_rh
+        LEFT JOIN tb_prc_ppb f ON e.id_prc_ppb = f.id_prc_ppb
+        LEFT JOIN tb_prc_master_barang g ON f.id_prc_master_barang = g.id_prc_master_barang
+        WHERE a.is_deleted = 0
+        GROUP BY a.no_batch
+    ";
+
+    $this->db->select("
+        x.no_batch,
+        x.jml_diterima,
         b.tgl_dpb,
-        c.jenis_bayar,
-        f.no_budget,
-        g.nama_barang,
-        g.kode_barang,
-        g.spek,
-        g.satuan,
+        sb.nama_barang,
+        sb.kode_barang,
+        sb.spek,
+        sb.satuan,
         h.nama_supplier
-    ');
+    ");
 
-        $this->db->from('tb_adm_dpb a');
+    // FIX: jangan pakai (subquery) lagi
+    $this->db->from("$sub x", null, false); 
 
-        // FIX COLLATION JOIN
-        $this->db->join(
-            'tb_prc_dpb_tf b',
-            'a.no_dpb COLLATE utf8mb4_general_ci = b.no_dpb COLLATE utf8mb4_general_ci',
-            'left',
-            false
-        );
+    // JOIN utama
+    $this->db->join('tb_prc_dpb_tf b', 'x.no_dpb = b.no_dpb', 'left');
+    $this->db->join('tb_prc_dpb c', 'x.no_dpb = c.no_dpb', 'left');
+    $this->db->join('tb_prc_rb d', 'c.id_prc_rb = d.id_prc_rb', 'left');
+    $this->db->join('tb_prc_rh e', 'd.id_prc_rh = e.id_prc_rh', 'left');
+    $this->db->join('tb_prc_ppb f', 'e.id_prc_ppb = f.id_prc_ppb', 'left');
 
-        $this->db->join(
-            'tb_prc_dpb c',
-            'a.no_dpb COLLATE utf8mb4_general_ci = c.no_dpb COLLATE utf8mb4_general_ci',
-            'left',
-            false
-        );
+    $this->db->join('tb_prc_master_barang g', 'f.id_prc_master_barang = g.id_prc_master_barang', 'left');
+    $this->db->join('tb_prc_master_supplier h', 'g.id_prc_master_supplier = h.id_prc_master_supplier', 'left');
 
-        $this->db->join('tb_prc_rb d', 'c.id_prc_rb = d.id_prc_rb', 'left');
-        $this->db->join('tb_prc_rh e', 'd.id_prc_rh = e.id_prc_rh', 'left');
-        $this->db->join('tb_prc_ppb f', 'e.id_prc_ppb = f.id_prc_ppb', 'left');
-        $this->db->join('tb_prc_master_barang g', 'f.id_prc_master_barang = g.id_prc_master_barang', 'left');
-        $this->db->join('tb_prc_master_supplier h', 'g.id_prc_master_supplier = h.id_prc_master_supplier', 'left');
+    // JOIN barang unik
+    $this->db->join("($sub_barang) sb", "sb.no_batch = x.no_batch", "left");
 
-        // FILTER
-        $this->db->where('a.is_deleted', 0);
-        $this->db->where('b.is_deleted', 0);
-        $this->db->where('a.no_batch IS NOT NULL');
-        $this->db->where('a.no_batch !=', '');
-
-        if (!empty($no_dpb)) {
-            $this->db->like('b.no_dpb', $no_dpb);
-        }
-
-        if (!empty($tgl_mulai)) {
-            $this->db->where('b.tgl_dpb >=', date('Y-m-d', strtotime($tgl_mulai)));
-        }
-
-        if (!empty($tgl_selesai)) {
-            $this->db->where('b.tgl_dpb <=', date('Y-m-d', strtotime($tgl_selesai)));
-        }
-
-        $this->db->order_by('a.created_at', 'DESC');
-
-        return $this->db->get();
+    // FILTER
+    if (!empty($tgl_mulai)) {
+        $this->db->where('b.tgl_dpb >=', date('Y-m-d', strtotime($tgl_mulai)));
     }
+
+    if (!empty($tgl_selesai)) {
+        $this->db->where('b.tgl_dpb <=', date('Y-m-d', strtotime($tgl_selesai)));
+    }
+
+    if (!empty($no_dpb)) {
+        $this->db->like('b.no_dpb', $no_dpb);
+    }
+
+    $this->db->order_by('x.created_at', 'DESC');
+
+    return $this->db->get();
+}
+
 
     public function add($data)
     {

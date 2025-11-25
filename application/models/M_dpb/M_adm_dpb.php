@@ -38,9 +38,19 @@ class M_adm_dpb extends CI_Model
 //     return $this->db->query($sql)->result_array();
 // }
 
- public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
-    {
-        $this->db->select('
+public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
+{
+    // SUBQUERY HILANGKAN DUPLIKAT TB_ADM_DPB
+    $sub_adm = "
+        SELECT 
+            no_dpb,
+            MIN(no_batch) AS no_batch,
+            SUM(jml_diterima) AS jml_diterima
+        FROM tb_adm_dpb
+        GROUP BY no_dpb
+    ";
+
+    $this->db->select('
         a.*,
         b.no_sjl,
         b.tgl_dpb,
@@ -52,33 +62,32 @@ class M_adm_dpb extends CI_Model
         f.satuan,
         g.no_batch,
         g.jml_diterima
-       
     ');
 
-        $this->db->from('tb_prc_dpb a');
-        $this->db->join('tb_prc_dpb_tf b', 'a.no_dpb = b.no_dpb', 'left');
-        $this->db->join('tb_prc_rb c', 'a.id_prc_rb = c.id_prc_rb', 'left');
-        $this->db->join('tb_prc_rh d', 'c.id_prc_rh = d.id_prc_rh', 'left');
-        $this->db->join('tb_prc_ppb e', 'd.id_prc_ppb = e.id_prc_ppb', 'left');
-        $this->db->join('tb_prc_master_barang f', 'e.id_prc_master_barang = f.id_prc_master_barang', 'left');
-         $this->db->join('tb_adm_dpb g', 'a.no_dpb = g.no_dpb', 'left');
-        
+    $this->db->from('tb_prc_dpb a');
+    $this->db->join('tb_prc_dpb_tf b', 'a.no_dpb = b.no_dpb', 'left');
+    $this->db->join('tb_prc_rb c', 'a.id_prc_rb = c.id_prc_rb', 'left');
+    $this->db->join('tb_prc_rh d', 'c.id_prc_rh = d.id_prc_rh', 'left');
+    $this->db->join('tb_prc_ppb e', 'd.id_prc_ppb = e.id_prc_ppb', 'left');
+    $this->db->join('tb_prc_master_barang f', 'e.id_prc_master_barang = f.id_prc_master_barang', 'left');
 
-       
+    // JOIN SUBQUERY TANPA KODE BARANG
+    $this->db->join("($sub_adm) g", "g.no_dpb = a.no_dpb", "left");
 
-        if (!empty($tgl_mulai)) {
-            $this->db->where('b.tgl_dpb >=', date('Y-m-d', strtotime($tgl_mulai)));
-        }
-
-        if (!empty($tgl_selesai)) {
-            $this->db->where('b.tgl_dpb <=', date('Y-m-d', strtotime($tgl_selesai)));
-        }
-
-        // ORDER BY SEDERHANA
-        $this->db->order_by('a.created_at', 'DESC');
-
-        return $this->db->get();
+    if (!empty($tgl_mulai)) {
+        $this->db->where('b.tgl_dpb >=', date('Y-m-d', strtotime($tgl_mulai)));
     }
+
+    if (!empty($tgl_selesai)) {
+        $this->db->where('b.tgl_dpb <=', date('Y-m-d', strtotime($tgl_selesai)));
+    }
+
+    $this->db->order_by('a.created_at', 'DESC');
+
+    return $this->db->get();
+}
+
+
 
 
     // METHOD BARU: Cek apakah data ada

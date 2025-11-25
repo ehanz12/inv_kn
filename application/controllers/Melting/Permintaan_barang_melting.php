@@ -13,6 +13,7 @@ class Permintaan_barang_melting extends CI_Controller
         $this->load->model('M_gudang_bahanbaku/M_barang_masuk');
         $this->load->model('M_users/M_users');
         $this->load->model('M_lab/M_pemeriksaan_bahan');
+        $this->load->model("M_adm_barang_masuk/M_adm_barang_masuk");
     }
     private function convertDate($date)
     {
@@ -24,14 +25,14 @@ class Permintaan_barang_melting extends CI_Controller
         $data['result'] = $this->M_permintaan_barang_melting->get1()->result_array();
         $data['user'] = $this->M_users->get()->result_array();
         $data['no_urut'] = $this->M_permintaan_barang_melting->generate_no_urut();
-        $data['bm'] = $this->M_barang_masuk->get()->result_array(); {
-            // for ($i = 0; $i < count($data['bm']); $i++) {
-            //     $d['no_batch'] = $data['bm'][$i]['no_batch'];
-            //     $jml_permintaan_barang = $this->M_permintaan_barang_gudang->jml_permintaan_barang($d)->row_array();
-            //     $stok = $data['bm'][$i]['qty'] - $jml_permintaan_barang['tot_permintaan_barang'];
-            //     $data['bm'][$i]['stok'] = $stok;
-            // }
-        }
+        // $data['bm'] = $this->M_adm_barang_masuk->get()->result_array(); {
+        //     // for ($i = 0; $i < count($data['bm']); $i++) {
+        //     //     $d['no_batch'] = $data['bm'][$i]['no_batch'];
+        //     //     $jml_permintaan_barang = $this->M_permintaan_barang_gudang->jml_permintaan_barang($d)->row_array();
+        //     //     $stok = $data['bm'][$i]['qty'] - $jml_permintaan_barang['tot_permintaan_barang'];
+        //     //     $data['bm'][$i]['stok'] = $stok;
+        //     // }
+        // }
 
         $this->template->load('template', 'content/melting/permintaan_barang_melting/permintaan_barang_melting_data', $data);
         // print_r($data['bm']);
