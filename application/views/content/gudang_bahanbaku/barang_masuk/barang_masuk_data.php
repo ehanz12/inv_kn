@@ -33,9 +33,7 @@
                     <h5>Data Barang Masuk <b>(Approval)</b></h5>
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add">
-                      <i class="feather icon-plus"></i>Tambah Data
-                    </button>
+                   
                   </div>
                   <div class="card-block table-border-style">
                     <div class="table-responsive">
@@ -47,8 +45,8 @@
                             <th>No. Po</th>
                             <th>No Batch</th>
                             <th>Nama Barang</th>
-                            <th class="text-right">Qty</th>
-                            <th class="text-right">Barang Keluar</th>
+                            <th class="text-right">In</th>
+                            <th class="text-right">Out</th>
                             <th class="text-right">Stok</th>
                             <th class="text-right">Details</th>
                             <th class="text-center">Aksi</th>

@@ -32,7 +32,8 @@ class M_adm_barang_masuk extends CI_Model
     //     FROM tb_adm_dpb a
     //     LEFT JOIN";
     // }
-    public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null) {
+    public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
+    {
         $sql = "SELECT 
     x.no_batch,
     x.jml_diterima,
@@ -92,17 +93,17 @@ LEFT JOIN (
 ) sb 
     ON sb.no_batch = x.no_batch
 ORDER BY x.created_at DESC;
-"; 
+";
 
-return $this->db->query($sql);
+        return $this->db->query($sql);
     }
 
 
     // Fungsi utama untuk mendapatkan data barang masuk HANYA yang memiliki no_batch
-   public function get2($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
-{
-    // SUBQUERY UTAMA → Ambil hanya 1 baris per batch
-    $sub = "
+    public function get2($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
+    {
+        // SUBQUERY UTAMA → Ambil hanya 1 baris per batch
+        $sub = "
         SELECT 
             MIN(id_adm_dpb) AS id_adm_dpb,
             no_batch,
@@ -116,8 +117,8 @@ return $this->db->query($sql);
         GROUP BY no_batch
     ";
 
-    // SUBQUERY AMBIL BARANG
-    $sub_barang = "
+        // SUBQUERY AMBIL BARANG
+        $sub_barang = "
         SELECT 
             a.no_batch,
             MIN(g.nama_barang) AS nama_barang,
@@ -134,7 +135,7 @@ return $this->db->query($sql);
         GROUP BY a.no_batch
     ";
 
-    $this->db->select("
+        $this->db->select("
         x.no_batch,
         x.jml_diterima,
         b.tgl_dpb,
@@ -145,39 +146,39 @@ return $this->db->query($sql);
         h.nama_supplier
     ");
 
-    // FIX: jangan pakai (subquery) lagi
-    $this->db->from("$sub x", null, false); 
+        // FIX: jangan pakai (subquery) lagi
+        $this->db->from("$sub x", null, false);
 
-    // JOIN utama
-    $this->db->join('tb_prc_dpb_tf b', 'x.no_dpb = b.no_dpb', 'left');
-    $this->db->join('tb_prc_dpb c', 'x.no_dpb = c.no_dpb', 'left');
-    $this->db->join('tb_prc_rb d', 'c.id_prc_rb = d.id_prc_rb', 'left');
-    $this->db->join('tb_prc_rh e', 'd.id_prc_rh = e.id_prc_rh', 'left');
-    $this->db->join('tb_prc_ppb f', 'e.id_prc_ppb = f.id_prc_ppb', 'left');
+        // JOIN utama
+        $this->db->join('tb_prc_dpb_tf b', 'x.no_dpb = b.no_dpb', 'left');
+        $this->db->join('tb_prc_dpb c', 'x.no_dpb = c.no_dpb', 'left');
+        $this->db->join('tb_prc_rb d', 'c.id_prc_rb = d.id_prc_rb', 'left');
+        $this->db->join('tb_prc_rh e', 'd.id_prc_rh = e.id_prc_rh', 'left');
+        $this->db->join('tb_prc_ppb f', 'e.id_prc_ppb = f.id_prc_ppb', 'left');
 
-    $this->db->join('tb_prc_master_barang g', 'f.id_prc_master_barang = g.id_prc_master_barang', 'left');
-    $this->db->join('tb_prc_master_supplier h', 'g.id_prc_master_supplier = h.id_prc_master_supplier', 'left');
+        $this->db->join('tb_prc_master_barang g', 'f.id_prc_master_barang = g.id_prc_master_barang', 'left');
+        $this->db->join('tb_prc_master_supplier h', 'g.id_prc_master_supplier = h.id_prc_master_supplier', 'left');
 
-    // JOIN barang unik
-    $this->db->join("($sub_barang) sb", "sb.no_batch = x.no_batch", "left");
+        // JOIN barang unik
+        $this->db->join("($sub_barang) sb", "sb.no_batch = x.no_batch", "left");
 
-    // FILTER
-    if (!empty($tgl_mulai)) {
-        $this->db->where('b.tgl_dpb >=', date('Y-m-d', strtotime($tgl_mulai)));
+        // FILTER
+        if (!empty($tgl_mulai)) {
+            $this->db->where('b.tgl_dpb >=', date('Y-m-d', strtotime($tgl_mulai)));
+        }
+
+        if (!empty($tgl_selesai)) {
+            $this->db->where('b.tgl_dpb <=', date('Y-m-d', strtotime($tgl_selesai)));
+        }
+
+        if (!empty($no_dpb)) {
+            $this->db->like('b.no_dpb', $no_dpb);
+        }
+
+        $this->db->order_by('x.created_at', 'DESC');
+
+        return $this->db->get();
     }
-
-    if (!empty($tgl_selesai)) {
-        $this->db->where('b.tgl_dpb <=', date('Y-m-d', strtotime($tgl_selesai)));
-    }
-
-    if (!empty($no_dpb)) {
-        $this->db->like('b.no_dpb', $no_dpb);
-    }
-
-    $this->db->order_by('x.created_at', 'DESC');
-
-    return $this->db->get();
-}
 
 
     public function add($data)
@@ -336,6 +337,11 @@ return $this->db->query($sql);
         return $result;
     }
 
+    public function get_by_kode_ts($kode_ts) {
+        $sql = "
+        
+        ";
+    }
 
 
     public function delete($data)
