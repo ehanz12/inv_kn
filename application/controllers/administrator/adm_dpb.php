@@ -17,7 +17,7 @@ class adm_dpb extends CI_Controller
         $tgl = $this->input->get('date_from');
         $tgl2 = $this->input->get('date_until');
         $data['result'] = $this->M_adm_dpb->get()->result_array();
-        echo json_encode($data['result']);
+        // echo json_encode($data['result']);
         $data['res_rb'] = $this->M_adm_dpb->get_rb()->result_array();
         $data['res_kode'] = $this->M_prc_dpb->get()->result_array();
         $data['generate_no_dpb'] = $this->M_adm_dpb->generate_no_dpb();
@@ -110,54 +110,92 @@ public function get_dpb_by_item()
 
     
 
- public function add()
+//  public function add()
+// {
+//     $no_dpb        = $this->input->post('no_dpb', TRUE);
+//     $tgl_bm        = $this->input->post('tgl_dpb', TRUE);
+//     $no_batch      = $this->input->post('no_batch', TRUE);
+//     $inputTambahan = $this->input->post('jumlah_diterima', TRUE); // FIX DI SINI
+//     $id_user       = $this->session->userdata('id_user');
+
+//     if (empty($no_dpb) || empty($tgl_bm) || empty($inputTambahan)) {
+        
+//         die("ERROR: Data input wajib diisi");
+//     }
+
+//     // --- FIX: get DPB by no_dpb ---
+//     $dpb = $this->M_adm_dpb->get($no_dpb)->row_array();
+
+//     if (empty($dpb)) {
+//         die("ERROR: DPB tidak ditemukan");
+//     }
+
+//     $id_prc_master_barang = $dpb['id_prc_master_barang'];
+//     $id_prc_dpb           = $dpb['id_prc_dpb'];
+//     $no_dpb               = $dpb['no_dpb'];
+
+//     foreach ($inputTambahan as $value) {
+
+//         $data_bm = [
+//             'id_prc_master_barang' => $id_prc_master_barang,
+//             'id_prc_dpb'           => $id_prc_dpb,
+//             'no_dpb'               => $no_dpb,
+//             'tgl_bm'               => $tgl_bm,
+//             'no_batch'             => $no_batch,
+//             'jml_bm'               => $value, // Kolom yang benar
+//             'id_user'              => $id_user,
+//             'created_at'           => date('Y-m-d H:i:s'),
+//             'created_by'           => $id_user,
+//             'is_deleted'           => 0
+//         ];
+
+//         $res = $this->M_adm_barang_masuk->add($data_bm);
+
+//         if (!$res) {
+//             print_r($this->db->error());
+//             die;
+//         }
+//     }
+
+//     redirect('administrator/adm_dpb?alert=success&msg=Berhasil menambahkan Data DPB');
+// }
+
+public function add()
 {
-    $no_dpb        = $this->input->post('no_dpb', TRUE);
-    $tgl_bm        = $this->input->post('tgl_dpb', TRUE);
-    $no_batch      = $this->input->post('no_batch', TRUE);
-    $inputTambahan = $this->input->post('jumlah_diterima', TRUE); // FIX DI SINI
-    $id_user       = $this->session->userdata('id_user');
+    $data['no_dpb']     = $this->input->post('no_dpb', TRUE);
+    $data['tgl_bm']     = $this->input->post('tgl_dpb', TRUE);
+    $data['no_batch']   = $this->input->post('no_batch', TRUE);
+    $data['jumlah']     = $this->input->post('jumlah_diterima', TRUE);
+    $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
+    $data['id_prc_dpb'] = $this->input->post('id_prc_dpb', TRUE);
+    // ambil data dpb by no_dpb
 
-    if (empty($no_dpb) || empty($tgl_bm) || empty($inputTambahan)) {
-        die("ERROR: Data input wajib diisi");
+        
+
+    // siapkan data untuk insert
+    $insert = [
+        'id_prc_master_barang' => $data['id_prc_master_barang'],
+        'id_prc_dpb'           => $data['id_prc_dpb'],
+        'no_dpb'               => $data['no_dpb'],
+        'tgl_bm'               => $data['tgl_bm'],
+        'no_batch'             => $data['no_batch'],
+        'jml_bm'               => $data['jumlah'],
+        'created_at'           => date('Y-m-d H:i:s'),
+        'created_by'           => $this->session->userdata('id_user'),
+        'is_deleted'           => 0
+    ];
+
+    // insert data
+    $res = $this->M_adm_barang_masuk->add($insert);
+
+    if ($res) {
+        header('location:' . base_url('administrator/adm_dpb') . '?alert=success&msg=Berhasil menambah data barang masuk');
+    } else {
+        header('location:' . base_url('administrator/adm_dpb') . '?alert=error&msg=Gagal menambah data');
     }
-
-    // --- FIX: get DPB by no_dpb ---
-    $dpb = $this->M_adm_dpb->get($no_dpb)->row_array();
-
-    if (empty($dpb)) {
-        die("ERROR: DPB tidak ditemukan");
-    }
-
-    $id_prc_master_barang = $dpb['id_prc_master_barang'];
-    $id_prc_dpb           = $dpb['id_prc_dpb'];
-    $no_dpb               = $dpb['no_dpb'];
-
-    foreach ($inputTambahan as $value) {
-
-        $data_bm = [
-            'id_prc_master_barang' => $id_prc_master_barang,
-            'id_prc_dpb'           => $id_prc_dpb,
-            'no_dpb'               => $no_dpb,
-            'tgl_bm'               => $tgl_bm,
-            'no_batch'             => $no_batch,
-            'jml_bm'               => $value, // Kolom yang benar
-            'id_user'              => $id_user,
-            'created_at'           => date('Y-m-d H:i:s'),
-            'created_by'           => $id_user,
-            'is_deleted'           => 0
-        ];
-
-        $res = $this->M_adm_barang_masuk->add($data_bm);
-
-        if (!$res) {
-            print_r($this->db->error());
-            die;
-        }
-    }
-
-    redirect('administrator/adm_dpb?alert=success&msg=Berhasil menambahkan Data DPB');
 }
+
+
 
 
     public function delete($id_adm_dpb)

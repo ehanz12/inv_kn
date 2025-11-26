@@ -377,9 +377,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 const namaBarang = item.nama_barang || '-';
                 const jenisBayar = item.jenis_bayar || '-';
                 const jmlBeli = item.jml_beli ? item.jml_beli : '0';
+                const id_prc_master_barang = item.id_prc_master_barang;
+                const id_prc_dpb = item.id_prc_dpb;
                 
                 html += `
                   <tr>
+                    <input type="hidden" 
+                             name="id_prc_master_barang" 
+                             value="${id_prc_master_barang}"
+                             readonly>
+                    <input type="hidden" 
+                             name="id_prc_dpb" 
+                             value="${id_prc_dpb}"
+                             readonly>
                     <td class="text-center align-middle"><strong>${kodeBarang}</strong></td>
                     <td class="text-center align-middle">${namaBarang}</td>
                     <td class="text-center align-middle">${jenisBayar}</td>
@@ -393,7 +403,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <td class="text-center align-middle">
                       <input type="text" 
                              class="form-control form-control-sm input-tambahan" 
-                             name="jumlah_diterima[]" 
+                             name="jumlah_diterima" 
                              placeholder="Input"
                              style="text-align: center;"
                              required>

@@ -40,7 +40,6 @@ class M_adm_dpb extends CI_Model
 
 public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
 {
-    // SUBQUERY HILANGKAN DUPLIKAT TB_ADM_DPB
     $sub_adm = "
         SELECT 
             no_dpb,
@@ -70,11 +69,11 @@ public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
     $this->db->join('tb_prc_rh d', 'c.id_prc_rh = d.id_prc_rh', 'left');
     $this->db->join('tb_prc_ppb e', 'd.id_prc_ppb = e.id_prc_ppb', 'left');
     $this->db->join('tb_prc_master_barang f', 'e.id_prc_master_barang = f.id_prc_master_barang', 'left');
-
-    // JOIN SUBQUERY TANPA KODE BARANG
     $this->db->join("($sub_adm) g", "g.no_dpb = a.no_dpb", "left");
 
-
+    if (!empty($no_dpb)) {
+        $this->db->where('a.no_dpb', $no_dpb);
+    }
 
     if (!empty($tgl_mulai)) {
         $this->db->where('b.tgl_bm >=', date('Y-m-d', strtotime($tgl_mulai)));
@@ -88,6 +87,7 @@ public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
 
     return $this->db->get();
 }
+
 
    public function get_dpb_by_item($kode_barang)
     {
