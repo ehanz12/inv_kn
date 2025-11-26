@@ -170,10 +170,16 @@
           <div class="row">
             <div class="col-6">
               <div class="form-group">
-                <label for="no_batch">No Batch & Nama Barang & Mfg & Exp</label>
+                <label for="no_batch">No Batch & Nama Barang </label>
                 <select class="form-control chosen-select" id="no_batch_add" name="no_batch_add" required>
                   <option disabled selected hidden value="">- Pilih No Batch & Nama Barang -</option>
                 </select>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-group">
+                <label for="stok">Stok </label>
+                <input class="form-control" id="stok" name="stok" placeholder="Stok" readonly>
               </div>
             </div>
             <div class="col-2" style="padding-left: 0px;">
@@ -185,7 +191,7 @@
             <div class="col-1" style="padding-left: 0px;">
               <div class="form-group">
                 <label for="satuan">Satuan</label>
-                <input type="text" class="form-control" id="satuan_add" name="satuan_add" placeholder="Satuan" onkeypress="return hanyaAngka(event)" maxlength="15" autocomplete="off" readonly>
+                <input type="text" class="form-control" id="satuan" name="satuan_add" placeholder="Satuan" onkeypress="return hanyaAngka(event)" maxlength="15" autocomplete="off" readonly>
               </div>
             </div>
             <div class="col-1 text-right">
@@ -200,7 +206,7 @@
                   <th>No Batch</th>
                   <th>Nama Barang</th>
                   <th>Qty</th>
-                  <th class="text-right">Hapus</th>
+                  <th class="text-center">Hapus</th>
                 </tr>
               </thead>
               <tbody id="insert_batch">
@@ -242,11 +248,13 @@
           $.each(data, function(i, item) {
             $('#no_batch_add').append(`
             <option 
-              value="${item.no_budget}"
-              data-kode_barang="${item.kode_barang}"
+              value="${item.no_batch}"
+              data-no_batch="${item.no_batch}"
               data-nama_barang="${item.nama_barang}"
+              data-jml_bm="${item.jml_bm}"
+              data-satuan="${item.satuan}"
             >
-              ${item.no_budget}
+          ${item.nama_barang} | ${item.no_batch}
             </option>
           `);
           });
@@ -254,6 +262,24 @@
           $('#no_batch_add').trigger("chosen:updated");
         }
       });
+
+    })
+
+    
+    $("#no_batch_add").on('change', function() {
+      let selected = $(this).find('option:selected');
+      var no_batch = selected.data('no_batch')
+      var nama_barang = selected.data('nama_barang')
+      var jml_bm = selected.data('jml_bm')
+
+      $('#satuan').val(selected.data('satuan'))
+      $('#stok').val(selected.data('jml_bm'))
+
+    })
+
+    $('#input').on('click', function() {
+        let selected = $('#no_batch_add').find("option:selected");
+        
     })
 
 
@@ -266,6 +292,10 @@
       $(this).find('form')[0].reset();
     });
   })
+
+  $(document).on('click', '.btn-hapus', function() {
+      $(this).closest('tr').remove();
+    });
 </script>
 
 <!-- Modal -->
