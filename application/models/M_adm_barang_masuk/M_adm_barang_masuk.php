@@ -341,8 +341,12 @@ ORDER BY x.created_at DESC;
 
     public function get_by_kode_ts($kode_ts) {
         $sql = "
-        
+            SELECT a.no_budget, a.is_deleted, a.id_prc_master_barang,a.jml_bm, b.nama_barang, b.jenis_barang FROM tb_adm_barang_masuk a 
+            LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
+            WHERE a.is_deleted = 0 AND b.jenis_barang='$kode_ts'
         ";
+
+        return $this->db->query($sql)->result_array();
     }
 
 

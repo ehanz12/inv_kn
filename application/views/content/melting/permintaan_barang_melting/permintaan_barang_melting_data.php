@@ -234,6 +234,8 @@
         },
         dataType: "json",
         success: function(data) {
+
+          console.log(data)
           $('#no_batch_add').empty()
             .append('<option value="" disabled selected hidden>- Pilih No Batch & Nama Barang -</option>');
 
@@ -243,10 +245,6 @@
               value="${item.no_budget}"
               data-kode_barang="${item.kode_barang}"
               data-nama_barang="${item.nama_barang}"
-              data-spek="${item.spek}"
-              data-satuan="${item.satuan}"
-              data-jumlah_rh="${item.jumlah_rh}"
-              data-id_prc_rb="${item.id_prc_rb}"
             >
               ${item.no_budget}
             </option>
