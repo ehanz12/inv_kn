@@ -489,21 +489,21 @@
                                                                           data-batch="<?= htmlspecialchars($k['no_batch'] ?? '') ?>"
                                                                           data-dpb="<?= htmlspecialchars($k['no_dpb'] ?? '') ?>"
                                                                           data-tgl="<?= !empty($k['tgl_dpb']) ? date('Y-m-d', strtotime($k['tgl_dpb'])) : '' ?>"
-                                                                          data-jumlah="<?= $k['jml_diterima'] ?? 0 ?>"
+                                                                          data-jumlah="<?= $k['jml_bm'] ?? 0 ?>"
                                                                           data-jenis-bayar="<?= htmlspecialchars($k['jenis_bayar'] ?? '') ?>"
                                                                           data-surat-jalan="<?= htmlspecialchars($k['no_sjl'] ?? '') ?>"
                                                                           data-admin="<?= htmlspecialchars($k['prc_admin'] ?? '') ?>"
                                                                           data-barang="<?= htmlspecialchars($k['nama_barang'] ?? '') ?>"
                                                                           data-supplier="<?= htmlspecialchars($k['nama_supplier'] ?? '') ?>"
                                                                           data-kode="<?= htmlspecialchars($k['kode_barang'] ?? '') ?>"
-                                                                          data-spek="<?= htmlspecialchars($k['spek'] ?? '') ?>"
+                                                                          data-spek="<?= htmlspecialchars($k['spesifikasi'] ?? '') ?>"
                                                                           data-satuan="<?= htmlspecialchars($k['satuan'] ?? '') ?>"
                                                                           data-created="<?= !empty($k['created_at']) ? date('Y-m-d H:i:s', strtotime($k['created_at'])) : '' ?>">
                                                                         <?= htmlspecialchars($k['no_batch'] ?? '-') ?>
                                                                     </span>
                                                                 </td>
                                                                 <td><?= !empty($k['tgl_dpb']) ? date('d/m/Y', strtotime($k['tgl_dpb'])) : '-' ?></td>
-                                                                <td><?= number_format($k['jml_diterima'] ?? 0, 0, ',', '.') ?></td>
+                                                                <td><?= number_format($k['jml_bm'] ?? 0, 0, ',', '.') ?></td>
                                                                 
                                                                 <td><?= htmlspecialchars($k['nama_barang'] ?? '-') ?></td>
                                                                 <td><?= htmlspecialchars($k['nama_supplier'] ?? '-') ?></td>

@@ -104,7 +104,7 @@ public function get_latest_dpb()
  public function add()
 {
     $no_dpb        = $this->input->post('no_dpb', TRUE);
-    $tgl_dpb       = $this->input->post('tgl_dpb', TRUE);
+    $tgl_bm       = $this->input->post('tgl_bm', TRUE);
     $no_batch      = $this->input->post('no_batch', TRUE);
     $inputTambahan = $this->input->post('input_tambahan', TRUE);
     $id_user       = $this->session->userdata('id_user');
@@ -113,25 +113,19 @@ public function get_latest_dpb()
     $dpb = $this->M_adm_dpb->get($no_dpb)->row_array();
     $id_prc_master_barang = $dpb['id_prc_master_barang'];  
     $id_prc_dpb = $dpb['id_prc_dpb'];   // <-- INI WAJIB ADA
+     $no_dpb = $dpb['no_dpb'];
 
     foreach ($inputTambahan as $value) {
 
         // INSERT ke tb_adm_dpb
-        $data_adm = [
-            'no_dpb'        => $no_dpb,
-            'tgl_dpb'       => $tgl_dpb,
-            'no_batch'      => $no_batch,
-            'jml_diterima'  => $value,
-            'id_user'       => $id_user,
-            'created_by'    => $id_user
-        ];
-        $res1 = $this->M_adm_dpb->add($data_adm);
-
         // INSERT ke tb_adm_barang_masuk
         $data_bm = [
             'id_prc_master_barang' => $id_prc_master_barang, 
             'id_prc_dpb' => $id_prc_dpb,  // sudah aman
+            'no_dpb' => $no_dpb,
             'id_user'    => $id_user,
+            'tgl_bm'       => $tgl_bm,
+            'no_batch'      => $no_batch,
             'jml_bm'     => $value,
             'created_at' => date('Y-m-d'),
             'created_by' => $id_user,

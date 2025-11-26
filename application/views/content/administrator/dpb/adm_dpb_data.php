@@ -66,7 +66,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                           $level = $this->session->userdata('departement');
                           $no = 1;
                           foreach ($result as $k) {
-                            $tgl_dpb = date('d/m/Y', strtotime($k['tgl_dpb']));
+                            $tgl_bm = date('d/m/Y', strtotime($k['tgl_dpb']));
                             $status = $k['is_deleted'] == 1 ? '<span class="badge badge-danger">Dihapus</span>' : '<span class="badge badge-success">Aktif</span>';
                           ?>
                             <tr>
@@ -125,7 +125,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             <div class="col-md-3">
               <div class="form-group text-center">
                 <label for="tgl_dpb" class="font-weight-bold">Tanggal DPB</label>
-                <input type="text" class="form-control text-center" id="tgl_dpb" name="tgl_dpb" readonly style="background-color: #f8f9fa; font-weight: bold;">
+                <input type="text" class="form-control text-center" id="tgl_bm" name="tgl_bm" readonly style="background-color: #f8f9fa; font-weight: bold;">
               </div>
             </div>
             <div class="col-md-3">
@@ -361,7 +361,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             
             // Isi data header dari record pertama
             const firstRecord = data[0];
-            $('#tgl_dpb').val(firstRecord.tgl_dpb || '-');
+            $('#tgl_dpb').val(firstRecord.tgl_bm|| '-');
             $('#no_dpb').val(firstRecord.no_dpb || '-');
             $('#no_sjl').val(firstRecord.no_sjl || '-');
             
@@ -452,7 +452,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             const data = response.data;
             
             // Isi data header
-            $('#detail-tgl-dpb').text(data[0].tgl_dpb || '-');
+            $('#detail-tgl-dpb').text(data[0].tgl_bm || '-');
             $('#detail-jenis-bayar').text(data[0].jenis_bayar || '-');
             $('#detail-no-sjl').text(data[0].no_sjl || '-');
             

@@ -45,8 +45,8 @@ public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
         SELECT 
             no_dpb,
             MIN(no_batch) AS no_batch,
-            SUM(jml_diterima) AS jml_diterima
-        FROM tb_adm_dpb
+            SUM(jml_bm) AS jml_diterima
+        FROM tb_adm_barang_masuk
         GROUP BY no_dpb
     ";
 
@@ -74,12 +74,14 @@ public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
     // JOIN SUBQUERY TANPA KODE BARANG
     $this->db->join("($sub_adm) g", "g.no_dpb = a.no_dpb", "left");
 
+
+
     if (!empty($tgl_mulai)) {
-        $this->db->where('b.tgl_dpb >=', date('Y-m-d', strtotime($tgl_mulai)));
+        $this->db->where('b.tgl_bm >=', date('Y-m-d', strtotime($tgl_mulai)));
     }
 
     if (!empty($tgl_selesai)) {
-        $this->db->where('b.tgl_dpb <=', date('Y-m-d', strtotime($tgl_selesai)));
+        $this->db->where('b.tgl_bm <=', date('Y-m-d', strtotime($tgl_selesai)));
     }
 
     $this->db->order_by('a.created_at', 'DESC');
@@ -137,8 +139,8 @@ public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
     public function add($data)
 {
     $id_user = $this->id_user();
-    $sql = "INSERT INTO tb_adm_dpb (tgl_dpb, jml_diterima, no_dpb, id_user, no_batch, created_at, created_by)
-            VALUES ('$data[tgl_dpb]', '$data[jml_diterima]', '$data[no_dpb]', '$id_user', '$data[no_batch]', NOW(), '$id_user')";
+    $sql = "INSERT INTO tb_adm_barang_masuk (tgl_bm, jml_diterima, no_dpb, id_user, no_batch, created_at, created_by)
+            VALUES ('$data[tgl_bm]', '$data[jml_diterima]', '$data[no_dpb]', '$id_user', '$data[no_batch]', NOW(), '$id_user')";
     return $this->db->query($sql);
 }
 
@@ -149,9 +151,9 @@ public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
 
     public function delete($id_adm_dpb)
     {
-       $sql = "UPDATE tb_adm_dpb SET is_deleted = 1 WHERE id_adm_dpb='$id_adm_dpb'";
+       $sql = "UPDATE tb_adm_barang_masuk SET is_deleted = 1 WHERE id_adm_bm='$id_adm_bm'";
        $this->db->query($sql);
-       $sql = "UPDATE tb_adm_dpb SET is_deleted = 1 WHERE id_adm_dpb='$id_adm_dpb'";
+       $sql = "UPDATE tb_adm_barang_masuk SET is_deleted = 1 WHERE id_adm_bm='$id_adm_bm'";
        return $this->db->query($sql);
     }
 }

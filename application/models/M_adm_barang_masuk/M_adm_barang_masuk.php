@@ -35,9 +35,13 @@ class M_adm_barang_masuk extends CI_Model
     public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
     {
         $sql = "SELECT 
+    x.no_dpb,
     x.no_batch,
-    x.jml_diterima,
+    x.jml_bm,
+    x.created_at,
     b.tgl_dpb,
+    b.no_sjl,
+    c.jenis_bayar,
     sb.nama_barang,
     sb.kode_barang,
     sb.spek,
@@ -45,12 +49,12 @@ class M_adm_barang_masuk extends CI_Model
     h.nama_supplier
 FROM (
     SELECT 
-        MIN(id_adm_dpb) AS id_adm_dpb,
+        MIN(id_adm_bm) AS id_adm_bm,
         no_batch,
-        MIN(jml_diterima) AS jml_diterima,
+        MIN(jml_bm) AS jml_bm,
         MIN(no_dpb) AS no_dpb,
         MIN(created_at) AS created_at
-    FROM tb_adm_dpb
+    FROM tb_adm_barang_masuk
     WHERE is_deleted = 0 
       AND no_batch IS NOT NULL
       AND no_batch != ''
@@ -77,7 +81,7 @@ LEFT JOIN (
         MIN(g.kode_barang) AS kode_barang,
         MIN(g.spek) AS spek,
         MIN(g.satuan) AS satuan
-    FROM tb_adm_dpb a
+    FROM tb_adm_barang_masuk a
     LEFT JOIN tb_prc_dpb c 
         ON a.no_dpb = c.no_dpb
     LEFT JOIN tb_prc_rb d 
@@ -93,7 +97,7 @@ LEFT JOIN (
 ) sb 
     ON sb.no_batch = x.no_batch
 ORDER BY x.created_at DESC;
-";
+"; 
 
         return $this->db->query($sql);
     }
@@ -105,12 +109,12 @@ ORDER BY x.created_at DESC;
         // SUBQUERY UTAMA → Ambil hanya 1 baris per batch
         $sub = "
         SELECT 
-            MIN(id_adm_dpb) AS id_adm_dpb,
+            MIN(id_adm_bm) AS id_adm_bm,
             no_batch,
-            MIN(jml_diterima) AS jml_diterima,
-            MIN(no_dpb) AS no_dpb,
+            MIN(jml_bm) AS jml_bm,
+            MIN(id_prc_master_barang) AS id_prc_master_barang,
             MIN(created_at) AS created_at
-        FROM tb_adm_dpb
+        FROM tb_adm_barang_masuk
         WHERE is_deleted = 0
         AND no_batch IS NOT NULL
         AND no_batch != ''
@@ -125,19 +129,19 @@ ORDER BY x.created_at DESC;
             MIN(g.kode_barang) AS kode_barang,
             MIN(g.spek) AS spek,
             MIN(g.satuan) AS satuan
-        FROM tb_adm_dpb a
+        FROM tb_adm_barang_masuk a
         LEFT JOIN tb_prc_dpb c ON a.no_dpb = c.no_dpb
         LEFT JOIN tb_prc_rb d ON c.id_prc_rb = d.id_prc_rb
         LEFT JOIN tb_prc_rh e ON d.id_prc_rh = e.id_prc_rh
         LEFT JOIN tb_prc_ppb f ON e.id_prc_ppb = f.id_prc_ppb
-        LEFT JOIN tb_prc_master_barang g ON f.id_prc_master_barang = g.id_prc_master_barang
+        LEFT JOIN tb_prc_master_barang g ON a.id_prc_master_barang = g.id_prc_master_barang
         WHERE a.is_deleted = 0
         GROUP BY a.no_batch
     ";
 
         $this->db->select("
         x.no_batch,
-        x.jml_diterima,
+        x.jml_bm,
         b.tgl_dpb,
         sb.nama_barang,
         sb.kode_barang,
@@ -204,12 +208,12 @@ ORDER BY x.created_at DESC;
             a.no_sjl,
             a.prc_admin,
             b.no_batch,
-            b.jml_diterima,
+            b.jml_bm,
             b.created_at,
             b.created_by
         ');
 
-        $this->db->from('tb_adm_dpb b');
+        $this->db->from('tb_adm_barang_masuk b');
         $this->db->join('tb_prc_dpb_tf a', 'a.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
 
         $this->db->where('b.no_batch IS NOT NULL');
@@ -235,13 +239,13 @@ ORDER BY x.created_at DESC;
     public function get_dpb_grouped($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
     {
         $this->db->select('
-            a.no_dpb,
+            b.no_dpb,
             COUNT(*) as total_record,
             MIN(b.tgl_dpb) as tanggal_awal,
             MAX(b.tgl_dpb) as tanggal_akhir
         ');
 
-        $this->db->from('tb_adm_dpb b');
+        $this->db->from('tb_adm_barang_masuk b');
         $this->db->join('tb_prc_dpb_tf a', 'a.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
 
         $this->db->where('b.no_batch IS NOT NULL');
@@ -273,19 +277,19 @@ ORDER BY x.created_at DESC;
     public function data_dpb_detail($filter = [])
     {
         $this->db->select('
-            a.id_prc_dpb_tf,
-            a.no_dpb,
+            
+            b.no_dpb,
             b.tgl_dpb,
             a.no_sjl,
             a.prc_admin,
             b.no_batch,
-            b.jml_diterima,
+            b.jml_bm,
             b.created_at,
             b.created_by
         ');
 
-        $this->db->from('tb_adm_dpb b');
-        $this->db->join('tb_prc_dpb_tf a', 'a.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
+        $this->db->from('tb_adm_barang_masuk b');
+        $this->db->join('tb_prc_dpb_tf a', 'a.no_dpb = b.no_dpb', 'left');
 
         $this->db->where('b.no_batch IS NOT NULL');
         $this->db->where('b.no_batch !=', '');
@@ -314,8 +318,8 @@ ORDER BY x.created_at DESC;
     // Fungsi untuk mendapatkan list No. DPB untuk autocomplete (hanya yang memiliki no_batch)
     public function get_no_dpb_list()
     {
-        $this->db->select('DISTINCT(a.no_dpb), b.tgl_dpb', false);
-        $this->db->from('tb_adm_dpb b');
+        $this->db->select('DISTINCT(a.no_dpb), b.tgl_bm', false);
+        $this->db->from('tb_adm_barang_masuk b');
         $this->db->join('tb_prc_dpb_tf a', 'a.id_prc_dpb_tf = b.id_prc_dpb_tf', 'left');
         $this->db->where('b.no_batch IS NOT NULL');
         $this->db->where('b.no_batch !=', '');
