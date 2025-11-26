@@ -17,7 +17,7 @@ class adm_dpb extends CI_Controller
         $tgl = $this->input->get('date_from');
         $tgl2 = $this->input->get('date_until');
         $data['result'] = $this->M_adm_dpb->get()->result_array();
-
+        echo json_encode($data['result']);
         $data['res_rb'] = $this->M_adm_dpb->get_rb()->result_array();
         $data['res_kode'] = $this->M_prc_dpb->get()->result_array();
         $data['generate_no_dpb'] = $this->M_adm_dpb->generate_no_dpb();
@@ -95,15 +95,10 @@ public function get_latest_dpb()
 public function get_dpb_by_item()
     {
         $kode_barang = $this->input->post('kode_barang');
-        $tgl_dpb = $this->input->post('tgl_dpb');
         
-        $data = $this->M_adm_dpb->get_dpb_by_item($kode_barang, $tgl_dpb);
+        $data = $this->M_adm_dpb->get_dpb_by_item($kode_barang);
         
-        echo json_encode([
-            'success' => !empty($data),
-            'data' => $data,
-            'message' => !empty($data) ? 'Data ditemukan' : 'Data tidak ditemukan'
-        ]);
+        echo json_encode($data);
     }
 
     public function get_by_no_rb()

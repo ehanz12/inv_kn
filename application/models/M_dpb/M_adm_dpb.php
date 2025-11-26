@@ -89,7 +89,7 @@ public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
     return $this->db->get();
 }
 
-   public function get_dpb_by_item($kode_barang, $tgl_dpb)
+   public function get_dpb_by_item($kode_barang)
     {
         $this->db->select('
             a.*,
@@ -113,7 +113,6 @@ public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
         $this->db->join('tb_prc_master_supplier g', 'f.id_prc_master_supplier = g.id_prc_master_supplier', 'left');
         
         $this->db->where('f.kode_barang', $kode_barang);
-        $this->db->where('b.tgl_dpb', $tgl_dpb);
         $this->db->where('a.is_deleted', 0);
         
         $query = $this->db->get();
@@ -180,7 +179,7 @@ public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
         return $this->db->insert('tb_prc_dpb', $data);
     }
 
-    public function delete($id_adm_dpb)
+    public function delete($id_adm_bm)
     {
        $sql = "UPDATE tb_adm_barang_masuk SET is_deleted = 1 WHERE id_adm_bm='$id_adm_bm'";
        $this->db->query($sql);
