@@ -67,8 +67,8 @@
                               <td><?= $k['status'] ?></td>
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#view" 
-                                  data-no_transfer_slip="<?= $k['no_transfer_slip'] ?>" data-l-no_transfer_slip="<?= urlencode($k['no_transfer_slip']) ?>" data-tgl="<?= $tgl ?>" data-nama_operator="<?= $k['nama_operator'] ?>">
+                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#view"
+                                    data-no_transfer_slip="<?= $k['no_transfer_slip'] ?>" data-l-no_transfer_slip="<?= urlencode($k['no_transfer_slip']) ?>" data-tgl="<?= $tgl ?>" data-nama_operator="<?= $k['nama_operator'] ?>">
                                     <i class="feather icon-eye"></i>Detail
                                   </button>
                                 </div>
@@ -76,17 +76,17 @@
                               <td class="text-center">
                                 <?php if ($jabatan === "admin" || $jabatan === "supervisor") { ?>
                                   <?php if ($k['status'] === "Proses") { ?>
-                                  <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" data-no_transfer_slip="<?= $k['no_transfer_slip'] ?>" data-l-no_transfer_slip="<?= urlencode($k['no_transfer_slip']) ?>" data-tgl="<?= $tgl ?>" data-nama_operator="<?= $k['nama_operator'] ?>">
-                                      <i class="feather icon-edit-2"></i>Edit
-                                    </button>
-                                  </div>
-                                  <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a type="button" class="btn btn-danger btn-square text-light btn-sm" href="<?= base_url() ?>melting/permintaan_barang_melting/delete/<?= str_replace('/', '--', $k['no_transfer_slip']) ?>" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
-                                      <i class="feather icon-trash-2"></i>Delete
-                                    </a>
-                                  </div>
-                                <?php } ?>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                      <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" data-no_transfer_slip="<?= $k['no_transfer_slip'] ?>" data-l-no_transfer_slip="<?= urlencode($k['no_transfer_slip']) ?>" data-tgl="<?= $tgl ?>" data-nama_operator="<?= $k['nama_operator'] ?>">
+                                        <i class="feather icon-edit-2"></i>Edit
+                                      </button>
+                                    </div>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                      <a type="button" class="btn btn-danger btn-square text-light btn-sm" href="<?= base_url() ?>melting/permintaan_barang_melting/delete/<?= str_replace('/', '--', $k['no_transfer_slip']) ?>" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
+                                        <i class="feather icon-trash-2"></i>Delete
+                                      </a>
+                                    </div>
+                                  <?php } ?>
                                 <?php } ?>
                               </td>
                             </tr>
@@ -172,7 +172,7 @@
               <div class="form-group">
                 <label for="no_batch">No Batch & Nama Barang & Mfg & Exp</label>
                 <select class="form-control chosen-select" id="no_batch_add" name="no_batch_add" required>
-                  <option disabled selected hidden value="">- Pilih No Batch & Nama Barang  -</option>
+                  <option disabled selected hidden value="">- Pilih No Batch & Nama Barang -</option>
                 </select>
               </div>
             </div>
@@ -224,17 +224,16 @@
       let value = $(this).val()
 
       $('#no_batch_add').html('<option disabled selected hidden>Loading...</option>')
-      .trigger("chosen:updated")
+        .trigger("chosen:updated")
 
       $.ajax({
-        url: "<?= base_url('purchasing/prc_dpb/prc_dpb/get_by_no_rb') ?>",
+        url: "<?= base_url('melting/permintaan_barang_melting/get_by_kode_ts') ?>",
         type: "POST",
         data: {
           kode_ts: value
         },
         dataType: "json",
         success: function(data) {
-
           $('#no_batch_add').empty()
             .append('<option value="" disabled selected hidden>- Pilih No Batch & Nama Barang -</option>');
 
@@ -258,11 +257,11 @@
         }
       });
     })
-    
 
-    
 
-    
+
+
+
 
 
     $('#add').on('hidden.bs.modal', function() {

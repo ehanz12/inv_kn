@@ -64,6 +64,14 @@ class Permintaan_barang_melting extends CI_Controller
             echo "true";
         }
     }
+
+    public function get_by_kode_ts() {
+        $kode_ts = $this->input->post('kode_ts', TRUE);
+        $result = $this->M_adm_barang_masuk->get_by_kode_ts($kode_ts);
+
+        echo json_encode($result);
+    }
+
     public function add()
     {
         $data['no_transfer_slip'] = $this->input->post('no_transfer_slip', TRUE);
@@ -148,7 +156,7 @@ class Permintaan_barang_melting extends CI_Controller
     {
         $data['no_transfer_slip'] = str_replace('--', '/', $no_transfer_slip);
         $respon = $this->M_permintaan_barang_melting->delete($data);
- 
+
         if ($respon) {
             header('location:' . base_url('melting/permintaan_barang_melting') . '?alert=success&msg=Selamat anda berhasil menghapus Permintaan Barang Melting');
         } else {
