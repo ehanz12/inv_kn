@@ -89,6 +89,37 @@ public function get($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
     return $this->db->get();
 }
 
+   public function get_dpb_by_item($kode_barang, $tgl_dpb)
+    {
+        $this->db->select('
+            a.*,
+            b.no_sjl,
+            b.tgl_dpb,
+            e.no_budget,
+            f.id_prc_master_barang,
+            f.nama_barang,
+            f.kode_barang,
+            f.spek,
+            f.satuan,
+            g.nama_supplier
+        ');
+
+        $this->db->from('tb_prc_dpb a');
+        $this->db->join('tb_prc_dpb_tf b', 'a.no_dpb = b.no_dpb', 'left');
+        $this->db->join('tb_prc_rb c', 'a.id_prc_rb = c.id_prc_rb', 'left');
+        $this->db->join('tb_prc_rh d', 'c.id_prc_rh = d.id_prc_rh', 'left');
+        $this->db->join('tb_prc_ppb e', 'd.id_prc_ppb = e.id_prc_ppb', 'left');
+        $this->db->join('tb_prc_master_barang f', 'e.id_prc_master_barang = f.id_prc_master_barang', 'left');
+        $this->db->join('tb_prc_master_supplier g', 'f.id_prc_master_supplier = g.id_prc_master_supplier', 'left');
+        
+        $this->db->where('f.kode_barang', $kode_barang);
+        $this->db->where('b.tgl_dpb', $tgl_dpb);
+        $this->db->where('a.is_deleted', 0);
+        
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
 
 
 

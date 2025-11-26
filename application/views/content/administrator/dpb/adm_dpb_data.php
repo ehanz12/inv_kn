@@ -71,15 +71,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
                           ?>
                             <tr>
                               <th scope="row" class="text-center"><?= $no++ ?></th>
-                               <td class="text-center"><?= $k['tgl_dpb'] ?? '-' ?></td>
+                              <td class="text-center"><?= $k['tgl_dpb'] ?? '-' ?></td>
                               <td class="text-center"><?= $k['no_batch'] ?></td>  
                               <td class="text-center"><?= $k['kode_barang'] ?></td>
                               <td class="text-center"><?= $k['nama_barang'] ?></td>
-                              
-                              
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add">
+                                  <button type="button" class="btn btn-primary float-right btn-sm btn-add-item" 
+                                          data-toggle="modal" data-target="#add"
+                                          data-kode-barang="<?= $k['kode_barang'] ?>"
+                                          data-nama-barang="<?= $k['nama_barang'] ?>"
+                                          data-no-batch="<?= $k['no_batch'] ?>"
+                                          data-tgl-dpb="<?= $k['tgl_dpb'] ?>">
                                     <i class="feather icon-plus"></i> 
                                   </button>
                                   <button type="button" class="btn btn-info btn-sm view-detail" data-toggle="modal" data-target="#detailModal" title="Lihat Detail">
@@ -125,7 +128,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             <div class="col-md-3">
               <div class="form-group text-center">
                 <label for="tgl_dpb" class="font-weight-bold">Tanggal DPB</label>
-                <input type="text" class="form-control text-center" id="tgl_bm" name="tgl_bm" readonly style="background-color: #f8f9fa; font-weight: bold;">
+                <input type="text" class="form-control text-center" id="tgl_dpb" name="tgl_dpb" readonly style="background-color: #f8f9fa; font-weight: bold;">
               </div>
             </div>
             <div class="col-md-3">
@@ -159,13 +162,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
                       <th class="text-center align-middle">Nama Barang</th>
                       <th class="text-center align-middle">Jenis Bayar</th>
                       <th class="text-center align-middle">Jumlah PPB</th>
-                      <th class="text-center align-middle">Jumlah DIterima</th>
+                      <th class="text-center align-middle">Jumlah Diterima</th>
                     </tr>
                   </thead>
                   <tbody id="detail-barang">
                     <tr>
                       <td colspan="5" class="text-center text-muted py-4">
-                        <i class="feather icon-info"></i> Data akan otomatis terisi
+                        <i class="feather icon-info"></i> Pilih item dari tabel untuk menambah data
                       </td>
                     </tr>
                   </tbody>
@@ -178,15 +181,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
           <div class="row mt-4">
             <div class="col-md-12">
               <div class="form-group text-center">
-                <label for="no_batch" class="font-weight-bold">No Batch </label>
+                <label for="no_batch" class="font-weight-bold">No Batch</label>
                 <input type="text" class="form-control text-center mx-auto" id="no_batch" name="no_batch" placeholder="Masukkan No Batch" required style="border: 2px solid #4361ee; max-width: 300px;">
+                <input type="hidden" id="selected_kode_barang" name="kode_barang">
+                <input type="hidden" id="selected_nama_barang" name="nama_barang">
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-          <button type="submit" id="simpan" class="btn btn-primary">
+          <button type="submit" id="simpan" class="btn btn-primary" disabled>
             <i class="feather icon-save"></i> Simpan Data
           </button>
         </div>
@@ -333,13 +338,49 @@ defined('BASEPATH') or exit('No direct script access allowed');
       language: 'id'
     });
 
-    // Auto load data ketika modal ADD dibuka
-    $('#add').on('show.bs.modal', function() {
-      loadDpbData();
+    // Variabel untuk menyimpan data item yang dipilih
+    let selectedItem = null;
+
+    // Event ketika tombol + diklik
+    $('.btn-add-item').on('click', function() {
+      // Simpan data dari item yang diklik
+      selectedItem = {
+        kode_barang: $(this).data('kode-barang'),
+        nama_barang: $(this).data('nama-barang'),
+        no_batch: $(this).data('no-batch'),
+        tgl_dpb: $(this).data('tgl-dpb')
+      };
+      
+      console.log("Item yang dipilih:", selectedItem);
+      
+      // Set nilai no batch di modal
+      $('#no_batch').val(selectedItem.no_batch);
+      $('#selected_kode_barang').val(selectedItem.kode_barang);
+      $('#selected_nama_barang').val(selectedItem.nama_barang);
     });
 
-    // Fungsi untuk memuat data DPB secara otomatis
-    function loadDpbData() {
+    // Auto load data ketika modal ADD dibuka
+    $('#add').on('show.bs.modal', function() {
+      if (selectedItem) {
+        loadDpbData(selectedItem);
+      } else {
+        $('#detail-barang').html('<tr><td colspan="5" class="text-center text-warning py-4"><i class="feather icon-alert-triangle"></i> Pilih item terlebih dahulu dari tabel</td></tr>');
+        $('#simpan').prop('disabled', true);
+      }
+    });
+
+    // Reset selectedItem ketika modal ditutup
+    $('#add').on('hidden.bs.modal', function() {
+      selectedItem = null;
+      $('#detail-barang').html('<tr><td colspan="5" class="text-center text-muted py-4"><i class="feather icon-info"></i> Pilih item dari tabel untuk menambah data</td></tr>');
+      $('#no_batch').val('');
+      $('#selected_kode_barang').val('');
+      $('#selected_nama_barang').val('');
+      $('#simpan').prop('disabled', true);
+    });
+
+    // Fungsi untuk memuat data DPB berdasarkan item yang dipilih
+    function loadDpbData(item) {
       // Tampilkan loading
       $('#detail-barang').html('<tr><td colspan="5" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary" role="status"></div> Memuat data DPB...</td></tr>');
       
@@ -348,10 +389,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
       $('#no_dpb').val('');
       $('#no_sjl').val('');
 
-      // Ambil data DPB terbaru atau data default
+      // Ambil data DPB berdasarkan item yang dipilih
       $.ajax({
-        url: "<?= base_url('administrator/adm_dpb/get_latest_dpb') ?>",
-        type: "GET",
+        url: "<?= base_url('administrator/adm_dpb/get_dpb_by_item') ?>",
+        type: "POST",
+        data: {
+          kode_barang: item.kode_barang,
+          tgl_dpb: item.tgl_dpb
+        },
         dataType: "json",
         success: function(response) {
           console.log("DPB Data Response:", response);
@@ -361,50 +406,56 @@ defined('BASEPATH') or exit('No direct script access allowed');
             
             // Isi data header dari record pertama
             const firstRecord = data[0];
-            $('#tgl_dpb').val(firstRecord.tgl_bm|| '-');
+            $('#tgl_dpb').val(firstRecord.tgl_dpb || '-');
             $('#no_dpb').val(firstRecord.no_dpb || '-');
             $('#no_sjl').val(firstRecord.no_sjl || '-');
             
-            // Isi detail barang dengan jumlah autofill dan input tambahan
+            // Isi detail barang - HANYA item yang dipilih
             let html = '';
             
             $.each(data, function(i, item) {
-              const kodeBarang = item.kode_barang || '-';
-              const namaBarang = item.nama_barang || '-';
-              const jenisBayar = item.jenis_bayar || '-';
-              const jmlBeli = item.jml_beli ? formatNumber(item.jml_beli) : '0';
-             
-              
-              html += `
-                <tr>
-                  <td class="text-center align-middle"><strong>${kodeBarang}</strong></td>
-                  <td class="text-center align-middle">${namaBarang}</td>
-                  <td class="text-center align-middle">${jenisBayar}</td>
-                  <td class="text-center align-middle">
-                    <input type="text" 
-                           class="form-control form-control-sm jumlah-input" 
-                           name="jumlah_diterima[]" 
-                           value="${jmlBeli}"
-                           readonly>
-                  </td>
-                  <td class="text-center align-middle">
-                    <input type="text" 
-                           class="form-control form-control-sm input-tambahan" 
-                           name="input_tambahan[]" 
-                           placeholder="Input"
-                           style="text-align: center;">
-                  </td>
-                </tr>
-              `;
+              // Hanya tampilkan item dengan kode_barang yang sesuai
+              if (item.kode_barang === selectedItem.kode_barang) {
+                const kodeBarang = item.kode_barang || '-';
+                const namaBarang = item.nama_barang || '-';
+                const jenisBayar = item.jenis_bayar || '-';
+                const jmlBeli = item.jml_beli ? formatNumber(item.jml_beli) : '0';
+                
+                html += `
+                  <tr>
+                    <td class="text-center align-middle"><strong>${kodeBarang}</strong></td>
+                    <td class="text-center align-middle">${namaBarang}</td>
+                    <td class="text-center align-middle">${jenisBayar}</td>
+                    <td class="text-center align-middle">
+                      <input type="text" 
+                             class="form-control form-control-sm jumlah-input" 
+                             name="jumlah_ppb[]" 
+                             value="${jmlBeli}"
+                             readonly>
+                    </td>
+                    <td class="text-center align-middle">
+                      <input type="text" 
+                             class="form-control form-control-sm input-tambahan" 
+                             name="jumlah_diterima[]" 
+                             placeholder="Input"
+                             style="text-align: center;"
+                             required>
+                    </td>
+                  </tr>
+                `;
+              }
             });
             
-            $('#detail-barang').html(html);
-            
-            // Enable tombol simpan
-            $('#simpan').prop('disabled', false);
+            if (html === '') {
+              $('#detail-barang').html('<tr><td colspan="5" class="text-center text-warning py-4"><i class="feather icon-alert-triangle"></i> Data tidak ditemukan untuk item ini</td></tr>');
+              $('#simpan').prop('disabled', true);
+            } else {
+              $('#detail-barang').html(html);
+              $('#simpan').prop('disabled', false);
+            }
             
           } else {
-            $('#detail-barang').html('<tr><td colspan="5" class="text-center text-warning py-4"><i class="feather icon-alert-triangle"></i> ' + (response.message || 'Tidak ada data DPB yang tersedia') + '</td></tr>');
+            $('#detail-barang').html('<tr><td colspan="5" class="text-center text-warning py-4"><i class="feather icon-alert-triangle"></i> ' + (response.message || 'Tidak ada data DPB yang tersedia untuk item ini') + '</td></tr>');
             $('#simpan').prop('disabled', true);
           }
         },
@@ -418,20 +469,21 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     // Event untuk modal detail
     $('.view-detail').on('click', function() {
-      // Cari no_dpb dari baris yang diklik
+      // Cari data dari baris yang diklik
       const row = $(this).closest('tr');
-      const no_dpb = row.find('td').eq(2).text().trim() || $(this).data('no-dpb');
+      const kode_barang = row.find('td').eq(2).text().trim();
+      const no_batch = row.find('td').eq(1).text().trim();
       
-      if (!no_dpb) {
-        alert('No DPB tidak ditemukan');
+      if (!kode_barang) {
+        alert('Kode barang tidak ditemukan');
         return;
       }
       
       // Set judul modal
-      $('#modal-title-no-dpb').text(no_dpb);
+      $('#modal-title-no-dpb').text(kode_barang + ' - ' + no_batch);
       
       // Set header data
-      $('#detail-no-dpb').text(no_dpb);
+      $('#detail-no-dpb').text(kode_barang);
       $('#detail-tgl-dpb').text('Loading...');
       $('#detail-jenis-bayar').text('Loading...');
       $('#detail-no-sjl').text('Loading...');
@@ -444,7 +496,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
         url: "<?= base_url('administrator/adm_dpb/get_dpb_detail') ?>",
         type: "POST",
         data: {
-          no_dpb: no_dpb
+          kode_barang: kode_barang,
+          no_batch: no_batch
         },
         dataType: "json",
         success: function(response) {
@@ -452,7 +505,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             const data = response.data;
             
             // Isi data header
-            $('#detail-tgl-dpb').text(data[0].tgl_bm || '-');
+            $('#detail-tgl-dpb').text(data[0].tgl_dpb || '-');
             $('#detail-jenis-bayar').text(data[0].jenis_bayar || '-');
             $('#detail-no-sjl').text(data[0].no_sjl || '-');
             
@@ -494,7 +547,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             
             $('#detail-barang-list').html(html);
           } else {
-            $('#detail-barang-list').html('<tr><td colspan="7" class="text-center text-warning"><i class="feather icon-alert-triangle"></i> ' + (response.message || 'Tidak ada data barang untuk DPB ini') + '</td></tr>');
+            $('#detail-barang-list').html('<tr><td colspan="7" class="text-center text-warning"><i class="feather icon-alert-triangle"></i> ' + (response.message || 'Tidak ada data barang untuk item ini') + '</td></tr>');
             $('#detail-tgl-dpb').text('-');
             $('#detail-jenis-bayar').text('-');
             $('#detail-no-sjl').text('-');
