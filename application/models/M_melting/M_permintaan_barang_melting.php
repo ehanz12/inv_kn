@@ -146,9 +146,10 @@ class M_permintaan_barang_melting extends CI_Model
 
     public function get_by_no_urut($no_urut) {
         $sql = "
-        SELECT a.id_adm_bm, a.no_urut ,a.is_deleted, a.id_prc_master_barang,a.jml_permintaan, b.satuan ,b.nama_barang,c.no_batch FROM tb_mlt_permintaan_barang a 
+        SELECT a.id_mlt_permintaan_barang, a.id_adm_bm, a.no_urut ,a.is_deleted, a.id_prc_master_barang,a.jml_permintaan, b.satuan ,b.nama_barang,b.id_prc_master_supplier,c.no_batch, d.nama_supplier  FROM tb_mlt_permintaan_barang a 
         LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
         LEFT JOIN tb_adm_barang_masuk c ON a.id_adm_bm = c.id_adm_bm
+        LEFT JOIN tb_prc_master_supplier d ON b.id_prc_master_supplier = d.id_prc_master_supplier
         WHERE a.is_deleted = 0 AND a.no_urut='$no_urut'
         ";
 

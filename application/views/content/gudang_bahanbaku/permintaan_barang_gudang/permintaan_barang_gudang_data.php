@@ -81,7 +81,8 @@
                                 <?php if ($jabatan === "supervisor" || $jabatan === "admin") { ?>
                                   <?php if ($k['status'] === "Proses") { ?>
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                      <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#disetujui" data-no_urut="<?= $k['no_urut'] ?>" 
+                                      <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#disetujui" 
+                                      data-no_urut="<?= $k['no_urut'] ?>" 
                                       data-tgl_permintaan="<?= $tgl ?>" 
                                       data-nama_operator="<?= $k['nama_operator'] ?>" 
                                       >
@@ -119,117 +120,7 @@
   </div>
 </section>
 <!-- Modal -->
-<div class="modal fade" id="view" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Detail Permintaan Barang Gudang</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form method="post" action="<?= base_url() ?>">
-        <input type="hidden" id="e_id_barang_masuk" name="id_barang_masuk">
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-no_urut">No Transfer Slip</label>
-                <input type="text" class="form-control" id="v-no_urut" name="no_transfer_slip" placeholder="No Surat Jalan" maxlength="20" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="tgl_permintaan">Tanggal Keluar</label>
-                <input type="text" class="form-control" id="v-tgl_permintaan" name="tgl" placeholder="Tanggal Keluar" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-nama_operator">Nama Operator</label>
-                <input type="text" class="form-control" id="v-nama_operator" name="nama_operator" placeholder="No Surat Jalan" maxlength="20" readonly>
-              </div>
-            </div>
-            
-          <div class="table-responsive">
-            <table class="table table-bordered table-sm">
-              <thead>
-                <tr>
-                  <th>No Batch</th>
-                  <th>Nama Barang</th>
-                  <th>Nama Supplier</th>
-                  <th class="text-center">Qty</th>
-                  <th class="text-center">Mfg.</th>
-                  <th class="text-center">Exp.</th>
-                </tr>
-              </thead>
-              <tbody id="v-detail_barang">
-              </tbody>
-            </table>
-          </div>
 
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('#view').on('show.bs.modal', function(event) {
-      var no_transfer_slip = $(event.relatedTarget).data('no_transfer_slip')
-      var l_no_transfer_slip = $(event.relatedTarget).data('l-no_transfer_slip')
-      var tgl = $(event.relatedTarget).data('tgl')
-      var nama_operator = $(event.relatedTarget).data('nama_operator')
-      // var exp = $(event.relatedTarget).data('exp') 
-      var note = $(event.relatedTarget).data('note')
-
-
-      $(this).find('#v-no_transfer_slip').val(no_transfer_slip)
-      $(this).find('#v-tgl').val(tgl)
-      $(this).find('#v-nama_operator').val(nama_operator)
-      // $(this).find('#v-exp').val(exp)
-      $(this).find('#v-note').val(note)
-      jQuery.ajax({
-        url: "<?= base_url() ?>gudang_bahanbaku/permintaan_barang_gudang/data_permintaan_barang",
-        dataType: 'json',
-        type: "post",
-        data: {
-          no_transfer_slip: no_transfer_slip
-        },
-        success: function(response) {
-          var data = response;
-          // alert(JSON.stringify(data))
-          var $id = $('#v-barang_keluar');
-          $id.empty();
-          // $id.append('<option value=0>- Pilih Prioritas Kegiatan -</option>');
-          for (var i = 0; i < data.length; i++) {
-            var exp = data[i].exp.split("-")[2] + "/" + data[i].exp.split("-")[1] + "/" + data[i].exp.split("-")[0]
-            var mfg = data[i].mfg.split("-")[2] + "/" + data[i].mfg.split("-")[1] + "/" + data[i].mfg.split("-")[0]
-            $id.append(`
-              <tr>
-                <td>` + data[i].no_batch + `</td>
-                <td>` + data[i].nama_barang + `</td>
-                <td>` + data[i].nama_supplier + `</td>
-                <td class="text-right">` + data[i].qty + data[i].satuan + `</td>
-                <td class="text-right">` + mfg + `</td>
-                <td class="text-right">` + exp + `</td>
-              </tr>
-            `);
-          }
-        }
-      });
-      // $(this).find('#e_tgl').datepicker().on('show.bs.modal', function(event) {
-      //   // prevent datepicker from firing bootstrap modal "show.bs.modal"
-      //   event.stopPropagation();
-      // });
-    })
-
-  })
-</script>
 
 <div class="modal fade" id="disetujui" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -240,26 +131,25 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="<?= base_url() ?>gudang_bahanbaku/Permintaan_barang_gudang/disetujui">
-        <input type="hidden" id="e_id_barang_masuk" name="id_barang_masuk">
+      <form method="post" action="<?= base_url() ?>gudang_bahanbaku/permintaan_barang_gudang/disetujui">
         <div class="modal-body">
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
-                <label for="v-no_transfer_slip">No Transfer Slip</label>
-                <input type="text" class="form-control" id="v-no_transfer_slip" name="no_transfer_slip" placeholder="No Surat Jalan" maxlength="20" readonly>
+                <label for="s-no_urut">No Urut</label>
+                <input type="text" class="form-control" id="s-no_urut" name="no_urut" placeholder="No Surat Jalan" maxlength="20" readonly>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label for="tgl">Tanggal Keluar</label>
-                <input type="text" class="form-control" id="v-tgl" name="tgl" placeholder="Tanggal Keluar" readonly>
+                <label for="tgl_permintaan">Tanggal Permintaan</label>
+                <input type="text" class="form-control" id="s-tgl_permintaan" name="tgl_permintaan" placeholder="Tanggal Keluar" readonly>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label for="v-nama_operator">Nama Operator</label>
-                <input type="text" class="form-control" id="v-nama_operator" name="nama_operator" placeholder="No Surat Jalan" maxlength="20" readonly>
+                <label for="s-nama_operator">Nama Operator</label>
+                <input type="text" class="form-control" id="s-nama_operator" name="nama_operator" placeholder="No Surat Jalan" maxlength="20" readonly>
               </div>
             </div>
           </div>
@@ -271,18 +161,16 @@
                   <th>Nama Barang</th>
                   <th>Nama Supplier</th>
                   <th class="text-center">Qty</th>
-                  <th class="text-center">Mfg.</th>
-                  <th class="text-center">Exp.</th>
                 </tr>
               </thead>
-              <tbody id="approv_per">
+              <tbody id="s-insert_table">
               </tbody>
             </table>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="tgl_rilis" class="mt-2 font-weight-bold">Tanggal DiSetujui</label><br>
-              <input type="text" class="form-control datepicker" id="tgl_rilis" name="tgl_rilis" placeholder="Tanggal DiSetujui" autocomplete="off" required>
+              <label for="tgl_setuju" class="mt-2 font-weight-bold">Tanggal DiSetujui</label><br>
+              <input type="text" class="form-control datepicker" id="tgl_setuju" name="tgl_setuju" placeholder="Tanggal DiSetujui" autocomplete="off" required>
             </div>
           </div>
         </div>
@@ -298,60 +186,54 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $('#disetujui').on('show.bs.modal', function(event) {
-      var id_barang_masuk = $(event.relatedTarget).data('id_barang_masuk')
-      var no_transfer_slip = $(event.relatedTarget).data('no_transfer_slip')
-      var l_no_transfer_slip = $(event.relatedTarget).data('l-no_transfer_slip')
-      var tgl = $(event.relatedTarget).data('tgl')
+      var no_urut = $(event.relatedTarget).data('no_urut')
+      var tgl_permintaan = $(event.relatedTarget).data('tgl_permintaan')
       var nama_operator = $(event.relatedTarget).data('nama_operator')
-      // var exp = $(event.relatedTarget).data('exp') 
-      var note = $(event.relatedTarget).data('note')
 
 
-      $(this).find('#e_id_barang_masuk').val(id_barang_masuk)
-      $(this).find('#v-no_transfer_slip').val(no_transfer_slip)
-      $(this).find('#v-tgl').val(tgl)
-      $(this).find('#v-nama_operator').val(nama_operator)
+      $(this).find('#s-no_urut').val(no_urut)
+      $(this).find('#s-tgl_permintaan').val(tgl_permintaan)
+      $(this).find('#s-nama_operator').val(nama_operator)
       // $(this).find('#v-exp').val(exp)
-      $(this).find('#v-note').val(note)
-      $(this).find('#tgl_rilis').datepicker({
+      $(this).find('#tgl_setuju').datepicker({
         autoclose: true,
         format: "dd/mm/yyyy"
       }).on('show.bs.modal', function(event) {
         event.stopPropagation();
       });
-      jQuery.ajax({
-        url: "<?= base_url() ?>gudang_bahanbaku/permintaan_barang_gudang/data_permintaan_barang",
-        dataType: 'json',
-        type: "post",
+      $.ajax({
+        url: "<?= base_url('melting/permintaan_barang_melting/get_by_no_urut') ?>",
+        type: "POST",
         data: {
-          no_transfer_slip: no_transfer_slip
+          no_urut: no_urut
         },
-        success: function(response) {
-          var data = response;
-          // alert(JSON.stringify(data))
-          var $id = $('#approv_per');
-          $id.empty();
-          // $id.append('<option value=0>- Pilih Prioritas Kegiatan -</option>');
-          for (var i = 0; i < data.length; i++) {
-            var exp = data[i].exp.split("-")[2] + "/" + data[i].exp.split("-")[1] + "/" + data[i].exp.split("-")[0]
-            var mfg = data[i].mfg.split("-")[2] + "/" + data[i].mfg.split("-")[1] + "/" + data[i].mfg.split("-")[0]
-            $id.append(`
-              <tr>
-                <td>` + data[i].no_batch + `</td>
-                <td>` + data[i].nama_barang + `</td>
-                <td>` + data[i].nama_supplier + `</td>
-                <td class="text-right">` + data[i].qty + data[i].satuan + `</td>
-                <td class="text-right">` + mfg + `</td>
-                <td class="text-right">` + exp + `</td>
-              </tr>
-            `);
-          }
+        dataType: "json",
+
+        success: function(data) {
+          console.log(data)
+          $('#s-insert_table').empty();
+
+          $.each(data, function(i, item) {
+
+            $("#s-insert_table").append(`
+                        <tr>
+                            <input type="hidden" name="id_prc_master_barang[]" value="${item.id_prc_master_barang}">
+                            <input type="hidden" name="id_adm_bm[]" value="${item.id_adm_bm}">
+                            <input type="hidden" name="jml_masuk[]" value="${item.jml_permintaan}">
+                            <td>${item.no_batch}</td>
+                            <td>${item.nama_barang}</td>
+                            <td>${item.nama_supplier}</td>
+                            <td>${item.jml_permintaan}</td>
+                        </tr>
+                    `)
+          })
+        },
+
+        error: function(xhr, status, error) {
+          console.error("Error:", error);
+          alert("Terjadi kesalahan saat memuat data barang");
         }
-      });
-      // $(this).find('#e_tgl').datepicker().on('show.bs.modal', function(event) {
-      //   // prevent datepicker from firing bootstrap modal "show.bs.modal"
-      //   event.stopPropagation();
-      // });
+      })
     })
 
   })
@@ -367,25 +249,24 @@
         </button>
       </div>
       <form method="post" action="<?= base_url() ?>gudang_bahanbaku/Permintaan_barang_gudang/ditolak">
-        <input type="hidden" id="e_id_barang_masuk" name="id_barang_masuk">
         <div class="modal-body">
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
-                <label for="v-no_transfer_slip">No Transfer Slip</label>
-                <input type="text" class="form-control" id="v-no_transfer_slip" name="no_transfer_slip" placeholder="No Surat Jalan" maxlength="20" readonly>
+                <label for="d-no_urut">No Urut</label>
+                <input type="text" class="form-control" id="d-no_urut" name="no_urut" placeholder="No Surat Jalan" maxlength="20" readonly>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label for="tgl">Tanggal Keluar</label>
-                <input type="text" class="form-control" id="v-tgl" name="tgl" placeholder="Tanggal Keluar" readonly>
+                <label for="tgl_permintaan">Tanggal Permintaan</label>
+                <input type="text" class="form-control" id="d-tgl_permintaan" name="tgl_permintaan" placeholder="Tanggal Keluar" readonly>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label for="v-nama_operator">Nama Operator</label>
-                <input type="text" class="form-control" id="v-nama_operator" name="nama_operator" placeholder="No Surat Jalan" maxlength="20" readonly>
+                <label for="d-nama_operator">Nama Operator</label>
+                <input type="text" class="form-control" id="d-nama_operator" name="nama_operator" placeholder="No Surat Jalan" maxlength="20" readonly>
               </div>
             </div>
           </div>
@@ -397,18 +278,16 @@
                   <th>Nama Barang</th>
                   <th>Nama Supplier</th>
                   <th class="text-center">Qty</th>
-                  <th class="text-center">Mfg.</th>
-                  <th class="text-center">Exp.</th>
                 </tr>
               </thead>
-              <tbody id="reject_per">
+              <tbody id="d-insert_table">
               </tbody>
             </table>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="tgl_rilis" class="mt-2 font-weight-bold">Tanggal Tidak DiSetujui</label><br>
-              <input type="text" class="form-control datepicker" id="tgl_reject" name="tgl_reject" placeholder="Tanggal Tidak DiSetujui" autocomplete="off" required>
+              <label for="tgltdksetuju" class="mt-2 font-weight-bold">Tanggal Tidak DiSetujui</label><br>
+              <input type="text" class="form-control datepicker" id="tgl_tdksetuju" name="tgl_tdksetuju" placeholder="Tanggal Tidak DiSetujui" autocomplete="off" required>
             </div>
           </div>
         </div>
@@ -424,58 +303,51 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $('#tidakdisetujui').on('show.bs.modal', function(event) {
-      var no_transfer_slip = $(event.relatedTarget).data('no_transfer_slip')
-      var l_no_transfer_slip = $(event.relatedTarget).data('l-no_transfer_slip')
-      var tgl = $(event.relatedTarget).data('tgl')
+      var no_urut = $(event.relatedTarget).data('no_urut')
+      var tgl_permintaan = $(event.relatedTarget).data('tgl_permintaan')
       var nama_operator = $(event.relatedTarget).data('nama_operator')
       // var exp = $(event.relatedTarget).data('exp') 
-      var note = $(event.relatedTarget).data('note')
 
 
-      $(this).find('#v-no_transfer_slip').val(no_transfer_slip)
-      $(this).find('#v-tgl').val(tgl)
-      $(this).find('#v-nama_operator').val(nama_operator)
+      $(this).find('#d-no_urut').val(no_urut)
+      $(this).find('#d-tgl_permintaan').val(tgl_permintaan)
+      $(this).find('#d-nama_operator').val(nama_operator)
       // $(this).find('#v-exp').val(exp)
-      $(this).find('#v-note').val(note)
-      $(this).find('#tgl_reject').datepicker({
+      $(this).find('#tgl_tdksetuju').datepicker({
         autoclose: true,
         format: "dd/mm/yyyy"
       }).on('show.bs.modal', function(event) {
         event.stopPropagation();
       });
-      jQuery.ajax({
-        url: "<?= base_url() ?>gudang_bahanbaku/permintaan_barang_gudang/data_permintaan_barang",
-        dataType: 'json',
-        type: "post",
+      $.ajax({
+        url: "<?= base_url('melting/permintaan_barang_melting/get_by_no_urut') ?>",
+        type: "POST",
         data: {
-          no_transfer_slip: no_transfer_slip
+          no_urut: no_urut
         },
-        success: function(response) {
-          var data = response;
-          // alert(JSON.stringify(data))
-          var $id = $('#reject_per');
-          $id.empty();
-          // $id.append('<option value=0>- Pilih Prioritas Kegiatan -</option>');
-          for (var i = 0; i < data.length; i++) {
-            var exp = data[i].exp.split("-")[2] + "/" + data[i].exp.split("-")[1] + "/" + data[i].exp.split("-")[0]
-            var mfg = data[i].mfg.split("-")[2] + "/" + data[i].mfg.split("-")[1] + "/" + data[i].mfg.split("-")[0]
-            $id.append(`
-              <tr>
-                <td>` + data[i].no_batch + `</td>
-                <td>` + data[i].nama_barang + `</td>
-                <td>` + data[i].nama_supplier + `</td>
-                <td class="text-right">` + data[i].qty + data[i].satuan + `</td>
-                <td class="text-right">` + mfg + `</td>
-                <td class="text-right">` + exp + `</td>
-              </tr>
-            `);
-          }
+        dataType: "json",
+
+        success: function(data) {
+          console.log(data)
+          $('#d-insert_table')
+          $.each(data, function(i, item) {
+
+            $("#d-insert_table").append(`
+                        <tr>
+                            <td>${item.no_batch}</td>
+                            <td>${item.nama_barang}</td>
+                            <td>${item.nama_supplier}</td>
+                            <td>${item.jml_permintaan}</td>
+                        </tr>
+                    `)
+          })
+        },
+
+        error: function(xhr, status, error) {
+          console.error("Error:", error);
+          alert("Terjadi kesalahan saat memuat data barang");
         }
-      });
-      // $(this).find('#e_tgl').datepicker().on('show.bs.modal', function(event) {
-      //   // prevent datepicker from firing bootstrap modal "show.bs.modal"
-      //   event.stopPropagation();
-      // });
+      })
     })
 
   })
