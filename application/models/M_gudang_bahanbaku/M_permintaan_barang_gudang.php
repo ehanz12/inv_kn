@@ -129,12 +129,12 @@ class M_permintaan_barang_gudang extends CI_Model
         return $this->db->query($sql);
     }
 
-    public function ditolak($no_transfer_slip, $tgl_reject)
+    public function ditolak($data)
     {
         $sql = "
-        UPDATE `tb_gbb_permintaan_barang`
-        SET `tgl_tdksetuju`='$tgl_reject'
-        WHERE `no_urut`='$no_transfer_slip';
+        UPDATE `tb_mlt_permintaan_barang_tf`
+        SET `tgl_tdksetuju`='$data[tgl_tdksetuju]'
+        WHERE `no_urut`='$data[no_urut]';
         ";
         return $this->db->query($sql);
     }

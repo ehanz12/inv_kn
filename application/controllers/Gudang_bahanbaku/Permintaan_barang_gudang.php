@@ -12,6 +12,7 @@ class Permintaan_barang_gudang extends CI_Controller
         $this->load->model('M_gudang_bahanbaku/M_permintaan_barang_gudang');
         $this->load->model('M_melting/M_transaksi_melting');
         $this->load->model('M_gudang_bahanbaku/M_barang_masuk');
+        $this->load->model('M_adm_barang_keluar/M_adm_barang_keluar');
         $this->load->model('M_users/M_users');
     }
     private function convertDate($date)
@@ -20,42 +21,28 @@ class Permintaan_barang_gudang extends CI_Controller
     }
     public function index()
     {
-        // $data['row'] = $this->customer_m->get();
         $data['result'] = $this->M_permintaan_barang_gudang->get()->result_array();
-       
 
         $this->template->load('template', 'content/gudang_bahanbaku/permintaan_barang_gudang/permintaan_barang_gudang_data', $data);
-        // print_r($data['bm']);
-    }
-    public function data_permintaan_barang()
-    {
-        $no_transfer_slip = $this->input->post('no_transfer_slip', TRUE);
-
-        $result = $this->M_permintaan_barang_gudang->data_permintaan_barang($no_transfer_slip)->result_array();
-        /*for($i=0; $i<count($result);$i++){
-            $data['id_penerima'] = $result[$i]['id_penerima'];
-            $donasi = $this->m_penerima->data_donasi($data)->result_array();
-            $a=0;
-            for($o=0; $o<count($donasi);$o++){
-                $a+=$donasi[$o]['donasi'];
-            }
-            $result[$i]['hasil_donasi']=$a;
-        }*/
-        echo json_encode($result);
-    }
-    public function cek_transfer_slip()
-    {
-        $no_transfer_slip = $this->input->post('no_transfer_slip', TRUE);
-
-        $row = $this->M_permintaan_barang_gudang->cek_transfer_slip($no_transfer_slip)->row_array();
-        if ($row['count_sj'] == 0) {
-            echo "false";
-        } else {
-            echo "true";
-        }
     }
 
     public function disetujui()
+    {
+        $no_urut = $this->input->post('no_urut', TRUE);
+        $tgl_rilis        = $this->convertDate($this->input->post('tgl_setuju', TRUE));
+
+
+        $proses = $this->M_adm_barang_keluar->proses_persetujuan($no_urut, $tgl_rilis);
+
+        if ($proses) {
+            header('location:' . base_url('gudang_bahanbaku/Permintaan_barang_gudang') . '?alert=success&msg=Selamat anda berhasil Menyetujui Permintaan Barang Gudang');
+        } else {
+            header('location:' . base_url('gudang_bahanbaku/Permintaan_barang_gudang') . '?alert=error&msg=Maaf anda gagal Menyetujui Permintaan Barang Gudang');
+        }
+    }
+
+
+    public function disetujui2()
     {
         $no_transfer_slip = $this->input->post('no_transfer_slip', TRUE);
         $tgl_rilis = $this->convertDate($this->input->post('tgl_rilis', TRUE));
@@ -84,10 +71,9 @@ class Permintaan_barang_gudang extends CI_Controller
 
     public function ditolak()
     {
-        $no_transfer_slip = $this->input->post('no_transfer_slip', TRUE);
-        $tgl_reject = $this->convertDate($this->input->post('tgl_reject', TRUE));
-        $this->M_permintaan_barang_gudang->ditolak($no_transfer_slip, $tgl_reject);
-        $respon =  $this->M_permintaan_barang_gudang->update_status_ts($no_transfer_slip, "Tidak DiSetujui");
+        $data['no_urut'] = $this->input->post('no_urut', TRUE);
+        $data['tgl_tdksetuju'] = $this->convertDate($this->input->post('tgl_tdksetuju', TRUE));
+        $respon = $this->M_permintaan_barang_gudang->ditolak($data);
 
         if ($respon) {
             header('location:' . base_url('gudang_bahanbaku/Permintaan_barang_gudang') . '?alert=success&msg=Selamat anda berhasil Menolak Permintaan Barang Gudang');
