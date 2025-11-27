@@ -464,14 +464,10 @@
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>No. Batch</th>
                                                         <th>Tanggal Diterima</th>
-                                                        <th>Jumlah Diterima</th>
-                                                       
-                                                        
                                                         <th>Nama Barang</th>
-                                                        <th>Supplier</th>
-                                                        <th>Kode Barang</th>
+                                                        <th>No. Batch</th>                                                       
+                                                        <th>Jumlah Diterima</th>
                                                        
                                                     </tr>
                                                 </thead>
@@ -483,6 +479,8 @@
                                                     ?>
                                                             <tr>
                                                                 <td><?= $no++ ?></td>
+                                                                <td><?= !empty($k['tgl_dpb']) ? date('d/m/Y', strtotime($k['tgl_dpb'])) : '-' ?></td>
+                                                                <td><?= htmlspecialchars($k['nama_barang'] ?? '-') ?></td>
                                                                 <td>
                                                                     <span class="badge badge-success btn-batch-detail" 
                                                                           style="cursor: pointer;"
@@ -499,15 +497,15 @@
                                                                           data-spek="<?= htmlspecialchars($k['spesifikasi'] ?? '') ?>"
                                                                           data-satuan="<?= htmlspecialchars($k['satuan'] ?? '') ?>"
                                                                           data-created="<?= !empty($k['created_at']) ? date('Y-m-d H:i:s', strtotime($k['created_at'])) : '' ?>">
+                                                                          
                                                                         <?= htmlspecialchars($k['no_batch'] ?? '-') ?>
                                                                     </span>
                                                                 </td>
-                                                                <td><?= !empty($k['tgl_dpb']) ? date('d/m/Y', strtotime($k['tgl_dpb'])) : '-' ?></td>
+                                                                
                                                                 <td><?= number_format($k['jml_bm'] ?? 0, 0, ',', '.') ?></td>
                                                                 
-                                                                <td><?= htmlspecialchars($k['nama_barang'] ?? '-') ?></td>
-                                                                <td><?= htmlspecialchars($k['nama_supplier'] ?? '-') ?></td>
-                                                                <td><?= htmlspecialchars($k['kode_barang'] ?? '-') ?></td>
+                                                                
+                                                              
                                                                 
                                                             </tr>
                                                         <?php
@@ -796,7 +794,7 @@
             $('#detail-kode').text(kode || '-');
             $('#detail-spek').text(spek || '-');
             $('#detail-satuan').text(satuan || '-');
-            $('#detail-created').text(created ? formatDateTime(created) : '-');
+            $('#detail-created').text(created ? formatDate(created) : '-');
 
             // Update judul modal
             $('#batchDetailModalLabel').html(`<i class="fas fa-info-circle me-2"></i>Detail Barang Masuk - Batch: ${batch}`);

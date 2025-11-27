@@ -153,9 +153,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
                           <tr>
                             <th class="text-center">#</th>
                             <th class="text-center">Tanggal DPB</th>
-                            <th class="text-center">No DPB</th>
+                            <!-- <th class="text-center">No DPB</th> -->
                             <th class="text-center">No Surat Jalan</th>
-                            <th class="text-center">Status</th>
+                            
                             <th class="text-center">Detail Barang</th>
                             <th class="text-center">Aksi</th>
                           </tr>
@@ -182,14 +182,22 @@ defined('BASEPATH') or exit('No direct script access allowed');
                             $status = $first_item['is_deleted'] == 1 ? '<span class="badge badge-danger">Dihapus</span>' : '<span class="badge badge-success">Aktif</span>';
                             $item_count = count($items);
                             
+                            // Cek apakah ada jumlah_bm yang sudah terisi
+                            $can_add = true;
+                            foreach ($items as $item) {
+                                if (isset($item['jml_diterima']) && $item['jml_diterima'] > 0) {
+                                    $can_add = false;
+                                    break;
+                                }
+                            }
+                            
                             // Tampilkan baris utama (merged)
                           ?>
                             <tr class="merged-row" data-dpb="<?= $no_dpb ?>">
                               <th scope="row" class="text-center"><?= $no++ ?></th>
                               <td class="text-center"><?= $tgl_dpb ?></td>
-                              <td class="text-center"><strong><?= $no_dpb ?></strong></td>
+                              <!-- <td class="text-center"><strong><?= $no_dpb ?></strong></td> -->
                               <td class="text-center"><?= $no_surat_jalan ?></td>
-                              <td class="text-center"><?= $status ?></td>
                               <td class="text-center">
                                 <span class="toggle-details" data-dpb="<?= $no_dpb ?>">
                                   <i class="feather icon-chevron-down"></i>
@@ -213,18 +221,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
                               </td>
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
+                                  <?php if ($can_add) { ?>
                                   <button type="button" class="btn btn-primary float-right btn-sm btn-add-item" 
                                           data-toggle="modal" data-target="#add"
                                           data-no_dpb="<?= $no_dpb ?>">
                                     <i class="feather icon-plus"></i> 
                                   </button>
-                                  <button type="button" class="btn btn-info btn-sm view-detail" data-toggle="modal" data-target="#detailModal" 
+                                  <?php } ?>
+                                  <!-- <button type="button" class="btn btn-info btn-sm view-detail" data-toggle="modal" data-target="#detailModal" 
                                           data-no_dpb="<?= $no_dpb ?>"
                                           data-tgl_dpb="<?= $tgl_dpb ?>"
                                           data-no_sjl="<?= $no_surat_jalan ?>"
                                           title="Lihat Detail">
                                     <i class="feather icon-eye"></i>
-                                  </button>
+                                  </button> -->
                                   <?php if ($level === "admin" && $first_item['is_deleted'] == 0) { ?>
                                     <a type="button" class="btn btn-danger btn-sm text-light" href="<?= base_url() ?>administrator/adm_dpb/delete/<?= str_replace('/', '--', $no_dpb) ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus DPB ini?')" title="Hapus DPB">
                                       <i class="feather icon-trash"></i>
@@ -250,16 +260,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                   <div>
                                     <strong>Kode:</strong> <?= $item['kode_barang'] ?><br>
                                     <strong>Nama:</strong> <?= $item['nama_barang'] ?><br>
-                                    <strong>Batch:</strong> <span class="no-batch-badge"><?= $item['no_batch'] ?></span>
+                                    <strong>Batch:</strong> <span class="no-batch-badge"><?= $item['no_batch'] ?></span><br>
+                                    <strong>Jumlah BM:</strong> 
+                                    <?php if (isset($item['jml_diterima']) && $item['jml_diterima'] > 0): ?>
+                                      <span class="badge badge-success"><?= $item['jml_diterima'] ?></span>
+                                    <?php else: ?>
+                                      <span class="badge badge-warning">Belum diisi</span>
+                                    <?php endif; ?>
                                   </div>
                                 </td>
                                 <td class="text-center">
                                   <div class="btn-group" role="group" aria-label="Basic example">
+                                    <?php if (!isset($item['jml_diterima']) || $item['jml_diterima'] == 0) { ?>
                                     <button type="button" class="btn btn-primary btn-sm btn-add-item" 
                                             data-toggle="modal" data-target="#add"
                                             data-no_dpb="<?= $no_dpb ?>">
                                       <i class="feather icon-plus"></i> 
                                     </button>
+                                    <?php } ?>
                                     <button type="button" class="btn btn-info btn-sm view-item-detail" 
                                             data-kode_barang="<?= $item['kode_barang'] ?>"
                                             data-no_batch="<?= $item['no_batch'] ?>"
@@ -268,7 +286,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                       <i class="feather icon-eye"></i>
                                     </button>
                                     <?php if ($level === "admin" && $item['is_deleted'] == 0) { ?>
-                                      <a type="button" class="btn btn-danger btn-sm text-light" href="<?= base_url() ?>administrator/adm_dpb/delete_item/<?= $item['id_adm_bm'] ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')" title="Hapus Item">
+                                      <a type="button" class="btn btn-danger btn-sm text-light" href="<?= base_url() ?>administrator/adm_dpb/delete_item/<?= $item['id_adm_dpb'] ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')" title="Hapus Item">
                                         <i class="feather icon-trash"></i>
                                       </a>
                                     <?php } ?>
@@ -295,12 +313,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <div class="modal fade" id="add" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
+      
       <div class="modal-header">
         <h5 class="modal-title text-center w-100" id="addModalLabel">Tambah Data DPB</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      
       <form method="post" action="<?= base_url() ?>administrator/adm_dpb/add">
         <div class="modal-body">
           <!-- Header DPB -->
@@ -421,11 +441,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <th class="text-center align-middle">Supplier</th>
                     <th class="text-center align-middle">Jumlah</th>
                     <th class="text-center align-middle">No Batch</th>
+                    <th class="text-center align-middle">Status BM</th>
                   </tr>
                 </thead>
                 <tbody id="detail-barang-list">
                   <tr>
-                    <td colspan="7" class="text-center text-muted">Memuat data...</td>
+                    <td colspan="8" class="text-center text-muted">Memuat data...</td>
                   </tr>
                 </tbody>
               </table>
@@ -554,9 +575,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
               const kodeBarang = item.kode_barang || '-';
               const namaBarang = item.nama_barang || '-';
               const jenisBayar = item.jenis_bayar || '-';
-              const jmlBeli = item.jml_beli ? item.jml_beli : '0';
+              const jmlBeli = item.jumlah_ppb ? item.jumlah_ppb : '0';
               const id_prc_master_barang = item.id_prc_master_barang;
               const id_prc_dpb = item.id_prc_dpb;
+              
+              // Cek apakah jumlah_bm sudah ada
+              const jmlDiterima = item.jml_diterima || '';
+              const isDisabled = item.jml_diterima > 0 ? 'readonly' : '';
+              const placeholder = item.jml_diterima > 0 ? 'Sudah diisi' : 'Input';
               
               html += `
                 <tr>
@@ -576,16 +602,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <input type="text" 
                            class="form-control form-control-sm input-tambahan" 
                            name="jumlah_diterima[]" 
-                           placeholder="Input"
+                           value="${jmlDiterima}"
+                           placeholder="${placeholder}"
                            style="text-align: center;"
+                           ${isDisabled}
                            required>
                   </td>
                   <td class="text-center align-middle">
                     <input type="text" 
                            class="form-control form-control-sm no_batch" 
                            name="no_batch[]" 
+                           value="${item.no_batch || ''}"
                            placeholder="Input No Batch"
                            style="text-align: center;"
+                           ${isDisabled}
                            required>
                   </td>
                 </tr>
@@ -593,7 +623,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
             });
             
             $('#detail-barang').html(html);
-            $('#simpan').prop('disabled', false);
+            
+            // Cek apakah semua field sudah terisi, jika ya disable tombol simpan
+            const allFilled = data.every(item => item.jml_diterima > 0);
+            $('#simpan').prop('disabled', allFilled);
             
           } else {
             $('#detail-barang').html('<tr><td colspan="6" class="text-center text-warning py-4"><i class="feather icon-alert-triangle"></i> ' + (response.message || 'Tidak ada data DPB yang tersedia') + '</td></tr>');
@@ -630,7 +663,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
       $('#detail-jenis-bayar').text('Loading...');
       
       // Tampilkan loading
-      $('#detail-barang-list').html('<tr><td colspan="7" class="text-center"><div class="spinner-border spinner-border-sm text-info" role="status"></div> Memuat data detail...</td></tr>');
+      $('#detail-barang-list').html('<tr><td colspan="8" class="text-center"><div class="spinner-border spinner-border-sm text-info" role="status"></div> Memuat data detail...</td></tr>');
       
       // Ambil data detail DPB
       $.ajax({
@@ -659,6 +692,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
               const nama_supplier = item.nama_supplier || '-';
               const jumlah = parseFloat(item.jml_beli) || 0;
               const noBatch = item.no_batch || '-';
+              const jmlDiterima = item.jml_diterima || 0;
+              const statusBM = jmlDiterima > 0 ? 
+                '<span class="badge badge-success">Sudah diisi: ' + jmlDiterima + '</span>' : 
+                '<span class="badge badge-warning">Belum diisi</span>';
+              
               totalJumlah += jumlah;
               
               html += `
@@ -670,6 +708,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                   <td class="text-center align-middle">${nama_supplier}</td>
                   <td class="text-center align-middle"><span class="badge badge-primary">${formatNumber(jumlah)}</span></td>
                   <td class="text-center align-middle"><span class="no-batch-badge">${noBatch}</span></td>
+                  <td class="text-center align-middle">${statusBM}</td>
                 </tr>
               `;
             });
@@ -679,19 +718,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
               <tr class="table-active font-weight-bold">
                 <td colspan="5" class="text-center">Total Jumlah:</td>
                 <td class="text-center"><span class="badge badge-success">${formatNumber(totalJumlah)}</span></td>
-                <td></td>
+                <td colspan="2"></td>
               </tr>
             `;
             
             $('#detail-barang-list').html(html);
           } else {
-            $('#detail-barang-list').html('<tr><td colspan="7" class="text-center text-warning"><i class="feather icon-alert-triangle"></i> ' + (response.message || 'Tidak ada data barang untuk DPB ini') + '</td></tr>');
+            $('#detail-barang-list').html('<tr><td colspan="8" class="text-center text-warning"><i class="feather icon-alert-triangle"></i> ' + (response.message || 'Tidak ada data barang untuk DPB ini') + '</td></tr>');
             $('#detail-jenis-bayar').text('-');
           }
         },
         error: function(xhr, status, error) {
           console.error("AJAX Error:", error);
-          $('#detail-barang-list').html('<tr><td colspan="7" class="text-center text-danger"><i class="feather icon-x-circle"></i> Gagal memuat data detail</td></tr>');
+          $('#detail-barang-list').html('<tr><td colspan="8" class="text-center text-danger"><i class="feather icon-x-circle"></i> Gagal memuat data detail</td></tr>');
         }
       });
     });
