@@ -37,15 +37,40 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <h5>Data PPB</h5>
                     <div class="float-right">
                       <div class="input-group">
-                        <input type="text" id="filter_tgl" value="<?= $tgl == null ? '' : $tgl ?>" class="form-control datepicker" placeholder="Filter Dari Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                       <input type="text" id="filter_tgl" value="<?= $tgl == null ? '' : $tgl ?>" class="form-control datepicker" placeholder="Filter Dari Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
                         <input type="text" id="filter_tgl2" value="<?= $tgl2 == null ? '' : $tgl2 ?>" class="form-control datepicker" placeholder="Filter Sampai Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                        <div class="btn-group">
-                          <button class="btn btn-secondary btn-sm" id="lihat" type="button">Lihat</button>
+                        <select id="filter_departement" class="form-control ml-2">
+                          <option value=""> Semua Departement </option>
+                          <?php foreach ($departement_list as $d) { ?>
+                            <option value="<?= $d['departement'] ?>"
+                              <?= ($departement_filter == $d['departement'] ? 'selected' : '') ?>>
+                              <?= $d['departement'] ?>
+                            </option>
+                          <?php } ?>
+                        </select>
+                        
+                        <!-- Tombol Lihat -->
+                        <div class="btn-group ml-2">
+                          <button class="btn btn-primary btn-sm" id="lihat" type="button">
+                            <i class="feather icon-filter"></i> Filter
+                          </button>
                         </div>
-                        <div class="btn-group">
-                          <a href="<?= base_url() ?>Purchasing/Purchasing_ppb" style="width: 40px;" class="btn btn-warning" id="export" type="button"><i class="feather icon-refresh-ccw"></i></a>
+                        
+                        <!-- Tombol Reset -->
+                        <div class="btn-group ml-1">
+                          <a href="<?= base_url() ?>Purchasing/Purchasing_ppb/Purchasing_ppb" style="width: 40px;" class="btn btn-warning btn-sm" title="Reset Filter">
+                            <i class="feather icon-refresh-ccw"></i>
+                          </a>
                         </div>
-                      </div>
+                        
+                        <!-- Tombol Update Status -->
+                        <!-- <div class="btn-group ml-2">
+                          <a href="<?= base_url('Purchasing/Purchasing_ppb/Purchasing_ppb/update_status') ?>" 
+                             class="btn btn-info btn-sm" title="Update Status Otomatis">
+                            <i class="feather icon-refresh-cw"></i> Update Status
+                          </a>
+                        </div>
+                      </div> -->
                     </div>
                     <br><br>
                   </div>
@@ -74,9 +99,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
                             $tgl_pakai =  explode('-', $k['tgl_pakai'])[2] . "/" . explode('-', $k['tgl_pakai'])[1] . "/" . explode('-', $k['tgl_pakai'])[0];
                             
                             // Hitung outstanding untuk PPB ini
-                            $outstanding_data = $this->M_purchasing_ppb->calculate_outstanding($k['no_ppb']);
-                            $total_jumlah_awal = $outstanding_data['total_jumlah_awal'] ?? 0;
-                            $total_outstanding = $outstanding_data['total_outstanding'] ?? 0;
+                            $outstanding_data = $this->M_purchasing_ppb->get_outstanding_status($k['no_ppb']);
+                            $total_outstanding = $outstanding_data['total_outstanding'];
+                            $is_completed = $outstanding_data['is_completed'];
                             
                             // Status outstanding
                             $outstanding_status = 'success';
@@ -92,13 +117,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                               <td><?= $k['no_ppb'] ?></td>
                               <td class="text-center"><?= $k['departement'] ?></td>
                               
-                              <!-- Kolom Jumlah Awal -->
-                              
-                              
                               <!-- Kolom Outstanding -->
                               <td class="text-center">
                                 <span class="badge badge-<?= $outstanding_status ?>">
-                                  <?= $outstanding_text ?>
+                                  <?= $outstanding_text ?> 
                                 </span>
                               </td>
 
@@ -118,7 +140,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
                               </td>
 
                               <td class="text-center">
-                                <?= $k['status'] === 'selesai' ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Proses</span>'; ?>
+                                <?php 
+                                if ($is_completed) {
+                                    echo '<span class="badge badge-success">Selesai</span>';
+                                } else {
+                                    echo '<span class="badge badge-warning">Proses</span>';
+                                    echo '<br><small class="text-muted">Outstanding: ' . number_format($total_outstanding) . '</small>';
+                                }
+                                ?>
                               </td>
 
                               <td class="text-center">
@@ -171,25 +200,68 @@ defined('BASEPATH') or exit('No direct script access allowed');
 </section>
 
 <script type="text/javascript">
-  $('#lihat').click(function() {
-    var filter_tgl = $('#filter_tgl').val();
-    var filter_tgl2 = $('#filter_tgl2').val();
+  $(document).ready(function() {
+    // Inisialisasi datepicker
+    $('.datepicker').datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true
+    });
 
-    var newFilterTgl = filter_tgl.split("/")[2] + "-" + filter_tgl.split("/")[1] + "-" + filter_tgl.split("/")[0];
-    var newFilterTgl2 = filter_tgl2.split("/")[2] + "-" + filter_tgl2.split("/")[1] + "-" + filter_tgl2.split("/")[0];
+    // Fungsi filter
+    $('#lihat').click(function() {
+     var filter_tgl = $('#filter_tgl').val();
+      var filter_tgl2 = $('#filter_tgl2').val();
+      var filter_departement = $('#filter_departement').val();
 
-    if (filter_tgl === '' && filter_tgl2 !== '') {
-      window.location = "<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb?alert=warning&msg=dari tanggal belum diisi";
-      alert("Dari tanggal belum diisi")
-    } else if (filter_tgl !== '' && filter_tgl2 === '') {
-      window.location = "<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb?alert=warning&msg=sampai tanggal belum diisi";
-    } else {
-      const query = new URLSearchParams({
-        date_from: newFilterTgl,
-        date_until: newFilterTgl2
+      // Validasi tanggal
+      if (filter_tgl === '' && filter_tgl2 !== '') {
+        alert("Dari tanggal belum diisi");
+       
+      } else if (filter_tgl !== '' && filter_tgl2 === '') {
+        alert("Sampai tanggal belum diisi");
+        return false;
+      }
+
+      // Format tanggal untuk URL
+     
+      var newFilterTgl = filter_tgl.split("/")[2] + "-" + filter_tgl.split("/")[1] + "-" + filter_tgl.split("/")[0];
+      var newFilterTgl2 = filter_tgl2.split("/")[2] + "-" + filter_tgl2.split("/")[1] + "-" + filter_tgl2.split("/")[0];
+      
+      if (filter_tgl !== '') {
+        var tglParts = filter_tgl.split("/");
+        newFilterTgl = tglParts[2] + "-" + tglParts[1] + "-" + tglParts[0];
+      }
+      
+      if (filter_tgl2 !== '') {
+        var tgl2Parts = filter_tgl2.split("/");
+        newFilterTgl2 = tgl2Parts[2] + "-" + tgl2Parts[1] + "-" + tgl2Parts[0];
+      }
+
+      // Build URL dengan parameter
+      var url = "<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb/index?";
+      var params = [];
+      
+      if (newFilterTgl !== '') {
+        params.push('date_from=' + encodeURIComponent(newFilterTgl));
+      }
+      
+      if (newFilterTgl2 !== '') {
+        params.push('date_until=' + encodeURIComponent(newFilterTgl2));
+      }
+      
+      if (filter_departement !== '') {
+        params.push('departement=' + encodeURIComponent(filter_departement));
+      }
+      
+      window.location = url + params.join('&');
+    });
+
+    // Auto refresh status setiap 30 detik
+    setInterval(function() {
+      $.get("<?= base_url('Purchasing/Purchasing_ppb/Purchasing_ppb/update_status_otomatis') ?>", function(response) {
+        // Optional: Bisa tambahkan notifikasi jika perlu
       });
-      window.location = "<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb/index?" + query.toString();
-    }
+    }, 30000); // 30 detik
   });
 </script>
 
@@ -243,9 +315,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
           </div>
         </div>
         
-        <!-- Summary Information -->
-       
-
         <div class="table-responsive">
           <table class="table table-bordered table-sm">
             <thead class="bg-light-info">
@@ -297,9 +366,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
       // Tampilkan loading
       $('#v-ppb_barang').html('<tr><td colspan="9" class="text-center text-muted">Memuat data...</td></tr>');
-      $('#v-total-awal').text('0');
-      $('#v-total-diterima').text('0');
-      $('#v-total-outstanding').text('0');
 
       jQuery.ajax({
         url: "<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb/data_ppb_barang",
@@ -313,10 +379,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
           var $id = $('#v-ppb_barang');
           $id.empty();
 
-          var totalAwal = 0;
-          var totalDiterima = 0;
-          var totalOutstanding = 0;
-
           if (data.length === 0) {
             $id.append('<tr><td colspan="9" class="text-center text-muted">Tidak ada data barang</td></tr>');
           } else {
@@ -325,10 +387,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
               var jumlahDiterima = parseFloat(data[i].jml_bm) || 0;
               var outstanding = jumlahAwal - jumlahDiterima;
               
-              totalAwal += jumlahAwal;
-              totalDiterima += jumlahDiterima;
-              totalOutstanding += outstanding;
-
               var outstandingBadge = outstanding > 0 ? 
                 '<span class="badge badge-warning">' + outstanding.toLocaleString() + '</span>' :
                 '<span class="badge badge-success">Lunas</span>';
@@ -348,11 +406,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
               `);
             }
           }
-
-          // Update total summary
-          $('#v-total-awal').text(totalAwal.toLocaleString());
-          $('#v-total-diterima').text(totalDiterima.toLocaleString());
-          $('#v-total-outstanding').text(totalOutstanding > 0 ? totalOutstanding.toLocaleString() : 'Lunas');
         },
         error: function() {
           $('#v-ppb_barang').html('<tr><td colspan="9" class="text-center text-danger">Gagal memuat data</td></tr>');
