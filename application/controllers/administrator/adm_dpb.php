@@ -239,6 +239,7 @@ public function add()
     $jumlah_diterima = $this->input->post('jumlah_diterima', TRUE);
     $id_prc_master_barang = $this->input->post('id_prc_master_barang', TRUE);
     $id_prc_dpb = $this->input->post('id_prc_dpb', TRUE);
+    $no_ppb = $this->input->post('no_ppb', TRUE);
     
     $id_user = $this->session->userdata('id_user');
 
@@ -262,7 +263,7 @@ public function add()
                 continue;
             }
 
-            // Dapatkan id_prc_ppb untuk mengurangi jumlah_ppb
+            // Dapatkan id_prc_ppb untuk validasi (TIDAK untuk update)
             $ppb_data = $this->M_adm_dpb->get_id_prc_ppb_by_dpb($id_prc_dpb[$index]);
             
             if (!$ppb_data) {
@@ -271,7 +272,7 @@ public function add()
                 continue;
             }
 
-            // Validasi apakah jumlah_ppb mencukupi
+            // Validasi apakah jumlah_ppb mencukupi (opsional, untuk safety)
             if ($ppb_data['jumlah_ppb'] < $jumlah) {
                 $error_count++;
                 error_log("Jumlah PPB tidak mencukupi. Tersedia: " . $ppb_data['jumlah_ppb'] . ", Diminta: " . $jumlah);
@@ -282,6 +283,7 @@ public function add()
             $insert = [
                 'id_prc_master_barang' => $id_prc_master_barang[$index],
                 'id_prc_dpb'           => $id_prc_dpb[$index],
+                'no_ppb'               => $no_ppb[$index], // Pastikan ada di form
                 'no_dpb'               => $no_dpb,
                 'tgl_bm'               => $tgl_bm,
                 'no_batch'             => $no_batch[$index],
@@ -291,27 +293,27 @@ public function add()
                 'is_deleted'           => 0
             ];
 
-            // Insert data ke barang masuk
+            // HANYA insert data ke barang masuk, TIDAK update jumlah_ppb
             $res_insert = $this->M_adm_barang_masuk->add($insert);
             
             if ($res_insert) {
-                // Kurangi jumlah_ppb di tabel tb_prc_ppb
-                $res_update = $this->M_adm_dpb->update_jumlah_ppb($ppb_data['id_prc_ppb'], $jumlah);
-                
-                if ($res_update) {
-                    $success_count++;
-                    error_log("Berhasil insert dan update PPB untuk item ke-" . ($index + 1));
-                } else {
-                    $error_count++;
-                    // Rollback: hapus data yang sudah diinsert jika update gagal
-                    $this->M_adm_barang_masuk->delete_recent($id_prc_dpb[$index]);
-                    error_log("Gagal update jumlah PPB untuk item ke-" . ($index + 1));
-                }
+                $success_count++;
+                error_log("Berhasil insert barang masuk untuk item ke-" . ($index + 1));
             } else {
                 $error_count++;
                 error_log("Gagal insert data barang masuk ke-" . ($index + 1));
             }
         }
+    }
+
+    if ($success_count > 0) {
+        $message = "Berhasil menambah " . $success_count . " data barang masuk";
+        if ($error_count > 0) {
+            $message .= " (" . $error_count . " gagal)";
+        }
+        header('location:' . base_url('administrator/adm_dpb') . '?alert=success&msg=' . $message);
+    } else {
+        header('location:' . base_url('administrator/adm_dpb') . '?alert=error&msg=Gagal menambah semua data');
     }
 
     if ($success_count > 0) {

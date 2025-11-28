@@ -1,3 +1,7 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+?>
+
 <!-- [ Main Content ] start -->
 <section class="pcoded-main-container">
   <div class="pcoded-wrapper">
@@ -54,8 +58,9 @@
                             <th>Tanggal</th>
                             <th>No PPB</th>
                             <th class="text-center">Departement</th>
+                            <th class="text-center">Outstanding</th>
                             <th class="text-center">Detail</th>
-                            <th class="text-center">Status</th> <!-- Kolom baru untuk approval -->
+                            <th class="text-center">Status</th>
                             <th class="text-center">Aksi</th>
                           </tr>
                         </thead>
@@ -67,23 +72,46 @@
                           foreach ($result as $k) {
                             $tgl_ppb =  explode('-', $k['tgl_ppb'])[2] . "/" . explode('-', $k['tgl_ppb'])[1] . "/" . explode('-', $k['tgl_ppb'])[0];
                             $tgl_pakai =  explode('-', $k['tgl_pakai'])[2] . "/" . explode('-', $k['tgl_pakai'])[1] . "/" . explode('-', $k['tgl_pakai'])[0];
+                            
+                            // Hitung outstanding untuk PPB ini
+                            $outstanding_data = $this->M_purchasing_ppb->calculate_outstanding($k['no_ppb']);
+                            $total_jumlah_awal = $outstanding_data['total_jumlah_awal'] ?? 0;
+                            $total_outstanding = $outstanding_data['total_outstanding'] ?? 0;
+                            
+                            // Status outstanding
+                            $outstanding_status = 'success';
+                            $outstanding_text = 'Lunas';
+                            if ($total_outstanding > 0) {
+                                $outstanding_status = 'warning';
+                                $outstanding_text = number_format($total_outstanding);
+                            }
                           ?>
                             <tr>
                               <th scope="row"><?= $no++ ?></th>
                               <td><?= $tgl_ppb ?></td>
                               <td><?= $k['no_ppb'] ?></td>
                               <td class="text-center"><?= $k['departement'] ?></td>
+                              
+                              <!-- Kolom Jumlah Awal -->
+                              
+                              
+                              <!-- Kolom Outstanding -->
+                              <td class="text-center">
+                                <span class="badge badge-<?= $outstanding_status ?>">
+                                  <?= $outstanding_text ?>
+                                </span>
+                              </td>
 
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                   <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail"
-                                    data-no_ppb="<?= $k['no_ppb'] ?>" ,
-                                    data-departement="<?= $k['departement'] ?>" ,
-                                    data-form_ppb="<?= $k['jenis_form_ppb'] ?>" ,
-                                    data-jenis_ppb="<?= $k['jenis_ppb'] ?>" ,
-                                    data-tgl_ppb="<?= $tgl_ppb ?>" ,
-                                    data-tgl_pakai="<?= $tgl_pakai ?>" ,
-                                    data-ket="<?= $k['ket'] ?>" ,>
+                                    data-no_ppb="<?= $k['no_ppb'] ?>" 
+                                    data-departement="<?= $k['departement'] ?>" 
+                                    data-form_ppb="<?= $k['jenis_form_ppb'] ?>" 
+                                    data-jenis_ppb="<?= $k['jenis_ppb'] ?>" 
+                                    data-tgl_ppb="<?= $tgl_ppb ?>" 
+                                    data-tgl_pakai="<?= $tgl_pakai ?>" 
+                                    data-ket="<?= $k['ket'] ?>">
                                     <i class="feather icon-eye"></i>Details
                                   </button>
                                 </div>
@@ -105,7 +133,6 @@
                                     <i class="feather icon-file"></i>Cetak
                                   </a>
                                 </div>
-
 
                                 <?php if ($level === "admin" && $k['acc_spv'] !== "Approved" && $k['acc_manager'] !== "Approved" && $k['acc_pm'] !== "Approved") { ?>
                                   <div class="btn-group" role="group" aria-label="Basic example">
@@ -166,101 +193,85 @@
   });
 </script>
 
-
-
-
 <!-- Modal Details -->
 <div class="modal fade" id="detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Detail Data PPB</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Detail Data PPB - <span id="v-no-ppb-title"></span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="<?= base_url() ?>M_accounting/M_accounting_ppb/">
-
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-jenis_ppb">Jenis PPB</label>
-                <input type="text" class="form-control" id="v-jenis_ppb" name="jenis_ppb" placeholder="Budget/Non-budget" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-form_ppb">Form A/C</label>
-                <input type="text" class="form-control" id="v-form_ppb" name="form_ppb" placeholder="Form A/C" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-departement">Departement</label>
-                <input type="text" class="form-control" id="v-departement" name="v-departement" placeholder="Departement" maxlength="20" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-no_ppb">No PPB</label>
-                <input type="text" class="form-control" id="v-no_ppb" name="no_ppb" placeholder="No PPB" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-tgl_ppb">Tanggal PPB</label>
-                <input type="text" class="form-control" id="v-tgl_ppb" name="tgl_ppb" placeholder="Tanggal PPB" readonly>
-              </div>
-            </div>
-
-            <div class="col-md-6">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="v-jenis_ppb">Jenis PPB</label>
+              <input type="text" class="form-control" id="v-jenis_ppb" readonly>
             </div>
           </div>
-          <div class="table-responsive">
-            <table class="table table-bordered table-sm">
-              <thead>
-                <tr>
-                  <th>Kode Barang</th>
-                  <th>Nama Barang</th>
-                  <th>Spek</th>
-                  <th>Nama Supplier</th>
-                  <th class="text-right">Jumlah</th>
-                </tr>
-              </thead>
-              <tbody id="v-ppb_barang">
-              </tbody>
-            </table>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="v-form_ppb">Form A/C</label>
+              <input type="text" class="form-control" id="v-form_ppb" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="v-departement">Departement</label>
+              <input type="text" class="form-control" id="v-departement" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="v-tgl_ppb">Tanggal PPB</label>
+              <input type="text" class="form-control" id="v-tgl_ppb" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="v-tgl_pakai">Tanggal Kebutuhan</label>
+              <input type="text" class="form-control" id="v-tgl_pakai" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="v-ket">Keterangan</label>
+              <input type="text" class="form-control" id="v-ket" readonly>
+            </div>
           </div>
         </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-tgl_pakai">Tanggal Kebutuhan</label>
-                <input type="text" class="form-control" id="v-tgl_pakai" name="tgl_pakai" placeholder="Tanggal Kebutuhan" readonly>
-              </div>
-            </div>
+        
+        <!-- Summary Information -->
+       
 
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-ket">Keterangan</label>
-                <input type="text" class="form-control" id="v-ket" name="ket" placeholder="Keterangan" readonly>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="v-nama_admin">Prc Admin</label>
-                <input type="text" class="form-control" id="v-nama_admin" name="nama_admin" placeholder="Admin" readonly>
-              </div>
-            </div>
-
-          </div>
+        <div class="table-responsive">
+          <table class="table table-bordered table-sm">
+            <thead class="bg-light-info">
+              <tr>
+                <th class="text-center">#</th>
+                <th>Kode Barang</th>
+                <th>Nama Barang</th>
+                <th>Spek</th>
+                <th>Supplier</th>
+                <th class="text-center">Jumlah Awal</th>
+                <th class="text-center">Jumlah Diterima</th>
+                <th class="text-center">Outstanding</th>
+                <th class="text-center">Satuan</th>
+              </tr>
+            </thead>
+            <tbody id="v-ppb_barang">
+              <tr>
+                <td colspan="9" class="text-center text-muted">Memuat data...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>
@@ -275,24 +286,20 @@
       var tgl_ppb = $(event.relatedTarget).data('tgl_ppb')
       var tgl_pakai = $(event.relatedTarget).data('tgl_pakai')
       var ket = $(event.relatedTarget).data('ket')
-      var nama_admin = $(event.relatedTarget).data('nama_admin')
-      var nama_spv = $(event.relatedTarget).data('nama_spv')
-      var nama_manager = $(event.relatedTarget).data('nama_manager')
-      var nama_pm = $(event.relatedTarget).data('nama_pm')
-      var nama_direktur = $(event.relatedTarget).data('nama_direktur')
 
       $(this).find('#v-jenis_ppb').val(jenis_ppb)
       $(this).find('#v-form_ppb').val(form_ppb)
       $(this).find('#v-departement').val(departement)
-      $(this).find('#v-no_ppb').val(no_ppb)
       $(this).find('#v-tgl_ppb').val(tgl_ppb)
       $(this).find('#v-tgl_pakai').val(tgl_pakai)
       $(this).find('#v-ket').val(ket)
-      $(this).find('#v-nama_admin').val(nama_admin)
-      $(this).find('#v-nama_spv').val(nama_spv)
-      $(this).find('#v-nama_manager').val(nama_manager)
-      $(this).find('#v-nama_pm').val(nama_pm)
-      $(this).find('#v-nama_direktur').val(nama_direktur)
+      $(this).find('#v-no-ppb-title').text(no_ppb)
+
+      // Tampilkan loading
+      $('#v-ppb_barang').html('<tr><td colspan="9" class="text-center text-muted">Memuat data...</td></tr>');
+      $('#v-total-awal').text('0');
+      $('#v-total-diterima').text('0');
+      $('#v-total-outstanding').text('0');
 
       jQuery.ajax({
         url: "<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb/data_ppb_barang",
@@ -306,17 +313,49 @@
           var $id = $('#v-ppb_barang');
           $id.empty();
 
-          for (var i = 0; i < data.length; i++) {
-            $id.append(`
-              <tr>
-                <td>` + data[i].kode_barang + `</td>
-                <td>` + data[i].nama_barang + `</td>
-                <td>` + data[i].spek + `</td>
-                <td>` + data[i].nama_supplier + `</td> 
-                <td class="text-right">` + data[i].jumlah_ppb + "&nbsp" + data[i].satuan + `</td>
-              </tr>
-            `);
+          var totalAwal = 0;
+          var totalDiterima = 0;
+          var totalOutstanding = 0;
+
+          if (data.length === 0) {
+            $id.append('<tr><td colspan="9" class="text-center text-muted">Tidak ada data barang</td></tr>');
+          } else {
+            for (var i = 0; i < data.length; i++) {
+              var jumlahAwal = parseFloat(data[i].jumlah_ppb) || 0;
+              var jumlahDiterima = parseFloat(data[i].jml_bm) || 0;
+              var outstanding = jumlahAwal - jumlahDiterima;
+              
+              totalAwal += jumlahAwal;
+              totalDiterima += jumlahDiterima;
+              totalOutstanding += outstanding;
+
+              var outstandingBadge = outstanding > 0 ? 
+                '<span class="badge badge-warning">' + outstanding.toLocaleString() + '</span>' :
+                '<span class="badge badge-success">Lunas</span>';
+
+              $id.append(`
+                <tr>
+                  <td class="text-center">${i + 1}</td>
+                  <td>${data[i].kode_barang || '-'}</td>
+                  <td>${data[i].nama_barang || '-'}</td>
+                  <td>${data[i].spek || '-'}</td>
+                  <td>${data[i].nama_supplier || '-'}</td> 
+                  <td class="text-center"><span class="badge badge-primary">${jumlahAwal.toLocaleString()}</span></td>
+                  <td class="text-center"><span class="badge badge-success">${jumlahDiterima.toLocaleString()}</span></td>
+                  <td class="text-center">${outstandingBadge}</td>
+                  <td class="text-center">${data[i].satuan || '-'}</td>
+                </tr>
+              `);
+            }
           }
+
+          // Update total summary
+          $('#v-total-awal').text(totalAwal.toLocaleString());
+          $('#v-total-diterima').text(totalDiterima.toLocaleString());
+          $('#v-total-outstanding').text(totalOutstanding > 0 ? totalOutstanding.toLocaleString() : 'Lunas');
+        },
+        error: function() {
+          $('#v-ppb_barang').html('<tr><td colspan="9" class="text-center text-danger">Gagal memuat data</td></tr>');
         }
       });
     });

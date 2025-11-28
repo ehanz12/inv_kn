@@ -286,7 +286,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                       <i class="feather icon-eye"></i>
                                     </button>
                                     <?php if ($level === "admin" && $item['is_deleted'] == 0) { ?>
-                                      <a type="button" class="btn btn-danger btn-sm text-light" href="<?= base_url() ?>administrator/adm_dpb/delete_item/<?= $item['id_adm_dpb'] ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')" title="Hapus Item">
+                                      <a type="button" class="btn btn-danger btn-sm text-light" href="<?= base_url() ?>administrator/adm_dpb/delete_item/<?= $item['no_dpb'] ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')" title="Hapus Item">
                                         <i class="feather icon-trash"></i>
                                       </a>
                                     <?php } ?>
@@ -578,8 +578,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
               const jmlBeli = item.jumlah_ppb ? item.jumlah_ppb : '0';
               const id_prc_master_barang = item.id_prc_master_barang;
               const id_prc_dpb = item.id_prc_dpb;
+              const no_ppb = item.no_ppb;
               
-              // Cek apakah jumlah_bm sudah ada
+           
               const jmlDiterima = item.jml_diterima || '';
               const isDisabled = item.jml_diterima > 0 ? 'readonly' : '';
               const placeholder = item.jml_diterima > 0 ? 'Sudah diisi' : 'Input';
@@ -588,6 +589,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <tr>
                   <input type="hidden" name="id_prc_master_barang[]" value="${id_prc_master_barang}">
                   <input type="hidden" name="id_prc_dpb[]" value="${id_prc_dpb}">
+                  <input type="hidden" name="no_ppb[]" value="${no_ppb}">
                   <td class="text-center align-middle"><strong>${kodeBarang}</strong></td>
                   <td class="text-center align-middle">${namaBarang}</td>
                   <td class="text-center align-middle">${jenisBayar}</td>

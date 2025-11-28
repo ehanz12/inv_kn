@@ -454,7 +454,7 @@
                                         <h5><i class="fas fa-table mr-2"></i>Data Barang Masuk</h5>
                                         <div class="total-records">
                                             <span class="badge badge-primary">Total: <?= count($result) ?> Data</span>
-                                            <span class="badge badge-success ms-2">Hanya data dengan No. Batch</span>
+                                           
                                         </div>
                                     </div>
                                     
