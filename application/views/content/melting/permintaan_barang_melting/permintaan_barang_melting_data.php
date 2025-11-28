@@ -420,6 +420,7 @@
 
         success: function(data) {
           console.log(data)
+          $('#v-insert_batch').empty()
 
           $.each(data, function(i, item) {
 

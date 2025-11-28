@@ -14,14 +14,16 @@ class M_barang_masuk_melting extends CI_Model
     public function get($name = null)
     {
         if ($name) {
-            $where = "AND c.jenis_bahan = '$name' OR c.nama_barang = '$name'";
+            $where = "AND c.jenis_barang = '$name' OR c.nama_barang = '$name'";
         }
         $sql = "
-            SELECT a.*,b.no_batch,b.exp,b.mfg,b.no_surat_jalan,b.op_gudang,b.dok_pendukung,b.jenis_kemasan,b.jml_kemasan,b.tutup,b.wadah,b.label,c.nama_barang,c.satuan,c.jenis_bahan,d.nama_supplier FROM tb_mlt_melting_masuk a
-            LEFT JOIN tb_gbb_barang_masuk b ON a.id_barang_masuk = b.id_barang_masuk
-            LEFT JOIN tb_prc_barang c ON a.id_barang = c.id_barang
-            LEFT JOIN tb_prc_supplier d ON a.id_supplier = d.id_supplier
-            WHERE a.is_deleted = 0 $where ORDER BY a.tgl ASC";
+            SELECT a.*,b.no_batch,b.no_dpb, c.nama_barang,c.satuan,c.jenis_barang,d.nama_supplier, e.no_urut, f.no_sjl FROM tb_mlt_melting_masuk a
+            LEFT JOIN tb_adm_barang_masuk b ON a.id_adm_bm = b.id_adm_bm
+            LEFT JOIN tb_prc_master_barang c ON a.id_prc_master_barang = c.id_prc_master_barang
+            LEFT JOIN tb_prc_master_supplier d ON c.id_prc_master_supplier = d.id_prc_master_supplier
+            LEFT JOIN tb_mlt_permintaan_barang e ON a.id_mlt_permintaan_barang = e.id_mlt_permintaan_barang
+            LEFT JOIN tb_prc_dpb_tf f ON b.no_dpb = f.no_dpb
+            WHERE a.is_deleted = 0 $where ORDER BY a.tgl_masuk ASC";
         return $this->db->query($sql);
     }
 
