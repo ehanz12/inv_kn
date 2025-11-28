@@ -46,20 +46,38 @@ class Purchasing_ppb extends CI_Controller
 
     public function index()
     {
+
+        
         $tgl = $this->input->get('date_from');
         $tgl2 = $this->input->get('date_until');
+        $departement_filter = $this->input->get('departement');
         $data['tgl'] = $tgl;
         $data['tgl2'] = $tgl2;
+        $data['departement_filter'] = $departement_filter;
         $data['fil_barang'] = $this->M_purchasing_ppb->get_filter_brng();
         $data['res_barang'] = $this->M_purchasing_ppb->get_master_barang();
+        $data['departement_list'] = $this->M_purchasing_ppb->get_list_departement();
         $cek_status = $this->M_purchasing_ppb->cek_status()->row_array(0);
         $data['nama_admin'] = $this->session->userdata('nama_admin');
-        $data['result'] = $this->M_purchasing_ppb->get($tgl, $tgl2)->result_array();
+        $data['result'] = $this->M_purchasing_ppb->get($tgl, $tgl2, $departement_filter)->result_array();
         $data['pm'] = $this->M_prc_ppb_masterbarang->get()->result_array();
         $data['name'] = 'Nama Barang yang Terpilih';
 
         $this->template->load('template', 'content/purchasing/purchasing_ppb/purchasing_ppb', $data);
     }
+
+    public function update_status()
+{
+    $updated = $this->M_purchasing_ppb->update_status();
+    
+    if ($updated > 0) {
+        $this->session->set_flashdata('success', "Berhasil mengupdate $updated PPB menjadi selesai.");
+    } else {
+        $this->session->set_flashdata('info', 'Tidak ada PPB yang perlu diupdate.');
+    }
+    
+    redirect('Purchasing/Purchasing_ppb/Purchasing_ppb');
+}
 
 
     public function get_barang_detail()
@@ -136,6 +154,8 @@ public function approve()
 
         redirect('Purchasing/Purchasing_ppb/Purchasing_ppb');
     }
+
+    
 
 
 }

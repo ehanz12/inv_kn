@@ -66,7 +66,8 @@
                               <td><?= $k['no_ppb'] ?></td>
                               <td><?= $tgl_ppb ?></td>
                               <td><?= $k['jenis_ppb'] ?></td>
-                              <td><?= $k['status'] ?></td>
+                              <td>
+                                <?= $k['status'] ?></td>
                               <td class="text-center">
                                 <?php if ($level === "admin" && $k['acc_spv'] == null) { ?>
                                   <div class="btn-group" role="group" aria-label="Basic example">

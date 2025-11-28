@@ -156,7 +156,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                             <!-- <th class="text-center">No DPB</th> -->
                             <th class="text-center">No Surat Jalan</th>
                             
-                            <th class="text-center">Detail Barang</th>
+                            <th class="text-center">No batch</th>
                             <th class="text-center">Aksi</th>
                           </tr>
                         </thead>
