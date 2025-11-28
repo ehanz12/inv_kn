@@ -23,6 +23,7 @@ class pemeriksaan_bahan extends CI_Controller
     {
         // $data['row'] = $this->customer_m->get();
         $data['result'] = $this->M_pemeriksaan_bahan->get()->result_array();
+        echo json_encode($data['result']);
         $cek_karantina = $this->M_pemeriksaan_bahan->cek_karantina()->row_array(0);
         $data['res_barang'] = $this->M_barang->get()->result_array();
         $data['res_supplier'] = $this->M_supplier->get()->result_array();

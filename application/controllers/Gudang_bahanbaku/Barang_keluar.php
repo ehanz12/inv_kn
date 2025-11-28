@@ -23,16 +23,16 @@ class Barang_keluar extends CI_Controller
     {
         // $data['row'] = $this->customer_m->get();
         $data['result'] = $this->M_barang_keluar->get()->result_array();
-        for ($i = 0; $i < count($data['result']); $i++) {
-            $id_barang = $data['result'][$i]['id_barang'];
-            $jml_permintaan_barang = $this->M_permintaan_barang_gudang->jml_permintaan_barang($id_barang)->row_array();
-            $stok = $data['result'][$i]['qty'] - $jml_permintaan_barang['tot_permintaan_barang'];
-            $data['result'][$i]['tot_permintaan_barang'] = $jml_permintaan_barang['tot_permintaan_barang'];
-            $data['result'][$i]['sisa'] = $stok;
-        }
-        $data['res_barang'] = $this->M_barang->get()->result_array();
-        $data['res_supplier'] = $this->M_supplier->get()->result_array();
-        $data['res_user'] = $this->M_users->get()->result_array();
+        // for ($i = 0; $i < count($data['result']); $i++) {
+        //     $id_barang = $data['result'][$i]['id_barang'];
+        //     $jml_permintaan_barang = $this->M_permintaan_barang_gudang->jml_permintaan_barang($id_barang)->row_array();
+        //     $stok = $data['result'][$i]['qty'] - $jml_permintaan_barang['tot_permintaan_barang'];
+        //     $data['result'][$i]['tot_permintaan_barang'] = $jml_permintaan_barang['tot_permintaan_barang'];
+        //     $data['result'][$i]['sisa'] = $stok;
+        // }
+        // $data['res_barang'] = $this->M_barang->get()->result_array();
+        // $data['res_supplier'] = $this->M_supplier->get()->result_array();
+        // $data['res_user'] = $this->M_users->get()->result_array();
         $this->template->load('template', 'content/gudang_bahanbaku/barang_keluar/barang_keluar_data', $data);
         // print_r($data); 
     }

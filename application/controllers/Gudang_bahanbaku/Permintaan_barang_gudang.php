@@ -22,14 +22,13 @@ class Permintaan_barang_gudang extends CI_Controller
     public function index()
     {
         $data['result'] = $this->M_permintaan_barang_gudang->get()->result_array();
-
         $this->template->load('template', 'content/gudang_bahanbaku/permintaan_barang_gudang/permintaan_barang_gudang_data', $data);
     }
 
     public function disetujui()
     {
         $no_urut = $this->input->post('no_urut', TRUE);
-        $tgl_rilis        = $this->convertDate($this->input->post('tgl_setuju', TRUE));
+        $tgl_rilis = $this->convertDate($this->input->post('tgl_setuju', TRUE));
 
 
         $proses = $this->M_adm_barang_keluar->proses_persetujuan($no_urut, $tgl_rilis);
@@ -42,32 +41,7 @@ class Permintaan_barang_gudang extends CI_Controller
     }
 
 
-    public function disetujui2()
-    {
-        $no_transfer_slip = $this->input->post('no_transfer_slip', TRUE);
-        $tgl_rilis = $this->convertDate($this->input->post('tgl_rilis', TRUE));
-        // $data['id_barang_masuk'] = $this->input->post('id_barang_masuk', TRUE);
-        // $data['qty'] = $this->input->post('qty', TRUE);
-        // var_dump($data);
-        // die;
-        $data = $this->M_permintaan_barang_gudang->data_permintaan_barang($no_transfer_slip)->result_array();
-        foreach ($data as $k => $value) {
-            $per_barang = array('id_barang_masuk' => $value['id_barang_masuk'], 'qty' => $value['qty']);
-            $this->M_barang_masuk->update_stok($per_barang);
-            $id_mm = $this->M_permintaan_barang_gudang->add_approv($data[$k], $tgl_rilis);
-            $id_barang_keluar = $this->M_permintaan_barang_gudang->add_approv2($data[$k], $tgl_rilis);
-            $this->M_transaksi_melting->trans_masuk(array('id_mm' => $id_mm, 'qty' => $value['qty']));
-        }
-        $this->M_permintaan_barang_gudang->disetujui($no_transfer_slip, $tgl_rilis);
-        $respon = $this->M_permintaan_barang_gudang->update_status_ts($no_transfer_slip, "DiSetujui");
-
-
-        if ($respon) {
-            header('location:' . base_url('gudang_bahanbaku/Permintaan_barang_gudang') . '?alert=success&msg=Selamat anda berhasil Menyetujui Permintaan Barang Gudang');
-        } else {
-            header('location:' . base_url('gudang_bahanbaku/Permintaan_barang_gudang') . '?alert=error&msg=Maaf anda gagal Menyetujui Permintaan Barang Gudang');
-        }
-    }
+    
 
     public function ditolak()
     {

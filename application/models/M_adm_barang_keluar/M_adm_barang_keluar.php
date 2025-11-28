@@ -25,11 +25,12 @@ class M_adm_barang_keluar extends CI_Model
     }
 
     // 4. update status permintaan
-    public function update_status_permintaan($no_urut, $status)
+    public function update_status_permintaan($tgl_rilis, $no_urut, $status)
     {
         return $this->db->where('no_urut', $no_urut)
                         ->update('tb_mlt_permintaan_barang_tf', [
-                            'status' => $status
+                            'status' => $status,
+                            'tgl_setuju' => $tgl_rilis
                         ]);
     }
 
@@ -79,7 +80,7 @@ class M_adm_barang_keluar extends CI_Model
         }
 
         // update status permintaan
-        return $this->update_status_permintaan($no_urut, "Disetujui");
+        return $this->update_status_permintaan( $tgl_rilis, $no_urut, "Disetujui");
     }
 
 }

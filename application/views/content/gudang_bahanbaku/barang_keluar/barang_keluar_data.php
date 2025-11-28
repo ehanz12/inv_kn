@@ -45,7 +45,7 @@
                             <th>No. Po</th>
                             <th>No Batch</th>
                             <th>Nama Barang</th>
-                            <th class="text-right">Qty</th>
+                            <th class="text-right">Out</th>
                             <th class="text-right">Details</th>
                           </tr>
                         </thead>
@@ -54,20 +54,27 @@
                           $level = $this->session->userdata('level');
                           $no = 1;
                           foreach ($result as $k) {
-                            $tgl =  explode('-', $k['tgl'])[2] . "/" . explode('-', $k['tgl'])[1] . "/" . explode('-', $k['tgl'])[0];
-                            $exp =  explode('-', $k['exp'])[2] . "/" . explode('-', $k['exp'])[1] . "/" . explode('-', $k['exp'])[0];
-                            $mfg =  explode('-', $k['mfg'])[2] . "/" . explode('-', $k['mfg'])[1] . "/" . explode('-', $k['mfg'])[0];
+                            $tgl =  explode('-', $k['tgl_bk'])[2] . "/" . explode('-', $k['tgl_bk'])[1] . "/" . explode('-', $k['tgl_bk'])[0];
+                            // $exp =  explode('-', $k['exp'])[2] . "/" . explode('-', $k['exp'])[1] . "/" . explode('-', $k['exp'])[0];
+                            // $mfg =  explode('-', $k['mfg'])[2] . "/" . explode('-', $k['mfg'])[1] . "/" . explode('-', $k['mfg'])[0];
                           ?>
                             <tr>
                               <th scope="row"><?= $no++ ?></th>
                               <td><?= $tgl ?></td>
-                              <td><?= $k['no_transfer_slip'] ?></td>
+                              <td><?= $k['no_urut'] ?></td>
                               <td><?= $k['no_batch'] ?></td>
                               <td><?= $k['nama_barang'] ?></td>
-                              <td class="text-right"><?= number_format($k['qty'], 0, ",", ".") ?></td>
+                              <td class="text-right"><?= number_format($k['jml_bk'], 0, ",", ".") ?></td>
                               <td class="text-right">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail" data-id_barang="<?= $k['id_barang'] ?>" data-id_supplier="<?= $k['id_supplier'] ?>" data-id_barang_masuk="<?= $k['id_barang_masuk'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-tgl="<?= $tgl ?>" data-qty="<?= $k['qty'] ?>"
+                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" 
+                                  data-target="#detail" 
+                                  data-id_prc_master_barang="<?= $k['id_prc_master_barang'] ?>" 
+                                  data-id_prc_master_supplier="<?= $k['id_prc_master_supplier'] ?>" 
+                                  data-id_barang_masuk="<?= $k['id_adm_bm'] ?>" 
+                                  data-no_batch="<?= $k['no_batch'] ?>" 
+                                  data-tgl="<?= $tgl ?>" 
+                                  data-qty="<?= $k['jml_bk'] ?>"
                                     <i class="feather icon-eye"></i>Details
                                   </button>
                                 </div>

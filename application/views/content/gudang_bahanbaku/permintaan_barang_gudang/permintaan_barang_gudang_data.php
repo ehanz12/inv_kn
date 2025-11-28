@@ -43,7 +43,7 @@
                           <tr>
                             <th>#</th>
                             <th>Tanggal Keluar</th>
-                            <th>No Transfer Slip</th>
+                            <th>No Urut</th>
                             <th>Nama Operator</th>
                             <th>Status</th>
                             <th class="text-center">Details</th>
@@ -57,6 +57,11 @@
                           $no = 1;
                           foreach ($result as $k) {
                             $tgl =  explode('-', $k['tgl_permintaan'])[2] . "/" . explode('-', $k['tgl_permintaan'])[1] . "/" . explode('-', $k['tgl_permintaan'])[0];
+                            if($k['tgl_setuju'] != null) {
+                              $tgl_setuju =  explode('-', $k['tgl_setuju'])[2] . "/" . explode('-', $k['tgl_setuju'])[1] . "/" . explode('-', $k['tgl_setuju'])[0];
+                            }else {
+                              $tgl_setuju = "-";
+                            }
                             // $exp =  explode('-', $k['exp'])[2]."/".explode('-', $k['exp'])[1]."/".explode('-', $k['exp'])[0];
 
                           ?>
@@ -70,7 +75,8 @@
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                   <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#view" 
                                   data-no_urut="<?= $k['no_urut'] ?>" 
-                                  data-tgl_permintaan="<?= $tgl ?>" 
+                                  data-tgl_permintaan="<?= $tgl ?>"
+                                  data-tgl_setuju="<?= $tgl_setuju ?>" 
                                   data-nama_operator="<?= $k['nama_operator'] ?>" 
                                   >
                                     <i class="feather icon-eye"></i>Detail
@@ -334,6 +340,119 @@
 
             $("#d-insert_table").append(`
                         <tr>
+                            <td>${item.no_batch}</td>
+                            <td>${item.nama_barang}</td>
+                            <td>${item.nama_supplier}</td>
+                            <td>${item.jml_permintaan}</td>
+                        </tr>
+                    `)
+          })
+        },
+
+        error: function(xhr, status, error) {
+          console.error("Error:", error);
+          alert("Terjadi kesalahan saat memuat data barang");
+        }
+      })
+    })
+
+  })
+</script>
+
+
+<div class="modal fade" id="view" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Detail Permintaan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post" action="<?= base_url() ?>gudang_bahanbaku/permintaan_barang_gudang/disetujui">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="s-no_urut">No Urut</label>
+                <input type="text" class="form-control" id="v-no_urut" name="no_urut" placeholder="No Surat Jalan" maxlength="20" readonly>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="tgl_permintaan">Tanggal Permintaan</label>
+                <input type="text" class="form-control" id="v-tgl_permintaan" name="tgl_permintaan" placeholder="Tanggal Keluar" readonly>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="s-nama_operator">Nama Operator</label>
+                <input type="text" class="form-control" id="v-nama_operator" name="nama_operator" placeholder="No Surat Jalan" maxlength="20" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th>No Batch</th>
+                  <th>Nama Barang</th>
+                  <th>Nama Supplier</th>
+                  <th class="text-center">Qty</th>
+                </tr>
+              </thead>
+              <tbody id="v-insert_table">
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="tgl_setuju" class="mt-2 font-weight-bold">Tanggal DiSetujui</label><br>
+              <input type="text" class="form-control datepicker" id="v-tgl_setuju" name="tgl_setuju" placeholder="Tanggal DiSetujui" autocomplete="off" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('#view').on('show.bs.modal', function(event) {
+      var no_urut = $(event.relatedTarget).data('no_urut')
+      var tgl_permintaan = $(event.relatedTarget).data('tgl_permintaan')
+      var nama_operator = $(event.relatedTarget).data('nama_operator')
+      var tgl_setuju = $(event.relatedTarget).data('tgl_setuju')
+
+      $(this).find('#v-tgl_setuju').val(tgl_setuju)
+      $(this).find('#v-no_urut').val(no_urut)
+      $(this).find('#v-tgl_permintaan').val(tgl_permintaan)
+      $(this).find('#v-nama_operator').val(nama_operator)
+      // $(this).find('#v-exp').val(exp)
+     
+      $.ajax({
+        url: "<?= base_url('melting/permintaan_barang_melting/get_by_no_urut') ?>",
+        type: "POST",
+        data: {
+          no_urut: no_urut
+        },
+        dataType: "json",
+
+        success: function(data) {
+          console.log(data)
+          $('#v-insert_table').empty();
+
+          $.each(data, function(i, item) {
+
+            $("#v-insert_table").append(`
+                        <tr>
+                            <input type="hidden" name="id_prc_master_barang[]" value="${item.id_prc_master_barang}">
+                            <input type="hidden" name="id_adm_bm[]" value="${item.id_adm_bm}">
+                            <input type="hidden" name="jml_masuk[]" value="${item.jml_permintaan}">
                             <td>${item.no_batch}</td>
                             <td>${item.nama_barang}</td>
                             <td>${item.nama_supplier}</td>

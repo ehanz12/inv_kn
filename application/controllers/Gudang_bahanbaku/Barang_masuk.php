@@ -15,6 +15,7 @@ class Barang_masuk extends CI_Controller
         $this->load->model('M_purchasing/M_supplier');
         $this->load->model('M_users/M_users');
         $this->load->model('M_lab/M_pemeriksaan_bahan');
+        $this->load->model('M_adm_barang_masuk/M_adm_barang_masuk');
 
     }
 
@@ -25,17 +26,17 @@ class Barang_masuk extends CI_Controller
     public function index()
     {
         // $data['row'] = $this->customer_m->get();
-        $data['result'] = $this->M_barang_masuk->get()->result_array();
+        $data['result'] = $this->M_adm_barang_masuk->get3()->result_array();
         for ($i = 0; $i < count($data['result']); $i++) {
             $no_batch = $data['result'][$i]['no_batch'];
             $jml_barang_keluar = $this->M_barang_keluar->jml_barang_keluar($no_batch)->row_array();
-            $stok = $data['result'][$i]['qty'] - $jml_barang_keluar['tot_barang_keluar'];
+            $stok = $data['result'][$i]['jml_bm'] - $jml_barang_keluar['tot_barang_keluar'];
             $data['result'][$i]['tot_barang_keluar'] = $jml_barang_keluar['tot_barang_keluar'];
             $data['result'][$i]['sisa'] = $stok;
         }
-        $data['res_barang'] = $this->M_barang->get()->result_array();
-        $data['res_supplier'] = $this->M_supplier->get()->result_array();
-        $data['res_user'] = $this->M_users->get()->result_array();
+        // $data['res_barang'] = $this->M_barang->get()->result_array();
+        // $data['res_supplier'] = $this->M_supplier->get()->result_array();
+        // $data['res_user'] = $this->M_users->get()->result_array();
         $this->template->load('template', 'content/gudang_bahanbaku/barang_masuk/barang_masuk_data', $data);
         // print_r($data); 
     }
