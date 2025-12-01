@@ -37,9 +37,8 @@ class hasil_pemeriksaan_gel extends CI_Controller
     // Uji Bahan Baku (Gelatin)
     public function add_ujigel()
     {
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
-        $data['id_barang'] = $this->input->post('id_barang', TRUE);
-        $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
         $data['no_surat_jalan'] = $this->input->post('no_surat_jalan', TRUE);
@@ -78,7 +77,7 @@ class hasil_pemeriksaan_gel extends CI_Controller
 
         $respon = $this->M_hasil_pemeriksaan_gel->add_ujigel($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Proses");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Proses");
 
         if ($respon) {
             header('location:' . base_url('lab/Pemeriksaan_bahan') . '?alert=success&msg=Selamat anda berhasil melakukan Uji Bahan Gelatin (Bahan Baku)');
@@ -91,8 +90,8 @@ class hasil_pemeriksaan_gel extends CI_Controller
     public function add()
     {
         $data['id_ujigel'] = $this->input->post('id_ujigel', TRUE);
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
-        $data['id_barang'] = $this->input->post('id_barang', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
         $data['no_surat_jalan'] = $this->input->post('no_surat_jalan', TRUE);
@@ -113,7 +112,7 @@ class hasil_pemeriksaan_gel extends CI_Controller
         $data['exp'] = $this->convertDate($this->input->post('exp', TRUE));
         $data['mfg'] = $this->convertDate($this->input->post('mfg', TRUE));
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Released");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Released");
 
         $this->M_hasil_pemeriksaan_gel->approval_rilis($data);
         $respon = $this->M_barang_masuk->add($data);
@@ -128,8 +127,8 @@ class hasil_pemeriksaan_gel extends CI_Controller
     public function update()
     {
         $data['id_ujigel'] = $this->input->post('id_ujigel', TRUE);
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
-        $data['id_barang'] = $this->input->post('id_barang', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
@@ -179,12 +178,12 @@ class hasil_pemeriksaan_gel extends CI_Controller
     public function ditolak()
     {
         $data['id_ujigel'] = $this->input->post('id_ujigel', TRUE);
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
         $data['tgl_reject'] = $this->convertDate($this->input->post('tgl_reject', TRUE));
         $data['no_surat_jalan'] = $this->input->post('no_surat_jalan', TRUE);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Di Tolak");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Di Tolak");
         $respon = $this->M_hasil_pemeriksaan_gel->approval_ditolak($data);
 
         if ($respon) {
