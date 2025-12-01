@@ -26,20 +26,21 @@ class Mm_pw extends CI_Controller
         $name = "Pewarna";
         $data['result'] = $this->M_barang_masuk_melting->get($name)->result_array();
         for ($i = 0; $i < count($data['result']); $i++) {
-            $d['id_mm'] = $data['result'][$i]['id_mm'];
+            $d['id_adm_bm'] = $data['result'][$i]['id_adm_bm'];
+            // $qty_penimbangan = $this->M_penimbangan->qty_penimbangan($d)->row_array();
             $melting_masuk = $this->M_transaksi_melting->qty_masuk($d)->row_array();
             $melting_keluar = $this->M_transaksi_melting->qty_keluar($d)->row_array();
             if ($melting_keluar['tot_keluar'] === NULL) {
                 $melting_keluar['tot_keluar'] = 0;
             }
+            // $keluar = $data['result'][$i]['qty'] - $qty_penimbangan['tot_dibutuhkan'];
             $stok = $melting_masuk['tot_masuk'] - $melting_keluar['tot_keluar'];
+            // $data['result'][$i]['keluar'] = $keluar;
             $data['result'][$i]['sisa'] = $stok;
             $data['result'][$i]['masuk'] = $melting_masuk['tot_masuk'];
             $data['result'][$i]['keluar'] = $melting_keluar['tot_keluar'];
         }
-        $data['res_barang'] = $this->M_barang->get()->result_array();
-        $data['res_supplier'] = $this->M_supplier->get()->result_array();
-        $data['res_user'] = $this->M_users->get()->result_array();
+
         $this->template->load('template', 'content/melting/barang_masuk_melting/mm_pw', $data);
         // print_r($data); 
 

@@ -67,15 +67,15 @@
                           foreach ($result as $k) {
                             // var_dump($k);
                             // die;
-                            $tgl =  explode('-', $k['tgl'])[2] . "/" . explode('-', $k['tgl'])[1] . "/" . explode('-', $k['tgl'])[0];
-                            $exp =  explode('-', $k['exp'])[2] . "/" . explode('-', $k['exp'])[1] . "/" . explode('-', $k['exp'])[0];
-                            $mfg =  explode('-', $k['mfg'])[2] . "/" . explode('-', $k['mfg'])[1] . "/" . explode('-', $k['mfg'])[0];
+                            $tgl =  explode('-', $k['tgl_masuk'])[2] . "/" . explode('-', $k['tgl_masuk'])[1] . "/" . explode('-', $k['tgl_masuk'])[0];
+                            // $exp =  explode('-', $k['exp'])[2] . "/" . explode('-', $k['exp'])[1] . "/" . explode('-', $k['exp'])[0];
+                            // $mfg =  explode('-', $k['mfg'])[2] . "/" . explode('-', $k['mfg'])[1] . "/" . explode('-', $k['mfg'])[0];
                           ?>
-                            <?php if ($k['sisa'] !== 0) { ?>
+                            <?php if ($k['sisa'] == 0) { ?>
                               <tr>
                                 <th scope="row"><?= $no++ ?></th>
                                 <td><?= $tgl ?></td>
-                                <td><?= $k['no_transfer_slip'] ?></td>
+                                <td><?= $k['no_urut'] ?></td>
                                 <td><?= $k['no_batch'] ?></td>
                                 <td><?= $k['nama_barang'] ?></td>
                                 <td class="text-right"><?= $k['masuk'] ?><?= $k['satuan'] ?></td>
@@ -83,7 +83,24 @@
                                 <td class="text-right"><?= $k['sisa'] ?><?= $k['satuan'] ?></td>
                                 <td class="text-right">
                                   <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail" data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-tgl="<?= $tgl ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-nama_supplier="<?= $k['nama_supplier'] ?>" data-op_gudang="<?= $k['op_gudang'] ?>" data-dok_pendukung="<?= $k['dok_pendukung'] ?>" data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" data-jml_kemasan="<?= $k['jml_kemasan'] ?>" data-tutup="<?= $k['tutup'] ?>" data-wadah="<?= $k['wadah'] ?>" data-label="<?= $k['label'] ?>" data-qty="<?= $k['qty'] ?>" data-exp="<?= $exp ?>" data-mfg="<?= $mfg ?>">
+                                    <button type="button" class="btn btn-info btn-square btn-sm" 
+                                    data-toggle="modal" 
+                                    data-target="#detail" 
+                                    data-no_sjl="<?= $k['no_sjl'] ?>" 
+                                    data-no_batch="<?= $k['no_batch'] ?>" 
+                                    data-tgl="<?= $tgl ?>" 
+                                    data-nama_barang="<?= $k['nama_barang'] ?>" 
+                                    data-nama_supplier="<?= $k['nama_supplier'] ?>">
+                                    <!-- data-op_gudang="<?= $k['op_gudang'] ?>"  -->
+                                    <!-- data-dok_pendukung="<?= $k['dok_pendukung'] ?>"  -->
+                                    <!-- data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>"  -->
+                                    <!-- data-jml_kemasan="<?= $k['jml_kemasan'] ?>"  -->
+                                    <!-- data-tutup="<?= $k['tutup'] ?>"  -->
+                                    <!-- data-wadah="<?= $k['wadah'] ?>"  -->
+                                    <!-- data-label="<?= $k['label'] ?>"  -->
+                                    <!-- 4data-qty="<?= $k['qty'] ?>"  -->
+                                    <!-- data-exp="<?= $exp ?>"  -->
+                                    <!-- data-mfg="<?= $mfg ?>"> -->
                                       <i class="feather icon-eye"></i>Details
                                     </button>
                                   </div>

@@ -22,6 +22,17 @@ class M_barang_masuk extends CI_Model
             WHERE a.is_deleted = 0 ORDER BY a.tgl ASC";
         return $this->db->query($sql);
     }
+    public function get2($id = null)
+    {
+        // $kode_user = $this->kode_user();
+        $sql = "
+            SELECT a.*,b.jml_kemasan,b.qty,b.status,c.kode_barang,c.nama_barang,c.satuan,c.qty_pack,d.nama_supplier FROM tb_gbb_barang_masuk a
+            LEFT JOIN tb_lab_pemeriksaan_bahan b ON a.id_barang = b.id_barang
+            LEFT JOIN tb_prc_barang c ON a.id_barang = c.id_barang
+            LEFT JOIN tb_prc_supplier d ON a.id_supplier = d.id_supplier
+            WHERE a.is_deleted = 0 ORDER BY a.tgl ASC";
+        return $this->db->query($sql);
+    }
 
     public function add($data)
     {
