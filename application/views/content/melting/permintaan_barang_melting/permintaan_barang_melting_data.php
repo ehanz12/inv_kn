@@ -69,7 +69,8 @@
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                   <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#view"
                                     data-no_urut="<?= $k['no_urut'] ?>" 
-                                    data-tgl_permintaan="<?= $tgl ?>" 
+                                    data-tgl_permintaan="<?= $tgl ?>"
+                                    data-nama_operator="<?= $k['nama_operator'] ?>" 
                                     ><i class="feather icon-eye"></i>Detail
                                   </button>
                                 </div>
@@ -404,10 +405,11 @@
     $('#view').on('show.bs.modal', function(event) {
       var no_urut = $(event.relatedTarget).data('no_urut')
       var tgl = $(event.relatedTarget).data('tgl_permintaan')
-
+      var nama_operator = $(event.relatedTarget).data('nama_operator')
 
       $(this).find('#v-no_transfer_slip').val(no_urut)
       $(this).find('#v-tgl').val(tgl)
+      $(this).find('#v-nama_operator').val(nama_operator)
       
 
       $.ajax({

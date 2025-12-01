@@ -341,19 +341,43 @@ class M_adm_barang_masuk extends CI_Model
     }
 
     public function get_by_kode_ts($kode_ts) {
-        if ($kode_ts == "Bahan Pembantu") {
-            $kode_ts;
-        }
 
+    // Jika Bahan Pembantu → gunakan banyak kategori
+    if ($kode_ts == "Bahan Pembantu") {
+
+        // List kategori untuk Bahan Pembantu
+        $jenis = [
+            'Pewarna',
+            'Bahan Tambahan'
+        ];
+
+        $in = "'" . implode("','", $jenis) . "'";
 
         $sql = "
-            SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang,a.jml_bm, b.kode_barang , b.satuan ,b.nama_barang, b.jenis_barang FROM tb_adm_barang_masuk a 
+            SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, a.jml_bm,
+                   b.kode_barang, b.satuan, b.nama_barang, b.jenis_barang
+            FROM tb_adm_barang_masuk a
             LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
-            WHERE a.is_deleted = 0 AND b.jenis_barang='$kode_ts'
+            WHERE a.is_deleted = 0 
+            AND b.jenis_barang IN ($in)
         ";
 
         return $this->db->query($sql)->result_array();
     }
+
+    // Jika bukan Bahan Pembantu → normal pakai 1 kategori
+    $sql = "
+        SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, a.jml_bm,
+               b.kode_barang, b.satuan, b.nama_barang, b.jenis_barang
+        FROM tb_adm_barang_masuk a
+        LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
+        WHERE a.is_deleted = 0 
+        AND b.jenis_barang = '$kode_ts'
+    ";
+
+    return $this->db->query($sql)->result_array();
+}
+
 
     
 
