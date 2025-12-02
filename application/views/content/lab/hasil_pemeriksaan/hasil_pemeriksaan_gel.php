@@ -83,7 +83,7 @@
                                                             <td><?= $k['status_barang'] ?></td>
                                                             <td class="text-center">
                                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                                    <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_sjl="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>"  data-op_gudang="<?= $k['op_gudang'] ?>" data-qty="<?= $k['jml_bm'] ?>"    data-label="<?= $k['label'] ?>" data-pemerian="<?= $k['pemerian'] ?>" data-kelarutan="<?= $k['kelarutan'] ?>" data-identifikasi="<?= $k['identifikasi'] ?>" data-bauzat_tl_air="<?= $k['bauzat_tl_air'] ?>" data-trans_larutan="<?= $k['trans_larutan'] ?>" data-s_pengeringan="<?= $k['s_pengeringan'] ?>" data-bloom_st="<?= $k['bloom_st'] ?>" data-viscost="<?= $k['viscost'] ?>" data-viscost_bd="<?= $k['viscost_bd'] ?>" data-ph="<?= $k['ph'] ?>" data-t_isl="<?= $k['t_isl'] ?>" data-sett_point="<?= $k['sett_point'] ?>" data-keasaman="<?= $k['keasaman'] ?>" data-sulfur_do="<?= $k['sulfur_do'] ?>" data-sisa_pmj="<?= $k['sisa_pmj'] ?>" data-uk_part_mesh4="<?= $k['uk_part_mesh4'] ?>" data-uk_part_mesh40="<?= $k['uk_part_mesh40'] ?>" data-kndtv="<?= $k['kndtv'] ?>" data-arsen="<?= $k['arsen'] ?>" data-timbal="<?= $k['timbal'] ?>" data-peroksida="<?= $k['peroksida'] ?>" data-besi="<?= $k['besi'] ?>" data-cromium="<?= $k['cromium'] ?>" data-zinc="<?= $k['zinc'] ?>" data-cm_dna_babi="<?= $k['cm_dna_babi'] ?>" data-m_tb="<?= $k['m_tb'] ?>" data-m_akk="<?= $k['m_akk'] ?>" data-m_ec="<?= $k['m_ec'] ?>" data-m_salmon="<?= $k['m_salmon'] ?>" data-wd_py="<?= $k['wd_py'] ?>" data-penguji="<?= $k['penguji'] ?>">
+                                                                    <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_sjl="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>"  data-op_gudang="<?= $k['op_gudang'] ?>" data-qty="<?= $k['jml_bm'] ?>"    data-pemerian="<?= $k['pemerian'] ?>" data-kelarutan="<?= $k['kelarutan'] ?>" data-identifikasi="<?= $k['identifikasi'] ?>" data-bauzat_tl_air="<?= $k['bauzat_tl_air'] ?>" data-trans_larutan="<?= $k['trans_larutan'] ?>" data-s_pengeringan="<?= $k['s_pengeringan'] ?>" data-bloom_st="<?= $k['bloom_st'] ?>" data-viscost="<?= $k['viscost'] ?>" data-viscost_bd="<?= $k['viscost_bd'] ?>" data-ph="<?= $k['ph'] ?>" data-t_isl="<?= $k['t_isl'] ?>" data-sett_point="<?= $k['sett_point'] ?>" data-keasaman="<?= $k['keasaman'] ?>" data-sulfur_do="<?= $k['sulfur_do'] ?>" data-sisa_pmj="<?= $k['sisa_pmj'] ?>" data-uk_part_mesh4="<?= $k['uk_part_mesh4'] ?>" data-uk_part_mesh40="<?= $k['uk_part_mesh40'] ?>" data-kndtv="<?= $k['kndtv'] ?>" data-arsen="<?= $k['arsen'] ?>" data-timbal="<?= $k['timbal'] ?>" data-peroksida="<?= $k['peroksida'] ?>" data-besi="<?= $k['besi'] ?>" data-cromium="<?= $k['cromium'] ?>" data-zinc="<?= $k['zinc'] ?>" data-cm_dna_babi="<?= $k['cm_dna_babi'] ?>" data-m_tb="<?= $k['m_tb'] ?>" data-m_akk="<?= $k['m_akk'] ?>" data-m_ec="<?= $k['m_ec'] ?>" data-m_salmon="<?= $k['m_salmon'] ?>" data-wd_py="<?= $k['wd_py'] ?>" data-penguji="<?= $k['penguji'] ?>">
                                                                         <i class="feather icon-eye"></i>Details
                                                                     </button>
                                                                 </div>
@@ -92,12 +92,12 @@
                                                             <td class="text-center">
                                                                 <?php if ($jabatan === "supervisor" || $jabatan === "admin" && $k['status_barang'] === "Proses") { ?>
                                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                                        <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#released" data-id_ujigel="<?= $k['id_ujigel'] ?>" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-id_barang="<?= $k['id_prc_master_barang'] ?>" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_sjl="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>"  data-op_gudang="<?= $k['op_gudang'] ?>" data-qty="<?= $k['jml_bm'] ?>"   data-label="<?= $k['label'] ?>" data-pemerian="<?= $k['pemerian'] ?>" data-kelarutan="<?= $k['kelarutan'] ?>" data-identifikasi="<?= $k['identifikasi'] ?>" data-bauzat_tl_air="<?= $k['bauzat_tl_air'] ?>" data-trans_larutan="<?= $k['trans_larutan'] ?>" data-s_pengeringan="<?= $k['s_pengeringan'] ?>" data-bloom_st="<?= $k['bloom_st'] ?>" data-viscost="<?= $k['viscost'] ?>" data-viscost_bd="<?= $k['viscost_bd'] ?>" data-ph="<?= $k['ph'] ?>" data-t_isl="<?= $k['t_isl'] ?>" data-sett_point="<?= $k['sett_point'] ?>" data-keasaman="<?= $k['keasaman'] ?>" data-sulfur_do="<?= $k['sulfur_do'] ?>" data-sisa_pmj="<?= $k['sisa_pmj'] ?>" data-uk_part_mesh4="<?= $k['uk_part_mesh4'] ?>" data-uk_part_mesh40="<?= $k['uk_part_mesh40'] ?>" data-kndtv="<?= $k['kndtv'] ?>" data-arsen="<?= $k['arsen'] ?>" data-timbal="<?= $k['timbal'] ?>" data-peroksida="<?= $k['peroksida'] ?>" data-besi="<?= $k['besi'] ?>" data-cromium="<?= $k['cromium'] ?>" data-zinc="<?= $k['zinc'] ?>" data-cm_dna_babi="<?= $k['cm_dna_babi'] ?>" data-m_tb="<?= $k['m_tb'] ?>" data-m_akk="<?= $k['m_akk'] ?>" data-m_ec="<?= $k['m_ec'] ?>" data-m_salmon="<?= $k['m_salmon'] ?>" data-wd_py="<?= $k['wd_py'] ?>" data-penguji="<?= $k['penguji'] ?>">
+                                                                        <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#released" data-id_ujigel="<?= $k['id_ujigel'] ?>" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-id_barang="<?= $k['id_prc_master_barang'] ?>" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_sjl="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>"  data-op_gudang="<?= $k['op_gudang'] ?>" data-qty="<?= $k['jml_bm'] ?>"  data-pemerian="<?= $k['pemerian'] ?>" data-kelarutan="<?= $k['kelarutan'] ?>" data-identifikasi="<?= $k['identifikasi'] ?>" data-bauzat_tl_air="<?= $k['bauzat_tl_air'] ?>" data-trans_larutan="<?= $k['trans_larutan'] ?>" data-s_pengeringan="<?= $k['s_pengeringan'] ?>" data-bloom_st="<?= $k['bloom_st'] ?>" data-viscost="<?= $k['viscost'] ?>" data-viscost_bd="<?= $k['viscost_bd'] ?>" data-ph="<?= $k['ph'] ?>" data-t_isl="<?= $k['t_isl'] ?>" data-sett_point="<?= $k['sett_point'] ?>" data-keasaman="<?= $k['keasaman'] ?>" data-sulfur_do="<?= $k['sulfur_do'] ?>" data-sisa_pmj="<?= $k['sisa_pmj'] ?>" data-uk_part_mesh4="<?= $k['uk_part_mesh4'] ?>" data-uk_part_mesh40="<?= $k['uk_part_mesh40'] ?>" data-kndtv="<?= $k['kndtv'] ?>" data-arsen="<?= $k['arsen'] ?>" data-timbal="<?= $k['timbal'] ?>" data-peroksida="<?= $k['peroksida'] ?>" data-besi="<?= $k['besi'] ?>" data-cromium="<?= $k['cromium'] ?>" data-zinc="<?= $k['zinc'] ?>" data-cm_dna_babi="<?= $k['cm_dna_babi'] ?>" data-m_tb="<?= $k['m_tb'] ?>" data-m_akk="<?= $k['m_akk'] ?>" data-m_ec="<?= $k['m_ec'] ?>" data-m_salmon="<?= $k['m_salmon'] ?>" data-wd_py="<?= $k['wd_py'] ?>" data-penguji="<?= $k['penguji'] ?>">
                                                                             <i class="feather icon-edit-2"></i>Released
                                                                         </button>
                                                                     </div>
                                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                                        <button type="button" class="btn btn-danger btn-square btn-sm" data-toggle="modal" data-target="#reject" data-id_ujigel="<?= $k['id_ujigel'] ?>" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-id_barang="<?= $k['id_prc_master_barang'] ?>"  data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_sjl="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>"  data-op_gudang="<?= $k['op_gudang'] ?>" data-qty="<?= $k['jml_bm'] ?>" data-label="<?= $k['label'] ?>" data-pemerian="<?= $k['pemerian'] ?>" data-kelarutan="<?= $k['kelarutan'] ?>" data-identifikasi="<?= $k['identifikasi'] ?>" data-bauzat_tl_air="<?= $k['bauzat_tl_air'] ?>" data-trans_larutan="<?= $k['trans_larutan'] ?>" data-s_pengeringan="<?= $k['s_pengeringan'] ?>" data-bloom_st="<?= $k['bloom_st'] ?>" data-viscost="<?= $k['viscost'] ?>" data-viscost_bd="<?= $k['viscost_bd'] ?>" data-ph="<?= $k['ph'] ?>" data-t_isl="<?= $k['t_isl'] ?>" data-sett_point="<?= $k['sett_point'] ?>" data-keasaman="<?= $k['keasaman'] ?>" data-sulfur_do="<?= $k['sulfur_do'] ?>" data-sisa_pmj="<?= $k['sisa_pmj'] ?>" data-uk_part_mesh4="<?= $k['uk_part_mesh4'] ?>" data-uk_part_mesh40="<?= $k['uk_part_mesh40'] ?>" data-kndtv="<?= $k['kndtv'] ?>" data-arsen="<?= $k['arsen'] ?>" data-timbal="<?= $k['timbal'] ?>" data-peroksida="<?= $k['peroksida'] ?>" data-besi="<?= $k['besi'] ?>" data-cromium="<?= $k['cromium'] ?>" data-zinc="<?= $k['zinc'] ?>" data-cm_dna_babi="<?= $k['cm_dna_babi'] ?>" data-m_tb="<?= $k['m_tb'] ?>" data-m_akk="<?= $k['m_akk'] ?>" data-m_ec="<?= $k['m_ec'] ?>" data-m_salmon="<?= $k['m_salmon'] ?>" data-wd_py="<?= $k['wd_py'] ?>" data-penguji="<?= $k['penguji'] ?>">
+                                                                        <button type="button" class="btn btn-danger btn-square btn-sm" data-toggle="modal" data-target="#reject" data-id_ujigel="<?= $k['id_ujigel'] ?>" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-id_barang="<?= $k['id_prc_master_barang'] ?>"  data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_sjl="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>"  data-op_gudang="<?= $k['op_gudang'] ?>" data-qty="<?= $k['jml_bm'] ?>" data-pemerian="<?= $k['pemerian'] ?>" data-kelarutan="<?= $k['kelarutan'] ?>" data-identifikasi="<?= $k['identifikasi'] ?>" data-bauzat_tl_air="<?= $k['bauzat_tl_air'] ?>" data-trans_larutan="<?= $k['trans_larutan'] ?>" data-s_pengeringan="<?= $k['s_pengeringan'] ?>" data-bloom_st="<?= $k['bloom_st'] ?>" data-viscost="<?= $k['viscost'] ?>" data-viscost_bd="<?= $k['viscost_bd'] ?>" data-ph="<?= $k['ph'] ?>" data-t_isl="<?= $k['t_isl'] ?>" data-sett_point="<?= $k['sett_point'] ?>" data-keasaman="<?= $k['keasaman'] ?>" data-sulfur_do="<?= $k['sulfur_do'] ?>" data-sisa_pmj="<?= $k['sisa_pmj'] ?>" data-uk_part_mesh4="<?= $k['uk_part_mesh4'] ?>" data-uk_part_mesh40="<?= $k['uk_part_mesh40'] ?>" data-kndtv="<?= $k['kndtv'] ?>" data-arsen="<?= $k['arsen'] ?>" data-timbal="<?= $k['timbal'] ?>" data-peroksida="<?= $k['peroksida'] ?>" data-besi="<?= $k['besi'] ?>" data-cromium="<?= $k['cromium'] ?>" data-zinc="<?= $k['zinc'] ?>" data-cm_dna_babi="<?= $k['cm_dna_babi'] ?>" data-m_tb="<?= $k['m_tb'] ?>" data-m_akk="<?= $k['m_akk'] ?>" data-m_ec="<?= $k['m_ec'] ?>" data-m_salmon="<?= $k['m_salmon'] ?>" data-wd_py="<?= $k['wd_py'] ?>" data-penguji="<?= $k['penguji'] ?>">
                                                                             <i class="feather icon-edit-2"></i>Reject
                                                                         </button>
                                                                     </div>
@@ -195,17 +195,13 @@
                     </tr>
                     <tr>
                         <td class="px-1 py-2">
-                            No. Po
+                            No. DPB
                         </td>
                         <td class="px-3">
                             <input type="text" class="form-control form-control-sm" id="v-no_sjl" name="no_sjl" placeholder="No. Po" maxlength="20" readonly>
                         </td>
-                        <td class="px-1 py-2">
-                            Dokumen Pendukung
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="v-dok_pendukung" name="dok_pendukung" placeholder="Dokumen Pendukung" maxlength="20" readonly>
-                        </td>
+                        
+                        
                     </tr>
                     <tr>
                         <td class="px-1 py-2">
@@ -221,16 +217,7 @@
                             <input type="text" class="form-control form-control-sm" id="v-op_gudang" name="op_gudang" placeholder="Nama Operator" maxlength="20" readonly>
                         </td>
                     </tr>
-                    <tr>
-                       
-                        
-                        <td class="px-1 py-2">
-                            Jenis Kemasan
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="v-jenis_kemasan" name="jenis_kemasan" placeholder="Jenis Kemasan" maxlength="20" readonly>
-                        </td>
-                    </tr>
+                   
                     <tr>
                         <td class="px-1 py-2">
                             Jumlah Bahan <br> (Di Terima)
@@ -238,68 +225,14 @@
                         <td class="px-3">
                             <input type="text" class="form-control form-control-sm" id="v-qty" name="qty" placeholder="Jumlah Bahan (Di Terima)" maxlength="20" readonly>
                         </td>
-                        <td class="px-1 py-2">
-                            Jumlah Bahan <br> (Di Tolak)
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="v-ditolak_qty" name="ditolak_qty" placeholder="Jumlah Bahan (Di Tolak)" maxlength="20" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-1 py-2">
-                            Jumlah Kemasan <br> (Di Terima)
-                        </td>
-                        <td class="px-3">
-                            <input type="text" class="form-control form-control-sm" id="v-jml_kemasan" name="jml_kemasan" placeholder="Jumlah Kemasan (Di Terima)" maxlength="20" readonly>
-                        </td>
-                        <td class="px-1 py-2">
-                            Jumlah Kemasan <br> (Di Tolak)
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="v-ditolak_kemasan" name="ditolak_kemasan" placeholder="Jumlah Kemasan (Di Tolak)" maxlength="20" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-1 py-2">
-                            Mfg. date
-                        </td>
-                        <td class="px-3">
-                            <input type="text" class="form-control form-control-sm" id="v-mfg" name="mfg" placeholder="Mfg. date" maxlength="20" readonly>
-                        </td>
-                        <td class="px-1 py-2">
-                            Expired
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="v-exp" name="exp" placeholder="Expire" maxlength="20" readonly>
-                        </td>
+                        
+                        
                     </tr>
                 </table>
                 <div class="row">
                     <div class="col-md-12 mt-5">
                         <div class="form-group">
-                            <center><label for="pemeriksaan" class="font-weight-bold">Hasil Pemeriksaan Fisik Kemasan</label></center>
-                            <table class="mt-2">
-                                <tr>
-                                    <td class="px-1 py-2">
-                                        Tutup
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control form-control-sm" id="v-tutup" name="tutup" placeholder="Tutup" size="15" maxlength="20" readonly>
-                                    </td>
-                                    <td class="px-2 py-2">
-                                        Wadah
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control form-control-sm" id="v-wadah" name="wadah" placeholder="Wadah" size="15" maxlength="20" readonly>
-                                    </td>
-                                    <td class="px-2 py-2">
-                                        Label
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control form-control-sm" id="v-label" name="label" placeholder="Label" size="15" maxlength="20" readonly>
-                                    </td>
-                                </tr>
-                            </table>
+                            
 
                         </div>
                     </div>
@@ -544,9 +477,20 @@
                         <td class="px-1 py-2">
                             Tanggal Masuk
                         </td>
+                        
                         <td class="px-4">
                             <input type="text" class="form-control form-control-sm" id="r-tgl" name="tgl" placeholder="Tanggal Masuk" maxlength="20" readonly>
                         </td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 py-2">
+                            Jumlah Bahan <br> (Di Terima)
+                        </td>
+                        <td class="px-3">
+                            <input type="text" class="form-control form-control-sm" id="r-qty" name="qty" placeholder="Jumlah Bahan (Di Terima)" maxlength="20" readonly>
+                        </td>
+                       
+                        
                     </tr>
                     <tr>
                         <td class="px-1 py-2">
@@ -555,13 +499,10 @@
                         <td class="px-3">
                             <input type="text" class="form-control form-control-sm" id="r-no_sjl" name="no_sjl" placeholder="No. Po" maxlength="20" readonly>
                         </td>
-                        <td class="px-1 py-2">
-                            Dokumen Pendukung
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="r-dok_pendukung" name="dok_pendukung" placeholder="Dokumen Pendukung" maxlength="20" readonly>
-                        </td>
+                       
+                        
                     </tr>
+                    
                     <tr>
                         <td class="px-1 py-2">
                             Nama Barang
@@ -569,6 +510,7 @@
                         <td class="px-3">
                             <input type="text" class="form-control form-control-sm" id="r-nama_barang" name="nama_barang" placeholder="Nama Barang" maxlength="20" readonly>
                         </td>
+                        
                         <td class="px-1 py-2">
                             Operator Penerima
                         </td>
@@ -577,62 +519,14 @@
                         </td>
                     </tr>
                     
-                    <tr>
-                        <td class="px-1 py-2">
-                            Jumlah Bahan <br> (Di Terima)
-                        </td>
-                        <td class="px-3">
-                            <input type="text" class="form-control form-control-sm" id="r-qty" name="qty" placeholder="Jumlah Bahan (Di Terima)" maxlength="20" readonly>
-                        </td>
-                        <td class="px-1 py-2">
-                            Jumlah Bahan <br> (Di Tolak)
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="r-ditolak_qty" name="ditolak_qty" placeholder="Jumlah Bahan (Di Tolak)" maxlength="20" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-1 py-2">
-                            Jumlah Kemasan <br> (Di Terima)
-                        </td>
-                        <td class="px-3">
-                            <input type="text" class="form-control form-control-sm" id="r-jml_kemasan" name="jml_kemasan" placeholder="Jumlah Kemasan (Di Terima)" maxlength="20" readonly>
-                        </td>
-                        <td class="px-1 py-2">
-                            Jumlah Kemasan <br> (Di Tolak)
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="r-ditolak_kemasan" name="ditolak_kemasan" placeholder="Jumlah Kemasan (Di Tolak)" maxlength="20" readonly>
-                        </td>
-                    </tr>
+                    
+                    
                    
                 </table>
                 <div class="row">
                     <div class="col-md-12 mt-5">
                         <div class="form-group">
-                            <center><label for="pemeriksaan" class="font-weight-bold">Hasil Pemeriksaan Fisik Kemasan</label></center>
-                            <table class="mt-2">
-                                <tr>
-                                    <td class="px-1 py-2">
-                                        Tutup
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control form-control-sm" id="r-tutup" name="tutup" placeholder="Tutup" size="15" maxlength="20" readonly>
-                                    </td>
-                                    <td class="px-2 py-2">
-                                        Wadah
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control form-control-sm" id="r-wadah" name="wadah" placeholder="Wadah" size="15" maxlength="20" readonly>
-                                    </td>
-                                    <td class="px-2 py-2">
-                                        Label
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control form-control-sm" id="r-label" name="label" placeholder="Label" size="15" maxlength="20" readonly>
-                                    </td>
-                                </tr>
-                            </table>
+                            
 
                         </div>
                     </div>
@@ -894,17 +788,13 @@
                     </tr>
                     <tr>
                         <td class="px-1 py-2">
-                            No. Po
+                            No. DPB
                         </td>
                         <td class="px-3">
                             <input type="text" class="form-control form-control-sm" id="t-no_sjl" name="no_sjl" placeholder="No. Po" maxlength="20" readonly>
                         </td>
-                        <td class="px-1 py-2">
-                            Dokumen Pendukung
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="t-dok_pendukung" name="dok_pendukung" placeholder="Dokumen Pendukung" maxlength="20" readonly>
-                        </td>
+                        
+                    
                     </tr>
                     <tr>
                         <td class="px-1 py-2">
@@ -920,85 +810,23 @@
                             <input type="text" class="form-control form-control-sm" id="t-op_gudang" name="op_gudang" placeholder="Nama Operator" maxlength="20" readonly>
                         </td>
                     </tr>
-                    <tr>
-                        
-                       
-                        <td class="px-1 py-2">
-                            Jenis Kemasan
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="t-jenis_kemasan" name="jenis_kemasan" placeholder="Jenis Kemasan" maxlength="20" readonly>
-                        </td>
-                    </tr>
+                    
                     <tr>
                         <td class="px-1 py-2">
                             Jumlah Bahan <br> (Di Terima)
                         </td>
+                        
+                        
                         <td class="px-3">
-                            <input type="text" class="form-control form-control-sm" id="t-qty" name="qty" placeholder="Jumlah Bahan (Di Terima)" maxlength="20" readonly>
-                        </td>
-                        <td class="px-1 py-2">
-                            Jumlah Bahan <br> (Di Tolak)
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="t-ditolak_qty" name="ditolak_qty" placeholder="Jumlah Bahan (Di Tolak)" maxlength="20" readonly>
+                            <input type="text" class="form-control form-control-sm" id="v-qty" name="qty" placeholder="Jumlah Bahan (Di Terima)" maxlength="20" readonly>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="px-1 py-2">
-                            Jumlah Kemasan <br> (Di Terima)
-                        </td>
-                        <td class="px-3">
-                            <input type="text" class="form-control form-control-sm" id="t-jml_kemasan" name="jml_kemasan" placeholder="Jumlah Kemasan (Di Terima)" maxlength="20" readonly>
-                        </td>
-                        <td class="px-1 py-2">
-                            Jumlah Kemasan <br> (Di Tolak)
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="t-ditolak_kemasan" name="ditolak_kemasan" placeholder="Jumlah Kemasan (Di Tolak)" maxlength="20" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-1 py-2">
-                            Mfg. date
-                        </td>
-                        <td class="px-3">
-                            <input type="text" class="form-control form-control-sm" id="t-mfg" name="mfg" placeholder="Mfg. date" maxlength="20" readonly>
-                        </td>
-                        <td class="px-1 py-2">
-                            Expired
-                        </td>
-                        <td class="px-4">
-                            <input type="text" class="form-control form-control-sm" id="t-exp" name="exp" placeholder="Expire" maxlength="20" readonly>
-                        </td>
-                    </tr>
+                    
                 </table>
                 <div class="row">
                     <div class="col-md-12 mt-5">
                         <div class="form-group">
-                            <center><label for="pemeriksaan" class="font-weight-bold">Hasil Pemeriksaan Fisik Kemasan</label></center>
-                            <table class="mt-2">
-                                <tr>
-                                    <td class="px-1 py-2">
-                                        Tutup
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control form-control-sm" id="t-tutup" name="tutup" placeholder="Tutup" size="15" maxlength="20" readonly>
-                                    </td>
-                                    <td class="px-2 py-2">
-                                        Wadah
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control form-control-sm" id="t-wadah" name="wadah" placeholder="Wadah" size="15" maxlength="20" readonly>
-                                    </td>
-                                    <td class="px-2 py-2">
-                                        Label
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control form-control-sm" id="t-label" name="label" placeholder="Label" size="15" maxlength="20" readonly>
-                                    </td>
-                                </tr>
-                            </table>
+                            
 
                         </div>
                     </div>
