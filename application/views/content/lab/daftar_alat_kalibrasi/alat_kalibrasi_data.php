@@ -1,6 +1,7 @@
 <style>
   .table-orange {
-    background-color: #FFA500 !important; /* oranye */
+    background-color: #FFA500 !important;
+    /* oranye */
   }
 </style>
 
@@ -75,7 +76,16 @@
                           ?>
                             <tr class="table-row">
                               <th scope="row"><?= $no++ ?></th>
-                              <td><?= $k['kode_barang'] ?></td>
+                              <td>
+                                <span class="btn btn-primary btn-sm btn-square"
+                                  data-toggle="modal"
+                                  data-target="#view"
+                                  data-nama_barang="<?= $k['nama_barang'] ?>"
+                                  data-kode_barang="<?= $k['kode_barang'] ?>"
+                                  data-id_prc_master_barang="<?= $k['id_prc_master_barang'] ?>">
+                                  <?= $k['kode_barang'] ?>
+                                </span>
+                              </td>
                               <td><?= $k['nama_barang'] ?></td>
                               <td><?= $k['no_sertif'] ?></td>
                               <td><?= $tgl_kalibrasi ?></td>
@@ -129,7 +139,7 @@
 
 
 <script type="text/javascript">
-  $(document).ready(function () {
+  $(document).ready(function() {
 
     // INIT DATATABLES (WAJIB)
     let table = $('.datatable').DataTable({
@@ -146,21 +156,21 @@
     // FUNGSI HITUNG WARNA TANGGAL
     // ================================
     function warnaTanggalJS(tanggalInput, warnaAman = '#f1f1f1') {
-    // parsing dd/mm/YYYY dan normalisasi ke awal hari (00:00)
-    const tgl = moment(tanggalInput, "DD/MM/YYYY").startOf('day');
-    const now = moment().startOf('day');
+      // parsing dd/mm/YYYY dan normalisasi ke awal hari (00:00)
+      const tgl = moment(tanggalInput, "DD/MM/YYYY").startOf('day');
+      const now = moment().startOf('day');
 
-    if (!tgl.isValid()) return warnaAman;
+      if (!tgl.isValid()) return warnaAman;
 
-    // sekarang akan mengembalikan 0 untuk hari ini, 1 untuk besok, -1 untuk kemarin
-    const selisih = tgl.diff(now, "days");
-    console.log('selisih hari:', selisih);
+      // sekarang akan mengembalikan 0 untuk hari ini, 1 untuk besok, -1 untuk kemarin
+      const selisih = tgl.diff(now, "days");
+      console.log('selisih hari:', selisih);
 
-    // Pilihan: anggap expired hanya kalau selisih < 0 (kemarin atau lebih lama)
-    if (selisih < 0) return "red";      // sudah lewat (expired)
-    if (selisih <= 7) return "yellow";  // <= 7 hari
-    return warnaAman;                   // aman (>30 hari)
-  }
+      // Pilihan: anggap expired hanya kalau selisih < 0 (kemarin atau lebih lama)
+      if (selisih < 0) return "red"; // sudah lewat (expired)
+      if (selisih <= 7) return "yellow"; // <= 7 hari
+      return warnaAman; // aman (>30 hari)
+    }
 
 
     // ================================
@@ -168,7 +178,7 @@
     // ================================
     function updateRowStatus() {
 
-      $('.table-row').each(function () {
+      $('.table-row').each(function() {
         let tgl = $(this).find('.ed').text().trim();
 
         if (!tgl || tgl === "-") return;
@@ -202,7 +212,9 @@
           close: true,
           gravity: "top",
           position: "center",
-          style: { background: "#BD362F" }
+          style: {
+            background: "#BD362F"
+          }
         }).showToast();
         toastShown = true;
         return;
@@ -215,7 +227,9 @@
           close: true,
           gravity: "top",
           position: "center",
-          style: { background: "#F89406" }
+          style: {
+            background: "#F89406"
+          }
         }).showToast();
         toastShown = true;
         return;
@@ -228,7 +242,9 @@
         close: true,
         gravity: "top",
         position: "center",
-        style: { background: "#00CCFF" }
+        style: {
+          background: "#00CCFF"
+        }
       }).showToast();
       toastShown = true;
     }
@@ -243,7 +259,7 @@
     // ================================
     // JALAN SAAT DATATABLE DRAW ULANG
     // ================================
-    table.on('draw.dt', function () {
+    table.on('draw.dt', function() {
       updateRowStatus();
       showToastIfNeeded();
     });
@@ -367,117 +383,123 @@
               <input type="text" class="form-control" id="v-nama_alat" name="nama_alat" placeholder="Nama Alat" autocomplete="off" readonly>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="no_sertif">No Sertif</label>
-              <input type="text" class="form-control" id="v-no_sertif" name="no_sertif" placeholder="No Sertifikat" autocomplete="off" readonly>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="tgl_kalibrasi">Tanggal Kalibrasi</label>
-              <input type="text" class="form-control" id="v-tgl_kalibrasi" name="tgl_kalibrasi" placeholder="Tanggal Kalibrasi" autocomplete="off" readonly>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="ed_kalibrasi">E.D Kalibrasi</label>
-              <input type="text" class="form-control" id="v-ed_kalibrasi" name="ed_kalibrasi" placeholder="E.D Kalibrasi" autocomplete="off" readonly>
-            </div>
+        </div>
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th class="text-center">No</th>
+                  <th class="text-center">E Sertifikat</th>
+                  <th class="text-center">Tanggal Kalibrasi</th>
+                  <th class="text-center">ED Kalibrasi</th>
+                  <th class="text-center">Status Sertif</th>
+                </tr>
+              </thead>
+              <tbody id="v-detail"></tbody>
+            </table>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
       </div>
-      </form>
     </div>
   </div>
-</div>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('#view').on('show.bs.modal', function(event) {
-      var id_kalibrasi = $(event.relatedTarget).data('id_kalibrasi')
-      var kode_alat = $(event.relatedTarget).data('kode_alat')
-      var nama_alat = $(event.relatedTarget).data('nama_alat')
-      var no_sertif = $(event.relatedTarget).data('no_sertif')
-      var tgl_kalibrasi = $(event.relatedTarget).data('tgl_kalibrasi')
-      var ed_kalibrasi = $(event.relatedTarget).data('ed_kalibrasi')
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#view').on('show.bs.modal', function(event) {
+        var id_prc_master_barang = $(event.relatedTarget).data('id_prc_master_barang')
+        var kode_alat = $(event.relatedTarget).data('kode_barang')
+        var nama_alat = $(event.relatedTarget).data('nama_barang')
+        console.log(id_prc_master_barang)
 
-      $(this).find('#v-id_kalibrasi').val(id_kalibrasi)
-      $(this).find('#v-kode_alat').val(kode_alat)
-      $(this).find('#v-nama_alat').val(nama_alat)
-      $(this).find('#v-no_sertif').val(no_sertif)
-      $(this).find('#v-tgl_kalibrasi').val(tgl_kalibrasi)
-      $(this).find('#v-ed_kalibrasi').val(ed_kalibrasi)
+        $(this).find('#v-kode_alat').val(kode_alat)
+        $(this).find('#v-nama_alat').val(nama_alat)
+
+        $.ajax({
+        url: "<?= base_url('lab/Alat_kalibrasi/detail_kalibrasi') ?>",
+        type: "POST",
+        data: {
+          id_prc_master_barang: id_prc_master_barang
+        },
+        dataType: "json",
+        success: function(res) {
+          console.log(res)
+          // res.forEach(row => {
+
+          // });
+        }
+      });
+      })
     })
-  })
-</script>
+  </script>
 
-<!-- Modal Edit-->
-<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Alat Kalibrasi</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form method="post" action="<?= base_url() ?>lab/Alat_kalibrasi/update">
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="kode_alat">Kode Alat</label>
-                <input type="hidden" id="e-id_kalibrasi" name="id_kalibrasi">
-                <input type="text" class="form-control" id="e-kode_alat" name="kode_alat" placeholder="Kode Alat" required>
+  <!-- Modal Edit-->
+  <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Alat Kalibrasi</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="post" action="<?= base_url() ?>lab/Alat_kalibrasi/update">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="kode_alat">Kode Alat</label>
+                  <input type="hidden" id="e-id_kalibrasi" name="id_kalibrasi">
+                  <input type="text" class="form-control" id="e-kode_alat" name="kode_alat" placeholder="Kode Alat" required>
+                </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="nama_alat">Nama Alat</label>
-                <input type="text" class="form-control" id="e-nama_alat" name="nama_alat" placeholder="Nama Alat" autocomplete="off" required>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nama_alat">Nama Alat</label>
+                  <input type="text" class="form-control" id="e-nama_alat" name="nama_alat" placeholder="Nama Alat" autocomplete="off" required>
+                </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="no_sertif">No Sertif</label>
-                <input type="text" class="form-control" id="e-no_sertif" name="no_sertif" placeholder="No Sertifikat" autocomplete="off" required>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="no_sertif">No Sertif</label>
+                  <input type="text" class="form-control" id="e-no_sertif" name="no_sertif" placeholder="No Sertifikat" autocomplete="off" required>
+                </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="tgl_kalibrasi">Tanggal Kalibrasi</label>
-                <?php
-                if ($jabatan === "supervisor") { ?>
-                  <input type="text" class="form-control datepicker" id="e-tgl_kalibrasi" name="tgl_kalibrasi" placeholder="Tanggal Kalibrasi" autocomplete="off" required>
-                <?php } else { ?>
-                  <input type="text" class="form-control" id="e-tgl_kalibrasi" name="tgl_kalibrasi" placeholder="Tanggal Kalibrasi" autocomplete="off" readonly>
-                <?php } ?>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="tgl_kalibrasi">Tanggal Kalibrasi</label>
+                  <?php
+                  if ($jabatan === "supervisor") { ?>
+                    <input type="text" class="form-control datepicker" id="e-tgl_kalibrasi" name="tgl_kalibrasi" placeholder="Tanggal Kalibrasi" autocomplete="off" required>
+                  <?php } else { ?>
+                    <input type="text" class="form-control" id="e-tgl_kalibrasi" name="tgl_kalibrasi" placeholder="Tanggal Kalibrasi" autocomplete="off" readonly>
+                  <?php } ?>
+                </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="ed_kalibrasi">E.D Kalibrasi</label>
-                <?php if ($jabatan === "supervisor") { ?>
-                  <input type="text" class="form-control datepicker" id="e-ed_kalibrasi" name="ed_kalibrasi" placeholder="E.D Kalibrasi" autocomplete="off" required>
-                <?php } else { ?>
-                  <input type="text" class="form-control" id="e-ed_kalibrasi" name="ed_kalibrasi" placeholder="E.D Kalibrasi" autocomplete="off" readonly>
-                <?php } ?>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="ed_kalibrasi">E.D Kalibrasi</label>
+                  <?php if ($jabatan === "supervisor") { ?>
+                    <input type="text" class="form-control datepicker" id="e-ed_kalibrasi" name="ed_kalibrasi" placeholder="E.D Kalibrasi" autocomplete="off" required>
+                  <?php } else { ?>
+                    <input type="text" class="form-control" id="e-ed_kalibrasi" name="ed_kalibrasi" placeholder="E.D Kalibrasi" autocomplete="off" readonly>
+                  <?php } ?>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" id="simpan" class="btn btn-primary" onclick="if (! confirm('Apakah Anda Yakin Untuk Mengedit Data Ini? Tolong Untuk Di Check Kembali. Dan Jangan Lupa Untuk Menginputkan Barangnya')) { return false; }">Simpan</button>
-        </div>
-      </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" id="simpan" class="btn btn-primary" onclick="if (! confirm('Apakah Anda Yakin Untuk Mengedit Data Ini? Tolong Untuk Di Check Kembali. Dan Jangan Lupa Untuk Menginputkan Barangnya')) { return false; }">Simpan</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 </div>
 <script type="text/javascript">
   $(document).ready(function() {

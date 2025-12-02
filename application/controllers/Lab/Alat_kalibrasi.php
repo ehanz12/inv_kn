@@ -20,6 +20,14 @@ class Alat_kalibrasi extends CI_Controller
 
 	}
 
+	public function detail_kalibrasi()
+	{
+		$id_prc_master_barang = $this->input->post('id_prc_master_barang', TRUE);
+		$result = $this->M_alat_kalibrasi->detail_with_id_barang($id_prc_master_barang);
+
+		echo json_encode($result);
+	}
+
 	public function add()
 	{
 		$data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);

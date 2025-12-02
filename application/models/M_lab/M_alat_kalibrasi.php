@@ -19,10 +19,16 @@ class M_alat_kalibrasi extends CI_Model
         $sql = "
             SELECT a.id_prc_master_barang, a.nama_barang, a.kode_barang,a.is_deleted,a.jenis_barang, a.departement, b.id_lab_kalibrasi ,b.no_sertif, b.status_sertif, b.tgl_kalibrasi, b.ed_kalibrasi FROM tb_prc_master_barang a
             LEFT JOIN tb_lab_alat_kalibrasi b ON a.id_prc_master_barang = b.id_prc_master_barang
-            WHERE a.is_deleted = 0 AND a.jenis_barang='Alat Ukur' AND a.departement='Lab';
+            WHERE a.is_deleted = 0 AND a.jenis_barang='Alat Ukur' AND a.departement='Lab' AND b.status_sertif IS NULL;
         ";
 
         return $this->db->query($sql);
+    }
+
+    public function detail_with_id_barang($id_prc_master_barang)
+    {
+        $sql = "SELECT * FROM tb_lab_alat_kalibrasi WHERE is_deleted = 0 AND  id_prc_master_barang = '$id_prc_master_barang'";
+        return $this->db->query($sql)->result_array();
     }
 
     public function add($data)
