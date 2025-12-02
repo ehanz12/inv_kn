@@ -9,7 +9,7 @@
                 </button>
             </div>
             <form method="post" action="<?= base_url() ?>lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_pel/add_ujipel">
-                <input type="hidden" id="e_id_pb" name="id_pb">
+                <input type="hidden" id="e_id_adm_bm" name="id_adm_bm">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-4">
@@ -120,7 +120,7 @@
 
     $(document).ready(function() {
         $('#add_ujipel').on('show.bs.modal', function(event) {
-            var id_pb = $(event.relatedTarget).data('id_pb')
+            var id_adm_bm = $(event.relatedTarget).data('id_adm_bm')
             var id_barang = $(event.relatedTarget).data('id_barang')
             var id_supplier = $(event.relatedTarget).data('id_supplier')
             var no_surat_jalan = $(event.relatedTarget).data('no_surat_jalan')
@@ -139,7 +139,7 @@
             var exp = $(event.relatedTarget).data('exp')
             var mfg = $(event.relatedTarget).data('mfg')
 
-            $(this).find('#e_id_pb').val(id_pb)
+            $(this).find('#e_id_adm_bm').val(id_adm_bm)
             $(this).find('#e_id_barang').val(id_barang)
             $(this).find('#e_id_supplier').val(id_supplier)
             $(this).find('#e_no_surat_jalan').val(no_surat_jalan)

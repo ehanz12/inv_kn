@@ -36,8 +36,8 @@ class hasil_pemeriksaan_bt_nb extends CI_Controller
     // Uji Bahan Tambahan (Natrium Benzoat)
     public function add_ujinb()
     {
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
-        $data['id_barang'] = $this->input->post('id_barang', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
+        $data['id_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
@@ -54,7 +54,7 @@ class hasil_pemeriksaan_bt_nb extends CI_Controller
 
         $respon = $this->M_hasil_pemeriksaan_bt_nb->add_ujinb($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Proses");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Proses");
 
         if ($respon) {
             header('location:' . base_url('lab/Pemeriksaan_bahan') . '?alert=success&msg=Selamat anda berhasil melakukan Uji Bahan Tambahan (Natrium Benzoat)');
@@ -66,8 +66,8 @@ class hasil_pemeriksaan_bt_nb extends CI_Controller
     public function add()
     {
         $data['id_ujibt'] = $this->input->post('id_ujibt', TRUE);
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
-        $data['id_barang'] = $this->input->post('id_barang', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
+        $data['id_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
         $data['no_surat_jalan'] = $this->input->post('no_surat_jalan', TRUE);

@@ -11,7 +11,7 @@ class M_pemeriksaan_bahan extends CI_Model
     {
         return $this->session->userdata("id_user");
     }
-  public function get($id_prc_master_barang = null, $tgl_mulai = null, $tgl_selesai = null)
+ public function get($id_prc_master_barang = null, $tgl_mulai = null, $tgl_selesai = null)
 {
     $sql = "
         SELECT
@@ -42,6 +42,7 @@ class M_pemeriksaan_bahan extends CI_Model
             FROM tb_adm_barang_masuk t1
             JOIN (
                 SELECT 
+                    id_adm_bm,
                     id_prc_master_barang,
                     no_batch,
                     MIN(created_at) AS created_at
@@ -49,9 +50,10 @@ class M_pemeriksaan_bahan extends CI_Model
                 WHERE is_deleted = 0
                   AND no_batch IS NOT NULL
                   AND no_batch != ''
-                GROUP BY id_prc_master_barang, no_batch
+                GROUP BY id_adm_bm, no_batch
             ) t2 ON 
-                t1.id_prc_master_barang = t2.id_prc_master_barang
+                t1.id_adm_bm = t2.id_adm_bm
+                AND t1.id_prc_master_barang = t2.id_prc_master_barang
                 AND t1.no_batch = t2.no_batch
                 AND t1.created_at = t2.created_at
         ) x
@@ -88,6 +90,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
     return $this->db->query($sql);
 }
+
 
 
     

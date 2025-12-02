@@ -38,13 +38,14 @@
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Tanggal Masuk</th>
-                                                        <th>No. Po</th>
+                                                        <!-- <th>No SJl</th> -->
+                                                        
                                                         <th>No Batch</th>
                                                         <th>Nama Barang</th>
                                                         <th class="text-right">Qty</th>
                                                         <th class="">Jenis Bahan</th>
                                                         <th class="text-center">Status</th>
-                                                        <th class="text-center">Details</th>
+                                                        
                                                         <th class="text-center">Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -63,21 +64,8 @@
                                                             <?php } ?>
                                                             <th scope="row"><?= $no++ ?></th>
                                                             <td><?= $tgl_msk ?></td>
-                                                            <td><?= $k['no_sjl'] ?></td>
-                                                            <td><?= $k['no_batch'] ?></td>
-                                                            <td><?= $k['nama_barang'] ?></td>
-                                                            <td class="text-right"><?= number_format($k['jml_bm'], 0, ",", ".") ?> <?= $k['satuan'] ?? '' ?></td>
-                                                            <td><?= $k['kode_barang'] ?></td>
-                                                            <td class="text-center">
-                                                                <?php if ($k['status_barang'] === "Karantina") { ?>
-                                                                    <span class="badge badge-warning"><?= $k['status_barang'] ?></span>
-                                                                <?php } else { ?>
-                                                                    <span class="badge badge-success"><?= $k['status_barang'] ?></span>
-                                                                <?php } ?>
-                                                            </td>
-                                                            
-                                                            <!-- Kolom Details -->
-                                                            <td class="text-center">
+                                                            <!-- <td><?= $k['no_sjl'] ?></td> -->
+                                                           <td class="text-center">
                                                                 <div class="btn-group" role="group">
                                                                     <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail" 
                                                                             data-id_adm_bm="<?= $k['id_adm_bm'] ?>" 
@@ -88,10 +76,23 @@
                                                                             data-qty="<?= $k['jml_bm'] ?>" 
                                                                            
                                                                            
-                                                                        <i class="feather icon-eye"></i> Details
+                                                                        <i class="feather icon-eye"></i>  <?= $k['no_batch'] ?>
                                                                     </button>
                                                                 </div>
                                                             </td>
+                                                            <td><?= $k['nama_barang'] ?></td>
+                                                            <td class="text-right"><?= number_format($k['jml_bm'], 0, ",", ".") ?> <?= $k['satuan'] ?? '' ?></td>
+                                                            <td><?= $k['jenis_barang'] ?></td>
+                                                            <td class="text-center">
+                                                                <?php if ($k['status_barang'] === "Karantina") { ?>
+                                                                    <span class="badge badge-warning"><?= $k['status_barang'] ?></span>
+                                                                <?php } else { ?>
+                                                                    <span class="badge badge-success"><?= $k['status_barang'] ?></span>
+                                                                <?php } ?>
+                                                            </td>
+                                                            
+                                                            <!-- Kolom Details -->
+                                                            
                                                             
                                                             <!-- Kolom Aksi -->
                                                             <td class="text-center">
@@ -122,19 +123,14 @@
                                                                                     data-id_adm_bm="<?= $k['id_adm_bm'] ?>" 
                                                                                     data-id_barang="<?= $k['id_prc_master_barang'] ?>" 
                                                                                    
-                                                                                    data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" 
+                                                                                    data-no_surat_jalan="<?= $k['no_sjl'] ?>" 
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
                                                                                     data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
-                                                                                    data-dok_pendukung="<?= $k['dok_pendukung'] ?>" 
-                                                                                    data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" 
-                                                                                    data-jml_kemasan="<?= $k['jml_kemasan'] ?>" 
-                                                                                    data-tutup="<?= $k['tutup'] ?>" 
-                                                                                    data-wadah="<?= $k['wadah'] ?>" 
-                                                                                    data-label="<?= $k['label'] ?>" 
-                                                                                    data-qty="<?= $k['qty'] ?>">
+                                                                                    
+                                                                                    data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji Pel
                                                                             </button>
                                                                         </div>
@@ -146,45 +142,32 @@
                                                                             <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#add_ujipw" 
                                                                                     data-id_adm_bm="<?= $k['id_adm_bm'] ?>" 
                                                                                     data-id_barang="<?= $k['id_prc_master_barang'] ?>" 
-                                                                                    data-id_supplier="<?= $k['id_supplier'] ?>" 
-                                                                                    data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" 
+                                                                                    data-no_surat_jalan="<?= $k['no_sjl'] ?>" 
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
                                                                                     data-nama_supplier="<?= $k['nama_supplier'] ?>" 
-                                                                                    data-op_gudang="<?= $k['op_gudang'] ?>" 
-                                                                                    data-dok_pendukung="<?= $k['dok_pendukung'] ?>" 
-                                                                                    data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" 
-                                                                                    data-jml_kemasan="<?= $k['jml_kemasan'] ?>" 
-                                                                                    data-tutup="<?= $k['tutup'] ?>" 
-                                                                                    data-wadah="<?= $k['wadah'] ?>" 
-                                                                                    data-label="<?= $k['label'] ?>" 
-                                                                                    data-qty="<?= $k['qty'] ?>">
+                                                                                    
+                                                                                    
+                                                                                    data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji Pw
                                                                             </button>
                                                                         </div>
                                                                     <?php } ?>
                                                                     
                                                                     <!-- Tinta Print -->
-                                                                    <?php if (($k['jenis_barang'] === "Tinta Print" || $k['jenis_barang'] === "TINTA PRINT")) { ?>
+                                                                    <?php if (($k['jenis_barang'] === "Tinta Print" || $k['nama_barang'] === "TINTA PRINT")) { ?>
                                                                         <div class="btn-group" role="group">
                                                                             <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#add_ujitp" 
                                                                                     data-id_adm_bm="<?= $k['id_adm_bm'] ?>" 
                                                                                     data-id_barang="<?= $k['id_prc_master_barang'] ?>" 
-                                                                                    data-id_supplier="<?= $k['id_supplier'] ?>" 
-                                                                                    data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" 
+                                                                                    data-no_surat_jalan="<?= $k['no_sjl'] ?>" 
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
                                                                                     data-nama_supplier="<?= $k['nama_supplier'] ?>" 
-                                                                                    data-op_gudang="<?= $k['op_gudang'] ?>" 
-                                                                                    data-dok_pendukung="<?= $k['dok_pendukung'] ?>" 
-                                                                                    data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" 
-                                                                                    data-jml_kemasan="<?= $k['jml_kemasan'] ?>" 
-                                                                                    data-tutup="<?= $k['tutup'] ?>" 
-                                                                                    data-wadah="<?= $k['wadah'] ?>" 
-                                                                                    data-label="<?= $k['label'] ?>" 
-                                                                                    data-qty="<?= $k['qty'] ?>">
+                                                                                    
+                                                                                    data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji TP
                                                                             </button>
                                                                         </div>
@@ -197,19 +180,14 @@
                                                                                     data-id_adm_bm=""="<?= $k['id_adm_bm'] ?>" 
                                                                                     data-id_barang="<?= $k['id_prc_master_barang'] ?>" 
                                                                                    
-                                                                                    data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" 
+                                                                                    data-no_surat_jalan="<?= $k['no_sjl'] ?>" 
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
                                                                                     data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
-                                                                                    data-dok_pendukung="<?= $k['dok_pendukung'] ?>" 
-                                                                                    data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" 
-                                                                                    data-jml_kemasan="<?= $k['jml_kemasan'] ?>" 
-                                                                                    data-tutup="<?= $k['tutup'] ?>" 
-                                                                                    data-wadah="<?= $k['wadah'] ?>" 
-                                                                                    data-label="<?= $k['label'] ?>" 
-                                                                                    data-qty="<?= $k['qty'] ?>">
+                                                                                    
+                                                                                    data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji BT
                                                                             </button>
                                                                         </div>
@@ -228,13 +206,8 @@
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
                                                                                     data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
-                                                                                    data-dok_pendukung="<?= $k['dok_pendukung'] ?>" 
-                                                                                    data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" 
-                                                                                    data-jml_kemasan="<?= $k['jml_kemasan'] ?>" 
-                                                                                    data-tutup="<?= $k['tutup'] ?>" 
-                                                                                    data-wadah="<?= $k['wadah'] ?>" 
-                                                                                    data-label="<?= $k['label'] ?>" 
-                                                                                    data-qty="<?= $k['qty'] ?>">
+                                                                                    
+                                                                                    data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji BT
                                                                             </button>
                                                                         </div>
@@ -246,19 +219,14 @@
                                                                             <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#add_ujila" 
                                                                                     data-id_adm_bm=""="<?= $k['id_adm_bm'] ?>" 
                                                                                     data-id_barang="<?= $k['id_prc_master_barang'] ?>" 
-                                                                                    data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" 
+                                                                                    data-no_surat_jalan="<?= $k['no_sjl'] ?>" 
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
                                                                                     data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
-                                                                                    data-dok_pendukung="<?= $k['dok_pendukung'] ?>" 
-                                                                                    data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" 
-                                                                                    data-jml_kemasan="<?= $k['jml_kemasan'] ?>" 
-                                                                                    data-tutup="<?= $k['tutup'] ?>" 
-                                                                                    data-wadah="<?= $k['wadah'] ?>" 
-                                                                                    data-label="<?= $k['label'] ?>" 
-                                                                                    data-qty="<?= $k['qty'] ?>">
+                                                                                   
+                                                                                    data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji BT
                                                                             </button>
                                                                         </div>
@@ -271,19 +239,14 @@
                                                                                     data-id_adm_bm="<?= $k['id_adm_bm'] ?>" 
                                                                                     data-id_barang="<?= $k['id_prc_master_barang'] ?>" 
                                                                                     
-                                                                                    data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" 
+                                                                                    data-no_surat_jalan="<?= $k['no_sjl'] ?>" 
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
                                                                                     data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
-                                                                                    data-dok_pendukung="<?= $k['dok_pendukung'] ?>" 
-                                                                                    data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" 
-                                                                                    data-jml_kemasan="<?= $k['jml_kemasan'] ?>" 
-                                                                                    data-tutup="<?= $k['tutup'] ?>" 
-                                                                                    data-wadah="<?= $k['wadah'] ?>" 
-                                                                                    data-label="<?= $k['label'] ?>" 
-                                                                                    data-qty="<?= $k['qty'] ?>">
+                                                                                   
+                                                                                    data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji BT
                                                                             </button>
                                                                         </div>
@@ -296,19 +259,14 @@
                                                                                     data-id_adm_bm=""="<?= $k['id_adm_dpb'] ?>" 
                                                                                     data-id_barang="<?= $k['id_prc_master_barang'] ?>" 
                                                                                    
-                                                                                    data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" 
+                                                                                    data-no_surat_jalan="<?= $k['no_sjl'] ?>" 
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
                                                                                     data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
-                                                                                    data-dok_pendukung="<?= $k['dok_pendukung'] ?>" 
-                                                                                    data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" 
-                                                                                    data-jml_kemasan="<?= $k['jml_kemasan'] ?>" 
-                                                                                    data-tutup="<?= $k['tutup'] ?>" 
-                                                                                    data-wadah="<?= $k['wadah'] ?>" 
-                                                                                    data-label="<?= $k['label'] ?>" 
-                                                                                    data-qty="<?= $k['qty'] ?>">
+
+                                                                                    data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji BT
                                                                             </button>
                                                                         </div>
@@ -321,19 +279,13 @@
                                                                                     data-id_adm_dpb="<?= $k['id_adm_dpb'] ?>" 
                                                                                     data-id_barang="<?= $k['id_prc_master_barang'] ?>" 
                                                                                    
-                                                                                    data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" 
+                                                                                    data-no_surat_jalan="<?= $k['no_sjl'] ?>" 
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
                                                                                     data-nama_supplier="<?= $k['nama_supplier'] ?>" 
-                                                                                    data-op_gudang="<?= $k['op_gudang'] ?>" 
-                                                                                    data-dok_pendukung="<?= $k['dok_pendukung'] ?>" 
-                                                                                    data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" 
-                                                                                    data-jml_kemasan="<?= $k['jml_kemasan'] ?>" 
-                                                                                    data-tutup="<?= $k['tutup'] ?>" 
-                                                                                    data-wadah="<?= $k['wadah'] ?>" 
-                                                                                    data-label="<?= $k['label'] ?>" 
-                                                                                    data-qty="<?= $k['qty'] ?>">
+                                                                                    
+                                                                                    data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji BT
                                                                             </button>
                                                                         </div>

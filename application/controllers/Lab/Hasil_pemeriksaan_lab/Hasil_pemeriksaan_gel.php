@@ -38,7 +38,7 @@ class hasil_pemeriksaan_gel extends CI_Controller
     public function add_ujigel()
     {
         $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
-        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
+        $data['id_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
         $data['no_surat_jalan'] = $this->input->post('no_surat_jalan', TRUE);

@@ -38,7 +38,7 @@ class hasil_pemeriksaan_pel extends CI_Controller
     public function add_ujipel()
     {
         $data['id_adm_bm '] = $this->input->post('id_adm_bm', TRUE);
-        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_barang', TRUE);
         
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
@@ -64,7 +64,7 @@ class hasil_pemeriksaan_pel extends CI_Controller
     public function add()
     {
         $data['id_ujipel'] = $this->input->post('id_ujipel', TRUE);
-        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_barang', TRUE);
         $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
         
         $data['no_batch'] = $this->input->post('no_batch', TRUE);

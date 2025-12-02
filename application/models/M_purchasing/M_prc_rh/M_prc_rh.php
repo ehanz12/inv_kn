@@ -66,7 +66,7 @@ class M_prc_rh extends CI_Model
         $sql = "
         SELECT a.jenis_ppb, a.jenis_form_ppb, a.no_ppb, a.jenis_ppb FROM tb_prc_ppb_tf a
         WHERE a.is_deleted = 0 AND a.jenis_ppb = 'Budget' AND a.acc_spv = 'Approved' AND a.acc_manager = 'Approved'
-        AND a.acc_pm= 'Approved' AND a.acc_direktur = 'Approved'
+        AND a.acc_pm= 'Approved'
         AND NOT EXISTS (
             SELECT 1 
             FROM tb_prc_ppb c

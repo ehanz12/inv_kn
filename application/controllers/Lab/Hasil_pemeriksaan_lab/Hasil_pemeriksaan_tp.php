@@ -37,9 +37,9 @@ class hasil_pemeriksaan_tp extends CI_Controller
     // Uji Tinta Print (tp)
     public function add_ujitp()
     {
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
-        $data['id_barang'] = $this->input->post('id_barang', TRUE);
-        $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_barang', TRUE);
+       
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
         $data['no_surat_jalan'] = $this->input->post('no_surat_jalan', TRUE);
@@ -74,7 +74,7 @@ class hasil_pemeriksaan_tp extends CI_Controller
 
         $respon = $this->M_hasil_pemeriksaan_tp->add_ujitp($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Proses");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Proses");
 
         if ($respon) {
             header('location:' . base_url('lab/pemeriksaan_bahan') . '?alert=success&msg=Selamat anda berhasil melakukan Uji Bahan Tinta Print');
@@ -86,9 +86,9 @@ class hasil_pemeriksaan_tp extends CI_Controller
     public function add()
     {
         $data['id_ujitp'] = $this->input->post('id_ujitp', TRUE);
-        $data['id_barang'] = $this->input->post('id_barang', TRUE);
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
-        $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_barang', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
+        
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
         $data['no_surat_jalan'] = $this->input->post('no_surat_jalan', TRUE);
         $data['tgl'] = $this->convertDate($this->input->post('tgl', TRUE));
@@ -110,7 +110,7 @@ class hasil_pemeriksaan_tp extends CI_Controller
         $data['exp'] = $this->convertDate($this->input->post('exp', TRUE));
         $data['mfg'] = $this->convertDate($this->input->post('mfg', TRUE));
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Released");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Released");
 
         $respon = $this->M_barang_masuk->add($data);
         $respon = $this->M_hasil_pemeriksaan_tp->approval_rilis($data);
