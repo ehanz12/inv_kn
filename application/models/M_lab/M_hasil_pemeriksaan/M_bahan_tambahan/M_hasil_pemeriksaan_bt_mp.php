@@ -15,10 +15,10 @@ class M_hasil_pemeriksaan_bt_mp extends CI_Model
     {
         // $kode_user = $this->kode_user();
         $sql = "
-            SELECT a.*,b.id_barang,b.id_pb,b.tgl,b.no_surat_jalan,b.no_batch,b.status,b.dok_pendukung,b.op_gudang,b.jenis_kemasan,b.jml_kemasan,b.ditolak_kemasan,b.qty,b.ditolak_qty,b.exp,b.mfg,b.tutup,b.wadah,b.label,c.nama_supplier,d.nama_barang,d.jenis_bahan FROM tb_lab_hasil_ujibt_methylparaben a
-            LEFT JOIN tb_lab_pemeriksaan_bahan b ON a.id_barang = b.id_barang
-            LEFT JOIN tb_prc_supplier c ON a.id_supplier = c.id_supplier
-            LEFT JOIN tb_prc_barang d ON a.id_barang = d.id_barang
+            SELECT a.*,b.id_prc_master_barang,b.id_adm_bm,b.no_batch,b.status_barang,jml_bm,c.tgl_dpb,c.no_sjl,d.nama_barang,d.jenis_barang FROM tb_lab_hasil_ujibt_methylparaben a
+            LEFT JOIN tb_adm_barang_masuk b ON a.id_adm_bm = b.id_adm_bm
+            LEFT JOIN tb_prc_dpb_tf c ON b.no_dpb = c.no_dpb
+            LEFT JOIN tb_prc_master_barang d ON a.id_prc_master_barang = d.id_prc_master_barang
             WHERE a.is_deleted = 0 ORDER BY a.tgl_uji ASC";
         return $this->db->query($sql);
     }
@@ -27,8 +27,8 @@ class M_hasil_pemeriksaan_bt_mp extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO `tb_lab_hasil_ujibt_methylparaben`(`id_pb`,`id_barang`,`id_supplier`,`tgl_uji`,`no_analis`,`penguji`,`pemerian`,`kelarutan`, `identifikasi`,`jarak_lebur`,`keasaman`,`s_pengeringan`,`s_pemijaran`,`p_kadar`,`kondisi_py`) 
-        VALUES ('$data[id_pb]','$data[id_barang]','$data[id_supplier]','$data[tgl_uji]','$data[no_analis]','$data[nama_operator]','$data[pemerian]','$data[kelarutan]','$data[identifikasi]','$data[jarak_lebur]','$data[keasaman]','$data[s_pengeringan]','$data[s_pemijaran]','$data[p_kadar]','$data[kondisi_py]')
+        INSERT INTO `tb_lab_hasil_ujibt_methylparaben`(`id_adm_bm`,`id_prc_master_barang`,`id_supplier`,`tgl_uji`,`no_analis`,`penguji`,`pemerian`,`kelarutan`, `identifikasi`,`jarak_lebur`,`keasaman`,`s_pengeringan`,`s_pemijaran`,`p_kadar`,`kondisi_py`) 
+        VALUES ('$data[id_adm_bm]','$data[id_barang]','$data[id_supplier]','$data[tgl_uji]','$data[no_analis]','$data[nama_operator]','$data[pemerian]','$data[kelarutan]','$data[identifikasi]','$data[jarak_lebur]','$data[keasaman]','$data[s_pengeringan]','$data[s_pemijaran]','$data[p_kadar]','$data[kondisi_py]')
         ";
         return $this->db->query($sql);
     }

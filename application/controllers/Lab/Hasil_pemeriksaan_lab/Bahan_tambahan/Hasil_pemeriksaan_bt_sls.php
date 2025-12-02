@@ -36,8 +36,8 @@ class hasil_pemeriksaan_bt_sls extends CI_Controller
     // Uji Bahan Tambahan (Sodium Launil Sulfat)
     public function add_ujisls()
     {
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
-        $data['id_barang'] = $this->input->post('id_barang', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
+        $data['id_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
@@ -54,7 +54,7 @@ class hasil_pemeriksaan_bt_sls extends CI_Controller
 
         $respon = $this->M_hasil_pemeriksaan_bt_sls->add_ujisls($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Proses");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Proses");
 
         if ($respon) {
             header('location:' . base_url('lab/pemeriksaan_bahan') . '?alert=success&msg=Selamat anda berhasil melakukan Uji Bahan Tambahan (Sodium Launil Sulfat)');
@@ -66,7 +66,7 @@ class hasil_pemeriksaan_bt_sls extends CI_Controller
     public function add()
     {
         $data['id_ujibt'] = $this->input->post('id_ujibt', TRUE);
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
         $data['id_barang'] = $this->input->post('id_barang', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
@@ -90,7 +90,7 @@ class hasil_pemeriksaan_bt_sls extends CI_Controller
         $data['exp'] = $this->convertDate($this->input->post('exp', TRUE));
         $data['mfg'] = $this->convertDate($this->input->post('mfg', TRUE));
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Released");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Released");
 
         $this->M_hasil_pemeriksaan_bt_sls->approval_rilis($data);
         $respon = $this->M_barang_masuk->add($data);

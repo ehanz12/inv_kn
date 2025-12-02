@@ -37,7 +37,7 @@ class hasil_pemeriksaan_bt_la extends CI_Controller
     // Uji Bahan Tambahan (Lecithin Acled)
     public function add_ujila()
     {
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
         $data['id_barang'] = $this->input->post('id_barang', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
@@ -54,7 +54,7 @@ class hasil_pemeriksaan_bt_la extends CI_Controller
         $data['ang_lempeng_tot'] = $this->input->post('ang_lempeng_tot', TRUE);
         $data['kondisi_py'] = $this->input->post('kondisi_py', TRUE);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Proses");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Proses");
 
         $respon = $this->M_hasil_pemeriksaan_bt_la->add_ujila($data);
 
@@ -68,7 +68,7 @@ class hasil_pemeriksaan_bt_la extends CI_Controller
     public function add()
     {
         $data['id_ujibt'] = $this->input->post('id_ujibt', TRUE);
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
         $data['id_barang'] = $this->input->post('id_barang', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
@@ -92,7 +92,7 @@ class hasil_pemeriksaan_bt_la extends CI_Controller
         $data['exp'] = $this->convertDate($this->input->post('exp', TRUE));
         $data['mfg'] = $this->convertDate($this->input->post('mfg', TRUE));
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Released");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Released");
 
         $this->M_hasil_pemeriksaan_bt_la->approval_rilis($data);
         $respon = $this->M_barang_masuk->add($data);
@@ -107,7 +107,7 @@ class hasil_pemeriksaan_bt_la extends CI_Controller
     public function update()
     {
         $data['id_ujibt'] = $this->input->post('id_ujibt', TRUE);
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
         $data['id_barang'] = $this->input->post('id_barang', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
@@ -136,7 +136,7 @@ class hasil_pemeriksaan_bt_la extends CI_Controller
     public function ditolak()
     {
         $data['id_ujibt'] = $this->input->post('id_ujibt', TRUE);
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
         $data['tgl_reject'] = $this->convertDate($this->input->post('tgl_reject', TRUE));
         // $data['tgl_reject'] = $this->input->post('tgl_reject', TRUE);
