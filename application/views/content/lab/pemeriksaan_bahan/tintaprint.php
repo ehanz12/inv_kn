@@ -10,7 +10,7 @@
             </div>
             <form method="post" action="<?= base_url() ?>lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_tp/add_ujitp">
                 <input type="hidden" id="e_id_adm_bm" name="id_adm_bm">
-                <input type="hidden" id="e_id_barang" name="id_barang">
+                <input type="hidden" id="e_id_prc_master_barang" name="id_prc_master_barang">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-4">
@@ -23,7 +23,7 @@
                             <div class="form-group">
                                 <label for="nama_barang">Nama Barang</label>
                                 <input type="text" class="form-control" id="e_nama_barang" name="nama_barang" readonly>
-                                <input type="hidden" class="form-control" id="e_id_barang" name="id_barang" readonly>
+                                <input type="hidden" class="form-control" id="e_id_prc_master_barang" name="id_prc_master_barang" readonly>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -314,7 +314,7 @@
     $(document).ready(function() {
         $('#add_ujitp').on('show.bs.modal', function(event) {
             var id_adm_bm = $(event.relatedTarget).data('id_adm_bm')
-            var id_barang = $(event.relatedTarget).data('id_prc_master_barang')
+            var id_prc_master_barang = $(event.relatedTarget).data('id_prc_master_barang')
             var id_supplier = $(event.relatedTarget).data('id_supplier')
             var no_surat_jalan = $(event.relatedTarget).data('no_surat_jalan')
             var no_batch = $(event.relatedTarget).data('no_batch')
@@ -333,7 +333,7 @@
             var mfg = $(event.relatedTarget).data('mfg')
 
             $(this).find('#e_id_adm_bm').val(id_adm_bm)
-            $(this).find('#e_id_barang').val(id_barang)
+            $(this).find('#e_id_prc_master_barang').val(id_prc_master_barang)
             $(this).find('#e_id_supplier').val(id_supplier)
             $(this).find('#e_no_surat_jalan').val(no_surat_jalan)
             $(this).find('#e_no_batch').val(no_batch)

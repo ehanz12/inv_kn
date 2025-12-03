@@ -117,7 +117,8 @@
                                     data-tipe_barang="<?= $k['tipe_barang'] ?>"
                                     data-spek="<?= $k['spek'] ?>" 
                                     data-satuan="<?= $k['satuan'] ?>"
-                                    data-departement="<?= $k['departement'] ?>">
+                                    data-departement="<?= $k['departement'] ?>>"
+                                    data-lab_test="<?= $k['lab_test'] ?>">
                                       <i class="feather icon-edit-2"></i>Edit
                                     </button>
                                   </div>
@@ -230,6 +231,17 @@
                   <option value="maintenance">Maintenance</option>
                   <option value="workshop">Workshop</option>
                 </select>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="lab_test">Pengujian Lab</label>
+                <select class="form-control chosen-select" id="lab_test" name="lab_test" required>
+                  <option value="" disabled selected hidden>- Butuh Pengujian -</option>
+                  <option value="yes">yes</option>
+                  <option value="no">no</option>
+                  </select>
               </div>
             </div>
 
@@ -503,6 +515,7 @@
       var mesh = button.data('mesh');
       var bloom = button.data('bloom');
       var departement = button.data('departement');
+      var lab_test = button.data('lab_test');
 
       var modal = $(this);
       modal.find('#e-id_prc_master_barang').val(id_prc_master_barang);
@@ -516,12 +529,14 @@
       modal.find('#e-mesh').val(mesh);
       modal.find('#e-bloom').val(bloom);
       modal.find('#e-departement').val(departement);
+      modal.find('#e-lab_test').val(lab_test);
 
       modal.find('#e-id_prc_ppb_supplier').trigger("chosen:updated");
       modal.find('#e-satuan').trigger("chosen:updated");
       modal.find('#e-jenis_barang').trigger("chosen:updated");
       modal.find('#e-tipe_barang').trigger("chosen:updated");
       modal.find('#e-departement').trigger("chosen:updated");
+      modal.find('#e-lab_test').trigger("chosen:updated");
 
        $('#e-mesh').on('input', function() {
             this.value = this.value.replace(/[^0-9+]/g, ''); // hanya boleh angka & +

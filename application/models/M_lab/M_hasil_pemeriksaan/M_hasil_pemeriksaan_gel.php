@@ -104,7 +104,7 @@ class M_hasil_pemeriksaan_gel extends CI_Model
         SELECT a.*,b.id_adm_bm,b.no_batch,b.tgl,b.status,b.dok_pendukung,b.op_gudang,b.jenis_kemasan,b.jml_kemasan,b.jml_kemasan,b.qty,b.exp,b.mfg,b.tutup,b.wadah,b.label,c.nama_supplier,d.nama_barang,d.satuan,d.qty_pack FROM tb_lab_hasil_ujigel a
         LEFT JOIN tb_lab_pemeriksaan_bahan b ON a.id_prc_master_barang = b.id_prc_masster_barang
         LEFT JOIN tb_prc_supplier c ON a.id_supplier = c.id_supplier
-        LEFT JOIN tb_prc_barang d ON a.id_barang = d.id_barang
+        LEFT JOIN tb_prc_barang d ON a.id_prc_master_barang = d.id_prc_master_barang
         WHERE a.is_deleted = 0 AND b.no_surat_jalan = '$no_surat_jalan' ORDER BY a.tgl_uji ASC";
         return $this->db->query($sql);
     }
@@ -113,9 +113,9 @@ class M_hasil_pemeriksaan_gel extends CI_Model
     {
         $sql = "
         SELECT a.*,b.id_adm_bm,b.no_batch,b.tgl,b.status,b.dok_pendukung,b.op_gudang,b.jenis_kemasan,b.jml_kemasan,b.jml_kemasan,b.qty,b.exp,b.mfg,b.tutup,b.wadah,b.label,c.nama_supplier,d.nama_barang,d.satuan,d.nama_produsen,d.negara_produsen,d.jenis_gel FROM tb_lab_hasil_ujigel a
-        LEFT JOIN tb_lab_pemeriksaan_bahan b ON a.id_barang = b.id_barang
+        LEFT JOIN tb_lab_pemeriksaan_bahan b ON a.id_prc_master_barang = b.id_prc_master_barang
         LEFT JOIN tb_prc_supplier c ON a.id_supplier = c.id_supplier
-        LEFT JOIN tb_prc_barang d ON a.id_barang = d.id_barang
+        LEFT JOIN tb_prc_barang d ON a.id_prc_master_barang = d.id_prc_master_barang
         WHERE a.is_deleted = 0 AND b.no_surat_jalan = '$no_surat_jalan' ORDER BY a.tgl_uji ASC";
         return $this->db->query($sql);
     }

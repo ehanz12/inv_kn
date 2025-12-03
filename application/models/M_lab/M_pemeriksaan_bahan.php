@@ -22,6 +22,7 @@ class M_pemeriksaan_bahan extends CI_Model
             x.created_at,
             b.nama_barang,
             b.kode_barang,
+            b.lab_test,
             b.spek,
             b.satuan,
             c.jml_bm,

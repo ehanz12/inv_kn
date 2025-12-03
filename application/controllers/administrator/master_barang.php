@@ -56,6 +56,7 @@ class master_barang extends CI_Controller
             $data['bloom'] = $this->input->post('bloom', TRUE);
             $data['satuan'] = $this->input->post('satuan', TRUE);
             $data['departement'] = $this->input->post('departement', TRUE);
+            $data['lab_test'] = $this->input->post('lab_test', TRUE);
 
             // Menambahkan data barang ke database
             $respon = $this->M_prc_ppb_masterbarang->add($data);
@@ -97,6 +98,7 @@ class master_barang extends CI_Controller
             $data['spek'] = $this->input->post('spek', TRUE);
             $data['satuan'] = $this->input->post('satuan', TRUE);
             $data['departement'] = $this->input->post('departement', TRUE);
+            $data['lab_test'] = $this->input->post('lab_test', TRUE);
 
             // Memperbarui data barang di database
             $respon = $this->M_prc_ppb_masterbarang->update($data);

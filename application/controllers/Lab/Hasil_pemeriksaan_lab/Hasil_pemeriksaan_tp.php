@@ -19,9 +19,15 @@ class hasil_pemeriksaan_tp extends CI_Controller
     }
 
     private function convertDate($date)
-    {
-        return explode('/', $date)[2] . "-" . explode('/', $date)[1] . "-" . explode('/', $date)[0];
+{
+    $parts = explode('/', $date);
+    if (count($parts) !== 3) {
+        return null; // atau return $date sesuai kebutuhan
     }
+
+    return $parts[2]."-".$parts[1]."-".$parts[0];
+}
+
 
     public function index()
     {
@@ -38,7 +44,7 @@ class hasil_pemeriksaan_tp extends CI_Controller
     public function add_ujitp()
     {
         $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
-        $data['id_prc_master_barang'] = $this->input->post('id_barang', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
        
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
@@ -86,7 +92,7 @@ class hasil_pemeriksaan_tp extends CI_Controller
     public function add()
     {
         $data['id_ujitp'] = $this->input->post('id_ujitp', TRUE);
-        $data['id_prc_master_barang'] = $this->input->post('id_barang', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
         
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
@@ -125,12 +131,12 @@ class hasil_pemeriksaan_tp extends CI_Controller
     public function update()
     {
         $data['id_ujitp'] = $this->input->post('id_ujitp', TRUE);
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
-        $data['id_barang'] = $this->input->post('id_barang', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
-        $data['no_surat_jalan'] = $this->input->post('no_surat_jalan', TRUE);
+        $data['no_surat_jalan'] = $this->input->post('no_sjl', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
         $data['nama_barang'] = $this->input->post('nama_barang', TRUE);
         $data['nama_supplier'] = $this->input->post('nama_supplier', TRUE);
@@ -172,12 +178,12 @@ class hasil_pemeriksaan_tp extends CI_Controller
     public function ditolak()
     {
         $data['id_ujitp'] = $this->input->post('id_ujitp', TRUE);
-        $data['id_pb'] = $this->input->post('id_pb', TRUE);
+        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
         $data['tgl_reject'] = $this->convertDate($this->input->post('tgl_reject', TRUE));
-        $data['no_surat_jalan'] = $this->input->post('no_surat_jalan', TRUE);
+        $data['no_surat_jalan'] = $this->input->post('no_sjl', TRUE);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Di Tolak");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Di Tolak");
         $respon = $this->M_hasil_pemeriksaan_tp->approval_ditolak($data);
 
         if ($respon) {

@@ -24,7 +24,7 @@
                             <div class="form-group">
                                 <label for="nama_barang" class="mt-4">Nama Barang</label>
                                 <input type="text" class="form-control" id="e_nama_barang" name="nama_barang" readonly>
-                                <input type="hidden" class="form-control" id="e_id_barang" name="id_barang" readonly>
+                                <input type="hidden" class="form-control" id="e_id_prc_master_barang" name="id_prc_master_barang" readonly>
                             </div>
                         </div>
                         

@@ -57,7 +57,8 @@
                                                         // $exp = isset($k['exp']) ? explode('-', $k['exp'])[2] . "/" . explode('-', $k['exp'])[1] . "/" . explode('-', $k['exp'])[0] : '';
                                                         // $mfg = isset($k['mfg']) ? explode('-', $k['mfg'])[2] . "/" . explode('-', $k['mfg'])[1] . "/" . explode('-', $k['mfg'])[0] : ''; 
                                                     ?>
-                                                        <?php if ($k['status_barang'] === "Karantina") { ?>
+                                                       <?php if ($k['status_barang'] === "karantina" && $k['lab_test'] === "yes") { ?>
+
                                                             <tr class="table-info">
                                                             <?php } else { ?>
                                                             <tr>
@@ -84,7 +85,8 @@
                                                             <td class="text-right"><?= number_format($k['jml_bm'], 0, ",", ".") ?> <?= $k['satuan'] ?? '' ?></td>
                                                             <td><?= $k['jenis_barang'] ?></td>
                                                             <td class="text-center">
-                                                                <?php if ($k['status_barang'] === "Karantina") { ?>
+                                                                <?php if ($k['status_barang'] === "karantina" && $k['lab_test'] === "yes") { ?>
+
                                                                     <span class="badge badge-warning"><?= $k['status_barang'] ?></span>
                                                                 <?php } else { ?>
                                                                     <span class="badge badge-success"><?= $k['status_barang'] ?></span>
@@ -96,7 +98,7 @@
                                                             
                                                             <!-- Kolom Aksi -->
                                                             <td class="text-center">
-                                                                <?php if ($k['status_barang'] === "karantina") { ?>
+                                                                <?php if ($k['status_barang'] === "karantina" && $k['lab_test'] === "yes") { ?>
                                                                     <!-- Bahan Baku -->
                                                                     <?php if (($k['jenis_barang'] === "Bahan Baku" || $k['jenis_barang'] === "BAHAN BAKU")) { ?>
                                                                         <div class="btn-group" role="group">

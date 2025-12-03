@@ -18,10 +18,27 @@ class hasil_pemeriksaan_pw extends CI_Controller
         $this->load->model('M_gudang_bahanbaku/M_karantina');
     }
 
-    private function convertDate($date)
-    {
-        return explode('/', $date)[2] . "-" . explode('/', $date)[1] . "-" . explode('/', $date)[0];
+   private function convertDate($date)
+{
+    if ($date === null || $date === '') {
+        return null; // atau return $date
     }
+
+    // kalau formatnya Y-m-d (input type="date")
+    if (strpos($date, '-') !== false) {
+        return date('Y-m-d', strtotime($date));
+    }
+
+    // kalau formatnya d/m/Y
+    $parts = explode('/', $date);
+    if (count($parts) !== 3) {
+        return null;
+    }
+
+    return $parts[2]."-".$parts[1]."-".$parts[0];
+}
+
+
 
     public function index()
     {
@@ -38,10 +55,10 @@ class hasil_pemeriksaan_pw extends CI_Controller
     public function add_ujipw()
     {
         $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
-        $data['id_barang'] = $this->input->post('id_prc_master_barang', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
-        $data['no_sjl'] = $this->input->post('no_sjl', TRUE);
+        $data['no_sjl'] = $this->input->post('no_surat_jalan', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);
         $data['nama_barang'] = $this->input->post('nama_barang', TRUE);
         $data['nama_supplier'] = $this->input->post('nama_supplier', TRUE);
@@ -71,49 +88,51 @@ class hasil_pemeriksaan_pw extends CI_Controller
     }
 
     public function add()
-    {
-        $data['id_ujipewarna'] = $this->input->post('id_ujipewarna', TRUE);
-        $data['id_barang'] = $this->input->post('id_prc_master_barang', TRUE);
-        $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
-        $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
-        $data['no_batch'] = $this->input->post('no_batch', TRUE);
-        $data['no_sjl'] = $this->input->post('no_sjl', TRUE);
-        $data['tgl'] = $this->convertDate($this->input->post('tgl', TRUE));
-        $data['tgl_rilis'] = $this->convertDate($this->input->post('tgl_rilis', TRUE));
-        $data['tgl_uu'] = $this->convertDate($this->input->post('tgl_uu', TRUE));
-        $data['nama_barang'] = $this->input->post('nama_barang', TRUE);
-        $data['nama_supplier'] = $this->input->post('nama_supplier', TRUE);
-        $data['op_gudang'] = $this->input->post('op_gudang', TRUE);
-        $data['dok_pendukung'] = $this->input->post('dok_pendukung', TRUE);
-        $data['jenis_kemasan'] = $this->input->post('jenis_kemasan', TRUE);
-        $data['jml_kemasan'] = $this->input->post('jml_kemasan', TRUE);
-        $data['ditolak_kemasan'] = $this->input->post('ditolak_kemasan', TRUE);
-        $data['tutup'] = $this->input->post('tutup', TRUE);
-        $data['wadah'] = $this->input->post('wadah', TRUE);
-        $data['label'] = $this->input->post('label', TRUE);
-        $data['qty'] = $this->input->post('qty', TRUE);
-        $data['stok'] = $this->input->post('qty', TRUE);
-        $data['ditolak_qty'] = $this->input->post('ditolak_qty', TRUE);
-        $data['exp'] = $this->convertDate($this->input->post('exp', TRUE));
-        $data['mfg'] = $this->convertDate($this->input->post('mfg', TRUE));
+{
+    $data['id_ujipewarna'] = $this->input->post('id_ujipewarna', TRUE);
+    $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
+    $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
+    $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
+    $data['no_batch'] = $this->input->post('no_batch', TRUE);
+    $data['no_sjl'] = $this->input->post('no_sjl', TRUE); // Perhatikan ini: 'no_sjl' bukan 'no_surat_jalan'
+    $data['tgl'] = $this->convertDate($this->input->post('tgl', TRUE));
+    $data['tgl_rilis'] = $this->convertDate($this->input->post('tgl_rilis', TRUE));
+    $data['tgl_uu'] = $this->convertDate($this->input->post('tgl_uu', TRUE));
+    $data['nama_barang'] = $this->input->post('nama_barang', TRUE);
+    $data['op_gudang'] = $this->input->post('op_gudang', TRUE);
+    $data['dok_pendukung'] = $this->input->post('dok_pendukung', TRUE);
+    $data['jenis_kemasan'] = $this->input->post('jenis_kemasan', TRUE);
+    $data['jml_kemasan'] = $this->input->post('jml_kemasan', TRUE);
+    $data['ditolak_kemasan'] = $this->input->post('ditolak_kemasan', TRUE);
+    $data['tutup'] = $this->input->post('tutup', TRUE);
+    $data['wadah'] = $this->input->post('wadah', TRUE);
+    $data['label'] = $this->input->post('label', TRUE);
+    $data['qty'] = $this->input->post('jml_bm', TRUE);
+    $data['stok'] = $this->input->post('jml_bm', TRUE);
+    $data['ditolak_qty'] = $this->input->post('jml_bm', TRUE);
+    $data['exp'] = $this->convertDate($this->input->post('exp', TRUE));
+    $data['mfg'] = $this->convertDate($this->input->post('mfg', TRUE));
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Released");
+    // Update status di tabel pemeriksaan bahan
+    $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Released");
+    
+    // Update tanggal rilis di tabel hasil uji
+    $this->M_hasil_pemeriksaan_pw->approval_rilis($data);
+    
+    // Tambahkan ke barang masuk
+    $respon = $this->M_barang_masuk->add($data);
 
-        $respon = $this->M_barang_masuk->add($data);
-        $respon = $this->M_hasil_pemeriksaan_pw->approval_rilis($data);
-
-        if ($respon) {
-            header('location:' . base_url('lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_pw') . '?alert=success&msg=Selamat anda berhasil menambah Barang Masuk Bahan Pelarut');
-        } else {
-            header('location:' . base_url('lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_pw') . '?alert=error&msg=Maaf anda gagal menambah Barang Masuk Bahan Pelarut');
-        }
+    if ($respon) {
+        header('location:' . base_url('lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_pw') . '?alert=success&msg=Selamat anda berhasil menambah Barang Masuk Bahan Pewarna');
+    } else {
+        header('location:' . base_url('lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_pw') . '?alert=error&msg=Maaf anda gagal menambah Barang Masuk Bahan Pewarna');
     }
-
+}
     public function update()
     {
         $data['id_ujipewarna'] = $this->input->post('id_ujipewarna', TRUE);
         $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
-        $data['id_barang'] = $this->input->post('id_barang', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
@@ -147,7 +166,7 @@ class hasil_pemeriksaan_pw extends CI_Controller
     public function ditolak()
     {
         $data['id_ujipewarna'] = $this->input->post('id_ujipewarna', TRUE);
-        $data['id_barang'] = $this->input->post('id_barang', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
         $data['id_supplier'] = $this->input->post('id_supplier', TRUE);
         $data['no_batch'] = $this->input->post('no_batch', TRUE);

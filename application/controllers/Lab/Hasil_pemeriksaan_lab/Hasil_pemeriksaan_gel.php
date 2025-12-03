@@ -19,9 +19,15 @@ class hasil_pemeriksaan_gel extends CI_Controller
     }
 
     private function convertDate($date)
-    {
-        return explode('/', $date)[2] . "-" . explode('/', $date)[1] . "-" . explode('/', $date)[0];
+{
+    $parts = explode('/', $date);
+    if (count($parts) !== 3) {
+        return null; // atau return $date sesuai kebutuhan
     }
+
+    return $parts[2]."-".$parts[1]."-".$parts[0];
+}
+
 
     public function index()
     {
@@ -38,7 +44,7 @@ class hasil_pemeriksaan_gel extends CI_Controller
     public function add_ujigel()
     {
         $data['id_adm_bm'] = $this->input->post('id_adm_bm', TRUE);
-        $data['id_barang'] = $this->input->post('id_prc_master_barang', TRUE);
+        $data['id_prc_master_barang'] = $this->input->post('id_prc_master_barang', TRUE);
         $data['tgl_uji'] = $this->convertDate($this->input->post('tgl_uji', TRUE));
         $data['no_analis'] = $this->input->post('no_analis', TRUE);
         $data['no_surat_jalan'] = $this->input->post('no_surat_jalan', TRUE);
@@ -106,9 +112,9 @@ class hasil_pemeriksaan_gel extends CI_Controller
         $data['tutup'] = $this->input->post('tutup', TRUE);
         $data['wadah'] = $this->input->post('wadah', TRUE);
         $data['label'] = $this->input->post('label', TRUE);
-        $data['qty'] = $this->input->post('qty', TRUE);
-        $data['stok'] = $this->input->post('qty', TRUE);
-        $data['ditolak_qty'] = $this->input->post('ditolak_qty', TRUE);
+        $data['qty'] = $this->input->post('jml_bm', TRUE);
+        $data['stok'] = $this->input->post('jml_bm', TRUE);
+        $data['ditolak_qty'] = $this->input->post('jml_bm', TRUE);
         $data['exp'] = $this->convertDate($this->input->post('exp', TRUE));
         $data['mfg'] = $this->convertDate($this->input->post('mfg', TRUE));
 

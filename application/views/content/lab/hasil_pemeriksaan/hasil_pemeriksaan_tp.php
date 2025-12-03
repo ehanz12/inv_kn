@@ -85,7 +85,7 @@
                                                             <td><?= $k['status_barang'] ?></td>
                                                             <td class="text-center">
                                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                                    <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail" data-id_barang="<?= $k['id_prc_master_barang'] ?>" data-id_pb="<?= $k['id_adm_bm'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>"  data-op_gudang="<?= $k['op_gudang'] ?>" data-qty="<?= $k['jml_bm'] ?>" data-pemerian1="<?= $k['pemerian1'] ?>" data-pemerian2="<?= $k['pemerian2'] ?>" data-pemerian3="<?= $k['pemerian3'] ?>" data-pemerian4="<?= $k['pemerian4'] ?>" data-b_bruto1="<?= $k['b_bruto1'] ?>" data-b_bruto2="<?= $k['b_bruto2'] ?>" data-b_bruto3="<?= $k['b_bruto3'] ?>" data-b_bruto4="<?= $k['b_bruto4'] ?>" data-kekentalan1="<?= $k['kekentalan1'] ?>" data-kekentalan2="<?= $k['kekentalan2'] ?>" data-kekentalan3="<?= $k['kekentalan3'] ?>" data-kekentalan4="<?= $k['kekentalan4'] ?>" data-waktu_p1="<?= $k['waktu_p1'] ?>" data-waktu_p2="<?= $k['waktu_p2'] ?>" data-waktu_p3="<?= $k['waktu_p3'] ?>" data-waktu_p4="<?= $k['waktu_p4'] ?>" data-kondisi_sp1="<?= $k['kondisi_sp1'] ?>" data-kondisi_sp2="<?= $k['kondisi_sp2'] ?>" data-kondisi_sp3="<?= $k['kondisi_sp3'] ?>" data-kondisi_sp4="<?= $k['kondisi_sp4'] ?>" data-kondisi_py1="<?= $k['kondisi_py1'] ?>" data-kondisi_py2="<?= $k['kondisi_py2'] ?>" data-kondisi_py3="<?= $k['kondisi_py3'] ?>" data-kondisi_py4="<?= $k['kondisi_py4'] ?>" data-penguji="<?= $k['penguji'] ?>">
+                                                                    <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail" data-id_prc_master_barang="<?= $k['id_prc_master_barang'] ?>" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>"  data-op_gudang="<?= $k['op_gudang'] ?>" data-qty="<?= $k['jml_bm'] ?>" data-pemerian1="<?= $k['pemerian1'] ?>" data-pemerian2="<?= $k['pemerian2'] ?>" data-pemerian3="<?= $k['pemerian3'] ?>" data-pemerian4="<?= $k['pemerian4'] ?>" data-b_bruto1="<?= $k['b_bruto1'] ?>" data-b_bruto2="<?= $k['b_bruto2'] ?>" data-b_bruto3="<?= $k['b_bruto3'] ?>" data-b_bruto4="<?= $k['b_bruto4'] ?>" data-kekentalan1="<?= $k['kekentalan1'] ?>" data-kekentalan2="<?= $k['kekentalan2'] ?>" data-kekentalan3="<?= $k['kekentalan3'] ?>" data-kekentalan4="<?= $k['kekentalan4'] ?>" data-waktu_p1="<?= $k['waktu_p1'] ?>" data-waktu_p2="<?= $k['waktu_p2'] ?>" data-waktu_p3="<?= $k['waktu_p3'] ?>" data-waktu_p4="<?= $k['waktu_p4'] ?>" data-kondisi_sp1="<?= $k['kondisi_sp1'] ?>" data-kondisi_sp2="<?= $k['kondisi_sp2'] ?>" data-kondisi_sp3="<?= $k['kondisi_sp3'] ?>" data-kondisi_sp4="<?= $k['kondisi_sp4'] ?>" data-kondisi_py1="<?= $k['kondisi_py1'] ?>" data-kondisi_py2="<?= $k['kondisi_py2'] ?>" data-kondisi_py3="<?= $k['kondisi_py3'] ?>" data-kondisi_py4="<?= $k['kondisi_py4'] ?>" data-penguji="<?= $k['penguji'] ?>">
                                                                         <i class="feather icon-eye"></i>Details
                                                                     </button>
                                                                 </div>
@@ -94,12 +94,12 @@
                                                             <td class="text-center">
                                                                 <?php if ($jabatan === "supervisor" || $jabatan === "admin" && $k['status_barang'] === "Proses") { ?>
                                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                                        <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#released" data-id_ujitp="<?= $k['id_ujitp'] ?>" data-id_pb="<?= $k['id_adm_bm'] ?>" data-id_barang="<?= $k['id_prc_master_barang'] ?>" data-id_supplier="<?= $k['id_supplier'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>"  data-op_gudang="<?= $k['op_gudang'] ?>"data-qty="<?= $k['jml_bm'] ?>" data-pemerian1="<?= $k['pemerian1'] ?>" data-pemerian2="<?= $k['pemerian2'] ?>" data-pemerian3="<?= $k['pemerian3'] ?>" data-pemerian4="<?= $k['pemerian4'] ?>" data-b_bruto1="<?= $k['b_bruto1'] ?>" data-b_bruto2="<?= $k['b_bruto2'] ?>" data-b_bruto3="<?= $k['b_bruto3'] ?>" data-b_bruto4="<?= $k['b_bruto4'] ?>" data-kekentalan1="<?= $k['kekentalan1'] ?>" data-kekentalan2="<?= $k['kekentalan2'] ?>" data-kekentalan3="<?= $k['kekentalan3'] ?>" data-kekentalan4="<?= $k['kekentalan4'] ?>" data-waktu_p1="<?= $k['waktu_p1'] ?>" data-waktu_p2="<?= $k['waktu_p2'] ?>" data-waktu_p3="<?= $k['waktu_p3'] ?>" data-waktu_p4="<?= $k['waktu_p4'] ?>" data-kondisi_sp1="<?= $k['kondisi_sp1'] ?>" data-kondisi_sp2="<?= $k['kondisi_sp2'] ?>" data-kondisi_sp3="<?= $k['kondisi_sp3'] ?>" data-kondisi_sp4="<?= $k['kondisi_sp4'] ?>" data-kondisi_py1="<?= $k['kondisi_py1'] ?>" data-kondisi_py2="<?= $k['kondisi_py2'] ?>" data-kondisi_py3="<?= $k['kondisi_py3'] ?>" data-kondisi_py4="<?= $k['kondisi_py4'] ?>" data-penguji="<?= $k['penguji'] ?>">
+                                                                        <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#released" data-id_ujitp="<?= $k['id_ujitp'] ?>" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-id_prc_master_barang="<?= $k['id_prc_master_barang'] ?>" data-id_supplier="<?= $k['id_supplier'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>"  data-op_gudang="<?= $k['op_gudang'] ?>"data-qty="<?= $k['jml_bm'] ?>" data-pemerian1="<?= $k['pemerian1'] ?>" data-pemerian2="<?= $k['pemerian2'] ?>" data-pemerian3="<?= $k['pemerian3'] ?>" data-pemerian4="<?= $k['pemerian4'] ?>" data-b_bruto1="<?= $k['b_bruto1'] ?>" data-b_bruto2="<?= $k['b_bruto2'] ?>" data-b_bruto3="<?= $k['b_bruto3'] ?>" data-b_bruto4="<?= $k['b_bruto4'] ?>" data-kekentalan1="<?= $k['kekentalan1'] ?>" data-kekentalan2="<?= $k['kekentalan2'] ?>" data-kekentalan3="<?= $k['kekentalan3'] ?>" data-kekentalan4="<?= $k['kekentalan4'] ?>" data-waktu_p1="<?= $k['waktu_p1'] ?>" data-waktu_p2="<?= $k['waktu_p2'] ?>" data-waktu_p3="<?= $k['waktu_p3'] ?>" data-waktu_p4="<?= $k['waktu_p4'] ?>" data-kondisi_sp1="<?= $k['kondisi_sp1'] ?>" data-kondisi_sp2="<?= $k['kondisi_sp2'] ?>" data-kondisi_sp3="<?= $k['kondisi_sp3'] ?>" data-kondisi_sp4="<?= $k['kondisi_sp4'] ?>" data-kondisi_py1="<?= $k['kondisi_py1'] ?>" data-kondisi_py2="<?= $k['kondisi_py2'] ?>" data-kondisi_py3="<?= $k['kondisi_py3'] ?>" data-kondisi_py4="<?= $k['kondisi_py4'] ?>" data-penguji="<?= $k['penguji'] ?>">
                                                                             <i class="feather icon-edit-2"></i>Released
                                                                         </button>
                                                                     </div>
                                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                                        <button type="button" class="btn btn-danger btn-square btn-sm" data-toggle="modal" data-target="#reject" data-id_ujitp="<?= $k['id_ujitp'] ?>" data-id_pb="<?= $k['id_adm_bm'] ?>" data-id_barang="<?= $k['id_prc_master_barang'] ?>" data-id_supplier="<?= $k['id_supplier'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-op_gudang="<?= $k['op_gudang'] ?>"data-qty="<?= $k['jml_bm'] ?>" data-pemerian1="<?= $k['pemerian1'] ?>" data-pemerian2="<?= $k['pemerian2'] ?>" data-pemerian3="<?= $k['pemerian3'] ?>" data-pemerian4="<?= $k['pemerian4'] ?>" data-b_bruto1="<?= $k['b_bruto1'] ?>" data-b_bruto2="<?= $k['b_bruto2'] ?>" data-b_bruto3="<?= $k['b_bruto3'] ?>" data-b_bruto4="<?= $k['b_bruto4'] ?>" data-kekentalan1="<?= $k['kekentalan1'] ?>" data-kekentalan2="<?= $k['kekentalan2'] ?>" data-kekentalan3="<?= $k['kekentalan3'] ?>" data-kekentalan4="<?= $k['kekentalan4'] ?>" data-waktu_p1="<?= $k['waktu_p1'] ?>" data-waktu_p2="<?= $k['waktu_p2'] ?>" data-waktu_p3="<?= $k['waktu_p3'] ?>" data-waktu_p4="<?= $k['waktu_p4'] ?>" data-kondisi_sp1="<?= $k['kondisi_sp1'] ?>" data-kondisi_sp2="<?= $k['kondisi_sp2'] ?>" data-kondisi_sp3="<?= $k['kondisi_sp3'] ?>" data-kondisi_sp4="<?= $k['kondisi_sp4'] ?>" data-kondisi_py1="<?= $k['kondisi_py1'] ?>" data-kondisi_py2="<?= $k['kondisi_py2'] ?>" data-kondisi_py3="<?= $k['kondisi_py3'] ?>" data-kondisi_py4="<?= $k['kondisi_py4'] ?>" data-penguji="<?= $k['penguji'] ?>">
+                                                                        <button type="button" class="btn btn-danger btn-square btn-sm" data-toggle="modal" data-target="#reject" data-id_ujitp="<?= $k['id_ujitp'] ?>" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-id_prc_master_barang="<?= $k['id_prc_master_barang'] ?>" data-id_supplier="<?= $k['id_supplier'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_sjl'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-op_gudang="<?= $k['op_gudang'] ?>"data-qty="<?= $k['jml_bm'] ?>" data-pemerian1="<?= $k['pemerian1'] ?>" data-pemerian2="<?= $k['pemerian2'] ?>" data-pemerian3="<?= $k['pemerian3'] ?>" data-pemerian4="<?= $k['pemerian4'] ?>" data-b_bruto1="<?= $k['b_bruto1'] ?>" data-b_bruto2="<?= $k['b_bruto2'] ?>" data-b_bruto3="<?= $k['b_bruto3'] ?>" data-b_bruto4="<?= $k['b_bruto4'] ?>" data-kekentalan1="<?= $k['kekentalan1'] ?>" data-kekentalan2="<?= $k['kekentalan2'] ?>" data-kekentalan3="<?= $k['kekentalan3'] ?>" data-kekentalan4="<?= $k['kekentalan4'] ?>" data-waktu_p1="<?= $k['waktu_p1'] ?>" data-waktu_p2="<?= $k['waktu_p2'] ?>" data-waktu_p3="<?= $k['waktu_p3'] ?>" data-waktu_p4="<?= $k['waktu_p4'] ?>" data-kondisi_sp1="<?= $k['kondisi_sp1'] ?>" data-kondisi_sp2="<?= $k['kondisi_sp2'] ?>" data-kondisi_sp3="<?= $k['kondisi_sp3'] ?>" data-kondisi_sp4="<?= $k['kondisi_sp4'] ?>" data-kondisi_py1="<?= $k['kondisi_py1'] ?>" data-kondisi_py2="<?= $k['kondisi_py2'] ?>" data-kondisi_py3="<?= $k['kondisi_py3'] ?>" data-kondisi_py4="<?= $k['kondisi_py4'] ?>" data-penguji="<?= $k['penguji'] ?>">
                                                                             <i class="feather icon-edit-2"></i>Reject
                                                                         </button>
                                                                     </div>
@@ -109,7 +109,7 @@
                                                             <?php if ($k['status_barang'] === "Proses") { ?>
                                                                 <?php if ($k['jenis_barang'] === "Tinta Print"  || $k['jenis_barang'] === "TINTA PRINT" ) { ?>
                                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                                        <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit_ujitp" data-id_ujitp="<?= $k['id_ujitp'] ?>" data-id_pb="<?= $k['id_pb'] ?>" data-id_barang="<?= $k['id_barang'] ?>" data-id_supplier="<?= $k['id_supplier'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-nama_supplier="<?= $k['nama_supplier'] ?>" data-op_gudang="<?= $k['op_gudang'] ?>" data-dok_pendukung="<?= $k['dok_pendukung'] ?>" data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" data-jml_kemasan="<?= $k['jml_kemasan'] ?>" data-ditolak_kemasan="<?= $k['ditolak_kemasan'] ?>" data-qty="<?= $k['qty'] ?>" data-ditolak_qty="<?= $k['ditolak_qty'] ?>" data-exp="<?= $tgl_exp ?>" data-mfg="<?= $tgl_mfg ?>" data-tutup="<?= $k['tutup'] ?>" data-wadah="<?= $k['wadah'] ?>" data-label="<?= $k['label'] ?>" data-pemerian1="<?= $k['pemerian1'] ?>" data-pemerian2="<?= $k['pemerian2'] ?>" data-pemerian3="<?= $k['pemerian3'] ?>" data-pemerian4="<?= $k['pemerian4'] ?>" data-b_bruto1="<?= $k['b_bruto1'] ?>" data-b_bruto2="<?= $k['b_bruto2'] ?>" data-b_bruto3="<?= $k['b_bruto3'] ?>" data-b_bruto4="<?= $k['b_bruto4'] ?>" data-kekentalan1="<?= $k['kekentalan1'] ?>" data-kekentalan2="<?= $k['kekentalan2'] ?>" data-kekentalan3="<?= $k['kekentalan3'] ?>" data-kekentalan4="<?= $k['kekentalan4'] ?>" data-waktu_p1="<?= $k['waktu_p1'] ?>" data-waktu_p2="<?= $k['waktu_p2'] ?>" data-waktu_p3="<?= $k['waktu_p3'] ?>" data-waktu_p4="<?= $k['waktu_p4'] ?>" data-kondisi_sp1="<?= $k['kondisi_sp1'] ?>" data-kondisi_sp2="<?= $k['kondisi_sp2'] ?>" data-kondisi_sp3="<?= $k['kondisi_sp3'] ?>" data-kondisi_sp4="<?= $k['kondisi_sp4'] ?>" data-kondisi_py1="<?= $k['kondisi_py1'] ?>" data-kondisi_py2="<?= $k['kondisi_py2'] ?>" data-kondisi_py3="<?= $k['kondisi_py3'] ?>" data-kondisi_py4="<?= $k['kondisi_py4'] ?>" data-penguji="<?= $k['penguji'] ?>">
+                                                                        <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit_ujitp" data-id_ujitp="<?= $k['id_ujitp'] ?>" data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-id_prc_master_barang="<?= $k['id_prc_master_barang'] ?>" data-id_supplier="<?= $k['id_supplier'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" data-tgl="<?= $tgl_msk ?>" data-tgl_uji="<?= $tgl_uji ?>" data-no_analis="<?= $k['no_analis'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-nama_supplier="<?= $k['nama_supplier'] ?>" data-op_gudang="<?= $k['op_gudang'] ?>" data-dok_pendukung="<?= $k['dok_pendukung'] ?>" data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" data-jml_kemasan="<?= $k['jml_kemasan'] ?>" data-ditolak_kemasan="<?= $k['ditolak_kemasan'] ?>" data-qty="<?= $k['qty'] ?>" data-ditolak_qty="<?= $k['ditolak_qty'] ?>" data-exp="<?= $tgl_exp ?>" data-mfg="<?= $tgl_mfg ?>" data-tutup="<?= $k['tutup'] ?>" data-wadah="<?= $k['wadah'] ?>" data-label="<?= $k['label'] ?>" data-pemerian1="<?= $k['pemerian1'] ?>" data-pemerian2="<?= $k['pemerian2'] ?>" data-pemerian3="<?= $k['pemerian3'] ?>" data-pemerian4="<?= $k['pemerian4'] ?>" data-b_bruto1="<?= $k['b_bruto1'] ?>" data-b_bruto2="<?= $k['b_bruto2'] ?>" data-b_bruto3="<?= $k['b_bruto3'] ?>" data-b_bruto4="<?= $k['b_bruto4'] ?>" data-kekentalan1="<?= $k['kekentalan1'] ?>" data-kekentalan2="<?= $k['kekentalan2'] ?>" data-kekentalan3="<?= $k['kekentalan3'] ?>" data-kekentalan4="<?= $k['kekentalan4'] ?>" data-waktu_p1="<?= $k['waktu_p1'] ?>" data-waktu_p2="<?= $k['waktu_p2'] ?>" data-waktu_p3="<?= $k['waktu_p3'] ?>" data-waktu_p4="<?= $k['waktu_p4'] ?>" data-kondisi_sp1="<?= $k['kondisi_sp1'] ?>" data-kondisi_sp2="<?= $k['kondisi_sp2'] ?>" data-kondisi_sp3="<?= $k['kondisi_sp3'] ?>" data-kondisi_sp4="<?= $k['kondisi_sp4'] ?>" data-kondisi_py1="<?= $k['kondisi_py1'] ?>" data-kondisi_py2="<?= $k['kondisi_py2'] ?>" data-kondisi_py3="<?= $k['kondisi_py3'] ?>" data-kondisi_py4="<?= $k['kondisi_py4'] ?>" data-penguji="<?= $k['penguji'] ?>">
                                                                             <i class="feather icon-edit-2"></i>Edit TP
                                                                         </button>
                                                                     </div>
@@ -126,7 +126,7 @@
                                                                     <!-- Print Label Released -->
                                                                 <?php if ($k['status_barang'] === "Released") { ?>
                                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                                        <a type="button" class="btn btn-success btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_tp/pdf_label_released/<?= str_replace('/', '--', $k['no_surat_jalan']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); " data-id_pb="<?= $k['id_pb'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>">
+                                                                        <a type="button" class="btn btn-success btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_tp/pdf_label_released/<?= str_replace('/', '--', $k['no_sjl']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); " data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_sjl'] ?>">
                                                                             <i class="feather icon-file"></i>Print Label
                                                                         </a>
                                                                     </div>
@@ -136,14 +136,14 @@
                                                                 <!-- Print Label Ditolak -->
                                                                 <?php if ($k['status_barang'] === "Di Tolak") { ?>
                                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                                        <a type="button" class="btn btn-danger btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_tp/pdf_label_reject/<?= str_replace('/', '--', $k['no_surat_jalan']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); " data-id_pb="<?= $k['id_pb'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>">
+                                                                        <a type="button" class="btn btn-danger btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_tp/pdf_label_reject/<?= str_replace('/', '--', $k['no_sjl']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); " data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_sjl'] ?>">
                                                                             <i class="feather icon-file"></i>Print Label
                                                                         </a>
                                                                     </div>
                                                                 <?php } ?>
                                                                 <?php if ($k['status_barang'] === "Released" || $k['status_barang'] === "Di Tolak") { ?>
                                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                                        <a type="button" class="btn btn-warning btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>Hasil_pemeriksaan_lab/Hasil_pemeriksaan_tp/pdf_label_hasil/<?= str_replace('/', '--', $k['no_surat_jalan']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); " data-id_pb="<?= $k['id_pb'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>">
+                                                                        <a type="button" class="btn btn-warning btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>Hasil_pemeriksaan_lab/Hasil_pemeriksaan_tp/pdf_label_hasil/<?= str_replace('/', '--', $k['no_sjl']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); " data-id_adm_bm="<?= $k['id_adm_bm'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-no_surat_jalan="<?= $k['no_sjl'] ?>">
                                                                             <i class="feather icon-file"></i>Print Hasil
                                                                         </a>
                                                                     </div>
@@ -463,8 +463,8 @@
                 </button>
                 <form method="post" action="<?= base_url() ?>lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_tp/add">
                     <input type="hidden" id="r-id_ujitp" name="id_ujitp">
-                    <input type="hidden" id="r-id_pb" name="id_pb">
-                    <input type="hidden" id="r-id_barang" name="id_barang">
+                    <input type="hidden" id="r-id_adm_bm" name="id_adm_bm">
+                    <input type="hidden" id="r-id_prc_master_barang" name="id_prc_master_barang">
                     <input type="hidden" id="r-id_supplier" name="id_supplier">
             </div>
             <div class="modal-body">
@@ -772,8 +772,8 @@
                 </button>
                 <form method="post" action="<?= base_url() ?>lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_tp/ditolak">
                     <input type="hidden" id="t-id_ujitp" name="id_ujitp">
-                    <input type="hidden" id="t-id_pb" name="id_pb">
-                    <input type="hidden" id="t-id_barang" name="id_barang">
+                    <input type="hidden" id="t-id_adm_bm" name="id_adm_bm">
+                    <input type="hidden" id="t-id_prc_master_barang" name="id_prc_master_barang">
                     <input type="hidden" id="t-id_supplier" name="id_supplier">
             </div>
             <div class="modal-body">
@@ -1066,8 +1066,8 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#detail').on('show.bs.modal', function(event) {
-            var id_barang = $(event.relatedTarget).data('id_barang')
-            var id_pb = $(event.relatedTarget).data('id_pb')
+            var id_prc_master_barang = $(event.relatedTarget).data('id_prc_master_barang')
+            var id_adm_bm = $(event.relatedTarget).data('id_adm_bm')
             var no_batch = $(event.relatedTarget).data('no_batch')
             var nama_barang = $(event.relatedTarget).data('nama_barang')
             var nama_supplier = $(event.relatedTarget).data('nama_supplier')
@@ -1113,8 +1113,8 @@
             var kondisi_py3 = $(event.relatedTarget).data('kondisi_py3')
             var kondisi_py4 = $(event.relatedTarget).data('kondisi_py4')
 
-            $(this).find('#v-id_barang').val(id_barang)
-            $(this).find('#v-id_pb').val(id_pb)
+            $(this).find('#v-id_prc_master_barang').val(id_prc_master_barang)
+            $(this).find('#v-id_adm_bm').val(id_adm_bm)
             $(this).find('#v-no_batch').val(no_batch)
             $(this).find('#v-nama_barang').val(nama_barang)
             $(this).find('#v-nama_supplier').val(nama_supplier)
@@ -1170,9 +1170,9 @@
     $(document).ready(function() {
         $('#released').on('show.bs.modal', function(event) {
             var id_ujitp = $(event.relatedTarget).data('id_ujitp')
-            var id_barang = $(event.relatedTarget).data('id_barang')
+            var id_prc_master_barang = $(event.relatedTarget).data('id_prc_master_barang')
             var id_supplier = $(event.relatedTarget).data('id_supplier')
-            var id_pb = $(event.relatedTarget).data('id_pb')
+            var id_adm_bm = $(event.relatedTarget).data('id_adm_bm')
             var no_batch = $(event.relatedTarget).data('no_batch')
             var nama_barang = $(event.relatedTarget).data('nama_barang')
             var nama_supplier = $(event.relatedTarget).data('nama_supplier')
@@ -1219,9 +1219,9 @@
             var kondisi_py4 = $(event.relatedTarget).data('kondisi_py4')
 
             $(this).find('#r-id_ujitp').val(id_ujitp)
-            $(this).find('#r-id_barang').val(id_barang)
+            $(this).find('#r-id_prc_master_barang').val(id_prc_master_barang)
             $(this).find('#r-id_supplier').val(id_supplier)
-            $(this).find('#r-id_pb').val(id_pb)
+            $(this).find('#r-id_adm_bm').val(id_adm_bm)
             $(this).find('#r-no_batch').val(no_batch)
             $(this).find('#r-nama_barang').val(nama_barang)
             $(this).find('#r-nama_supplier').val(nama_supplier)
@@ -1288,9 +1288,9 @@
     $(document).ready(function() {
         $('#reject').on('show.bs.modal', function(event) {
             var id_ujitp = $(event.relatedTarget).data('id_ujitp')
-            var id_barang = $(event.relatedTarget).data('id_barang')
+            var id_prc_master_barang = $(event.relatedTarget).data('id_prc_master_barang')
             var id_supplier = $(event.relatedTarget).data('id_supplier')
-            var id_pb = $(event.relatedTarget).data('id_pb')
+            var id_adm_bm = $(event.relatedTarget).data('id_adm_bm')
             var no_batch = $(event.relatedTarget).data('no_batch')
             var nama_barang = $(event.relatedTarget).data('nama_barang')
             var nama_supplier = $(event.relatedTarget).data('nama_supplier')
@@ -1337,9 +1337,9 @@
             var kondisi_py4 = $(event.relatedTarget).data('kondisi_py4')
 
             $(this).find('#t-id_ujitp').val(id_ujitp)
-            $(this).find('#t-id_barang').val(id_barang)
+            $(this).find('#t-id_prc_master_barang').val(id_prc_master_barang)
             $(this).find('#t-id_supplier').val(id_supplier)
-            $(this).find('#t-id_pb').val(id_pb)
+            $(this).find('#t-id_adm_bm').val(id_adm_bm)
             $(this).find('#t-no_batch').val(no_batch)
             $(this).find('#t-nama_barang').val(nama_barang)
             $(this).find('#t-nama_supplier').val(nama_supplier)

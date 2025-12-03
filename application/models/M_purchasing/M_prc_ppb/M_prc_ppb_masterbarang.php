@@ -78,8 +78,8 @@ class M_prc_ppb_masterbarang extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO tb_prc_master_barang (id_prc_master_supplier,kode_barang, nama_barang, jenis_barang, tipe_barang, departement,spek,mesh,bloom ,satuan, created_at, created_by, updated_at, updated_by, is_deleted) 
-        VALUES ('$data[id_prc_ppb_supplier]','$data[kode_barang]', '$data[nama_barang]', '$data[jenis_barang]', '$data[tipe_barang]','$data[departement]','$data[spek]','$data[mesh]','$data[bloom]','$data[satuan]', NOW(), '$id_user', '0000-00-00', '', '0')
+        INSERT INTO tb_prc_master_barang (id_prc_master_supplier,kode_barang, nama_barang, jenis_barang, tipe_barang, departement,lab_test,spek,mesh,bloom ,satuan, created_at, created_by, updated_at, updated_by, is_deleted) 
+        VALUES ('$data[id_prc_ppb_supplier]','$data[kode_barang]', '$data[nama_barang]', '$data[jenis_barang]', '$data[tipe_barang]','$data[departement]','$data[lab_test]','$data[spek]','$data[mesh]','$data[bloom]','$data[satuan]', NOW(), '$id_user', '0000-00-00', '', '0')
         ";
         return $this->db->query($sql);
     }

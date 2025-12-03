@@ -235,7 +235,6 @@ public function add()
 {
     $no_dpb     = $this->input->post('no_dpb', TRUE);
     $tgl_bm     = $this->input->post('tgl_dpb', TRUE);
-    $no_sjl     = $this->input->post('no_sjl', TRUE);
     $no_batch   = $this->input->post('no_batch', TRUE);
     $jumlah_diterima = $this->input->post('jumlah_diterima', TRUE);
     $id_prc_master_barang = $this->input->post('id_prc_master_barang', TRUE);
@@ -287,7 +286,6 @@ public function add()
                 'no_ppb'               => $no_ppb[$index], // Pastikan ada di form
                 'no_dpb'               => $no_dpb,
                 'tgl_bm'               => $tgl_bm,
-                'no_sjl'               => $no_sjl,
                 'no_batch'             => $no_batch[$index],
                 'jml_bm'               => $jumlah,
                 'created_at'           => date('Y-m-d H:i:s'),
