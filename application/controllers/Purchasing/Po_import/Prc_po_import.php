@@ -9,7 +9,7 @@ class Prc_po_import extends CI_Controller
 	{
 		parent::__construct();
 		// check_not_login();
-		$this->load->model('M_purchasing/M_po_import/M_prc_po_import');
+		$this->load->model('M_purchasing/M_prc_po_import/M_prc_po_import');
 		$this->load->model('M_purchasing/M_prc_ppb/M_po_supplier/M_prc_po_supplier');
 		$this->load->model('M_purchasing/M_prc_ppb/M_prc_ppb_masterbarang');
 	}

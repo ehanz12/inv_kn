@@ -56,39 +56,39 @@ class pemeriksaan_bahan extends CI_Controller
             header('location:' . base_url('gudang_bahanbaku/barang_masuk') . '?alert=danger&msg=Maaf anda gagal meng-update barang masuk');
         }
     }
-    public function delete($id_pb)
+    public function delete($id_adm_bm)
     {
-        $data['id_pb'] = $id_pb;
+        $data['id_adm_bm'] = $id_adm_bm;
         $respon = $this->M_pemeriksaan_bahan->delete($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Karantina");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Karantina");
         $respon = $this->M_pemeriksaan_bahan->delete($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Karantina");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Karantina");
         $respon = $this->M_pemeriksaan_bahan->delete_pw($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Karantina");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Karantina");
         $respon = $this->M_pemeriksaan_bahan->delete_pel($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Karantina");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Karantina");
         $respon = $this->M_pemeriksaan_bahan->delete_tp($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Karantina");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Karantina");
         $respon = $this->M_pemeriksaan_bahan->delete_cls($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Karantina");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Karantina");
         $respon = $this->M_pemeriksaan_bahan->delete_ln($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Karantina");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Karantina");
         $respon = $this->M_pemeriksaan_bahan->delete_mp($data);
         
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Karantina");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Karantina");
         $respon = $this->M_pemeriksaan_bahan->delete_mb($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Karantina");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Karantina");
         $respon = $this->M_pemeriksaan_bahan->delete_sls($data);
 
-        $this->M_pemeriksaan_bahan->update_status_pb($data['id_pb'], "Karantina");
+        $this->M_pemeriksaan_bahan->update_status_pb($data['id_adm_bm'], "Karantina");
         $respon = $this->M_pemeriksaan_bahan->delete_td($data);
 
         if ($respon) {

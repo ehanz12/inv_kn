@@ -734,7 +734,6 @@
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-
   .table-orange {
     background-color: #FFA500 !important;
     /* oranye */

@@ -14,7 +14,7 @@ class M_sk_master_barang extends CI_Model
     public function get($id = null)
     {
         // $kode_user = $this->kode_user();
-        $sql = "SELECT * FROM tb_sk_masterbarang WHERE is_deleted = 0 ORDER BY nama_barang ASC";
+        $sql = "SELECT * FROM tb_sk_masterbarang WHERE is_deleted = 0 ORDER BY kode_barang DESC";
 
         return $this->db->query($sql);
     }
