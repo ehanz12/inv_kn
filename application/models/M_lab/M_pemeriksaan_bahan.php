@@ -22,17 +22,15 @@ class M_pemeriksaan_bahan extends CI_Model
             x.created_at,
             b.nama_barang,
             b.kode_barang,
-            b.lab_test,
             b.spek,
+            b.lab_test,
+            b.jenis_barang,
             b.satuan,
             c.jml_bm,
             c.no_dpb,
             d.no_sjl,
             d.tgl_dpb,
-            e.jenis_bayar,
-            f.spek,
-            g.jenis_barang,
-            s.nama_supplier
+            e.jenis_bayar
         FROM (
             SELECT 
                 t1.id_adm_bm,
@@ -61,17 +59,11 @@ class M_pemeriksaan_bahan extends CI_Model
         LEFT JOIN tb_prc_master_barang b
             ON b.id_prc_master_barang = x.id_prc_master_barang
         LEFT JOIN tb_adm_barang_masuk c
-            ON c.id_prc_master_barang = x.id_prc_master_barang
+            ON c.id_adm_bm = x.id_adm_bm
         LEFT JOIN tb_prc_dpb_tf d
             ON c.no_dpb = d.no_dpb
         LEFT JOIN tb_prc_dpb e
             ON c.id_prc_dpb = e.id_prc_dpb
-        LEFT JOIN tb_prc_master_barang f
-            ON x.id_prc_master_barang = f.id_prc_master_barang
-        LEFT JOIN tb_prc_master_barang g
-            ON x.id_prc_master_barang = g.id_prc_master_barang
-        LEFT JOIN tb_prc_master_supplier s
-            ON s.id_prc_master_supplier = b.id_prc_master_supplier
         WHERE 1=1
     ";
 
@@ -91,6 +83,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
     return $this->db->query($sql);
 }
+
 
 
 
@@ -128,7 +121,7 @@ class M_pemeriksaan_bahan extends CI_Model
         $id_user = $this->id_user();
         $sql = "
             UPDATE `tb_lab_pemeriksaan_bahan` 
-            SET `id_pb` = '$data[id_pb]',
+            SET `id_adm_bm` = '$data[id_adm_bm]',
             `no_batch`='$data[no_batch]',
             `no_surat_jalan`='$data[no_surat_jalan]',
             `tgl`='$data[tgl]',
@@ -147,7 +140,7 @@ class M_pemeriksaan_bahan extends CI_Model
             `exp`='$data[exp]',
             `mfg`='$data[mfg]',
             `updated_at`= NOW(),`updated_by`='$id_user' 
-            WHERE `id_pb`='$data[id_pb]'
+            WHERE `id_adm_bm`='$data[id_adm_bm]'
         ";
         return $this->db->query($sql);
         // return $sql;
@@ -164,7 +157,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
         $sql = "
         DELETE FROM `tb_lab_hasil_ujigel`
-         WHERE `id_pb`='$data[id_pb]'
+         WHERE `id_adm_bm`='$data[id_adm_bm]'
         ";
         return $this->db->query($sql);
     }
@@ -179,7 +172,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
         $sql = "
         DELETE FROM `tb_lab_hasil_ujipewarna`
-         WHERE `id_pb`='$data[id_pb]'
+         WHERE `id_adm_bm`='$data[id_adm_bm]'
         ";
         return $this->db->query($sql);
     }
@@ -194,7 +187,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
         $sql = "
         DELETE FROM `tb_lab_hasil_ujipel`
-         WHERE `id_pb`='$data[id_pb]'
+         WHERE `id_adm_bm`='$data[id_adm_bm]'
         ";
         return $this->db->query($sql);
     }
@@ -209,7 +202,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
         $sql = "
         DELETE FROM `tb_lab_hasil_ujitp`
-         WHERE `id_pb`='$data[id_pb]'
+         WHERE `id_adm_bm`='$data[id_adm_bm]'
         ";
         return $this->db->query($sql);
     }
@@ -224,7 +217,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
         $sql = "
         DELETE FROM `tb_lab_hasil_ujibt_candurinsilverfine`
-         WHERE `id_pb`='$data[id_pb]'
+         WHERE `id_adm_bm`='$data[id_adm_bm]'
         ";
         return $this->db->query($sql);
     }
@@ -239,7 +232,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
         $sql = "
         DELETE FROM `tb_lab_hasil_ujibt_lecithinadlec`
-         WHERE `id_pb`='$data[id_pb]'
+         WHERE `id_adm_bm`='$data[id_adm_bm]'
         ";
         return $this->db->query($sql);
     }
@@ -254,7 +247,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
         $sql = "
         DELETE FROM `tb_lab_hasil_ujibt_methylparaben`
-         WHERE `id_pb`='$data[id_pb]'
+         WHERE `id_adm_bm`='$data[id_adm_bm]'
         ";
         return $this->db->query($sql);
     }
@@ -269,7 +262,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
         $sql = "
         DELETE FROM `tb_lab_hasil_ujibt_natriumbenzoat`
-         WHERE `id_pb`='$data[id_pb]'
+         WHERE `id_adm_bm`='$data[id_adm_bm]'
         ";
         return $this->db->query($sql);
     }
@@ -284,7 +277,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
         $sql = "
         DELETE FROM `tb_lab_hasil_ujibt_sodiumlaunilsulfat`
-         WHERE `id_pb`='$data[id_pb]'
+         WHERE `id_adm_bm`='$data[id_adm_bm]'
         ";
         return $this->db->query($sql);
     }
@@ -299,7 +292,7 @@ class M_pemeriksaan_bahan extends CI_Model
 
         $sql = "
         DELETE FROM `tb_lab_hasil_ujibt_titaniumdioxide`
-         WHERE `id_pb`='$data[id_pb]'
+         WHERE `id_adm_bm`='$data[id_adm_bm]'
         ";
         return $this->db->query($sql);
     }
