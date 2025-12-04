@@ -33,7 +33,7 @@ class M_prc_ppb_masterbarang extends CI_Model
         SELECT a.*,b.nama_supplier
         FROM tb_prc_master_barang a
         LEFT JOIN tb_prc_master_supplier b ON a.id_prc_master_supplier = b.id_prc_master_supplier
-        WHERE a.is_deleted = 0 $where ORDER BY nama_barang ASC";
+        WHERE a.is_deleted = 0 $where ORDER BY kode_barang ASC";
         return $this->db->query($sql);
     }
 

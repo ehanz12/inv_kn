@@ -121,10 +121,10 @@ class master_barang extends CI_Controller
 
         if ($respon) {
             // Redirect setelah berhasil
-            header('location:'.base_url('Purchasing/prc_ppb/prc_ppb_masterbarang').'?alert=success&msg=Selamat anda berhasil menghapus Barang');
+            header('location:'.base_url('administrator/master_barang').'?alert=success&msg=Selamat anda berhasil menghapus Barang');
         } else {
             // Redirect jika gagal
-            header('location:'.base_url('Purchasing/prc_ppb/prc_ppb_masterbarang').'?alert=error&msg=Maaf anda gagal menghapus Barang');
+            header('location:'.base_url('administrator/master_barang').'?alert=error&msg=Maaf anda gagal menghapus Barang');
         }
     }
 
