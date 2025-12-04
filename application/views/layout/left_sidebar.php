@@ -38,8 +38,17 @@
                     <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds"
                         class="nav-item pcoded-hasmenu">
                         <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-clipboard"></i></span><span
-                                class="pcoded-mtext">Administrasi</span></a>
+                                    class="feather icon-clipboard"></i></span>
+                                    
+                                <span class="pcoded-mtext">
+                                    Administrasi
+                                    <span class="pcoded-mtext">Lab/QC
+                                <?php if ($jml_admin != 0) { ?>
+                                    <span class="badge badge-pill badge-warning"><?= $jml_admin ?></span>
+                                <?php } ?>
+                                    </span>
+                                </span>
+                            </a>
                         <ul class="pcoded-submenu">
                             <li class="nav-item <?= $uri == 'Stock_keeper' ? 'active' : '' ?>"><a
                                     href="<?= base_url('administrator/master_barang') ?>" class="">Master Barang</a></li>
@@ -47,16 +56,28 @@
                                     href="<?= base_url('administrator/adm_barang_masuk') ?>" class="">Barang Masuk</a></li>
                             <li class="nav-item <?= $uri == 'Stock_keeper' ? 'active' : '' ?>"><a
                                     href="<?= base_url('administrator/ppb') ?>" class="">PPB</a></li>
-                             <li class="nav-item <?= $uri == 'Stock_keeper' ? 'active' : '' ?>"><a
+                            <li class="nav-item <?= $uri == 'Stock_keeper' ? 'active' : '' ?>"><a
                                     href="<?= base_url('administrator/adm_dpb') ?>" class="">DPB</a></li>
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a
-                                    href="<?= base_url('administrator/acc/acc_supervisor') ?>" class="">ACC Supervisor</a></li>
+                                    href="<?= base_url('administrator/acc/acc_supervisor') ?>" class="">ACC Supervisor
+                                    <?php if ($cek_spv != 0) { ?>
+                                        <span id="badge-hp" class="badge badge-pill badge-warning"><?= $cek_spv ?></span>
+                                    <?php } ?></a></li>
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a
-                                    href="<?= base_url('administrator/acc/acc_manager') ?>" class="">ACC Manager</a></li>
+                                    href="<?= base_url('administrator/acc/acc_manager') ?>" class="">ACC Manager
+                                    <?php if ($cek_manager != 0) { ?>
+                                        <span id="badge-hp" class="badge badge-pill badge-warning"><?= $cek_manager ?></span>
+                                    <?php } ?></a></li>
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a
-                                    href="<?= base_url('administrator/acc/acc_plant_manager') ?>" class="">ACC Plant Manager</a></li>
+                                    href="<?= base_url('administrator/acc/acc_plant_manager') ?>" class="">ACC Plant Manager
+                                    <?php if ($cek_pm != 0) { ?>
+                                        <span id="badge-hp" class="badge badge-pill badge-warning"><?= $cek_pm ?></span>
+                                    <?php } ?></a></li>
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a
-                                    href="<?= base_url('administrator/acc/acc_direktur') ?>" class="">ACC Direktur</a></li>
+                                    href="<?= base_url('administrator/acc/acc_direktur') ?>" class="">ACC Direktur
+                                    <?php if ($cek_direk != 0) { ?>
+                                        <span id="badge-hp" class="badge badge-pill badge-warning"><?= $cek_direk ?></span>
+                                    <?php } ?></a></li>
                         </ul>
                     </li>
                 <?php } ?>
@@ -89,7 +110,7 @@
                                 </a>
 
                                 <ul class="pcoded-submenu">
-                                    
+
                                     <li class="nav-item <?= $uri == 'Customer' ? 'active' : '' ?>">
                                         <a href="<?= base_url('Marketing/master/Customer') ?>">Customer</a>
                                     </li>
@@ -106,9 +127,9 @@
                             </li>
 
                             <!-- Submenu: Lain-lain -->
-                             <li class="nav-item <?= $uri == 'Customer' ? 'active' : '' ?>">
-                                        <a href="<?= base_url('Marketing/konfirmasi_pesanan') ?>">Konfirmasi Pesanan</a>
-                                    </li>
+                            <li class="nav-item <?= $uri == 'Customer' ? 'active' : '' ?>">
+                                <a href="<?= base_url('Marketing/konfirmasi_pesanan') ?>">Konfirmasi Pesanan</a>
+                            </li>
                             <li class="nav-item <?= $uri == 'Capsule_request' ? 'active' : '' ?>">
                                 <a href="<?= base_url('Marketing/Capsule_request/Marketing_cr') ?>">Capsule Request</a>
                             </li>
@@ -211,7 +232,7 @@
                             <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds"
                                 class="nav-item pcoded-hasmenu">
                                 <a href="javascript:" class="nav-link "><span class="pcoded-mitext"> Master
-                                        </span></a>
+                                    </span></a>
                                 <ul class="pcoded-submenu">
                                     <li class="nav-item <?= $uri == 'prc_ppb_masterbarang' ? 'active' : '' ?>"><a
                                             href="<?= base_url('Purchasing/prc_ppb/Prc_ppb_masterbarang') ?>"
@@ -612,72 +633,72 @@
                             <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a href="<?= base_url('Ppb/PPB') ?>"
                                     class="">PPB</a></li>
                     </li>
+            </ul>
+            </li>
+            <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadowa Embeds"
+                class="nav-item pcoded-hasmenu">
+                <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i
+                            class="feather icon-users"></i></span><span class="pcoded-mtext">Personalia</span></a>
+                <ul class="pcoded-submenu">
+                    <li class="nav-item <?= $uri == 'absensi' ? 'active' : '' ?>"><a
+                            href="<?= base_url('Personalia/Absensi') ?>" class="">Absensi</a></li>
+                    <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a href="<?= base_url('Ppb/PPB') ?>"
+                            class="">PPB</a></li>
                 </ul>
-                </li>
-                <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadowa Embeds"
-                    class="nav-item pcoded-hasmenu">
-                    <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i
-                                class="feather icon-users"></i></span><span class="pcoded-mtext">Personalia</span></a>
-                    <ul class="pcoded-submenu">
-                        <li class="nav-item <?= $uri == 'absensi' ? 'active' : '' ?>"><a
-                                href="<?= base_url('Personalia/Absensi') ?>" class="">Absensi</a></li>
-                        <li class="nav-item <?= $uri == 'PPB' ? 'active' : '' ?>"><a href="<?= base_url('Ppb/PPB') ?>"
-                                class="">PPB</a></li>
-                    </ul>
-                </li>
-            <?php } ?>
-            <?php if ($level === "admin" || $level === "stockkeeper") { ?>
-                <li data-username="basic components Button Alert Badges breadcrumb Paggination progres Tooltip popovers Carousel Cards Collapse tabs pills Modal Grid System Typoghrapy Extra Shdaows Embeds"
-                    class="nav-item pcoded-hasmenu">
-                    <a href="javascript:" class="nav-link"><span class="pcoded-micon"><i
-                                class="feather icon-package"></i></span><span class="pcoded-mnext">Stock Keeper</span></a>
-                    <ul class="pcoded-submenu">
-                        <li class="nav-item <?= $uri == 'forming' ? 'active' : '' ?>"><a
-                                href="<?= base_url('Stock_keeper/Sk_dpb') ?>" class="nav-link">DPB</a></li>
-                        <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds"
-                            class="nav-item pcoded-hasmenu">
-                            <a href="javascript:" class="nav-link "><span class="pcoded-mtext">Kelola Barang</span></a>
-                            <ul class="pcoded-submenu">
-                                <!-- <li class="nav-item <?= $uri == 'melting' ? 'active' : '' ?>"><a href="<?= base_url('Stock_keeper/Sk_master_barang') ?>" class="nav-link">Master Barang</a></li>
+            </li>
+        <?php } ?>
+        <?php if ($level === "admin" || $level === "stockkeeper") { ?>
+            <li data-username="basic components Button Alert Badges breadcrumb Paggination progres Tooltip popovers Carousel Cards Collapse tabs pills Modal Grid System Typoghrapy Extra Shdaows Embeds"
+                class="nav-item pcoded-hasmenu">
+                <a href="javascript:" class="nav-link"><span class="pcoded-micon"><i
+                            class="feather icon-package"></i></span><span class="pcoded-mnext">Stock Keeper</span></a>
+                <ul class="pcoded-submenu">
+                    <li class="nav-item <?= $uri == 'forming' ? 'active' : '' ?>"><a
+                            href="<?= base_url('Stock_keeper/Sk_dpb') ?>" class="nav-link">DPB</a></li>
+                    <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds"
+                        class="nav-item pcoded-hasmenu">
+                        <a href="javascript:" class="nav-link "><span class="pcoded-mtext">Kelola Barang</span></a>
+                        <ul class="pcoded-submenu">
+                            <!-- <li class="nav-item <?= $uri == 'melting' ? 'active' : '' ?>"><a href="<?= base_url('Stock_keeper/Sk_master_barang') ?>" class="nav-link">Master Barang</a></li>
                                     <li class="nav-item <?= $uri == 'forming' ? 'active' : '' ?>"><a href="<?= base_url('Stock_keeper/Sk_barang_stock') ?>" class="nav-link">Barang Stock</a></li>
                                     <li class="nav-item <?= $uri == 'sortir' ? 'active' : '' ?>"><a href="<?= base_url('Stock_keeper/Sk_barang_masuk') ?>" class="nav-link">Barang Masuk</a></li>
                                     <li class="nav-item <?= $uri == 'sortir' ? 'active' : '' ?>"><a href="<?= base_url('Stock_keeper/Sk_barang_keluar') ?>" class="nav-link">Barang Keluar</a></li> -->
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="pcoded-submenu">
-                        <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds"
-                            class="nav-item pcoded-hasmenu">
-                            <a href="javascript:" class="nav-link "><span class="pcoded-mtext">Laporan</span></a>
-                            <ul class="pcoded-submenu">
-                                <li class="nav-item <?= $uri == 'Laporan_barang_masuk' ? 'active' : '' ?>">
-                                    <a href="<?= base_url('Stock_keeper/Sk_laporan_barang_masuk') ?>"
-                                        class="nav-link">Laporan Barang Masuk</a>
-                                </li>
-                                <li class="nav-item <?= $uri == 'Laporan_barang_keluar' ? 'active' : '' ?>">
-                                    <a href="<?= base_url('Stock_keeper/Laporan_barang_keluar') ?>" class="nav-link">Laporan
-                                        Barang Keluar</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <?php
-                    $uri = $this->uri->segment(2); // Ambil segmen kedua dari URL
-                    ?>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds"
+                        class="nav-item pcoded-hasmenu">
+                        <a href="javascript:" class="nav-link "><span class="pcoded-mtext">Laporan</span></a>
+                        <ul class="pcoded-submenu">
+                            <li class="nav-item <?= $uri == 'Laporan_barang_masuk' ? 'active' : '' ?>">
+                                <a href="<?= base_url('Stock_keeper/Sk_laporan_barang_masuk') ?>"
+                                    class="nav-link">Laporan Barang Masuk</a>
+                            </li>
+                            <li class="nav-item <?= $uri == 'Laporan_barang_keluar' ? 'active' : '' ?>">
+                                <a href="<?= base_url('Stock_keeper/Laporan_barang_keluar') ?>" class="nav-link">Laporan
+                                    Barang Keluar</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <?php
+                $uri = $this->uri->segment(2); // Ambil segmen kedua dari URL
+                ?>
 
-                </li>
-            <?php } ?>
+            </li>
+        <?php } ?>
 
-            <?php if ($level === "admin") { ?>
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Users</label>
-                </li>
-                <li class="nav-item  <?= $uri == 'users' ? 'active' : '' ?>">
-                    <a href="<?= base_url('users/users') ?>" class="nav-link "><span class="pcoded-micon"><i
-                                class="feather icon-user"></i></span><span class="pcoded-mtext">Kelola User</span></a>
-                </li>
-            <?php } ?>
-            <!-- <li class="nav-item pcoded-menu-caption">
+        <?php if ($level === "admin") { ?>
+            <li class="nav-item pcoded-menu-caption">
+                <label>Users</label>
+            </li>
+            <li class="nav-item  <?= $uri == 'users' ? 'active' : '' ?>">
+                <a href="<?= base_url('users/users') ?>" class="nav-link "><span class="pcoded-micon"><i
+                            class="feather icon-user"></i></span><span class="pcoded-mtext">Kelola User</span></a>
+            </li>
+        <?php } ?>
+        <!-- <li class="nav-item pcoded-menu-caption">
                     <label>Forms & table</label>
                 </li>
                 <li data-username="form elements advance componant validation masking wizard picker select" class="nav-item">
@@ -703,7 +724,7 @@
                 </li>
                 <li data-username="Sample Page" class="nav-item"><a href="sample-page.html" class="nav-link"><span class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span class="pcoded-mtext">Sample page</span></a></li>
                 <li data-username="Disabled Menu" class="nav-item disabled"><a href="javascript:" class="nav-link"><span class="pcoded-micon"><i class="feather icon-power"></i></span><span class="pcoded-mtext">Disabled menu</span></a></li> -->
-            </ul>
+        </ul>
         </div>
     </div>
 </nav>
