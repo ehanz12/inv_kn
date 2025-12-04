@@ -269,5 +269,26 @@ public function get_outstanding_status($no_ppb)
         return $this->db->query($sql);
     }
 
+    public function cek_spv()
+    {
+        $sql = "SELECT COUNT(id_prc_ppb_tf) as tot_spv FROM tb_prc_ppb_tf WHERE acc_spv IS NULL AND is_deleted  = 0";
+        return $this->db->query($sql);
+    }
+    public function cek_manager()
+    {
+        $sql = "SELECT COUNT(id_prc_ppb_tf) as tot_manager FROM tb_prc_ppb_tf WHERE acc_manager IS NULL AND acc_spv = 'Approved' AND is_deleted  = 0";
+        return $this->db->query($sql);
+    }
+    public function cek_pm()
+    {
+        $sql = "SELECT COUNT(id_prc_ppb_tf) as tot_pm FROM tb_prc_ppb_tf WHERE acc_pm IS NULL AND acc_manager = 'Approved' AND is_deleted  = 0";
+        return $this->db->query($sql);
+    }
+    public function cek_direk()
+    {
+        $sql = "SELECT COUNT(id_prc_ppb_tf) as tot_direk FROM tb_prc_ppb_tf WHERE acc_direktur IS NULL AND acc_pm = 'Approved' AND jenis_ppb = 'Non-Budget' AND is_deleted  = 0";
+        return $this->db->query($sql);
+    }
+
 }
 ?>
