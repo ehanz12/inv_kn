@@ -848,7 +848,6 @@
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
-                                                                                    data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                    
                                                                                     data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji BB
@@ -867,7 +866,6 @@
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
-                                                                                    data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
                                                                                     
                                                                                     data-qty="<?= $k['jml_bm'] ?>">
@@ -881,12 +879,11 @@
                                                                         <div class="btn-group" role="group">
                                                                             <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#add_ujipw" 
                                                                                     data-id_adm_bm="<?= $k['id_adm_bm'] ?>" 
-                                                                                    data-id_barang="<?= $k['id_prc_master_barang'] ?>" 
+                                                                                    data-id_prc_master_barang="<?= $k['id_prc_master_barang'] ?>" 
                                                                                     data-no_surat_jalan="<?= $k['no_sjl'] ?>" 
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
-                                                                                    data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     
                                                                                     
                                                                                     data-qty="<?= $k['jml_bm'] ?>">
@@ -905,7 +902,6 @@
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
-                                                                                    data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     
                                                                                     data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji TP
@@ -924,7 +920,6 @@
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
-                                                                                    data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
                                                                                     
                                                                                     data-qty="<?= $k['jml_bm'] ?>">
@@ -944,7 +939,6 @@
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
-                                                                                    data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
                                                                                     
                                                                                     data-qty="<?= $k['jml_bm'] ?>">
@@ -963,7 +957,6 @@
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
-                                                                                    data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
                                                                                    
                                                                                     data-qty="<?= $k['jml_bm'] ?>">
@@ -983,7 +976,6 @@
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
-                                                                                    data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
                                                                                    
                                                                                     data-qty="<?= $k['jml_bm'] ?>">
@@ -1003,7 +995,6 @@
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
-                                                                                    data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     data-op_gudang="<?= $k['op_gudang'] ?>" 
 
                                                                                     data-qty="<?= $k['jml_bm'] ?>">
@@ -1023,7 +1014,6 @@
                                                                                     data-no_batch="<?= $k['no_batch'] ?>" 
                                                                                     data-tgl="<?= $tgl_msk ?>" 
                                                                                     data-nama_barang="<?= $k['nama_barang'] ?>" 
-                                                                                    data-nama_supplier="<?= $k['nama_supplier'] ?>" 
                                                                                     
                                                                                     data-qty="<?= $k['jml_bm'] ?>">
                                                                                 <i class="feather icon-edit-2"></i> Uji BT
@@ -1105,7 +1095,6 @@ $this->view('content/lab/pemeriksaan_bahan_tambahan/titaniumdioxide');
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="id_supplier">Nama Supplier</label>
-                                <input type="text" class="form-control" id="v-nama_supplier" name="nama_supplier" placeholder="Nama Supplier" readonly>
                             </div>
                         </div>
 
@@ -1236,7 +1225,6 @@ $this->view('content/lab/pemeriksaan_bahan_tambahan/titaniumdioxide');
             var no_batch = $(event.relatedTarget).data('no_batch')
             var tgl = $(event.relatedTarget).data('tgl')
             var nama_barang = $(event.relatedTarget).data('nama_barang')
-            var nama_supplier = $(event.relatedTarget).data('nama_supplier')
             var op_gudang = $(event.relatedTarget).data('op_gudang')
             var dok_pendukung = $(event.relatedTarget).data('dok_pendukung')
             var qty_pack = $(event.relatedTarget).data('qty_pack')
@@ -1254,7 +1242,6 @@ $this->view('content/lab/pemeriksaan_bahan_tambahan/titaniumdioxide');
             $(this).find('#v-no_batch').val(no_batch)
             $(this).find('#v-tgl').val(tgl)
             $(this).find('#v-nama_barang').val(nama_barang)
-            $(this).find('#v-nama_supplier').val(nama_supplier)
             $(this).find('#v-op_gudang').val(op_gudang)
             $(this).find('#v-dok_pendukung').val(dok_pendukung)
             $(this).find('#v-qty_pack').val(qty_pack)

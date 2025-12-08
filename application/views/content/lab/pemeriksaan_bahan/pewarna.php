@@ -9,8 +9,8 @@
                 </button>
             </div>
             <form method="post" action="<?= base_url() ?>lab/Hasil_pemeriksaan_lab/Hasil_pemeriksaan_pw/add_ujipw">
-                 <input type="hidden" id="e_id_adm_bm" name="id_adm_bm">
-<input type="hidden" id="e_id_prc_master_barang" name="id_prc_master_barang">
+                <input type="hidden" id="e_id_adm_bm" name="id_adm_bm">
+                <input type="hidden" id="e_id_prc_master_barang" name="id_prc_master_barang">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-4">
@@ -229,6 +229,7 @@
 
             $(this).find('#e_id_adm_bm').val(id_adm_bm)
             $(this).find('#e_id_prc_master_barang').val(id_prc_master_barang)
+            console.log(id_prc_master_barang)
             $(this).find('#e_id_supplier').val(id_supplier)
             $(this).find('#e_no_surat_jalan').val(no_surat_jalan)
             $(this).find('#e_no_batch').val(no_batch)

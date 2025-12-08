@@ -29,6 +29,7 @@ class Template
         $view_data['cek_direk'] = $this->CI->M_purchasing_ppb->cek_direk()->result_array()[0]['tot_direk'];
         $view_data['cek_permintaan'] = $this->CI->M_permintaan_barang_gudang->cek_permintaan()->result_array()[0]['tot_status_proses'];
         $view_data['jml_notif'] = (int)$view_data['cek_karantina'] + (int)$view_data['cek_proses'];
+        $view_data['jml_prc'] = (int)$view_data['cek_status'];
         $view_data['jml_admin'] = (int)$view_data['cek_spv'] + (int)$view_data['cek_manager'] + + (int)$view_data['cek_pm'] + (int)$view_data['cek_direk'];
         $this->set('contents', $this->CI->load->view($view, $view_data, TRUE));
         return $this->CI->load->view($template, $this->template_data, $return);
