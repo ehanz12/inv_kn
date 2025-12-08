@@ -83,56 +83,58 @@ class M_purchasing_ppb extends CI_Model
     }
 
     public function get($tgl = null, $tgl2 = null, $departement = null)
-{
-    $where = [];
+    {
+        $where = [];
 
-    // FILTER TANGGAL
-    if (!empty($tgl) && !empty($tgl2)) {
+        // FILTER TANGGAL
+        if (!empty($tgl) && !empty($tgl2)) {
 
-        // Cek apakah format sudah benar
-        $t1 = explode("/", $tgl);
-        $t2 = explode("/", $tgl2);
+            // Cek apakah format sudah benar
+            $t1 = explode("/", $tgl);
+            $t2 = explode("/", $tgl2);
 
-        if (count($t1) === 3 && count($t2) === 3) {
-            $tgl   = "$t1[2]-$t1[1]-$t1[0]";
-            $tgl2  = "$t2[2]-$t2[1]-$t2[0]";
+            if (count($t1) === 3 && count($t2) === 3) {
+                $tgl   = "$t1[2]-$t1[1]-$t1[0]";
+                $tgl2  = "$t2[2]-$t2[1]-$t2[0]";
 
-            $where[] = "AND tgl_ppb >= '$tgl' AND tgl_ppb <= '$tgl2'";
+                $where[] = "AND tgl_ppb >= '$tgl' AND tgl_ppb <= '$tgl2'";
+            }
         }
-    }
 
-    // FILTER DEPARTEMENT
-    if (!empty($departement)) {
-        $where[] = "AND departement = '$departement'";
-    }
+        // FILTER DEPARTEMENT
+        if (!empty($departement)) {
+            $where[] = "AND departement = '$departement'";
+        }
 
-    // gabung kondisi
-    $where = implode(" ", $where);
+        // gabung kondisi
+        $where = implode(" ", $where);
 
-    // query final
-    $sql = "
+        // query final
+        $sql = "
         SELECT *
         FROM tb_prc_ppb_tf
         WHERE is_deleted = 0
-            AND acc_spv = 'Approved'
-            AND acc_manager = 'Approved'
-            AND acc_pm = 'Approved'
+             AND (
+            (jenis_ppb = 'Budget' AND acc_pm = 'Approved')
+            OR
+            (jenis_ppb = 'Non-Budget' AND acc_direktur = 'Approved')
+            ) 
             $where
         ORDER BY id_prc_ppb_tf ASC
     ";
 
-    return $this->db->query($sql);
-}
+        return $this->db->query($sql);
+    }
 
-public function get_list_departement()
-{
-    return $this->db->query("SELECT DISTINCT departement FROM tb_prc_ppb_tf ORDER BY departement")->result_array();
-}
+    public function get_list_departement()
+    {
+        return $this->db->query("SELECT DISTINCT departement FROM tb_prc_ppb_tf ORDER BY departement")->result_array();
+    }
 
 
-public function calculate_outstanding($no_ppb)
-{
-    $sql = "
+    public function calculate_outstanding($no_ppb)
+    {
+        $sql = "
         SELECT 
             COALESCE(SUM(b.jumlah_ppb), 0) as total_jumlah_awal,
             COALESCE(SUM(b.jumlah_ppb - COALESCE((
@@ -145,9 +147,9 @@ public function calculate_outstanding($no_ppb)
         FROM tb_prc_ppb b 
         WHERE b.no_ppb = ?
     ";
-    
-    return $this->db->query($sql, [$no_ppb])->row_array();
-}
+
+        return $this->db->query($sql, [$no_ppb])->row_array();
+    }
     public function cek_kode_barang($kode_barang)
     {
         $this->db->select('COUNT(*) AS count_sj');
@@ -171,9 +173,9 @@ public function calculate_outstanding($no_ppb)
         return $this->db->query($sql1);
     }
 
-   public function data_ppb_barang($no_ppb_accounting)
-{
-    $sql = "
+    public function data_ppb_barang($no_ppb_accounting)
+    {
+        $sql = "
         SELECT 
             a.*, 
             b.nama_barang, 
@@ -195,9 +197,9 @@ public function calculate_outstanding($no_ppb)
         LEFT JOIN tb_prc_ppb_tf d ON a.no_ppb = d.no_ppb
         WHERE a.no_ppb = ? 
         ORDER BY a.id_prc_ppb ASC";
-    
-    return $this->db->query($sql, [$no_ppb_accounting]);
-}
+
+        return $this->db->query($sql, [$no_ppb_accounting]);
+    }
     public function ambil_label($no_ppb_accounting)
     {
         $sql = "   
@@ -218,54 +220,64 @@ public function calculate_outstanding($no_ppb)
         return $this->db->update('tb_prc_ppb_tf', $data);
     }
 
-   public function update_status()
-{
-    // Ambil semua PPB yang masih proses
-    $sql_ppb = "SELECT no_ppb FROM tb_prc_ppb_tf 
+    public function update_status()
+    {
+        // Ambil semua PPB yang masih proses
+        $sql_ppb = "SELECT no_ppb FROM tb_prc_ppb_tf 
                 WHERE status != 'selesai' 
                 AND is_deleted = 0";
-    $ppb_list = $this->db->query($sql_ppb)->result_array();
-    
-    $updated = 0;
-    
-    foreach ($ppb_list as $ppb) {
-        $no_ppb = $ppb['no_ppb'];
-        
-        // Hitung outstanding untuk PPB ini
-        $outstanding_data = $this->calculate_outstanding($no_ppb);
-        $total_outstanding = $outstanding_data['total_outstanding'] ?? 0;
-        
-        // Jika outstanding = 0, update status menjadi selesai
-        if ($total_outstanding == 0) {
-            $sql_update = "UPDATE tb_prc_ppb_tf 
+        $ppb_list = $this->db->query($sql_ppb)->result_array();
+
+        $updated = 0;
+
+        foreach ($ppb_list as $ppb) {
+            $no_ppb = $ppb['no_ppb'];
+
+            // Hitung outstanding untuk PPB ini
+            $outstanding_data = $this->calculate_outstanding($no_ppb);
+            $total_outstanding = $outstanding_data['total_outstanding'] ?? 0;
+
+            // Jika outstanding = 0, update status menjadi selesai
+            if ($total_outstanding == 0) {
+                $sql_update = "UPDATE tb_prc_ppb_tf 
                           SET status = 'selesai', 
                               updated_at = NOW(),
                               updated_by = ?
                           WHERE no_ppb = ?";
-            $this->db->query($sql_update, [$this->id_user(), $no_ppb]);
-            $updated++;
+                $this->db->query($sql_update, [$this->id_user(), $no_ppb]);
+                $updated++;
+            }
         }
-    }
-    
-    return $updated;
-}
 
-// Method untuk cek status outstanding per PPB
-public function get_outstanding_status($no_ppb)
-{
-    $outstanding_data = $this->calculate_outstanding($no_ppb);
-    $total_outstanding = $outstanding_data['total_outstanding'] ?? 0;
-    
-    return [
-        'total_outstanding' => $total_outstanding,
-        'is_completed' => ($total_outstanding == 0)
-    ];
-}
+        return $updated;
+    }
+
+    // Method untuk cek status outstanding per PPB
+    public function get_outstanding_status($no_ppb)
+    {
+        $outstanding_data = $this->calculate_outstanding($no_ppb);
+        $total_outstanding = $outstanding_data['total_outstanding'] ?? 0;
+
+        return [
+            'total_outstanding' => $total_outstanding,
+            'is_completed' => ($total_outstanding == 0)
+        ];
+    }
 
     public function cek_status()
     {
         $sql = "
-            SELECT COUNT(status) as tot_status FROM `tb_prc_ppb_tf` WHERE status = 'proses' AND is_deleted = 0";
+        SELECT COUNT(*) AS tot_status
+FROM tb_prc_ppb_tf
+WHERE 
+    is_deleted = 0
+    AND status = 'proses'
+    AND (
+        (jenis_ppb = 'Budget' AND acc_pm = 'Approved')
+        OR
+        (jenis_ppb = 'Non-Budget' AND acc_direktur = 'Approved')
+    )  
+        ";
         return $this->db->query($sql);
     }
 
@@ -289,6 +301,4 @@ public function get_outstanding_status($no_ppb)
         $sql = "SELECT COUNT(id_prc_ppb_tf) as tot_direk FROM tb_prc_ppb_tf WHERE acc_direktur IS NULL AND acc_pm = 'Approved' AND jenis_ppb = 'Non-Budget' AND is_deleted  = 0";
         return $this->db->query($sql);
     }
-
 }
-?>

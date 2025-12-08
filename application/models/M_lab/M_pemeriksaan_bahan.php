@@ -112,7 +112,7 @@ class M_pemeriksaan_bahan extends CI_Model
     public function cek_proses()
     {
         $sql = "
-            SELECT COUNT(status) as tot_status_proses FROM `tb_lab_pemeriksaan_bahan` WHERE status = 'Proses' AND is_deleted = 0";
+            SELECT COUNT(status_barang) as tot_status_proses FROM `tb_adm_barang_masuk` WHERE status_barang = 'Proses' AND is_deleted = 0";
         return $this->db->query($sql);
     }
 
@@ -300,7 +300,14 @@ class M_pemeriksaan_bahan extends CI_Model
     public function cek_karantina()
     {
         $sql = "
-            SELECT COUNT(status) as tot_status_karantina FROM `tb_lab_pemeriksaan_bahan` WHERE status = 'Karantina' AND is_deleted = 0";
+            SELECT COUNT(*) AS tot_status_karantina
+            FROM tb_adm_barang_masuk AS adm
+            JOIN tb_prc_master_barang AS master
+                ON adm.id_prc_master_barang = master.id_prc_master_barang
+            WHERE adm.status_barang = 'karantina'
+            AND adm.is_deleted = 0
+            AND master.lab_test = 'yes'";
+
         return $this->db->query($sql);
     }
 

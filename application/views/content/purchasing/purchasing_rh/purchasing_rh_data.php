@@ -32,14 +32,18 @@
                 <div class="card">
                   <div class="card-header">
                     <h5>Data Rincian Harga</h5>
-                    <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add">
-                      <i class="feather icon-user-plus"></i>Tambah RH Non Budget
-                    </button>
-                    <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add_budget" style="margin-right: 5px;">
-                      <i class="feather icon-user-plus"></i>Tambah RH Budget
-                    </button>
                     <div class="float-right">
                       <div class="input-group">
+                        <div class="btn-group mx-1">
+                          <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add">
+                         <i class="feather icon-user-plus"></i>Tambah RH Non Budget
+                       </button>
+                        </div>
+                        <div class="btn-group">
+                        <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add_budget" style="margin-right: 5px;">
+                          <i class="feather icon-user-plus"></i>Tambah RH Budget
+                        </button>
+                        </div>
                         <input type="text" id="filter_tgl" value="<?= $tgl == null ? '' : $tgl ?>" class="form-control datepicker" placeholder="Filter Dari Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
                         <input type="text" id="filter_tgl2" value="<?= $tgl2 == null ? '' : $tgl2 ?>" class="form-control datepicker" placeholder="Filter Sampai Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
                         <div class="btn-group">

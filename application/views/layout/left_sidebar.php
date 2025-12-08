@@ -42,7 +42,6 @@
                                     
                                 <span class="pcoded-mtext">
                                     Administrasi
-                                    <span class="pcoded-mtext">Lab/QC
                                 <?php if ($jml_admin != 0) { ?>
                                     <span class="badge badge-pill badge-warning"><?= $jml_admin ?></span>
                                 <?php } ?>
@@ -188,7 +187,11 @@
                         class="nav-item pcoded-hasmenu">
                         <a id="badge-1" href="javascript:" class="nav-link"><span class="pcoded-micon"><i
                                     class="feather icon-shopping-cart"></i></span>
-                            <span class="pcoded-mtext">Purchasing</span>
+                            <span class="pcoded-mtext">
+                                Purchasing
+                             <?php if ($jml_prc != 0) { ?>
+                                    <span class="badge badge-pill badge-warning"><?= $jml_prc ?></span>
+                                <?php } ?></span>
                         </a>
                         <ul class="pcoded-submenu">
                             <!-- <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" class="nav-item pcoded-hasmenu">
