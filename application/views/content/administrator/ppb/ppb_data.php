@@ -828,7 +828,9 @@
                           <thead>
                             <tr>
                               <th>#</th>
-                              <th>No PPB</th>
+                              <th>
+                                No PPB
+                              </th>
                               <th>Tanggal PPB</th>
                               <th>Jenis PPB</th>
                               <th>Status</th>
@@ -842,14 +844,46 @@
                             foreach ($result as $k) {
                               $tgl_ppb =  explode('-', $k['tgl_ppb'])[2] . "/" . explode('-', $k['tgl_ppb'])[1] . "/" . explode('-', $k['tgl_ppb'])[0];
                               $tgl_pakai =  explode('-', $k['tgl_pakai'])[2] . "/" . explode('-', $k['tgl_pakai'])[1] . "/" . explode('-', $k['tgl_pakai'])[0];
+
+                              // Hitung outstanding untuk PPB ini
+                              $outstanding_data = $this->M_purchasing_ppb->get_outstanding_status($k['no_ppb']);
+                              $total_outstanding = $outstanding_data['total_outstanding'];
+                              $is_completed = $outstanding_data['is_completed'];
+
+                              // Status outstanding
+                              $outstanding_status = 'success';
+                              $outstanding_text = 'Lunas';
+                              if ($total_outstanding > 0) {
+                                $outstanding_status = 'warning';
+                                $outstanding_text = number_format($total_outstanding);
+                              }
                             ?>
                               <tr>
                                 <th scope="row"><?= $no++ ?></th>
-                                <td><?= $k['no_ppb'] ?></td>
+                                <td>
+                                  <span class="btn btn-primary btn-sm" data-target="#detail" data-toggle="modal"
+                                    data-no_ppb="<?= $k['no_ppb'] ?>"
+                                    data-tgl_ppb="<?= $tgl_ppb ?>"
+                                    data-tgl_pakai="<?= $tgl_pakai ?>"
+                                    data-jenis_ppb="<?= $k['jenis_ppb'] ?>"
+                                    data-jenis_form_ppb="<?= $k['jenis_form_ppb'] ?>"
+                                    data-departement="<?= $k['departement'] ?>"
+                                    data-ket="<?= $k['ket'] ?>">
+                                    <?= $k['no_ppb'] ?>
+                                  </span>
+                                </td>
                                 <td><?= $tgl_ppb ?></td>
                                 <td><?= $k['jenis_ppb'] ?></td>
                                 <td>
-                                  <?= $k['status'] ?></td>
+                                  <?php
+                                  if ($is_completed) {
+                                    echo '<span class="badge badge-success">Selesai</span>';
+                                  } else {
+                                    echo '<span class="badge badge-warning">Proses</span>';
+                                    echo '<br><small class="text-muted">Outstanding: ' . number_format($total_outstanding) . '</small>';
+                                  }
+                                  ?>
+                                </td>
                                 <td class="text-center">
                                   <?php if ($level === "admin" && $k['acc_spv'] == null) { ?>
                                     <div class="btn-group" role="group" aria-label="Basic example">
@@ -1390,96 +1424,98 @@
   </div>
 
 
-<script type="text/javascript">
-  $(document).ready(function() {
+  <script type="text/javascript">
+    $(document).ready(function() {
 
-    // ==========================
-    // FUNGSI FORMAT & UNFORMAT
-    // ==========================
-    function unformatRupiah(angka) {
-      if (!angka) return 0;
-      return parseInt(String(angka).replace(/\./g, '').replace(/[^0-9]/g, ''), 10);
-    }
+      // ==========================
+      // FUNGSI FORMAT & UNFORMAT
+      // ==========================
+      function unformatRupiah(angka) {
+        if (!angka) return 0;
+        return parseInt(String(angka).replace(/\./g, '').replace(/[^0-9]/g, ''), 10);
+      }
 
-    function formatRibuan(x) {
-      if (!x) return "";
-      return new Intl.NumberFormat('id-ID').format(x);
-    }
+      function formatRibuan(x) {
+        if (!x) return "";
+        return new Intl.NumberFormat('id-ID').format(x);
+      }
 
-    // Format input jumlah saat user mengetik
-    $(document).on('input', '.jumlah-format', function() {
-      let angka = unformatRupiah($(this).val());
-      $(this).val(formatRibuan(angka));
+      // Format input jumlah saat user mengetik
+      $(document).on('input', '.jumlah-format', function() {
+        let angka = unformatRupiah($(this).val());
+        $(this).val(formatRibuan(angka));
 
-      // update hidden integer
-      $(this).closest('tr').find('.jumlah-int').val(angka);
-    });
-
-
-    // ==========================
-    // LOAD DATA EDIT
-    // ==========================
-    $(document).on('show.bs.modal', '#edit', function(event) {
-      var btn = $(event.relatedTarget);
-      var no_ppb = btn.data('no_ppb');
-      var jenis_ppb = btn.data('jenis_ppb');
-      var form_ppb = btn.data('jenis_form_ppb');
-      var dept = btn.data('departement');
-      var tgl_ppb = btn.data('tgl_ppb');
-      var tgl_pakai = btn.data('tgl_pakai');
-      var ket = btn.data('ket');
-
-      var modal = $(this);
-
-      modal.find('#e-no_ppb').val(no_ppb);
-      modal.find('#e-jenis_ppb').val(jenis_ppb).trigger('chosen:updated');
-      modal.find('#e-form_ppb').val(form_ppb).trigger('chosen:updated');
-      modal.find('#e-departement').val(dept).trigger('chosen:updated');
-      modal.find('#e-tgl_ppb').val(tgl_ppb);
-      modal.find('#e-tgl_pakai').val(tgl_pakai);
-      modal.find('#e-ket').val(ket);
-
-      var $tbody = modal.find('#e-ppb_barang_det');
-      $tbody.empty();
-
-
-      // Ambil data detail barang
-      $.ajax({
-        url: "<?= base_url('ppb/ppb/data_ppb_barang') ?>",
-        type: "POST",
-        dataType: "json",
-        data: { no_ppb: no_ppb },
-        success: function(res) {
-          if (res.length > 0) {
-            res.forEach(item => {
-              $tbody.append(
-                rowHTML(
-                  item.kode_barang,
-                  item.nama_barang,
-                  item.spek,
-                  item.satuan,
-                  item.jumlah_ppb,
-                  item.id_prc_master_barang,
-                  item.stok
-                )
-              );
-            });
-          } else {
-            $tbody.html(`<tr><td colspan="7" class="text-center text-muted">Tidak ada data barang</td></tr>`);
-          }
-        }
+        // update hidden integer
+        $(this).closest('tr').find('.jumlah-int').val(angka);
       });
-    });
 
 
-    // ==========================
-    // TEMPLATE ROW (FORMAT BARU)
-    // ==========================
-    function rowHTML(kode, nama, spek, satuan, jumlah, id, stok) {
+      // ==========================
+      // LOAD DATA EDIT
+      // ==========================
+      $(document).on('show.bs.modal', '#edit', function(event) {
+        var btn = $(event.relatedTarget);
+        var no_ppb = btn.data('no_ppb');
+        var jenis_ppb = btn.data('jenis_ppb');
+        var form_ppb = btn.data('jenis_form_ppb');
+        var dept = btn.data('departement');
+        var tgl_ppb = btn.data('tgl_ppb');
+        var tgl_pakai = btn.data('tgl_pakai');
+        var ket = btn.data('ket');
 
-      let jmlFormatted = formatRibuan(jumlah);
+        var modal = $(this);
 
-      return `
+        modal.find('#e-no_ppb').val(no_ppb);
+        modal.find('#e-jenis_ppb').val(jenis_ppb).trigger('chosen:updated');
+        modal.find('#e-form_ppb').val(form_ppb).trigger('chosen:updated');
+        modal.find('#e-departement').val(dept).trigger('chosen:updated');
+        modal.find('#e-tgl_ppb').val(tgl_ppb);
+        modal.find('#e-tgl_pakai').val(tgl_pakai);
+        modal.find('#e-ket').val(ket);
+
+        var $tbody = modal.find('#e-ppb_barang_det');
+        $tbody.empty();
+
+
+        // Ambil data detail barang
+        $.ajax({
+          url: "<?= base_url('ppb/ppb/data_ppb_barang') ?>",
+          type: "POST",
+          dataType: "json",
+          data: {
+            no_ppb: no_ppb
+          },
+          success: function(res) {
+            if (res.length > 0) {
+              res.forEach(item => {
+                $tbody.append(
+                  rowHTML(
+                    item.kode_barang,
+                    item.nama_barang,
+                    item.spek,
+                    item.satuan,
+                    item.jumlah_ppb,
+                    item.id_prc_master_barang,
+                    item.stok
+                  )
+                );
+              });
+            } else {
+              $tbody.html(`<tr><td colspan="7" class="text-center text-muted">Tidak ada data barang</td></tr>`);
+            }
+          }
+        });
+      });
+
+
+      // ==========================
+      // TEMPLATE ROW (FORMAT BARU)
+      // ==========================
+      function rowHTML(kode, nama, spek, satuan, jumlah, id, stok) {
+
+        let jmlFormatted = formatRibuan(jumlah);
+
+        return `
       <tr>
 
         <td><input type="hidden" name="kode_barang[]" value="${kode}">${kode}</td>
@@ -1509,58 +1545,207 @@
 
       </tr>
       `;
-    }
+      }
 
 
-    // ==========================
-    // PILIH BARANG
-    // ==========================
-    $('#e-kode_barang').on('change', function() {
-      const selected = $(this).find(':selected');
-      $('#e-spek').val(selected.data('spek'));
-      $('#e-satuan').val(selected.data('satuan'));
-      $('#e-stok').val(selected.data('stok'));
+      // ==========================
+      // PILIH BARANG
+      // ==========================
+      $('#e-kode_barang').on('change', function() {
+        const selected = $(this).find(':selected');
+        $('#e-spek').val(selected.data('spek'));
+        $('#e-satuan').val(selected.data('satuan'));
+        $('#e-stok').val(selected.data('stok'));
+      });
+
+
+      // ==========================
+      // TAMBAH ITEM BARU
+      // ==========================
+      $('#e-add-item').on('click', function() {
+
+        const val = $('#e-kode_barang').val();
+        if (!val) return alert('Pilih barang dulu');
+
+        const [kode, nama, id] = val.split(',');
+
+        const spek = $('#e-spek').val();
+        const satuan = $('#e-satuan').val();
+        const stok = $('#e-stok').val();
+
+        const jumlahFormatted = $('#e-jumlah').val();
+        const jumlahInt = unformatRupiah(jumlahFormatted);
+
+        if (jumlahInt <= 0) return alert('Jumlah tidak valid');
+
+        $('#e-ppb_barang_det').append(
+          rowHTML(kode, nama, spek, satuan, jumlahInt, id, stok)
+        );
+
+        // reset input
+        $('#e-kode_barang').val('').trigger('chosen:updated');
+        $('#e-spek').val('');
+        $('#e-satuan').val('');
+        $('#e-jumlah').val('');
+        $('#e-stok').val('');
+      });
+
+
+      // ==========================
+      // HAPUS BARIS
+      // ==========================
+      $(document).on('click', '.btn-remove-row', function() {
+        $(this).closest('tr').remove();
+      });
+
     });
+  </script>
 
+  <div class="modal fade" id="detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Detail Data PPB - <span id="v-no-ppb-title"></span></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="v-jenis_ppb">Jenis PPB</label>
+                <input type="text" class="form-control" id="v-jenis_ppb" readonly>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="v-form_ppb">Form A/C</label>
+                <input type="text" class="form-control" id="v-form_ppb" readonly>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="v-departement">Departement</label>
+                <input type="text" class="form-control" id="v-departement" readonly>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="v-tgl_ppb">Tanggal PPB</label>
+                <input type="text" class="form-control" id="v-tgl_ppb" readonly>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="v-tgl_pakai">Tanggal Kebutuhan</label>
+                <input type="text" class="form-control" id="v-tgl_pakai" readonly>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="v-ket">Keterangan</label>
+                <input type="text" class="form-control" id="v-ket" readonly>
+              </div>
+            </div>
+          </div>
 
-    // ==========================
-    // TAMBAH ITEM BARU
-    // ==========================
-    $('#e-add-item').on('click', function() {
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="bg-light-info">
+                <tr>
+                  <th class="text-center">#</th>
+                  <th>Kode Barang</th>
+                  <th>Nama Barang</th>
+                  <th>Spek</th>
+                  <th>Supplier</th>
+                  <th class="text-center">Jumlah Awal</th>
+                  <th class="text-center">Jumlah Diterima</th>
+                  <th class="text-center">Outstanding</th>
+                  <th class="text-center">Satuan</th>
+                </tr>
+              </thead>
+              <tbody id="v-ppb_barang">
+                <tr>
+                  <td colspan="9" class="text-center text-muted">Memuat data...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      const val = $('#e-kode_barang').val();
-      if (!val) return alert('Pilih barang dulu');
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#detail').on('show.bs.modal', function(event) {
+        var jenis_ppb = $(event.relatedTarget).data('jenis_ppb')
+        var form_ppb = $(event.relatedTarget).data('form_ppb')
+        var departement = $(event.relatedTarget).data('departement')
+        var no_ppb = $(event.relatedTarget).data('no_ppb')
+        var tgl_ppb = $(event.relatedTarget).data('tgl_ppb')
+        var tgl_pakai = $(event.relatedTarget).data('tgl_pakai')
+        var ket = $(event.relatedTarget).data('ket')
 
-      const [kode, nama, id] = val.split(',');
+        $(this).find('#v-jenis_ppb').val(jenis_ppb)
+        $(this).find('#v-form_ppb').val(form_ppb)
+        $(this).find('#v-departement').val(departement)
+        $(this).find('#v-tgl_ppb').val(tgl_ppb)
+        $(this).find('#v-tgl_pakai').val(tgl_pakai)
+        $(this).find('#v-ket').val(ket)
+        $(this).find('#v-no-ppb-title').text(no_ppb)
 
-      const spek = $('#e-spek').val();
-      const satuan = $('#e-satuan').val();
-      const stok = $('#e-stok').val();
+        // Tampilkan loading
+        $('#v-ppb_barang').html('<tr><td colspan="9" class="text-center text-muted">Memuat data...</td></tr>');
 
-      const jumlahFormatted = $('#e-jumlah').val();
-      const jumlahInt = unformatRupiah(jumlahFormatted);
+        jQuery.ajax({
+          url: "<?= base_url() ?>purchasing/purchasing_ppb/purchasing_ppb/data_ppb_barang",
+          dataType: 'json',
+          type: "post",
+          data: {
+            no_ppb: no_ppb
+          },
+          success: function(response) {
+            var data = response;
+            var $id = $('#v-ppb_barang');
+            $id.empty();
 
-      if (jumlahInt <= 0) return alert('Jumlah tidak valid');
+            if (data.length === 0) {
+              $id.append('<tr><td colspan="9" class="text-center text-muted">Tidak ada data barang</td></tr>');
+            } else {
+              for (var i = 0; i < data.length; i++) {
+                var jumlahAwal = parseFloat(data[i].jumlah_ppb) || 0;
+                var jumlahDiterima = parseFloat(data[i].jml_bm) || 0;
+                var outstanding = jumlahAwal - jumlahDiterima;
 
-      $('#e-ppb_barang_det').append(
-        rowHTML(kode, nama, spek, satuan, jumlahInt, id, stok)
-      );
+                var outstandingBadge = outstanding > 0 ?
+                  '<span class="badge badge-warning">' + outstanding.toLocaleString() + '</span>' :
+                  '<span class="badge badge-success">Lunas</span>';
 
-      // reset input
-      $('#e-kode_barang').val('').trigger('chosen:updated');
-      $('#e-spek').val('');
-      $('#e-satuan').val('');
-      $('#e-jumlah').val('');
-      $('#e-stok').val('');
+                $id.append(`
+                <tr>
+                  <td class="text-center">${i + 1}</td>
+                  <td>${data[i].kode_barang || '-'}</td>
+                  <td>${data[i].nama_barang || '-'}</td>
+                  <td>${data[i].spek || '-'}</td>
+                  <td>${data[i].nama_supplier || '-'}</td> 
+                  <td class="text-center"><span class="badge badge-primary">${jumlahAwal.toLocaleString()}</span></td>
+                  <td class="text-center"><span class="badge badge-success">${jumlahDiterima.toLocaleString()}</span></td>
+                  <td class="text-center">${outstandingBadge}</td>
+                  <td class="text-center">${data[i].satuan || '-'}</td>
+                </tr>
+              `);
+              }
+            }
+          },
+          error: function() {
+            $('#v-ppb_barang').html('<tr><td colspan="9" class="text-center text-danger">Gagal memuat data</td></tr>');
+          }
+        });
+      });
     });
-
-
-    // ==========================
-    // HAPUS BARIS
-    // ==========================
-    $(document).on('click', '.btn-remove-row', function() {
-      $(this).closest('tr').remove();
-    });
-
-  });
-</script>
+  </script>

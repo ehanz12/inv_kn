@@ -64,7 +64,7 @@ class M_pemeriksaan_bahan extends CI_Model
             ON c.no_dpb = d.no_dpb
         LEFT JOIN tb_prc_dpb e
             ON c.id_prc_dpb = e.id_prc_dpb
-        WHERE 1=1
+        WHERE 1=1 AND b.lab_test = 'yes'
     ";
 
     if (!empty($id_prc_master_barang)) {

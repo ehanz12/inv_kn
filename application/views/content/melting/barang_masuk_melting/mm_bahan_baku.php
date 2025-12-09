@@ -67,7 +67,7 @@
                           foreach ($result as $k) {
                             $tgl =  explode('-', $k['tgl_masuk'])[2] . "/" . explode('-', $k['tgl_masuk'])[1] . "/" . explode('-', $k['tgl_masuk'])[0];
                           ?>
-                            <?php if ($k['sisa'] == 0) { ?>
+                            <!-- <?php if ($k['sisa']) { ?> -->
                               <tr>
                                 <th scope="row"><?= $no++ ?></th>
                                 <td><?= $tgl ?></td>
@@ -91,7 +91,7 @@
                                   </div>
                                 </td>
                               </tr>
-                            <?php } ?>
+                            <!-- <?php } ?> -->
                           <?php } ?>
                         </tbody>
                       </table>

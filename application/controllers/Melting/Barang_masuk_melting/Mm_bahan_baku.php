@@ -43,6 +43,7 @@ class Mm_bahan_baku extends CI_Controller
             $data['result'][$i]['keluar'] = $melting_keluar['tot_keluar'];
         }
 
+
         // $data['res_barang'] = $this->M_baranbarang->get()->result_array();
         // $data['res_supplier'] = $this->M_supplier->get()->result_array();
         // $data['res_user'] = $this->M_users->get()->result_array();

@@ -33,67 +33,120 @@ class M_adm_barang_masuk extends CI_Model
     //     LEFT JOIN";
     // }
     public function get($id_prc_master_barang = null, $tgl_mulai = null, $tgl_selesai = null)
-{
-    $sql = "
+    {
+        // $sql = "
+        //     SELECT
+        //         x.id_prc_master_barang,
+        //         x.no_batch,
+        //         x.created_at,
+        //         b.nama_barang,
+        //         b.kode_barang,
+        //         b.spek,
+        //         b.satuan,
+        //         c.jml_bm,
+        //         c.no_dpb,
+        //         d.no_sjl,
+        //         d.tgl_dpb,
+        //         e.jenis_bayar,
+        //         f.spek,
+        //         s.nama_supplier
+        //     FROM (
+        //         SELECT
+        //             id_prc_master_barang,
+        //             no_batch,
+        //             MIN(created_at) AS created_at
+        //         FROM tb_adm_barang_masuk
+        //         WHERE is_deleted = 0
+        //           AND no_batch IS NOT NULL
+        //           AND no_batch != ''
+        //         GROUP BY id_prc_master_barang, no_batch
+        //     ) x
+        //     LEFT JOIN tb_prc_master_barang b
+        //         ON b.id_prc_master_barang = x.id_prc_master_barang
+        //     LEFT JOIN tb_adm_barang_masuk c
+        //         ON c.id_prc_master_barang = x.id_prc_master_barang
+        //     LEFT JOIN tb_prc_dpb_tf d
+        //         ON c.no_dpb = d.no_dpb
+        //     LEFT JOIN tb_prc_dpb e
+        //         ON c.id_prc_dpb = e.id_prc_dpb
+        //     LEFT JOIN tb_prc_master_barang f
+        //         ON x.id_prc_master_barang = f.id_prc_master_barang
+        //     LEFT JOIN tb_prc_master_supplier s
+        //         ON s.id_prc_master_supplier = b.id_prc_master_supplier
+        //     WHERE 1=1
+        // ";
+        $sql = "
+    SELECT
+        x.id_prc_master_barang,
+        x.no_batch,
+        x.status_barang,
+        x.created_at,
+        b.nama_barang,
+        b.lab_test,
+        b.kode_barang,
+        b.spek,
+        b.satuan,
+        c.jml_bm,
+        c.no_dpb,
+        d.no_sjl,
+        d.tgl_dpb,
+        e.jenis_bayar,
+        f.spek,
+        s.nama_supplier
+    FROM (
         SELECT
-            x.id_prc_master_barang,
-            x.no_batch,
-            
-            x.created_at,
-            b.nama_barang,
-            b.kode_barang,
-            b.spek,
-            b.satuan,
-            c.jml_bm,
-            c.no_dpb,
-            d.no_sjl,
-            d.tgl_dpb,
-            e.jenis_bayar,
-            f.spek,
-            s.nama_supplier
-        FROM (
+            t1.id_prc_master_barang,
+            t1.no_batch,
+            t1.status_barang,
+            t1.created_at
+        FROM tb_adm_barang_masuk t1
+        JOIN (
             SELECT
                 id_prc_master_barang,
                 no_batch,
-                MIN(created_at) AS created_at
+                MAX(created_at) AS max_created
             FROM tb_adm_barang_masuk
             WHERE is_deleted = 0
               AND no_batch IS NOT NULL
               AND no_batch != ''
             GROUP BY id_prc_master_barang, no_batch
-        ) x
-        LEFT JOIN tb_prc_master_barang b
-            ON b.id_prc_master_barang = x.id_prc_master_barang
-        LEFT JOIN tb_adm_barang_masuk c
-            ON c.id_prc_master_barang = x.id_prc_master_barang
-        LEFT JOIN tb_prc_dpb_tf d
-            ON c.no_dpb = d.no_dpb
-        LEFT JOIN tb_prc_dpb e
-            ON c.id_prc_dpb = e.id_prc_dpb
-        LEFT JOIN tb_prc_master_barang f
-            ON x.id_prc_master_barang = f.id_prc_master_barang
-        LEFT JOIN tb_prc_master_supplier s
-            ON s.id_prc_master_supplier = b.id_prc_master_supplier
-       
-        WHERE 1=1
-    ";
+        ) t2
+        ON t1.id_prc_master_barang = t2.id_prc_master_barang
+        AND t1.no_batch = t2.no_batch
+        AND t1.created_at = t2.max_created
+    ) x
+    LEFT JOIN tb_prc_master_barang b
+        ON b.id_prc_master_barang = x.id_prc_master_barang
+    LEFT JOIN tb_adm_barang_masuk c
+        ON c.id_prc_master_barang = x.id_prc_master_barang
+    LEFT JOIN tb_prc_dpb_tf d
+        ON c.no_dpb = d.no_dpb
+    LEFT JOIN tb_prc_dpb e
+        ON c.id_prc_dpb = e.id_prc_dpb
+    LEFT JOIN tb_prc_master_barang f
+        ON x.id_prc_master_barang = f.id_prc_master_barang
+    LEFT JOIN tb_prc_master_supplier s
+        ON s.id_prc_master_supplier = b.id_prc_master_supplier
+    WHERE 1=1 AND x.status_barang = 'released' OR b.lab_test = 'no'
+";
 
-    if (!empty($id_prc_master_barang)) {
-        $sql .= " AND x.id_prc_master_barang = " . $this->db->escape($id_prc_master_barang);
+
+        if (!empty($id_prc_master_barang)) {
+            $sql .= " AND x.id_prc_master_barang = " . $this->db->escape($id_prc_master_barang);
+        }
+
+        if (!empty($tgl_mulai)) {
+            $sql .= " AND x.created_at >= " . $this->db->escape(date('Y-m-d', strtotime($tgl_mulai)));
+        }
+
+        if (!empty($tgl_selesai)) {
+            $sql .= " AND x.created_at <= " . $this->db->escape(date('Y-m-d', strtotime($tgl_selesai)));
+        }
+
+        $sql .= " ORDER BY x.created_at DESC";
+
+        return $this->db->query($sql);
     }
-
-    if (!empty($tgl_mulai)) {
-        $sql .= " AND x.created_at >= " . $this->db->escape(date('Y-m-d', strtotime($tgl_mulai)));
-    }
-
-    if (!empty($tgl_selesai)) {
-        $sql .= " AND x.created_at <= " . $this->db->escape(date('Y-m-d', strtotime($tgl_selesai)));
-    }
-
-    $sql .= " ORDER BY x.created_at DESC";
-
-    return $this->db->query($sql);
-}
 
     // Fungsi utama untuk mendapatkan data barang masuk HANYA yang memiliki no_batch
     public function get2($no_dpb = null, $tgl_mulai = null, $tgl_selesai = null)
@@ -178,20 +231,20 @@ class M_adm_barang_masuk extends CI_Model
 
 
     public function add($data)
-{
-    return $this->db->insert('tb_adm_barang_masuk', $data);
-}
+    {
+        return $this->db->insert('tb_adm_barang_masuk', $data);
+    }
 
 
     public function get3($id = null)
     {
         // $kode_user = $this->kode_user();
         $sql = "
-            SELECT a.*,c.kode_barang,c.nama_barang,c.id_prc_master_supplier,c.satuan,d.nama_supplier, e.no_sjl FROM tb_adm_barang_masuk a
+            SELECT a.*,c.kode_barang,c.nama_barang,c.lab_test,c.id_prc_master_supplier,c.satuan,d.nama_supplier, e.no_sjl FROM tb_adm_barang_masuk a
             LEFT JOIN tb_prc_master_barang c ON a.id_prc_master_barang = c.id_prc_master_barang
             LEFT JOIN tb_prc_master_supplier d ON c.id_prc_master_supplier = d.id_prc_master_supplier
             LEFT JOIN tb_prc_dpb_tf e ON a.no_dpb = e.no_dpb
-            WHERE a.is_deleted = 0 ORDER BY a.tgl_bm ASC";
+            WHERE a.is_deleted = 0 AND a.status_barang = 'released' OR c.lab_test = 'no'  ORDER BY a.tgl_bm ASC";
         return $this->db->query($sql);
     }
 
@@ -340,20 +393,21 @@ class M_adm_barang_masuk extends CI_Model
         return $result;
     }
 
-    public function get_by_kode_ts($kode_ts) {
+    public function get_by_kode_ts($kode_ts)
+    {
 
-    // Jika Bahan Pembantu → gunakan banyak kategori
-    if ($kode_ts == "Bahan Pembantu") {
+        // Jika Bahan Pembantu → gunakan banyak kategori
+        if ($kode_ts == "Bahan Pembantu") {
 
-        // List kategori untuk Bahan Pembantu
-        $jenis = [
-            'Pewarna',
-            'Bahan Tambahan'
-        ];
+            // List kategori untuk Bahan Pembantu
+            $jenis = [
+                'Pewarna',
+                'Bahan Tambahan'
+            ];
 
-        $in = "'" . implode("','", $jenis) . "'";
+            $in = "'" . implode("','", $jenis) . "'";
 
-        $sql = "
+            $sql = "
             SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, a.jml_bm,
                    b.kode_barang, b.satuan, b.nama_barang, b.jenis_barang
             FROM tb_adm_barang_masuk a
@@ -362,11 +416,11 @@ class M_adm_barang_masuk extends CI_Model
             AND b.jenis_barang IN ($in)
         ";
 
-        return $this->db->query($sql)->result_array();
-    }
+            return $this->db->query($sql)->result_array();
+        }
 
-    // Jika bukan Bahan Pembantu → normal pakai 1 kategori
-    $sql = "
+        // Jika bukan Bahan Pembantu → normal pakai 1 kategori
+        $sql = "
         SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, a.jml_bm,
                b.kode_barang, b.satuan, b.nama_barang, b.jenis_barang
         FROM tb_adm_barang_masuk a
@@ -375,11 +429,11 @@ class M_adm_barang_masuk extends CI_Model
         AND b.jenis_barang = '$kode_ts'
     ";
 
-    return $this->db->query($sql)->result_array();
-}
+        return $this->db->query($sql)->result_array();
+    }
 
 
-    
+
 
 
     public function delete($data)
