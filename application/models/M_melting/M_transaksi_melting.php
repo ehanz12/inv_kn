@@ -81,7 +81,7 @@ class M_transaksi_melting extends CI_Model
     public function qty_masuk($data)
     {
         $sql = "
-        SELECT sum(jml_bk) tot_masuk FROM `tb_adm_barang_keluar`
+        SELECT sum(jml_bk) tot_masuk FROM `tb_gbb_barang_keluar`
         WHERE id_adm_bm = '$data[id_adm_bm]' AND is_deleted= 0 ";
 
         return $this->db->query($sql);
@@ -90,7 +90,7 @@ class M_transaksi_melting extends CI_Model
     public function qty_keluar($data)
     {
         $sql = "
-        SELECT sum(jml_bk) tot_keluar FROM `tb_adm_barang_keluar`
+        SELECT sum(jml_bk) tot_keluar FROM `tb_gbb_barang_keluar`
         WHERE id_adm_bm = '$data[id_adm_bm]' AND is_deleted = 0";
 
         return $this->db->query($sql);

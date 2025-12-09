@@ -42,7 +42,6 @@ class adm_barang_masuk extends CI_Controller
         } else {
             $data['result'] = $result;
         }
-
         $data['no_dpb'] = $no_dpb;
        
         $data['tgl_mulai'] = $tgl_mulai;

@@ -15,7 +15,7 @@ class M_adm_barang_keluar extends CI_Model
 
     public function insert_barang_keluar($data)
     {
-        return $this->db->insert('tb_adm_barang_keluar', $data);
+        return $this->db->insert('tb_gbb_barang_keluar', $data);
     }
 
     // 2. insert transaksi melting
@@ -60,6 +60,7 @@ class M_adm_barang_keluar extends CI_Model
                 'id_prc_master_barang' => $item['id_prc_master_barang'],
                 'no_batch' => $item['no_batch'],
                 'jml_bk' => $item['jml_permintaan'],
+                'no_urut' => $item['no_urut'],
                 'tgl_bk' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'created_by' => $id_user, 

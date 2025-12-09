@@ -33,7 +33,7 @@ class M_permintaan_barang_gudang extends CI_Model
     public function cek_permintaan()
     {
         $sql = "
-            SELECT COUNT(status) as tot_status_proses FROM `tb_transfer_slip` WHERE status = 'Proses' AND is_deleted = 0";
+            SELECT COUNT(status) as tot_status_proses FROM `tb_mlt_permintaan_barang_tf` WHERE status = 'Proses' AND is_deleted = 0";
         return $this->db->query($sql);
     }
     public function cek_transfer_slip($no_transfer_slip)

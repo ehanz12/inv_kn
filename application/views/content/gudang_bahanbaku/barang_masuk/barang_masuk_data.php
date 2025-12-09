@@ -32,8 +32,8 @@
                   <div class="card-header">
                     <h5>Data Barang Masuk <b>(Approval)</b></h5>
 
-                    <!-- Button trigger modal --> 
-                   
+                    <!-- Button trigger modal -->
+
                   </div>
                   <div class="card-block table-border-style">
                     <div class="table-responsive">
@@ -48,7 +48,6 @@
                             <th class="text-right">In</th>
                             <th class="text-right">Out</th>
                             <th class="text-right">Stok</th>
-                            <th class="text-right">Details</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -67,36 +66,11 @@
                               <td><?= $k['no_batch'] ?></td>
                               <td><?= $k['nama_barang'] ?></td>
                               <td class="text-right"><?= number_format($k['jml_bm'], 0, ",", ".") ?><?= $k['satuan'] ?></td>
-                              <td class="text-right"><?= $k['tot_barang_keluar'] ?? '0'. " " . $k['satuan'] ?></td>
+                              <td class="text-right"><?= empty($k['tot_barang_keluar'])
+                                                        ? '0'
+                                                        : number_format($k['tot_barang_keluar'], 0, ",", ".") ?>
+                                <?= $k['satuan'] ?></td>
                               <td class="text-right"><?= number_format($k['sisa'], 0, ",", ".") ?><?= $k['satuan'] ?></td>
-                              <td class="text-right">
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" class="btn btn-info btn-square btn-sm" 
-                                  data-toggle="modal" data-target="#detail" 
-                                  data-id_prc_master_barang="<?= $k['id_prc_master_barang'] ?>" 
-                                  data-id_prc_master_supplier="<?= $k['id_prc_master_supplier'] ?>" 
-                                  data-id_adm_bm="<?= $k['id_adm_bm'] ?>" 
-                                  data-no_sjl="<?= $k['no_sjl'] ?>" data-no_batch="<?= $k['no_batch'] ?>"
-                                   data-tgl="<?= $tgl ?>"> 
-                                   <!-- data-op_gudang="<?= $k['op_gudang'] ?>" -->
-                                   <!-- data-dok_pendukung="<?= $k['dok_pendukung'] ?>"  -->
-                                   <!-- data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>"  -->
-                                   <!-- data-jml_kemasan="<?= $k['jml_kemasan'] ?>"  -->
-                                   <!-- data-ditolak_kemasan="<?= $k['ditolak_kemasan'] ?>" -->
-                                    <!-- data-tutup="<?= $k['tutup'] ?>"  -->
-                                    <!-- data-wadah="<?= $k['wadah'] ?>"  -->
-                                    <!-- data-label="<?= $k['label'] ?>"  -->
-                                    <!-- data-qty="<?= $k['qty'] ?>"  -->
-                                    <!-- data-qty_pack="<?= $k['qty_pack'] ?>"  -->
-                                    <!-- data-diterima_qty="<?= $k['qty'] ?>"  -->
-                                    <!-- data-ditolak_qty="<?= $k['ditolak_qty'] ?>"  -->
-                                    <!-- data-exp="<?= $exp ?>"  -->
-                                    <!-- data-mfg="<?= $mfg ?>"> -->
-                                    <i class="feather icon-eye"></i>Details
-                                  </button>
-                                </div>
-                              </td>
-                              
                             </tr>
                           <?php } ?>
                         </tbody>

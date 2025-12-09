@@ -58,7 +58,6 @@
                             <th class="text-right">Qty</th>
                             <th class="text-right">Barang Keluar</th>
                             <th class="text-right">Stok</th>
-                            <th class="text-right">Details</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -81,30 +80,6 @@
                                 <td class="text-right"><?= $k['masuk'] ?><?= $k['satuan'] ?></td>
                                 <td class="text-right"><?= $k['keluar'] ?><?= $k['satuan'] ?></td>
                                 <td class="text-right"><?= $k['sisa'] ?><?= $k['satuan'] ?></td>
-                                <td class="text-right">
-                                  <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-info btn-square btn-sm" 
-                                    data-toggle="modal" 
-                                    data-target="#detail" 
-                                    data-no_sjl="<?= $k['no_sjl'] ?>" 
-                                    data-no_batch="<?= $k['no_batch'] ?>" 
-                                    data-tgl="<?= $tgl ?>" 
-                                    data-nama_barang="<?= $k['nama_barang'] ?>" 
-                                    data-nama_supplier="<?= $k['nama_supplier'] ?>">
-                                    <!-- data-op_gudang="<?= $k['op_gudang'] ?>"  -->
-                                    <!-- data-dok_pendukung="<?= $k['dok_pendukung'] ?>"  -->
-                                    <!-- data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>"  -->
-                                    <!-- data-jml_kemasan="<?= $k['jml_kemasan'] ?>"  -->
-                                    <!-- data-tutup="<?= $k['tutup'] ?>"  -->
-                                    <!-- data-wadah="<?= $k['wadah'] ?>"  -->
-                                    <!-- data-label="<?= $k['label'] ?>"  -->
-                                    <!-- 4data-qty="<?= $k['qty'] ?>"  -->
-                                    <!-- data-exp="<?= $exp ?>"  -->
-                                    <!-- data-mfg="<?= $mfg ?>"> -->
-                                      <i class="feather icon-eye"></i>Details
-                                    </button>
-                                  </div>
-                                </td>
                               </tr>
                             <?php } ?>
                           <?php

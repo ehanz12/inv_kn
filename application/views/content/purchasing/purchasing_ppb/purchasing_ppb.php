@@ -40,18 +40,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <h5>Data PPB</h5>
                     <div class="float-right">
                       <div class="input-group">
-                       <input type="text" id="filter_tgl" value="<?= $tgl == null ? '' : $tgl ?>" class="form-control datepicker" placeholder="Filter Dari Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                        <input type="text" id="filter_tgl2" value="<?= $tgl2 == null ? '' : $tgl2 ?>" class="form-control datepicker" placeholder="Filter Sampai Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                        <select id="filter_departement" class="form-control ml-2">
-                          <option value=""> Semua Departement </option>
-                          <?php foreach ($departement_list as $d) { ?>
-                            <option value="<?= $d['departement'] ?>"
+                        <div class="btn-group">
+                          <select id="filter_departement" class="form-control ml-2 chosen-select">
+                            <option value=""> Semua Departement </option>
+                            <?php foreach ($departement_list as $d) { ?>
+                              <option value="<?= $d['departement'] ?>"
                               <?= ($departement_filter == $d['departement'] ? 'selected' : '') ?>>
                               <?= $d['departement'] ?>
                             </option>
-                          <?php } ?>
-                        </select>
-                        
+                            <?php } ?>
+                          </select>
+                        </div>
+                       <input type="text" id="filter_tgl" value="<?= $tgl == null ? '' : $tgl ?>" class="form-control datepicker" placeholder="Filter Dari Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <input type="text" id="filter_tgl2" value="<?= $tgl2 == null ? '' : $tgl2 ?>" class="form-control datepicker" placeholder="Filter Sampai Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                          
                         <!-- Tombol Lihat -->
                         <div class="btn-group ml-2">
                           <button class="btn btn-primary btn-sm" id="lihat" type="button">
@@ -65,6 +67,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                             <i class="feather icon-refresh-ccw"></i>
                           </a>
                         </div>
+                      </div>
                         
                         <!-- Tombol Update Status -->
                         <!-- <div class="btn-group ml-2">
@@ -155,13 +158,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <a type="button" class="btn btn-success btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>accounting/accounting_ppb/pdf_cetak/<?= str_replace('/', '--', $k['no_ppb']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); "
-                                    data-id_prc_ppb_tf="<?= $k['id_prc_ppb_tf'] ?>"
-                                    data-form_ppb="<?= $k['jenis_form_ppb'] ?>"
-                                    data-jenis_ppb="<?= $k['jenis_ppb'] ?>"
-                                    data-tgl_ppb="<?= $k['tgl_ppb'] ?>"
-                                    data-tgl_pakai="<?= $k['tgl_pakai'] ?>"
-                                    data-ket="<?= $k['ket'] ?>">
+                                  <a type="button" class="btn btn-success btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>administrator/ppb/cetak/<?= str_replace('/', '--', $k['no_ppb']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); "
+                                    >
                                     <i class="feather icon-file"></i>Cetak
                                   </a>
                                 </div>
