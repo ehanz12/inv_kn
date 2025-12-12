@@ -129,8 +129,8 @@
               <option value="" disabled selected hidden> - Pilih Departement - </option>
               <option value="admin">Admin</option>
               <option value="accounting">Accounting</option>
-              <option value="gudang_bahan_baku">Gudang Bahan Baku</option>
-              <option value="gudang_distribusi">Gudang Distribusi</option>
+              <option value="Gudang Bahan Baku">Gudang Bahan Baku</option>
+              <option value="Gudang Distribusi">Gudang Distribusi</option>
               <option value="lab">Lab</option>
               <option value="melting">Melting</option>
               <option value="marketing">Marketing</option>

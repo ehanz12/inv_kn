@@ -990,14 +990,14 @@
                   <select class="form-control chosen-select" id="level" name="departement" autocomplete="off" required>
                     <option value="" disabled selected hidden> - Pilih Departement - </option>
                     <option value="admin">Admin</option>
-                    <option value="Accounting">Accounting</option>
+                    <option value="accounting">Accounting</option>
                     <option value="Gudang Bahan Baku">Gudang Bahan Baku</option>
                     <option value="Gudang Distribusi">Gudang Distribusi</option>
-                    <option value="Lab">Lab</option>
-                    <option value="Melting">Melting</option>
-                    <option value="Marketing">Marketing</option>
-                    <option value="Packing">Packing</option>
-                    <option value="Utility">Utility</option>
+                    <option value="lab">Lab</option>
+                    <option value="melting">Melting</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="packing">Packing</option>
+                    <option value="utility">Utility</option>
                     <option value="stockkeeper">Stock Keeper</option>
                     <option value="ppic">PPIC</option>
                     <option value="forming">Forming</option>
@@ -1011,10 +1011,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="no_ppb">No PPB</label>
-                  <input type="text" class="form-control" id="no_ppb" name="no_ppb" maxlength="20" placeholder="No PPB" aria-describedby="validationServer03Feedback" autocomplete="off" required>
-                  <div id="validationServer03Feedback" class="invalid-feedback">
-                    Maaf Nomor PPB sudah ada.
-                  </div>
+                  <input type="text" class="form-control" id="no_ppb" name="no_ppb" maxlength="20" placeholder="No PPB" autocomplete="off" readonly>
                 </div>
               </div>
 
@@ -1177,6 +1174,20 @@
         this.value = new Intl.NumberFormat('id-ID').format(value);
       });
 
+      $('#level').on('change', function (){
+        const dept = $(this).val();
+
+        $.ajax({
+          url : "<?= base_url('administrator/ppb/get_next_no')?>",
+          type : "POST",
+          data : {departement : dept},
+          dataType : "json",
+          success : function(res) {
+            $('#no_ppb').val(res);
+          }
+        })
+      })
+
 
       // Fungsi untuk toggle Nama Direktur field visibility
       function toggleDirekturField() {
@@ -1236,32 +1247,9 @@
         $(this).closest('tr').remove();
       });
 
-
-
-      $("#no_ppb").keyup(function() {
-        var no_ppb = $("#no_ppb").val();
-        jQuery.ajax({
-          url: "<?= base_url() ?>ppb/ppb/cek_no_ppb/",
-          dataType: 'text',
-          type: "post",
-          data: {
-            no_ppb: no_ppb
-          },
-          success: function(response) {
-            if (response == "true") {
-              $("#no_ppb").addClass("is-invalid");
-              $("#simpan").attr("disabled", "disabled");
-            } else {
-              $("#no_ppb").removeClass("is-invalid");
-              $("#simpan").removeAttr("disabled");
-            }
-          }
-        });
-
-        function remove(id) {
-          $('#tr_' + id).remove();
-        }
-      })
+      function remove(id) {
+        $('#tr_' + id).remove();
+      }
     })
   </script>
   <!-- Modal Edit -->
@@ -1301,8 +1289,8 @@
                     <option value="" disabled selected hidden> - Pilih Departement - </option>
                     <option value="admin">Admin</option>
                     <option value="accounting">Accounting</option>
-                    <option value="gudang_bahan_baku">Gudang Bahan Baku</option>
-                    <option value="gudang_distribusi">Gudang Distribusi</option>
+                    <option value="Gudang Bahan Baku">Gudang Bahan Baku</option>
+                    <option value="Gudang Distribusi">Gudang Distribusi</option>
                     <option value="lab">Lab</option>
                     <option value="melting">Melting</option>
                     <option value="marketing">Marketing</option>
@@ -1472,6 +1460,20 @@
         modal.find('#e-tgl_ppb').val(tgl_ppb);
         modal.find('#e-tgl_pakai').val(tgl_pakai);
         modal.find('#e-ket').val(ket);
+
+        $('#e-departement').on('change', function (){
+        const dept = $(this).val();
+
+        $.ajax({
+          url : "<?= base_url('administrator/ppb/get_next_no')?>",
+          type : "POST",
+          data : {departement : dept},
+          dataType : "json",
+          success : function(res) {
+            $('#e-no_ppb').val(res);
+          }
+        })
+      })
 
         var $tbody = modal.find('#e-ppb_barang_det');
         $tbody.empty();
