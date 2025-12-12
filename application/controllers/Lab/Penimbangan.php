@@ -11,6 +11,7 @@ class Penimbangan extends CI_Controller
 		$this->load->model('M_melting/M_penimbangan');
 		$this->load->model('M_marketing/M_print_schedule');
 		$this->load->model('M_melting/M_barang_masuk_melting');
+		$this->load->model('M_melting/M_barang_keluar_melting');
 		$this->load->model('M_lab/M_alat_kalibrasi');
 		$this->load->model('M_melting/M_transaksi_melting');
 	}
@@ -20,8 +21,7 @@ class Penimbangan extends CI_Controller
 		$data['result'] = $this->M_penimbangan->get()->result_array();
 		$data['res_cr'] = $this->M_print_schedule->get_cr();
 		$data['res_mm'] = $this->M_barang_masuk_melting->get_barang()->result_array();
-		$data['res_barang'] = $this->M_barang_masuk_melting->get_barang()->result_array();
-		$data['res_alat'] = $this->M_alat_kalibrasi->get()->result_array();
+		$data['res_alat'] = $this->M_alat_kalibrasi->get_alat();
 		$this->template->load('template', 'content/melting/proses/penimbangan/penimbangan_data', $data);
 	}
 
@@ -51,7 +51,7 @@ class Penimbangan extends CI_Controller
 			$label_kalibrasi = "Tidak Ada";
 		}
 		$data['id_mm'] = $this->input->post('id_mm', TRUE);
-		$data['id_kalibrasi'] = $this->input->post('id_kalibrasi', TRUE);
+		$data['id_lab_kalibrasi'] = $this->input->post('id_lab_kalibrasi', TRUE);
 		$data['qty_dibutuhkan'] = $this->input->post('qty_dibutuhkan', TRUE);
 		$data['qty_ditimbang'] = $this->input->post('qty_ditimbang', TRUE);
 		$data['tgl_timbang'] = $this->convertDate($this->input->post('tgl_timbang', TRUE));
@@ -61,16 +61,16 @@ class Penimbangan extends CI_Controller
 		$data['suhu_ruangan'] = $this->input->post('suhu_ruangan', TRUE);
 		$data['kelembapan_ruangan'] = $this->input->post('kelembapan_ruangan', TRUE);
 		$data['kebersihan_ruangan'] = $kebersihan_ruangan;
-		$data['id_transaksi'] = $this->M_transaksi_melting->trans_keluar(array(
+		$data['id_transaksi'] = $this->M_barang_keluar_melting->trans_keluar(array(
 			'id_mm' => $data['id_mm'],
 			'qty' => $data['qty_dibutuhkan'],
 		));
 		$respon = $this->M_penimbangan->add($data);
 
 		if ($respon) {
-			header('location:' . base_url('melting/Penimbangan') . '?alert=success&msg=Selamat anda berhasil menambah Bahan Penimbangan');
+			header('location:' . base_url('lab/penimbangan') . '?alert=success&msg=Selamat anda berhasil menambah Bahan Penimbangan');
 		} else {
-			header('location:' . base_url('melting/Penimbangan') . '?alert=error&msg=Maaf anda gagal menambah Bahan Penimbangan');
+			header('location:' . base_url('lab/penimbangan') . '?alert=error&msg=Maaf anda gagal menambah Bahan Penimbangan');
 		}
 	}
 	public function update()
@@ -91,9 +91,9 @@ class Penimbangan extends CI_Controller
 		// $this->M_transaksi_melting->update(array('id_ts_melt' => $data['id_ts_melt'], 'id_mm' => $data['id_mm'], 'qty' => $data['qty_dibutuhkan']));
 		$respon = $this->M_penimbangan->update($data);
 		if ($respon) {
-			header('location:' . base_url('melting/Penimbangan') . '?alert=success&msg=Selamat anda berhasil meng-update Bahan Penimbangan');
+			header('location:' . base_url('lab/Penimbangan') . '?alert=success&msg=Selamat anda berhasil meng-update Bahan Penimbangan');
 		} else {
-			header('location:' . base_url('melting/Penimbangan') . '?alert=error&msg=Maaf anda gagal meng-update Bahan Penimbangan');
+			header('location:' . base_url('lab/Penimbangan') . '?alert=error&msg=Maaf anda gagal meng-update Bahan Penimbangan');
 		}
 	}
 
@@ -103,9 +103,9 @@ class Penimbangan extends CI_Controller
 		$respon = $this->M_penimbangan->delete($id_ts_melt);
 
 		if ($respon) {
-			header('location:' . base_url('melting/Penimbangan') . '?alert=success&msg=Selamat anda berhasil menghapus Bahan Penimbangan');
+			header('location:' . base_url('lab/Penimbangan') . '?alert=success&msg=Selamat anda berhasil menghapus Bahan Penimbangan');
 		} else {
-			header('location:' . base_url('melting/Penimbangan') . '?alert=success&msg=Maaf anda gagal menghapus Bahan Penimbangan');
+			header('location:' . base_url('lab/Penimbangan') . '?alert=success&msg=Maaf anda gagal menghapus Bahan Penimbangan');
 		}
 	}
 }

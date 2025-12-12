@@ -127,7 +127,7 @@ class M_adm_barang_masuk extends CI_Model
         ON x.id_prc_master_barang = f.id_prc_master_barang
     LEFT JOIN tb_prc_master_supplier s
         ON s.id_prc_master_supplier = b.id_prc_master_supplier
-    WHERE 1=1 AND x.status_barang = 'released' OR b.lab_test = 'no'
+    WHERE 1=1 AND x.status_barang = 'Released' OR b.lab_test = 'no'
 ";
 
 
@@ -244,7 +244,7 @@ class M_adm_barang_masuk extends CI_Model
             LEFT JOIN tb_prc_master_barang c ON a.id_prc_master_barang = c.id_prc_master_barang
             LEFT JOIN tb_prc_master_supplier d ON c.id_prc_master_supplier = d.id_prc_master_supplier
             LEFT JOIN tb_prc_dpb_tf e ON a.no_dpb = e.no_dpb
-            WHERE a.is_deleted = 0 AND a.status_barang = 'released' OR c.lab_test = 'no'  ORDER BY a.tgl_bm ASC";
+            WHERE a.is_deleted = 0 AND a.status_barang = 'Released' OR c.lab_test = 'no'  ORDER BY a.tgl_bm ASC";
         return $this->db->query($sql);
     }
 

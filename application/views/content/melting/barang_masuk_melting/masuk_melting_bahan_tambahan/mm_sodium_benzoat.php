@@ -72,34 +72,24 @@
                             <th class="text-right">Qty</th>
                             <th class="text-right">Barang Keluar</th>
                             <th class="text-right">Stok</th>
-                            <th class="text-right">Details</th>
                           </tr>
                         </thead>
                         <tbody>
                           <?php
                           $no = 1;
                           foreach ($result as $k) {
-                            $tgl =  explode('-', $k['tgl'])[2] . "/" . explode('-', $k['tgl'])[1] . "/" . explode('-', $k['tgl'])[0];
-                            $exp =  explode('-', $k['exp'])[2] . "/" . explode('-', $k['exp'])[1] . "/" . explode('-', $k['exp'])[0];
-                            $mfg =  explode('-', $k['mfg'])[2] . "/" . explode('-', $k['mfg'])[1] . "/" . explode('-', $k['mfg'])[0];
+                            $tgl =  explode('-', $k['tgl_masuk'])[2] . "/" . explode('-', $k['tgl_masuk'])[1] . "/" . explode('-', $k['tgl_masuk'])[0];
                           ?>
                             <?php if ($k['sisa'] !== 0) { ?>
                               <tr>
                                 <th scope="row"><?= $no++ ?></th>
                                 <td><?= $tgl ?></td>
-                                <td><?= $k['no_transfer_slip'] ?></td>
+                                <td><?= $k['no_urut'] ?></td>
                                 <td><?= $k['no_batch'] ?></td>
                                 <td><?= $k['nama_barang'] ?></td>
                                 <td class="text-right"><?= $k['masuk'] ?><?= $k['satuan'] ?></td>
                                 <td class="text-right"><?= $k['keluar'] ?><?= $k['satuan'] ?></td>
                                 <td class="text-right"><?= $k['sisa'] ?><?= $k['satuan'] ?></td>
-                                <td class="text-right">
-                                  <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#detail" data-no_surat_jalan="<?= $k['no_surat_jalan'] ?>" data-no_batch="<?= $k['no_batch'] ?>" data-tgl="<?= $tgl ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-nama_supplier="<?= $k['nama_supplier'] ?>" data-op_gudang="<?= $k['op_gudang'] ?>" data-dok_pendukung="<?= $k['dok_pendukung'] ?>" data-jenis_kemasan="<?= $k['jenis_kemasan'] ?>" data-jml_kemasan="<?= $k['jml_kemasan'] ?>" data-tutup="<?= $k['tutup'] ?>" data-wadah="<?= $k['wadah'] ?>" data-label="<?= $k['label'] ?>" data-qty="<?= $k['qty'] ?>" data-exp="<?= $exp ?>" data-mfg="<?= $mfg ?>">
-                                      <i class="feather icon-eye"></i>Details
-                                    </button>
-                                  </div>
-                                </td>
                               </tr>
                             <?php } ?>
                           <?php
@@ -144,8 +134,8 @@
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="no_surat_jalan">No. Po</label>
-              <input type="text" class="form-control" id="v-no_surat_jalan" name="no_surat_jalan" placeholder="No. Po" readonly>
+              <label for="no_sjl">No. Po</label>
+              <input type="text" class="form-control" id="v-no_sjl" name="no_sjl" placeholder="No. Po" readonly>
             </div>
           </div>
           <div class="col-md-4">
@@ -223,7 +213,7 @@
   $(document).ready(function() {
     $('#detail').on('show.bs.modal', function(event) {
       var id_barang_masuk = $(event.relatedTarget).data('id_barang_masuk')
-      var no_surat_jalan = $(event.relatedTarget).data('no_surat_jalan')
+      var no_sjl = $(event.relatedTarget).data('no_sjl')
       var no_batch = $(event.relatedTarget).data('no_batch')
       var tgl = $(event.relatedTarget).data('tgl')
       var nama_barang = $(event.relatedTarget).data('nama_barang')
@@ -240,7 +230,7 @@
       var mfg = $(event.relatedTarget).data('mfg')
 
       $(this).find('#v-id_barang_masuk').val(id_barang_masuk)
-      $(this).find('#v-no_surat_jalan').val(no_surat_jalan)
+      $(this).find('#v-no_sjl').val(no_sjl)
       $(this).find('#v-no_batch').val(no_batch)
       $(this).find('#v-tgl').val(tgl)
       $(this).find('#v-nama_barang').val(nama_barang)
@@ -283,9 +273,9 @@
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label for="no_surat_jalan">No. Po</label>
-                <!-- <input type="text" class="form-control" id="no_surat_jalan" name="no_surat_jalan" placeholder="No Surat Jalan" maxlength="20" required> -->
-                <input type="text" class="form-control" id="e_no_surat_jalan" name="no_surat_jalan" maxlength="20" aria-describedby="validationServer03Feedback" autocomplete="off" required>
+                <label for="no_sjl">No. Po</label>
+                <!-- <input type="text" class="form-control" id="no_sjl" name="no_sjl" placeholder="No Surat Jalan" maxlength="20" required> -->
+                <input type="text" class="form-control" id="e_no_sjl" name="no_sjl" maxlength="20" aria-describedby="validationServer03Feedback" autocomplete="off" required>
                 <div id="validationServer03Feedback" class="invalid-feedback">
                   Maaf nomor transfer slip sudah ada.
                 </div>
@@ -392,21 +382,21 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#no_surat_jalan").keyup(function() {
-      var no_surat_jalan = $("#no_surat_jalan").val();
+    $("#no_sjl").keyup(function() {
+      var no_sjl = $("#no_sjl").val();
       jQuery.ajax({
         url: "<?= base_url() ?>barang_masuk/cek_surat_jalan",
         dataType: 'text',
         type: "post",
         data: {
-          no_surat_jalan: no_surat_jalan
+          no_sjl: no_sjl
         },
         success: function(response) {
           if (response == "true") {
-            $("#no_surat_jalan").addClass("is-invalid");
+            $("#no_sjl").addClass("is-invalid");
             $("#simpan").attr("disabled", "disabled");
           } else {
-            $("#no_surat_jalan").removeClass("is-invalid");
+            $("#no_sjl").removeClass("is-invalid");
             $("#simpan").removeAttr("disabled");
           }
         }
@@ -417,7 +407,7 @@
   $(document).ready(function() {
     $('#edit').on('show.bs.modal', function(event) {
       var id_barang_masuk = $(event.relatedTarget).data('id_barang_masuk')
-      var no_surat_jalan = $(event.relatedTarget).data('no_surat_jalan')
+      var no_sjl = $(event.relatedTarget).data('no_sjl')
       var no_batch = $(event.relatedTarget).data('no_batch')
       var tgl = $(event.relatedTarget).data('tgl')
       var id_barang = $(event.relatedTarget).data('id_barang')
@@ -434,7 +424,7 @@
       var mfg = $(event.relatedTarget).data('mfg')
 
       $(this).find('#e_id_barang_masuk').val(id_barang_masuk)
-      $(this).find('#e_no_surat_jalan').val(no_surat_jalan)
+      $(this).find('#e_no_sjl').val(no_sjl)
       $(this).find('#e_no_batch').val(no_batch)
       $(this).find('#e_tgl').val(tgl)
       $(this).find('#e_id_barang').val(id_barang)

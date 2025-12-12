@@ -27,19 +27,38 @@ class M_barang_masuk_melting extends CI_Model
         return $this->db->query($sql);
     }
 
+
     public function get_barang()
     {
         // $kode_user = $this->kode_user();
         $sql = "
-            SELECT  a.*,c.nama_barang,c.jenis_gel, d.stok FROM tb_mlt_melting_masuk a
-            LEFT JOIN tb_gbb_barang_masuk b ON a.id_barang_masuk = b.id_barang_masuk
-            LEFT JOIN tb_prc_barang c ON a.id_barang = c.id_barang
-            LEFT JOIN (
-                SELECT id_mm, SUM(CASE WHEN status = 'masuk' THEN qty ELSE 0 END) - SUM(CASE WHEN status = 'keluar' THEN qty ELSE 0 END) as stok
-                FROM tb_mlt_transaksi_melting
-                GROUP BY id_mm  
-            ) d ON a.id_mm = d.id_mm
-            WHERE a.is_deleted = 0 ORDER BY a.tgl ASC";
+        SELECT  
+    a.*,
+    c.nama_barang,
+    c.jenis_barang,
+    (a.jml_masuk - IFNULL(d.total_keluar, 0)) AS stok,
+    e.no_urut
+FROM tb_mlt_melting_masuk a
+LEFT JOIN tb_adm_barang_masuk b 
+    ON a.id_adm_bm = b.id_adm_bm
+LEFT JOIN tb_prc_master_barang c 
+    ON a.id_prc_master_barang = c.id_prc_master_barang
+LEFT JOIN tb_mlt_permintaan_barang e 
+    ON a.id_mlt_permintaan_barang = e.id_mlt_permintaan_barang
+LEFT JOIN (
+    SELECT 
+        id_mm,
+        SUM(qty) AS total_keluar
+    FROM tb_mlt_melting_keluar
+    WHERE is_deleted = 0
+    GROUP BY id_mm
+) d ON a.id_mm = d.id_mm
+WHERE 
+    a.is_deleted = 0
+    AND (c.jenis_barang = 'Bahan Pembantu' 
+         OR c.jenis_barang = 'Bahan Tambahan')
+ORDER BY a.tgl_masuk ASC
+        ";
         return $this->db->query($sql);
     }
 

@@ -47,6 +47,7 @@ class adm_barang_masuk extends CI_Controller
         $data['tgl_mulai'] = $tgl_mulai;
         $data['tgl_selesai'] = $tgl_selesai;
 
+
         $this->template->load('template', 'content/administrator/adm_barang_masuk_data', $data);
     }
 
