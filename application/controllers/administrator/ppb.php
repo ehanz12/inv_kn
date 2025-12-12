@@ -31,6 +31,42 @@ class ppb extends CI_Controller
         $this->template->load('template', 'content/administrator/ppb/ppb_data', $data);
     }
 
+    public function get_next_no()
+    {
+        $nama_dept = $this->input->post('departement');
+        $tahun = date('Y');
+        $bulan = date('m');
+    
+        //untuk mengambil kode dept dari tb_master_dept
+        $dept = $this->db->get_where('tb_master_dept', ['nama_dept' => $nama_dept])->row();
+
+        if(!$dept) {
+            echo json_encode("kode tidak ditemukan");
+            return;
+        }
+
+        $kode_dept = $dept->kode_dept; // ini kode deptnya
+        //Cari PPB terakhir berdasarkan dept + tahun, lihat dari no_ppb
+        //format : 001/ACC/2025
+
+        $this->db->like('no_ppb', '/' . $kode_dept .  '/' . $tahun, 'before');
+        $this->db->where('departement', $nama_dept);
+        $this->db->order_by('id_prc_ppb_tf', 'DESC');
+        $this->db->limit(1);
+        $last = $this->db->get('tb_prc_ppb_tf')->row();
+
+        if ($last) {
+            $parts = explode('/', $last->no_ppb);
+            $next = intval($parts[0] + 1);
+        }else {
+            $next = 1;
+        }
+
+        $no_ppb = sprintf("%03d/%s/%d/%d", $next, $kode_dept, $bulan ,$tahun);
+
+        echo json_encode($no_ppb);
+    }
+
     public function add()
     {
         // Ambil data dari form
