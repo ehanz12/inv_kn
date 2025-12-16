@@ -64,7 +64,7 @@
                         <tbody>
                           <?php
                           $nama_operator = $this->session->userdata('nama_operator');
-                          $level = $this->session->userdata('level');
+                          $level = $this->session->userdata('departement');
                           $jabatan = $this->session->userdata('jabatan');
                           $no = 1;
                           foreach ($result as $k) {
@@ -77,7 +77,7 @@
                               <td><?= $k['nama_alat'] ?></td>
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#view" data-id_penimbangan="<?= $k['id_penimbangan'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-no_transfer_slip="<?= $k['no_transfer_slip'] ?>" data-nama_alat="<?= $k['nama_alat'] ?>" data-qty_dibutuhkan="<?= $k['qty_dibutuhkan'] ?>" data-qty_ditimbang="<?= $k['qty_ditimbang'] ?>" data-tgl_timbang="<?= $tgl_timbang ?>" data-op_penimbangan="<?= $k['op_penimbangan'] ?>" data-suhu_ruangan="<?= $k['suhu_ruangan'] ?>" data-kelembapan_ruangan="<?= $k['kelembapan_ruangan'] ?>" data-kebersihan_ruangan="<?= $k['kebersihan_ruangan'] ?>" data-label_kebersihan="<?= $k['label_kebersihan'] ?>" data-label_kalibrasi="<?= $k['label_kalibrasi'] ?>">
+                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#view" data-id_penimbangan="<?= $k['id_penimbangan'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-no_urut="<?= $k['no_urut'] ?>" data-nama_alat="<?= $k['nama_alat'] ?>" data-qty_dibutuhkan="<?= $k['qty_dibutuhkan'] ?>" data-qty_ditimbang="<?= $k['qty_ditimbang'] ?>" data-tgl_timbang="<?= $tgl_timbang ?>" data-op_penimbangan="<?= $k['op_penimbangan'] ?>" data-suhu_ruangan="<?= $k['suhu_ruangan'] ?>" data-kelembapan_ruangan="<?= $k['kelembapan_ruangan'] ?>" data-kebersihan_ruangan="<?= $k['kebersihan_ruangan'] ?>" data-label_kebersihan="<?= $k['label_kebersihan'] ?>" data-label_kalibrasi="<?= $k['label_kalibrasi'] ?>">
                                     <i class=" feather icon-eye"></i>Detail
                                   </button>
                                 </div>
@@ -85,12 +85,12 @@
                               <td class="text-center">
                                 <?php if ($level === "admin") { ?>
                                   <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" data-id_penimbangan="<?= $k['id_penimbangan'] ?>" data-id_ts_melt="<?= $k['id_ts_melt'] ?>" data-id_mm="<?= $k['id_mm'] ?>" data-id_kalibrasi="<?= $k['id_kalibrasi'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-nama_alat="<?= $k['nama_alat'] ?>" data-qty_dibutuhkan="<?= $k['qty_dibutuhkan'] ?>" data-qty_ditimbang="<?= $k['qty_ditimbang'] ?>" data-tgl_timbang="<?= $tgl_timbang ?>" data-op_penimbangan="<?= $k['op_penimbangan'] ?>" data-suhu_ruangan="<?= $k['suhu_ruangan'] ?>" data-kelembapan_ruangan="<?= $k['kelembapan_ruangan'] ?>" data-kebersihan_ruangan="<?= $k['kebersihan_ruangan'] ?>" data-label_kebersihan="<?= $k['label_kebersihan'] ?>" data-label_kalibrasi="<?= $k['label_kalibrasi'] ?>">
+                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" data-id_penimbangan="<?= $k['id_penimbangan'] ?>" data-id_ts_melt="<?= $k['id_ts_melt'] ?>" data-id_mm="<?= $k['id_mm'] ?>" data-id_lab_kalibrasi="<?= $k['id_lab_kalibrasi'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-nama_alat="<?= $k['nama_alat'] ?>" data-qty_dibutuhkan="<?= $k['qty_dibutuhkan'] ?>" data-qty_ditimbang="<?= $k['qty_ditimbang'] ?>" data-tgl_timbang="<?= $tgl_timbang ?>" data-op_penimbangan="<?= $k['op_penimbangan'] ?>" data-suhu_ruangan="<?= $k['suhu_ruangan'] ?>" data-kelembapan_ruangan="<?= $k['kelembapan_ruangan'] ?>" data-kebersihan_ruangan="<?= $k['kebersihan_ruangan'] ?>" data-label_kebersihan="<?= $k['label_kebersihan'] ?>" data-label_kalibrasi="<?= $k['label_kalibrasi'] ?>">
                                       <i class=" feather icon-edit-2"></i>Edit
                                     </button>
                                   </div>
                                   <div class="btn-group" role="group">
-                                    <a href="<?= base_url() ?>Penimbangan/delete/<?= $k['id_ts_melt'] ?>" class="btn btn-danger btn-square text-light btn-sm" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
+                                    <a href="<?= base_url() ?>lab/Penimbangan/delete/<?= $k['id_mm'] ?>" class="btn btn-danger btn-square text-light btn-sm" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
                                       <i class="feather icon-trash-2"></i>Hapus
                                     </a>
                                   </div>
@@ -125,7 +125,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="<?= base_url() ?>Penimbangan/add">
+      <form method="post" action="<?= base_url() ?>lab/Penimbangan/add">
         <div class="modal-body">
           <center><label for="pemeriksaan" class="font-weight-bold mt-3">Input Penimbangan</label></center>
           <div class="row">
@@ -136,20 +136,15 @@
                   <option value="" disabled selected hidden>- Nama Barang -</option>
                   <?php
                   foreach ($res_mm as $mm) { ?>
-                    <option value="<?= $mm['id_mm'] ?>" data-stok="<?= $mm['stok'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_transfer_slip'] ?></option>
+                    <option value="<?= $mm['id_mm'] ?>" data-stok="<?= $mm['stok'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_urut'] ?></option>
                   <?php } ?>
                 </select>
               </div>
             </div>
-            <div class="col-md-6">
+             <div class="col-md-6">
               <div class="form-group">
-                <label for="id_kalibrasi">Alat Kalibrasi</label>
-                <select class="form-control scrollable-menu chosen-select" role="menu" id="id_kalibrasi" name="id_kalibrasi" required>
-                  <option value="" disabled selected hidden>- Alat Kalibrasi -</option>
-                  <?php foreach ($res_alat as $al) { ?>
-                    <option value="<?= $al['id_kalibrasi'] ?>"> <?= $al['nama_alat'] ?></option>
-                  <?php } ?>
-                </select>
+                <label for="stock">Stock</label>
+                <input type="text" class="form-control" id="stock" name="stock" placeholder="Jumlah Stock" autocomplete="off" readonly>
               </div>
             </div>
             <div class="col-md-6">
@@ -161,6 +156,17 @@
                     Maaf Stok tidak mencukupi.
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="id_lab_kalibrasi">Alat Kalibrasi</label>
+                <select class="form-control scrollable-menu chosen-select" role="menu" id="id_lab_kalibrasi" name="id_lab_kalibrasi" required>
+                  <option value="" disabled selected hidden>- Alat Kalibrasi -</option>
+                  <?php foreach ($res_alat as $al) { ?>
+                    <option value="<?= $al['id_lab_kalibrasi'] ?>"> <?= $al['nama_alat'] ?></option>
+                  <?php } ?>
+                </select>
               </div>
             </div>
             <div class="col-md-6">
@@ -247,6 +253,12 @@
         $("#simpan").removeAttr("disabled");
       }
     })
+
+    $('#id_mm').change(function() {
+      const stok = $('#id_mm').find(':selected').attr('data-stok');
+      $('#stock').val(stok);
+    });
+
     $("#qty_ditimbang").keyup(function() {
       const stok = parseInt($('#id_mm').find(':selected').attr('data-stok'));
       var qty = parseInt($("#qty_ditimbang").val());
@@ -291,7 +303,7 @@
               <label for="nama_barang">Nama Barang</label>
               <div class="input-group">
                 <input type="text" class="form-control" id="v-nama_barang" name="nama_barang" placeholder="Nama Barang" readonly>
-                <input type="text" class="form-control" id="v-no_transfer_slip" name="no_transfer_slip" placeholder="No Transfer Slip" readonly>
+                <input type="text" class="form-control" id="v-no_urut" name="no_urut" placeholder="No Transfer Slip" readonly>
               </div>
             </div>
           </div>
@@ -369,7 +381,7 @@
   $(document).ready(function() {
     $('#view').on('show.bs.modal', function(event) {
       var nama_barang = $(event.relatedTarget).data('nama_barang')
-      var no_transfer_slip = $(event.relatedTarget).data('no_transfer_slip')
+      var no_urut = $(event.relatedTarget).data('no_urut')
       var nama_alat = $(event.relatedTarget).data('nama_alat')
       var qty_dibutuhkan = $(event.relatedTarget).data('qty_dibutuhkan')
       var qty_ditimbang = $(event.relatedTarget).data('qty_ditimbang')
@@ -382,7 +394,7 @@
       var label_kalibrasi = $(event.relatedTarget).data('label_kalibrasi')
 
       $(this).find('#v-nama_barang').val(nama_barang)
-      $(this).find('#v-no_transfer_slip').val(no_transfer_slip)
+      $(this).find('#v-no_urut').val(no_urut)
       $(this).find('#v-nama_alat').val(nama_alat)
       $(this).find('#v-qty_dibutuhkan').val(qty_dibutuhkan)
       $(this).find('#v-qty_ditimbang').val(qty_ditimbang)
@@ -419,18 +431,18 @@
                   <option value="" disabled selected hidden>- Nama Barang -</option>
                   <?php
                   foreach ($res_mm as $mm) { ?>
-                    <option value="<?= $mm['id_mm'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_transfer_slip'] ?></option>
+                    <option value="<?= $mm['id_mm'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_urut'] ?></option>
                   <?php } ?>
                 </select>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="id_kalibrasi">Alat Kalibrasi</label>
-                <select class="form-control scrollable-menu chosen-select" role="menu" id="e-id_kalibrasi" name="id_kalibrasi" required>
+                <label for="id_lab_kalibrasi">Alat Kalibrasi</label>
+                <select class="form-control scrollable-menu chosen-select" role="menu" id="e-id_lab_kalibrasi" name="id_lab_kalibrasi" required>
                   <option value="" disabled selected hidden>- Alat Kalibrasi -</option>
                   <?php foreach ($res_alat as $al) { ?>
-                    <option value="<?= $al['id_kalibrasi'] ?>"> <?= $al['nama_alat'] ?></option>
+                    <option value="<?= $al['id_lab_kalibrasi'] ?>"> <?= $al['nama_alat'] ?></option>
                   <?php } ?>
                 </select>
               </div>
@@ -524,7 +536,7 @@
       var id_penimbangan = $(event.relatedTarget).data('id_penimbangan')
       var id_ts_melt = $(event.relatedTarget).data('id_ts_melt')
       var id_mm = $(event.relatedTarget).data('id_mm')
-      var id_kalibrasi = $(event.relatedTarget).data('id_kalibrasi')
+      var id_lab_kalibrasi = $(event.relatedTarget).data('id_lab_kalibrasi')
       var nama_barang = $(event.relatedTarget).data('nama_barang')
       var nama_alat = $(event.relatedTarget).data('nama_alat')
       var qty_dibutuhkan = $(event.relatedTarget).data('qty_dibutuhkan')
@@ -541,8 +553,8 @@
       $(this).find('#e-id_ts_melt').val(id_ts_melt)
       $(this).find('#e-id_mm').val(id_mm)
       $(this).find('#e-id_mm').trigger("chosen:updated");
-      $(this).find('#e-id_kalibrasi').val(id_kalibrasi)
-      $(this).find('#e-id_kalibrasi').trigger("chosen:updated");
+      $(this).find('#e-id_lab_kalibrasi').val(id_lab_kalibrasi)
+      $(this).find('#e-id_lab_kalibrasi').trigger("chosen:updated");
       $(this).find('#e-nama_barang').val(nama_barang)
       $(this).find('#e-nama_alat').val(nama_alat)
       $(this).find('#e-qty_dibutuhkan').val(qty_dibutuhkan)

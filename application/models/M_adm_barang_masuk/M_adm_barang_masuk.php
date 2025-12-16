@@ -127,7 +127,7 @@ class M_adm_barang_masuk extends CI_Model
         ON x.id_prc_master_barang = f.id_prc_master_barang
     LEFT JOIN tb_prc_master_supplier s
         ON s.id_prc_master_supplier = b.id_prc_master_supplier
-    WHERE 1=1 AND x.status_barang = 'released' OR b.lab_test = 'no'
+    WHERE 1=1 AND x.status_barang = 'Released' OR b.lab_test = 'no'
 ";
 
 
@@ -244,7 +244,7 @@ class M_adm_barang_masuk extends CI_Model
             LEFT JOIN tb_prc_master_barang c ON a.id_prc_master_barang = c.id_prc_master_barang
             LEFT JOIN tb_prc_master_supplier d ON c.id_prc_master_supplier = d.id_prc_master_supplier
             LEFT JOIN tb_prc_dpb_tf e ON a.no_dpb = e.no_dpb
-            WHERE a.is_deleted = 0 AND a.status_barang = 'released' OR c.lab_test = 'no'  ORDER BY a.tgl_bm ASC";
+            WHERE a.is_deleted = 0 AND a.status_barang = 'Released' OR c.lab_test = 'no'  ORDER BY a.tgl_bm ASC";
         return $this->db->query($sql);
     }
 
@@ -408,10 +408,18 @@ class M_adm_barang_masuk extends CI_Model
             $in = "'" . implode("','", $jenis) . "'";
 
             $sql = "
-            SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, a.jml_bm,
+            SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, (a.jml_bm - IFNULL(d.total_keluar, 0)) AS stok,
                    b.kode_barang, b.satuan, b.nama_barang, b.jenis_barang
             FROM tb_adm_barang_masuk a
             LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
+            LEFT JOIN (
+                SELECT 
+                    id_adm_bm,
+                    SUM(jml_bk) AS total_keluar
+                FROM tb_gbb_barang_keluar
+                WHERE is_deleted = 0
+                GROUP BY id_adm_bm
+            ) d ON a.id_adm_bm = d.id_adm_bm
             WHERE a.is_deleted = 0 
             AND b.jenis_barang IN ($in)
         ";
@@ -421,10 +429,18 @@ class M_adm_barang_masuk extends CI_Model
 
         // Jika bukan Bahan Pembantu → normal pakai 1 kategori
         $sql = "
-        SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, a.jml_bm,
+        SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, (a.jml_bm - IFNULL(d.total_keluar, 0)) AS stok,
                b.kode_barang, b.satuan, b.nama_barang, b.jenis_barang
         FROM tb_adm_barang_masuk a
         LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
+        LEFT JOIN (
+                SELECT 
+                    id_adm_bm,
+                    SUM(jml_bk) AS total_keluar
+                FROM tb_gbb_barang_keluar
+                WHERE is_deleted = 0
+                GROUP BY id_adm_bm
+            ) d ON a.id_adm_bm = d.id_adm_bm
         WHERE a.is_deleted = 0 
         AND b.jenis_barang = '$kode_ts'
     ";

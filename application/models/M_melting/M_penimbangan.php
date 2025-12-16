@@ -16,10 +16,12 @@ class M_penimbangan extends CI_Model
         // $kode_user = $this->kode_user();
         // LEFT JOIN tb_melting_masuk c ON a.id_barang = c.id_barang
         $sql = "
-        SELECT a.*,b.no_transfer_slip,c.nama_barang,d.nama_alat FROM tb_mlt_penimbangan a
+        SELECT a.*,b.id_mlt_permintaan_barang,b.id_mlt_permintaan_barang,b.id_prc_master_barang,c.nama_barang,d.id_prc_master_barang,e.nama_barang AS nama_alat, f.no_urut FROM tb_mlt_penimbangan a
         LEFT JOIN tb_mlt_melting_masuk b ON a.id_mm = b.id_mm
-        LEFT JOIN tb_prc_barang c ON b.id_barang = c.id_barang
-        LEFT JOIN tb_lab_alat_kalibrasi d ON a.id_kalibrasi = d.id_kalibrasi
+        LEFT JOIN tb_prc_master_barang c ON b.id_prc_master_barang = c.id_prc_master_barang
+        LEFT JOIN tb_lab_alat_kalibrasi d ON a.id_lab_kalibrasi = d.id_lab_kalibrasi
+        LEFT JOIN tb_prc_master_barang e ON d.id_prc_master_barang = e.id_prc_master_barang
+        LEFT JOIN tb_mlt_permintaan_barang f ON b.id_mlt_permintaan_barang = f.id_mlt_permintaan_barang
         WHERE a.is_deleted = 0 ORDER BY a.tgl_timbang ASC";
 
         return $this->db->query($sql);
@@ -29,8 +31,8 @@ class M_penimbangan extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO `tb_penimbangan`(`id_mm`, `id_kalibrasi`,`id_ts_melt`, `qty_dibutuhkan`,`qty_ditimbang`,`tgl_timbang`,`label_kebersihan`,`label_kalibrasi`,`op_penimbangan`,`suhu_ruangan`,`kelembapan_ruangan`,`kebersihan_ruangan`,`created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
-        VALUES ('$data[id_mm]','$data[id_kalibrasi]','$data[id_transaksi]','$data[qty_dibutuhkan]','$data[qty_ditimbang]','$data[tgl_timbang]','$data[label_kebersihan]','$data[label_kalibrasi]','$data[op_penimbangan]','$data[suhu_ruangan]','$data[kelembapan_ruangan]','$data[kebersihan_ruangan]',NOW(),'$id_user','0000-00-00 00:00:00','','0')
+        INSERT INTO `tb_mlt_penimbangan`(`id_mm`, `id_lab_kalibrasi`,`id_ts_melt`, `qty_dibutuhkan`,`qty_ditimbang`,`tgl_timbang`,`label_kebersihan`,`label_kalibrasi`,`op_penimbangan`,`suhu_ruangan`,`kelembapan_ruangan`,`kebersihan_ruangan`,`created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
+        VALUES ('$data[id_mm]','$data[id_lab_kalibrasi]','$data[id_transaksi]','$data[qty_dibutuhkan]','$data[qty_ditimbang]','$data[tgl_timbang]','$data[label_kebersihan]','$data[label_kalibrasi]','$data[op_penimbangan]','$data[suhu_ruangan]','$data[kelembapan_ruangan]','$data[kebersihan_ruangan]',NOW(),'$id_user','0000-00-00 00:00:00','','0')
         ";
 
         return $this->db->query($sql);
@@ -41,7 +43,7 @@ class M_penimbangan extends CI_Model
         $sql = "
             UPDATE `tb_penimbangan` 
             SET `id_mm`='$data[id_mm]',
-                `id_kalibrasi`='$data[id_kalibrasi]',
+                `id_lab_kalibrasi`='$data[id_lab_kalibrasi]',
                 `qty_dibutuhkan`='$data[qty_dibutuhkan]',
                 `qty_ditimbang`='$data[qty_ditimbang]',
                 `tgl_timbang`='$data[tgl_timbang]',
@@ -66,12 +68,12 @@ class M_penimbangan extends CI_Model
         return $this->db->query($sql);
     }
 
-    public function delete($id_ts_melt)
+    public function delete($id_mm)
     {
         $id_user = $this->id_user();
         $sql = "
-        DELETE FROM `tb_penimbangan`
-         WHERE `id_ts_melt`='$id_ts_melt'
+        DELETE FROM `tb_mlt_penimbangan`
+         WHERE `id_mm`='$id_mm'
         ";
         return $this->db->query($sql);
     }

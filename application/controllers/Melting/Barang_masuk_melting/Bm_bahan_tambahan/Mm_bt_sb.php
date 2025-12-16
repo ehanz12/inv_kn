@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Mm_pw extends CI_Controller
+class Mm_bt_sb extends CI_Controller
 {
 
     function __construct()
@@ -12,6 +12,7 @@ class Mm_pw extends CI_Controller
         $this->load->model('M_gudang_bahanbaku/M_permintaan_barang_gudang');
         $this->load->model('M_melting/M_permintaan_barang_melting');
         $this->load->model('M_melting/M_transaksi_melting');
+        $this->load->model('M_melting/M_penimbangan');
         $this->load->model('M_gudang_bahanbaku/M_barang');
         $this->load->model('M_purchasing/M_supplier');
         $this->load->model('M_users/M_users');
@@ -23,8 +24,9 @@ class Mm_pw extends CI_Controller
     }
     public function index()
     {
-        $name = "Pewarna";
-         $data['result'] = $this->M_barang_masuk_melting->get($name)->result_array();
+        // $data['row'] = $this->customer_m->get();
+        $name = "Sodium Benzoat";
+        $data['result'] = $this->M_barang_masuk_melting->get($name)->result_array();
 
         for ($i = 0; $i < count($data['result']); $i++) {
             $d['id_mm'] = $data['result'][$i]['id_mm'];
@@ -43,11 +45,11 @@ class Mm_pw extends CI_Controller
         }
 
 
-        $this->template->load('template', 'content/melting/barang_masuk_melting/mm_pw', $data);
-        // print_r($data); 
 
-
-
+        // $data['res_barang'] = $this->M_baranbarang->get()->result_array();
+        // $data['res_supplier'] = $this->M_supplier->get()->result_array();
+        // $data['res_user'] = $this->M_users->get()->result_array();
+        $this->template->load('template', 'content/melting/barang_masuk_melting/masuk_melting_bahan_tambahan/mm_sodium_benzoat', $data);
     }
 
     public function update()

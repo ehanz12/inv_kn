@@ -46,6 +46,15 @@ WHERE
         return $this->db->query($sql);
     }
 
+    public function get_alat()
+    {
+        $sql = "SELECT a.id_lab_kalibrasi, a.status_sertif, a.tgl_kalibrasi, a.id_prc_master_barang, b.nama_barang AS nama_alat FROM tb_lab_alat_kalibrasi a
+        LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
+        WHERE a.is_deleted = 0 AND a.status_sertif != 'EXPIRED' ORDER BY a.tgl_kalibrasi DESC";
+
+        return $this->db->query($sql)->result_array();
+    }
+
     public function checkExpired()
     {
         return $this->db->query("

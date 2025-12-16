@@ -46,7 +46,7 @@
                             <th>No Batch</th>
                             <th>Nama Barang</th>
                             <th class="text-right">Out</th>
-                            <th class="text-right">Details</th>
+                            <!-- <th class="text-right">Details</th> -->
                           </tr>
                         </thead>
                         <tbody>
@@ -65,7 +65,7 @@
                               <td><?= $k['no_batch'] ?></td>
                               <td><?= $k['nama_barang'] ?></td>
                               <td class="text-right"><?= number_format($k['jml_bk'], 0, ",", ".") ?></td>
-                              <td class="text-right">
+                              <!-- <td class="text-right">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                   <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" 
                                   data-target="#detail" 
@@ -87,7 +87,7 @@
                                     </button>
                                   </div>
                                 <?php } ?>
-                              </td>
+                              </td> -->
                             </tr>
                           <?php } ?>
                         </tbody>

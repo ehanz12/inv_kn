@@ -70,7 +70,7 @@
                             // $exp =  explode('-', $k['exp'])[2] . "/" . explode('-', $k['exp'])[1] . "/" . explode('-', $k['exp'])[0];
                             // $mfg =  explode('-', $k['mfg'])[2] . "/" . explode('-', $k['mfg'])[1] . "/" . explode('-', $k['mfg'])[0];
                           ?>
-                            <?php if ($k['sisa'] == 0) { ?>
+                            <?php if ($k['sisa'] != 0) { ?>
                               <tr>
                                 <th scope="row"><?= $no++ ?></th>
                                 <td><?= $tgl ?></td>
