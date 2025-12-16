@@ -60,7 +60,7 @@
                         <tbody>
                           <?php
                           $nama_operator = $this->session->userdata('nama_operator');
-                          $level = $this->session->userdata('level');
+                          $level = $this->session->userdata('departement');
                           $jabatan = $this->session->userdata('jabatan');
                           $no = 1;
                           foreach ($result as $k) {
@@ -73,7 +73,7 @@
                               <td><?= $k['shift'] ?></td>
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#view" data-id_masak_gel="<?= $k['id_masak_gel'] ?>" data-tgl_masak="<?= $tgl_masak ?>" data-shift="<?= $k['shift'] ?>" data-batch_masak="<?= $k['batch_masak'] ?>" data-jml_air="<?= $k['jml_air'] ?>" data-temp_pel="<?= $k['temp_pel'] ?>" data-jam_gel="<?= $k['jam_gel'] ?>" data-jam_bt="<?= $k['jam_bt'] ?>" data-mixing1="<?= $k['mixing1'] ?>" data-mixing2="<?= $k['mixing2'] ?>" data-vac1="<?= $k['vac1'] ?>" data-vac2="<?= $k['vac2'] ?>" data-scala_vac="<?= $k['scala_vac'] ?>" data-visco_cps="<?= $k['visco_cps'] ?>" data-visco_c="<?= $k['visco_c'] ?>" data-suhu_ruang="<?= $k['suhu_ruang'] ?>" data-kel_ruang="<?= $k['kel_ruang'] ?>" data-keb_melter="<?= $k['keb_melter'] ?>" data-label_bersih="<?= $k['label_bersih'] ?>" data-op1="<?= $k['op1'] ?>" data-op2="<?= $k['op2'] ?>" data-supervisor="<?= $k['supervisor'] ?>">
+                                  <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#view" data-id_masak_gel="<?= $k['id_masak_gel_tf'] ?>" data-tgl_masak="<?= $tgl_masak ?>" data-shift="<?= $k['shift'] ?>" data-batch_masak="<?= $k['batch_masak'] ?>" data-jml_air="<?= $k['jml_air'] ?>" data-temp_pel="<?= $k['temp_pel'] ?>" data-jam_gel="<?= $k['jam_gel'] ?>" data-jam_bt="<?= $k['jam_bt'] ?>" data-mixing1="<?= $k['mixing1'] ?>" data-mixing2="<?= $k['mixing2'] ?>" data-vac1="<?= $k['vac1'] ?>" data-vac2="<?= $k['vac2'] ?>" data-scala_vac="<?= $k['scala_vac'] ?>" data-visco_cps="<?= $k['visco_cps'] ?>" data-visco_c="<?= $k['visco_c'] ?>" data-suhu_ruang="<?= $k['suhu_ruang'] ?>" data-kel_ruang="<?= $k['kel_ruang'] ?>" data-keb_melter="<?= $k['keb_melter'] ?>" data-label_bersih="<?= $k['label_bersih'] ?>" data-op1="<?= $k['op1'] ?>" data-op2="<?= $k['op2'] ?>" data-supervisor="<?= $k['supervisor'] ?>">
                                     <i class=" feather icon-eye"></i>Detail 
                                   </button>
                                 </div>
@@ -81,12 +81,12 @@
                               <td class="text-center">
                                 <?php if ($level === "admin") { ?>
                                   <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" data-id_masak_gel="<?= $k['id_masak_gel'] ?>" data-tgl_masak="<?= $tgl_masak ?>" data-shift="<?= $k['shift'] ?>" data-batch_masak="<?= $k['batch_masak'] ?>" data-jml_air="<?= $k['jml_air'] ?>" data-temp_pel="<?= $k['temp_pel'] ?>" data-jam_gel="<?= $k['jam_gel'] ?>" data-jam_bt="<?= $k['jam_bt'] ?>" data-mixing1="<?= $k['mixing1'] ?>" data-mixing2="<?= $k['mixing2'] ?>" data-vac1="<?= $k['vac1'] ?>" data-vac2="<?= $k['vac2'] ?>" data-scala_vac="<?= $k['scala_vac'] ?>" data-visco_cps="<?= $k['visco_cps'] ?>" data-visco_c="<?= $k['visco_c'] ?>" data-suhu_ruang="<?= $k['suhu_ruang'] ?>" data-kel_ruang="<?= $k['kel_ruang'] ?>" data-keb_melter="<?= $k['keb_melter'] ?>" data-label_bersih="<?= $k['label_bersih'] ?>" data-op1="<?= $k['op1'] ?>" data-op2="<?= $k['op2'] ?>" data-supervisor="<?= $k['supervisor'] ?>">
+                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" data-id_masak_gel="<?= $k['id_masak_gel_tf'] ?>" data-tgl_masak="<?= $tgl_masak ?>" data-shift="<?= $k['shift'] ?>" data-batch_masak="<?= $k['batch_masak'] ?>" data-jml_air="<?= $k['jml_air'] ?>" data-temp_pel="<?= $k['temp_pel'] ?>" data-jam_gel="<?= $k['jam_gel'] ?>" data-jam_bt="<?= $k['jam_bt'] ?>" data-mixing1="<?= $k['mixing1'] ?>" data-mixing2="<?= $k['mixing2'] ?>" data-vac1="<?= $k['vac1'] ?>" data-vac2="<?= $k['vac2'] ?>" data-scala_vac="<?= $k['scala_vac'] ?>" data-visco_cps="<?= $k['visco_cps'] ?>" data-visco_c="<?= $k['visco_c'] ?>" data-suhu_ruang="<?= $k['suhu_ruang'] ?>" data-kel_ruang="<?= $k['kel_ruang'] ?>" data-keb_melter="<?= $k['keb_melter'] ?>" data-label_bersih="<?= $k['label_bersih'] ?>" data-op1="<?= $k['op1'] ?>" data-op2="<?= $k['op2'] ?>" data-supervisor="<?= $k['supervisor'] ?>">
                                       <i class=" feather icon-edit-2"></i>Edit
                                     </button>
                                   </div>
                                   <div class="btn-group" role="group">
-                                    <a href="<?= base_url() ?>Masak_gelatin/delete/<?= $k['batch_masak'] ?>" class="btn btn-danger btn-square text-light btn-sm" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
+                                    <a href="<?= base_url() ?>melting/Masak_gelatin/delete/<?= str_replace('/', '-', $k['batch_masak']) ?>" class="btn btn-danger btn-square text-light btn-sm" onclick="return confirm('Apakah anda yakin menghapus data ini ?')">
                                       <i class="feather icon-trash-2"></i>Hapus
                                     </a>
                                   </div>
@@ -121,7 +121,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="<?= base_url() ?>Masak_gelatin/add">
+      <form method="post" action="<?= base_url() ?>melting/Masak_gelatin/add">
         <div class="modal-body">
           <center><label for="pemeriksaan" class="font-weight-bold mt-3">Komposisi Masak Gelatin</label></center>
           <div class="row">
@@ -155,18 +155,20 @@
                   <option value="" disabled selected hidden>- Nama Barang -</option>
                   <?php
                   foreach ($res_mm_bhn as $mm) { ?>
-                    <option value="<?= $mm['id_mm'] ?>" data-stok="<?= $mm['stok'] ?>" data-bloom="<?= $mm['bloom'] ?>" data-no_batch="<?= $mm['no_batch'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_batch'] ?></option>
+                    <option value="<?= $mm['id_mm'] ?>" data-id_prc_master_barang="<?= $mm['id_prc_master_barang'] ?>" data-stok="<?= $mm['stok'] ?>" data-bloom="<?= $mm['bloom'] ?>" data-no_batch="<?= $mm['no_batch'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_batch'] ?></option>
                   <?php } ?>
                 </select>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <div class="form-group">
                 <label for="bloom_add">Bloom</label>
-                <label for="no_batch_add" style="padding-left: 30%;">No Batch</label>
+                <label for="no_batch_add" style="padding-left: 20%;">No Batch</label>
+                <label for="stok_add" style="padding-left: 20px;">Stok</label>
                 <div class="input-group">
                   <input type="text" class="form-control" id="bloom_add" name="bloom_add" placeholder="Bloom" autocomplete="off" readonly>
                   <input type="text" class="form-control" id="no_batch_add" name="no_batch_add" placeholder="No Batch" autocomplete="off" readonly>
+                  <input type="text" class="form-control" id="stok_add" name="stok_add" placeholder="Stok" autocomplete="off" readonly>
                 </div>
               </div>
             </div>
@@ -365,8 +367,10 @@
     $('#bahan_add').on('change', function() {
       const bloom = $(this).find(':selected').attr('data-bloom');
       const no_batch = $(this).find(':selected').attr('data-no_batch');
+      const stok = $(this).find(':selected').attr('data-stok');
       $('#bloom_add').val(bloom)
       $('#no_batch_add').val(no_batch)
+      $('#stok_add').val(stok)
     });
 
     $("#input").click(function() {
@@ -378,12 +382,14 @@
       var bloom = $("#bahan_add").find(':selected').attr('data-bloom');
       var no_batch = $("#bahan_add").find(':selected').attr('data-no_batch');
       var nama_bahan = $("#bahan_add").find(':selected').text();
+      var id_prc_master_barang = $("#bahan_add").find(':selected').attr('data-id_prc_master_barang');
       var jml = $("#jml_add").val();
 
-      if (bloom != "") {
+      if (bloom != 0) {
         $("#insert_bahan").append(`
           <tr id="tr_${nextform}">
           <input type="hidden" name="bahan[${nextform}][id_mm]" value="${id_mm}">
+          <input type="hidden" name="bahan[${nextform}][id_prc_master_barang]" value="${id_prc_master_barang}">
             <td>${nama_bahan}</td>
             <td>${bloom}</td>
             <td>${no_batch}</td>
@@ -395,6 +401,7 @@
         $("#bt").append(`
           <tr id="tr_${nextform}">
             <input type="hidden" name="bahan[${nextform}][id_mm]" value="${id_mm}">
+            <input type="hidden" name="bahan[${nextform}][id_prc_master_barang]" value="${id_prc_master_barang}">
             <td style="width: 30%;">${nama_bahan}</td>
             <td>${no_batch}</td>
             <td>${jml}<input type="hidden" name="bahan[${nextform}][jml_bahan]" value="${jml}"</td>
@@ -707,7 +714,7 @@
       $(this).find('#v-op2').val(op2)
       $(this).find('#v-supervisor').val(supervisor)
       jQuery.ajax({
-        url: "<?= base_url() ?>Masak_gelatin/get_detail_gel",
+        url: "<?= base_url() ?>melting/Masak_gelatin/get_detail_gel",
         dataType: 'json',
         type: "post",
         data: {
@@ -723,7 +730,7 @@
             $id.append(`
               <tr>
                 <td>` + data[i].nama_barang + `</td>
-                <td>` + data[i].jenis_gel + `</td>
+                <td>` + data[i].bloom + `</td>
                 <td>` + data[i].batch_masak + `</td>
                 <td>` + data[i].jml_bahan + `</td>
               </tr>
@@ -733,7 +740,7 @@
       });
 
       jQuery.ajax({
-        url: "<?= base_url() ?>Masak_gelatin/get_detail_bt",
+        url: "<?= base_url() ?>melting/Masak_gelatin/get_detail_bt",
         dataType: 'json',
         type: "post",
         data: {
@@ -996,7 +1003,7 @@
       }
 
       jQuery.ajax({
-        url: "<?= base_url() ?>Masak_gelatin/get_detail_gel",
+        url: "<?= base_url() ?>melting/Masak_gelatin/get_detail_gel",
         dataType: 'json',
         type: "post",
         data: {
@@ -1014,12 +1021,12 @@
                 <td>
                   <select class="form-control chosen-select" role="menu" id="e-nama_bahan_gel" name="bahan" required>
                   <?php
-                  foreach ($res_mm as $mm) { ?>
-                    <option value="<?= $mm['id_mm'] ?>" data-bloom="<?= $mm['jenis_gel'] ?>" data-no_batch="<?= $mm['no_batch'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_transfer_slip'] ?></option>
+                  foreach ($res_mm_bhn as $mm) { ?>
+                    <option value="<?= $mm['id_mm'] ?>" data-bloom="<?= $mm['bloom'] ?>" data-no_batch="<?= $mm['no_batch'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_urut'] ?></option>
                   <?php } ?>
                 </select>
                 </td>
-                <td>` + data[i].jenis_gel + `</td>
+                <td>` + data[i].bloom + `</td>
                 <td>` + data[i].batch_masak + `</td>
                 <td>` + data[i].jml_bahan + `</td>
               </tr>
@@ -1030,7 +1037,7 @@
         }
       });
       jQuery.ajax({
-        url: "<?= base_url() ?>Masak_gelatin/get_detail_bt",
+        url: "<?= base_url() ?>melting/Masak_gelatin/get_detail_bt",
         dataType: 'json',
         type: "post",
         data: {
@@ -1048,8 +1055,8 @@
                 <td>
                   <select class="form-control chosen-select" role="menu" id="e-nama_bahan_bt" name="bahan" required>
                   <?php
-                  foreach ($res_mm as $mm) { ?>
-                    <option value="<?= $mm['id_mm'] ?>" data-bloom="<?= $mm['jenis_gel'] ?>" data-no_batch="<?= $mm['no_batch'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_transfer_slip'] ?></option>
+                  foreach ($res_mm_bhn as $mm) { ?>
+                    <option value="<?= $mm['id_mm'] ?>" data-bloom="<?= $mm['bloom'] ?>" data-no_batch="<?= $mm['no_batch'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_urut'] ?> </option>
                   <?php } ?>
                 </select>
                 </td>

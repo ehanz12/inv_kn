@@ -11,6 +11,7 @@ class Masak_gelatin extends CI_Controller
 		$this->load->model('M_melting/M_masak_gelatin');
 		$this->load->model('M_marketing/M_print_schedule');
 		$this->load->model('M_melting/M_barang_masuk_melting');
+		$this->load->model('M_melting/M_barang_keluar_melting');
 		$this->load->model('M_melting/M_transaksi_melting');
 		$this->load->model('M_lab/M_alat_kalibrasi');
 	}
@@ -85,38 +86,21 @@ class Masak_gelatin extends CI_Controller
 
 
 		foreach ($bahans as $bahan) {
-			$id_transaksi = $this->M_transaksi_melting->trans_keluar(array(
+			$this->M_barang_keluar_melting->trans_keluar(array(
 				'id_mm' => $bahan['id_mm'],
 				'qty' => $bahan['jml_bahan'],
+				'id_prc_master_barang' => $bahan['id_prc_master_barang'],
+				'batch_keluar' => $data['batch_masak'],
 			));
 
-			$d['tgl_masak'] = $data['tgl_masak'];
-			$d['shift'] = $data['shift'];
 			$d['batch_masak'] = $data['batch_masak'];
 			$d['id_mm'] = $bahan['id_mm'];
 			$d['jml_bahan'] = $bahan['jml_bahan'];
-			$d['jml_air'] = $data['jml_air'];
-			$d['temp_pel'] = $data['temp_pel'];
-			$d['jam_gel'] = $data['jam_gel'];
-			$d['jam_bt'] = $data['jam_bt'];
-			$d['mixing1'] = $data['mixing1'];
-			$d['mixing2'] = $data['mixing2'];
-			$d['vac1'] = $data['vac1'];
-			$d['vac2'] = $data['vac2'];
-			$d['scala_vac'] = $data['scala_vac'];
-			$d['visco_cps'] = $data['visco_cps'];
-			$d['visco_c'] = $data['visco_c'];
-			$d['suhu_ruang'] = $data['suhu_ruang'];
-			$d['kel_ruang'] = $data['kel_ruang'];
-			$d['keb_melter'] = $data['keb_melter'];
-			$d['label_bersih'] = $data['label_bersih'];
-			$d['op1'] = $data['op1'];
-			$d['op2'] = $data['op2'];
-			$d['supervisor'] = $data['supervisor'];
-			$d['id_transaksi'] = $id_transaksi;
+			$d['id_prc_master_barang'] = $bahan['id_prc_master_barang'];
 
-			$respon = $this->M_masak_gelatin->add($d);
+			$this->M_masak_gelatin->add($d);
 		}
+		$respon = $this->M_masak_gelatin->add_tf($data);
 		if ($respon) {
 			header('location:' . base_url('melting/Masak_gelatin') . '?alert=success&msg=Selamat anda berhasil menambah Bahan Masak Gelatin');
 		} else {
@@ -159,10 +143,10 @@ class Masak_gelatin extends CI_Controller
 
 	public function delete($batch_masak)
 	{
-		$ts_ids = $this->M_masak_gelatin->get_by_batch($batch_masak);
-		foreach ($ts_ids as $key => $value) {
-			$this->M_transaksi_melting->delete($value['id_ts_melt']);
-		}
+		$batch_masak = str_replace('-', '/', $batch_masak);
+		$this->M_masak_gelatin->delete_tf($batch_masak);
+
+		$this->M_barang_keluar_melting->delete_by_batch_masak($batch_masak);
 		$respon = $this->M_masak_gelatin->delete($batch_masak);
 
 		if ($respon) {
