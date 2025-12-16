@@ -22,6 +22,8 @@ class Penimbangan extends CI_Controller
 		$data['res_cr'] = $this->M_print_schedule->get_cr();
 		$data['res_mm'] = $this->M_barang_masuk_melting->get_barang()->result_array();
 		$data['res_alat'] = $this->M_alat_kalibrasi->get_alat();
+
+
 		$this->template->load('template', 'content/melting/proses/penimbangan/penimbangan_data', $data);
 	}
 
@@ -97,10 +99,10 @@ class Penimbangan extends CI_Controller
 		}
 	}
 
-	public function delete($id_ts_melt)
+	public function delete($id_mm)
 	{
-		$this->M_transaksi_melting->delete($id_ts_melt);
-		$respon = $this->M_penimbangan->delete($id_ts_melt);
+		$this->M_barang_keluar_melting->delete($id_mm);
+		$respon = $this->M_penimbangan->delete($id_mm);
 
 		if ($respon) {
 			header('location:' . base_url('lab/Penimbangan') . '?alert=success&msg=Selamat anda berhasil menghapus Bahan Penimbangan');

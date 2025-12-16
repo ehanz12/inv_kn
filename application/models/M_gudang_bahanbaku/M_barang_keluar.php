@@ -15,11 +15,9 @@ class M_barang_keluar extends CI_Model
     {
         // $kode_user = $this->kode_user();
         $sql = "
-            SELECT a.*,b.no_batch, c.nama_barang,c.id_prc_master_supplier,d.nama_supplier, e.no_urut FROM tb_gbb_barang_keluar a
-            LEFT JOIN tb_adm_barang_masuk b ON a.id_adm_bm = b.id_adm_bm
+            SELECT a.*, c.nama_barang, e.no_urut FROM tb_gbb_barang_keluar a
             LEFT JOIN tb_prc_master_barang c ON a.id_prc_master_barang = c.id_prc_master_barang
-            LEFT JOIN tb_prc_master_supplier d ON c.id_prc_master_supplier = d.id_prc_master_supplier
-            LEFT JOIN tb_mlt_permintaan_barang e ON b.id_adm_bm = e.id_adm_bm
+            LEFT JOIN tb_mlt_permintaan_barang e ON a.id_adm_bm = e.id_adm_bm
             WHERE a.is_deleted = 0 ORDER BY a.tgl_bk ASC";
         return $this->db->query($sql);
     }

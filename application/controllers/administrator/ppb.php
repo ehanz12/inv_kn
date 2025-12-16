@@ -36,36 +36,43 @@ class ppb extends CI_Controller
         $nama_dept = $this->input->post('departement');
         $tahun = date('Y');
         $bulan = date('m');
-    
-        //untuk mengambil kode dept dari tb_master_dept
-        $dept = $this->db->get_where('tb_master_dept', ['nama_dept' => $nama_dept])->row();
 
-        if(!$dept) {
+        $dept = $this->db
+            ->get_where('tb_master_dept', ['nama_dept' => $nama_dept])
+            ->row();
+
+        if (!$dept) {
             echo json_encode("kode tidak ditemukan");
             return;
         }
 
-        $kode_dept = $dept->kode_dept; // ini kode deptnya
-        //Cari PPB terakhir berdasarkan dept + tahun, lihat dari no_ppb
-        //format : 001/ACC/2025
+        $kode_dept = $dept->kode_dept;
 
-        $this->db->like('no_ppb', '/' . $kode_dept .  '/' . $tahun, 'before');
-        $this->db->where('departement', $nama_dept);
-        $this->db->order_by('id_prc_ppb_tf', 'DESC');
-        $this->db->limit(1);
-        $last = $this->db->get('tb_prc_ppb_tf')->row();
+        /*
+        Format no_ppb:
+        001/LAB/12/2025
+    */
 
-        if ($last) {
-            $parts = explode('/', $last->no_ppb);
-            $next = intval($parts[0] + 1);
-        }else {
-            $next = 1;
-        }
+        $sql = "
+        SELECT 
+            MAX(CAST(SUBSTRING_INDEX(no_ppb, '/', 1) AS UNSIGNED)) AS last_no
+        FROM tb_prc_ppb_tf
+        WHERE departement = ?
+        AND no_ppb LIKE ?
+    ";
 
-        $no_ppb = sprintf("%03d/%s/%d/%d", $next, $kode_dept, $bulan ,$tahun);
+        $like = '%/' . $kode_dept . '/%/' . $tahun;
+
+        $row = $this->db->query($sql, [$nama_dept, $like])->row();
+
+        $next = ($row && $row->last_no) ? $row->last_no + 1 : 1;
+
+        $no_ppb = sprintf("%03d/%s/%02d/%d", $next, $kode_dept, $bulan, $tahun);
 
         echo json_encode($no_ppb);
     }
+
+
 
     public function add()
     {
@@ -228,14 +235,15 @@ class ppb extends CI_Controller
         }
     }
 
-    public function cetak($no_ppb) {
-       // 1️⃣ Load library Dompdf
-    
-    // 2️⃣ Konfigurasi dasar Dompdf
-    $options = new Dompdf\Options();
-    $options->set('isHtml5ParserEnabled', true);
-    // $options->set('isRemoteEnabled', true); // biar bisa load gambar/logo
-    $options->set('isRemoteEnabled', false); // ⚡ Pakai file lokal biar cepat
+    public function cetak($no_ppb)
+    {
+        // 1️⃣ Load library Dompdf
+
+        // 2️⃣ Konfigurasi dasar Dompdf
+        $options = new Dompdf\Options();
+        $options->set('isHtml5ParserEnabled', true);
+        // $options->set('isRemoteEnabled', true); // biar bisa load gambar/logo
+        $options->set('isRemoteEnabled', false); // ⚡ Pakai file lokal biar cepat
         $options->set('isFontSubsettingEnabled', false);
         $options->set('defaultFont', 'Helvetica');
         $options->set('enable_font_subsetting', true);
@@ -243,33 +251,32 @@ class ppb extends CI_Controller
         $options->set('chroot', FCPATH);
         $options->set('fontCache', FCPATH . 'application/cache/dompdf/');
         $options->set('tempDir', FCPATH . 'application/cache/dompdf/');
-    $dompdf = new Dompdf\Dompdf($options);
+        $dompdf = new Dompdf\Dompdf($options);
 
-    // 3️⃣ Ambil data dari model
-     
+        // 3️⃣ Ambil data dari model
 
-    $data['ppb'] = $this->M_ppb->get_ppb($no_ppb);
-    $data['barang'] = $this->M_ppb->data_ppb_barang($no_ppb)->result_array();
 
-    // 4️⃣ Render tampilan HTML ke string
-    $html = $this->load->view('content/administrator/ppb/pdf/page_ppb', $data, TRUE);
+        $data['ppb'] = $this->M_ppb->get_ppb($no_ppb);
+        $data['barang'] = $this->M_ppb->data_ppb_barang($no_ppb)->result_array();
 
-    // 5️⃣ Load HTML ke Dompdf
-    $dompdf->loadHtml($html);
+        // 4️⃣ Render tampilan HTML ke string
+        $html = $this->load->view('content/administrator/ppb/pdf/page_ppb', $data, TRUE);
 
-    // 6️⃣ Set ukuran dan orientasi halaman (P = Portrait)
-    $dompdf->setPaper('A4', 'landscape');
+        // 5️⃣ Load HTML ke Dompdf
+        $dompdf->loadHtml($html);
 
-    // 7️⃣ Render ke PDF
-    $dompdf->render();
+        // 6️⃣ Set ukuran dan orientasi halaman (P = Portrait)
+        $dompdf->setPaper('A4', 'landscape');
 
-    // 8️⃣ Tambah nomor halaman (footer seperti mPDF)
-    // $canvas = $dompdf->getCanvas();
-    // $font = $dompdf->getFontMetrics()->get_font("Helvetica", "normal");
-    // $canvas->page_text(520, 820, "Halaman {PAGE_NUM}", $font, 9, array(0, 0, 0));
+        // 7️⃣ Render ke PDF
+        $dompdf->render();
 
-    // 9️⃣ Output PDF ke browser
-    $dompdf->stream("PPB.pdf", array("Attachment" => false));
-}
+        // 8️⃣ Tambah nomor halaman (footer seperti mPDF)
+        // $canvas = $dompdf->getCanvas();
+        // $font = $dompdf->getFontMetrics()->get_font("Helvetica", "normal");
+        // $canvas->page_text(520, 820, "Halaman {PAGE_NUM}", $font, 9, array(0, 0, 0));
 
+        // 9️⃣ Output PDF ke browser
+        $dompdf->stream("PPB.pdf", array("Attachment" => false));
+    }
 }

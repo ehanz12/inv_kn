@@ -24,9 +24,10 @@ class Mm_pw extends CI_Controller
     public function index()
     {
         $name = "Pewarna";
-        $data['result'] = $this->M_barang_masuk_melting->get($name)->result_array();
+         $data['result'] = $this->M_barang_masuk_melting->get($name)->result_array();
+
         for ($i = 0; $i < count($data['result']); $i++) {
-            $d['id_adm_bm'] = $data['result'][$i]['id_adm_bm'];
+            $d['id_mm'] = $data['result'][$i]['id_mm'];
             // $qty_penimbangan = $this->M_penimbangan->qty_penimbangan($d)->row_array();
             $melting_masuk = $this->M_transaksi_melting->qty_masuk($d)->row_array();
             $melting_keluar = $this->M_transaksi_melting->qty_keluar($d)->row_array();
@@ -40,6 +41,7 @@ class Mm_pw extends CI_Controller
             $data['result'][$i]['masuk'] = $melting_masuk['tot_masuk'];
             $data['result'][$i]['keluar'] = $melting_keluar['tot_keluar'];
         }
+
 
         $this->template->load('template', 'content/melting/barang_masuk_melting/mm_pw', $data);
         // print_r($data); 

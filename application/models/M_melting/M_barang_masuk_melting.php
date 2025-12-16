@@ -63,22 +63,26 @@ ORDER BY a.tgl_masuk ASC
     }
 
     public function get_bahan()
+    //JENIS GEL ADA DI MODEL MASAK GELATIN DAN DI CONTROLLER MASAK GELATIN DAN BARANG MASUK MELTING
     {
         $sql = "
-            SELECT a.*,c.nama_barang,c.jenis_gel, d.stok FROM tb_mlt_melting_masuk a
-            LEFT JOIN tb_gbb_barang_masuk b ON a.id_barang_masuk = b.id_barang_masuk
-            LEFT JOIN tb_prc_barang c ON a.id_barang = c.id_barang
+            SELECT a.*,b.no_batch,c.nama_barang,c.jenis_barang,c.bloom,(a.jml_masuk - IFNULL(d.total_keluar, 0)) AS stok FROM tb_mlt_melting_masuk a
+            LEFT JOIN tb_adm_barang_masuk b ON a.id_adm_bm = b.id_adm_bm
+            LEFT JOIN tb_prc_master_barang c ON a.id_prc_master_barang = c.id_prc_master_barang
             LEFT JOIN (
-                SELECT id_mm, SUM(CASE WHEN status = 'masuk' THEN qty ELSE 0 END) - SUM(CASE WHEN status = 'keluar' THEN qty ELSE 0 END) as stok
-                FROM tb_mlt_transaksi_melting
-                GROUP BY id_mm  
+                SELECT 
+                    id_mm,
+                    SUM(qty) AS total_keluar
+                FROM tb_mlt_melting_keluar
+                WHERE is_deleted = 0
+                GROUP BY id_mm
             ) d ON a.id_mm = d.id_mm
             WHERE a.is_deleted = 0 AND 
-            c.jenis_bahan = 'Bahan Baku' 
+            c.jenis_barang = 'Bahan Baku' 
             OR c.nama_barang = 'Natrium Benzoat' 
             OR c.nama_barang = 'Methyl Paraben' 
             OR c.nama_barang = 'Sodium Launil Sulfat' 
-            ORDER BY a.tgl ASC";
+            ORDER BY a.tgl_masuk ASC";
         return $this->db->query($sql);
     }
 

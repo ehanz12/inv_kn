@@ -155,7 +155,7 @@
                   <option value="" disabled selected hidden>- Nama Barang -</option>
                   <?php
                   foreach ($res_mm_bhn as $mm) { ?>
-                    <option value="<?= $mm['id_mm'] ?>" data-stok="<?= $mm['stok'] ?>" data-bloom="<?= $mm['jenis_gel'] ?>" data-no_batch="<?= $mm['no_batch'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_transfer_slip'] ?></option>
+                    <option value="<?= $mm['id_mm'] ?>" data-stok="<?= $mm['stok'] ?>" data-bloom="<?= $mm['bloom'] ?>" data-no_batch="<?= $mm['no_batch'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_batch'] ?></option>
                   <?php } ?>
                 </select>
               </div>

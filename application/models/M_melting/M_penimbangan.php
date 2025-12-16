@@ -68,12 +68,12 @@ class M_penimbangan extends CI_Model
         return $this->db->query($sql);
     }
 
-    public function delete($id_ts_melt)
+    public function delete($id_mm)
     {
         $id_user = $this->id_user();
         $sql = "
         DELETE FROM `tb_mlt_penimbangan`
-         WHERE `id_ts_melt`='$id_ts_melt'
+         WHERE `id_mm`='$id_mm'
         ";
         return $this->db->query($sql);
     }

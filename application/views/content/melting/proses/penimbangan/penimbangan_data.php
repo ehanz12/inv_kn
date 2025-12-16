@@ -90,7 +90,7 @@
                                     </button>
                                   </div>
                                   <div class="btn-group" role="group">
-                                    <a href="<?= base_url() ?>lab/Penimbangan/delete/<?= $k['id_ts_melt'] ?>" class="btn btn-danger btn-square text-light btn-sm" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
+                                    <a href="<?= base_url() ?>lab/Penimbangan/delete/<?= $k['id_mm'] ?>" class="btn btn-danger btn-square text-light btn-sm" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
                                       <i class="feather icon-trash-2"></i>Hapus
                                     </a>
                                   </div>

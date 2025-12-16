@@ -144,7 +144,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="no_urut">No Urut</label>
-                <input type="text" class="form-control text-uppercase" id="no_urut" name="no_urut" Value=" MLT-<?= $no_urut ?>" maxlength="20" aria-describedby="validationServer03Feedback" autocomplete="off" readonly>
+                <input type="text" class="form-control text-uppercase" id="no_urut" name="no_urut" Value="<?= $no_urut ?>" maxlength="20" aria-describedby="validationServer03Feedback" autocomplete="off" readonly>
                 <div id="validationServer03Feedback" class="invalid-feedback">
                   Maaf nomor transfer slip sudah ada.
                 </div>
@@ -256,7 +256,7 @@
             <option 
               value="${item.no_batch}"
               data-nama_barang="${item.nama_barang}"
-              data-jml_bm="${item.jml_bm}"
+              data-stok="${item.stok}"
               data-satuan="${item.satuan}"
               data-id_prc_master_barang="${item.id_prc_master_barang}"
               data-id_adm_bm="${item.id_adm_bm}"
@@ -279,8 +279,8 @@
 
     $("#no_batch_add").on('change', function() {
       let selected = $(this).find('option:selected');
-      var jml_bm = selected.data('jml_bm')
-      $('#stok').val(selected.data('jml_bm'))
+      $('#stok').val(selected.data('stok'))
+      $('#satuan').val(selected.data('satuan'))
 
     })
 

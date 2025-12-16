@@ -408,10 +408,18 @@ class M_adm_barang_masuk extends CI_Model
             $in = "'" . implode("','", $jenis) . "'";
 
             $sql = "
-            SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, a.jml_bm,
+            SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, (a.jml_bm - IFNULL(d.total_keluar, 0)) AS stok,
                    b.kode_barang, b.satuan, b.nama_barang, b.jenis_barang
             FROM tb_adm_barang_masuk a
             LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
+            LEFT JOIN (
+                SELECT 
+                    id_adm_bm,
+                    SUM(jml_bk) AS total_keluar
+                FROM tb_gbb_barang_keluar
+                WHERE is_deleted = 0
+                GROUP BY id_adm_bm
+            ) d ON a.id_adm_bm = d.id_adm_bm
             WHERE a.is_deleted = 0 
             AND b.jenis_barang IN ($in)
         ";
@@ -421,10 +429,18 @@ class M_adm_barang_masuk extends CI_Model
 
         // Jika bukan Bahan Pembantu → normal pakai 1 kategori
         $sql = "
-        SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, a.jml_bm,
+        SELECT a.id_adm_bm, a.no_batch, a.is_deleted, a.id_prc_master_barang, (a.jml_bm - IFNULL(d.total_keluar, 0)) AS stok,
                b.kode_barang, b.satuan, b.nama_barang, b.jenis_barang
         FROM tb_adm_barang_masuk a
         LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
+        LEFT JOIN (
+                SELECT 
+                    id_adm_bm,
+                    SUM(jml_bk) AS total_keluar
+                FROM tb_gbb_barang_keluar
+                WHERE is_deleted = 0
+                GROUP BY id_adm_bm
+            ) d ON a.id_adm_bm = d.id_adm_bm
         WHERE a.is_deleted = 0 
         AND b.jenis_barang = '$kode_ts'
     ";

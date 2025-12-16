@@ -30,5 +30,12 @@ class M_barang_keluar_melting extends CI_Model
 
         return $insert_id;
     }
+
+    public function delete($id_mm)
+    {
+        $this->db->where('id_mm', $id_mm);
+        $this->db->delete('tb_mlt_melting_keluar');
+        return $this->db->affected_rows();
+    }
     
 }

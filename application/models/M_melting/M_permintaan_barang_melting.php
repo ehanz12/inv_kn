@@ -59,7 +59,8 @@ class M_permintaan_barang_melting extends CI_Model
         return $this->db->query($sql);
     }
 
-    public function add_permintaan_barang($d) {
+    public function add_permintaan_barang($d)
+    {
         $id_user = $this->id_user();
         $sql = "
         INSERT INTO tb_mlt_permintaan_barang (no_urut, id_adm_bm, id_prc_master_barang, jml_permintaan, id_user, created_at, created_by, updated_at, updated_by, is_deleted)
@@ -68,7 +69,8 @@ class M_permintaan_barang_melting extends CI_Model
         return $this->db->query($sql);
     }
 
-    public function delete_barang($data) {
+    public function delete_barang($data)
+    {
         $sql = "
         DELETE FROM tb_mlt_permintaan_barang WHERE no_urut='$data[no_urut]'
         ";
@@ -100,7 +102,7 @@ class M_permintaan_barang_melting extends CI_Model
     public function delete($no_urut)
     {
         $id_user = $this->id_user();
-    
+
         $sql1 = "
             DELETE FROM `tb_mlt_permintaan_barang` 
             WHERE `no_urut`='$no_urut'
@@ -144,7 +146,8 @@ class M_permintaan_barang_melting extends CI_Model
         return $this->db->query($sql);
     }
 
-    public function get_by_no_urut($no_urut) {
+    public function get_by_no_urut($no_urut)
+    {
         $sql = "
         SELECT a.id_mlt_permintaan_barang, a.id_adm_bm, a.no_urut ,a.is_deleted, a.id_prc_master_barang,a.jml_permintaan, b.satuan ,b.nama_barang,b.id_prc_master_supplier,c.no_batch, d.nama_supplier  FROM tb_mlt_permintaan_barang a 
         LEFT JOIN tb_prc_master_barang b ON a.id_prc_master_barang = b.id_prc_master_barang
@@ -159,23 +162,27 @@ class M_permintaan_barang_melting extends CI_Model
 
     public function generate_no_urut()
     {
+        $prefix = 'MLT';
+
         $this->db->select('no_urut');
         $this->db->from('tb_mlt_permintaan_barang_tf');
+        $this->db->like('no_urut', $prefix . '-', 'after');
         $this->db->order_by('id_permintaan_barang_tf', 'DESC');
         $this->db->limit(1);
+
         $query = $this->db->get();
 
         if ($query->num_rows() > 0) {
             $last_no = $query->row()->no_urut;
 
-            // Ambil angka, misal "0012" → 12
-            $last_number = (int)$last_no;
+            // Ambil angka setelah "MLT-"
+            $last_number = (int) str_replace($prefix . '-', '', $last_no);
             $new_number = $last_number + 1;
         } else {
             $new_number = 1;
         }
 
-        // generate format 4 digit: 0001, 0002, ... 0100, 1000
-        return str_pad($new_number, 4, '0', STR_PAD_LEFT);
+        // Format: MLT-001
+        return $prefix . '-' . str_pad($new_number, 3, '0', STR_PAD_LEFT);
     }
 }

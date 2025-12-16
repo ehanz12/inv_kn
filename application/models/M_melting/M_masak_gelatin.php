@@ -15,10 +15,23 @@ class M_masak_gelatin extends CI_Model
     public function get()
     {
         $sql = "
-        SELECT a.*,b.no_transfer_slip,c.nama_barang FROM tb_mlt_masak_gelatin a
-        LEFT JOIN tb_mlt_melting_masuk b ON a.id_mm = b.id_mm
-        LEFT JOIN tb_prc_barang c ON b.id_barang = c.id_barang
-        WHERE a.is_deleted = 0 GROUP BY a.batch_masak ORDER BY a.tgl_masak ASC";
+        SELECT DISTINCT
+    a.batch_masak,
+    a.id_mm,
+    a.tgl_masak,
+    a.id_masak_gel,
+    b.id_mlt_permintaan_barang,
+    c.nama_barang,
+    d.no_urut
+FROM tb_mlt_masak_gelatin a
+LEFT JOIN tb_mlt_melting_masuk b 
+    ON a.id_mm = b.id_mm
+LEFT JOIN tb_prc_master_barang c 
+    ON b.id_prc_master_barang = c.id_prc_master_barang
+LEFT JOIN tb_mlt_permintaan_barang d 
+    ON b.id_mlt_permintaan_barang = d.id_mlt_permintaan_barang
+WHERE a.is_deleted = 0
+ORDER BY a.tgl_masak ASC";
 
         return $this->db->query($sql);
     }
