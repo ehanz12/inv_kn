@@ -79,8 +79,7 @@ class Penimbangan extends CI_Controller
 	{
 		$data['id_penimbangan'] = $this->input->post('id_penimbangan', TRUE);
 		$data['id_mm'] = $this->input->post('id_mm', TRUE);
-		$data['id_kalibrasi'] = $this->input->post('id_kalibrasi', TRUE);
-		$data['id_ts_melt'] = $this->input->post('id_ts_melt', TRUE);
+		$data['id_lab_kalibrasi'] = $this->input->post('id_lab_kalibrasi', TRUE);
 		$data['qty_dibutuhkan'] = $this->input->post('qty_dibutuhkan', TRUE);
 		$data['qty_ditimbang'] = $this->input->post('qty_ditimbang', TRUE);
 		$data['tgl_timbang'] = $this->convertDate($this->input->post('tgl_timbang', TRUE));

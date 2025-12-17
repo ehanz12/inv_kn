@@ -41,7 +41,7 @@ class M_penimbangan extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-            UPDATE `tb_penimbangan` 
+            UPDATE `tb_mlt_penimbangan` 
             SET `id_mm`='$data[id_mm]',
                 `id_lab_kalibrasi`='$data[id_lab_kalibrasi]',
                 `qty_dibutuhkan`='$data[qty_dibutuhkan]',

@@ -19,6 +19,7 @@ class M_barang_keluar_melting extends CI_Model
         $post_data = array(
             'id_mm' => $data['id_mm'],
             'qty' => $data['qty'],
+            'batch_keluar' => $data['batch_keluar'],
             'created_by' => $id_user,
             'created_at' => date("Y-m-d H:i:s"),
             'updated_by' => '',
@@ -37,5 +38,13 @@ class M_barang_keluar_melting extends CI_Model
         $this->db->delete('tb_mlt_melting_keluar');
         return $this->db->affected_rows();
     }
-    
+   
+    public function delete_by_batch_masak($batch_masak)
+    {
+        $sql = "
+        DELETE FROM tb_mlt_melting_keluar WHERE batch_keluar = '$batch_masak'
+        ";
+
+        return $this->db->query($sql);
+    }
 }

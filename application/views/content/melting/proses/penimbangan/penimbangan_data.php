@@ -85,7 +85,7 @@
                               <td class="text-center">
                                 <?php if ($level === "admin") { ?>
                                   <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" data-id_penimbangan="<?= $k['id_penimbangan'] ?>" data-id_ts_melt="<?= $k['id_ts_melt'] ?>" data-id_mm="<?= $k['id_mm'] ?>" data-id_lab_kalibrasi="<?= $k['id_lab_kalibrasi'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-nama_alat="<?= $k['nama_alat'] ?>" data-qty_dibutuhkan="<?= $k['qty_dibutuhkan'] ?>" data-qty_ditimbang="<?= $k['qty_ditimbang'] ?>" data-tgl_timbang="<?= $tgl_timbang ?>" data-op_penimbangan="<?= $k['op_penimbangan'] ?>" data-suhu_ruangan="<?= $k['suhu_ruangan'] ?>" data-kelembapan_ruangan="<?= $k['kelembapan_ruangan'] ?>" data-kebersihan_ruangan="<?= $k['kebersihan_ruangan'] ?>" data-label_kebersihan="<?= $k['label_kebersihan'] ?>" data-label_kalibrasi="<?= $k['label_kalibrasi'] ?>">
+                                    <button type="button" class="btn btn-primary btn-square btn-sm" data-toggle="modal" data-target="#edit" data-id_penimbangan="<?= $k['id_penimbangan'] ?>" data-id_mm="<?= $k['id_mm'] ?>" data-id_lab_kalibrasi="<?= $k['id_lab_kalibrasi'] ?>" data-nama_barang="<?= $k['nama_barang'] ?>" data-nama_alat="<?= $k['nama_alat'] ?>" data-qty_dibutuhkan="<?= $k['qty_dibutuhkan'] ?>" data-qty_ditimbang="<?= $k['qty_ditimbang'] ?>" data-tgl_timbang="<?= $tgl_timbang ?>" data-op_penimbangan="<?= $k['op_penimbangan'] ?>" data-suhu_ruangan="<?= $k['suhu_ruangan'] ?>" data-kelembapan_ruangan="<?= $k['kelembapan_ruangan'] ?>" data-kebersihan_ruangan="<?= $k['kebersihan_ruangan'] ?>" data-label_kebersihan="<?= $k['label_kebersihan'] ?>" data-label_kalibrasi="<?= $k['label_kalibrasi'] ?>">
                                       <i class=" feather icon-edit-2"></i>Edit
                                     </button>
                                   </div>
@@ -419,7 +419,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="<?= base_url() ?>Penimbangan/update">
+      <form method="post" action="<?= base_url() ?>lab/Penimbangan/update">
         <div class="modal-body">
           <center><label for="pemeriksaan" class="font-weight-bold mt-3">Input Penimbangan</label></center>
           <div class="row">
@@ -534,7 +534,6 @@
   $(document).ready(function() {
     $('#edit').on('show.bs.modal', function(event) {
       var id_penimbangan = $(event.relatedTarget).data('id_penimbangan')
-      var id_ts_melt = $(event.relatedTarget).data('id_ts_melt')
       var id_mm = $(event.relatedTarget).data('id_mm')
       var id_lab_kalibrasi = $(event.relatedTarget).data('id_lab_kalibrasi')
       var nama_barang = $(event.relatedTarget).data('nama_barang')
@@ -550,7 +549,6 @@
       var label_kalibrasi = $(event.relatedTarget).data('label_kalibrasi')
 
       $(this).find('#e-id_penimbangan').val(id_penimbangan)
-      $(this).find('#e-id_ts_melt').val(id_ts_melt)
       $(this).find('#e-id_mm').val(id_mm)
       $(this).find('#e-id_mm').trigger("chosen:updated");
       $(this).find('#e-id_lab_kalibrasi').val(id_lab_kalibrasi)

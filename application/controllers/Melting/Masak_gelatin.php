@@ -11,6 +11,7 @@ class Masak_gelatin extends CI_Controller
 		$this->load->model('M_melting/M_masak_gelatin');
 		$this->load->model('M_marketing/M_print_schedule');
 		$this->load->model('M_melting/M_barang_masuk_melting');
+		$this->load->model('M_melting/M_barang_keluar_melting');
 		$this->load->model('M_melting/M_transaksi_melting');
 		$this->load->model('M_lab/M_alat_kalibrasi');
 	}
@@ -23,6 +24,7 @@ class Masak_gelatin extends CI_Controller
 		$data['res_mm'] = $this->M_barang_masuk_melting->get_barang()->result_array();
 		$data['res_mm_bhn'] = $this->M_barang_masuk_melting->get_bahan()->result_array();
 		$data['res_alat'] = $this->M_alat_kalibrasi->get()->result_array();
+		$data['generate_batch_masak'] = $this->M_masak_gelatin->generate_batch_masak();
 		$this->template->load('template', 'content/melting/proses/masak_gel/masak_gel_data', $data);
 		// print_r($data);
 
@@ -59,7 +61,7 @@ class Masak_gelatin extends CI_Controller
 		} else {
 			$label_bersih = "Tidak Ada";
 		}
-		
+
 		$data['tgl_masak'] = $this->convertDate($this->input->post('tgl_masak', TRUE));
 		$data['shift'] = $this->input->post('shift', TRUE);
 		$data['batch_masak'] = $this->input->post('batch_masak', TRUE);
@@ -85,38 +87,20 @@ class Masak_gelatin extends CI_Controller
 
 
 		foreach ($bahans as $bahan) {
-			$id_transaksi = $this->M_transaksi_melting->trans_keluar(array(
+			$this->M_barang_keluar_melting->trans_keluar(array(
 				'id_mm' => $bahan['id_mm'],
 				'qty' => $bahan['jml_bahan'],
+				'batch_keluar' => $data['batch_masak'],
 			));
 
-			$d['tgl_masak'] = $data['tgl_masak'];
-			$d['shift'] = $data['shift'];
 			$d['batch_masak'] = $data['batch_masak'];
 			$d['id_mm'] = $bahan['id_mm'];
 			$d['jml_bahan'] = $bahan['jml_bahan'];
-			$d['jml_air'] = $data['jml_air'];
-			$d['temp_pel'] = $data['temp_pel'];
-			$d['jam_gel'] = $data['jam_gel'];
-			$d['jam_bt'] = $data['jam_bt'];
-			$d['mixing1'] = $data['mixing1'];
-			$d['mixing2'] = $data['mixing2'];
-			$d['vac1'] = $data['vac1'];
-			$d['vac2'] = $data['vac2'];
-			$d['scala_vac'] = $data['scala_vac'];
-			$d['visco_cps'] = $data['visco_cps'];
-			$d['visco_c'] = $data['visco_c'];
-			$d['suhu_ruang'] = $data['suhu_ruang'];
-			$d['kel_ruang'] = $data['kel_ruang'];
-			$d['keb_melter'] = $data['keb_melter'];
-			$d['label_bersih'] = $data['label_bersih'];
-			$d['op1'] = $data['op1'];
-			$d['op2'] = $data['op2'];
-			$d['supervisor'] = $data['supervisor'];
-			$d['id_transaksi'] = $id_transaksi;
+			$d['id_prc_master_barang'] = $bahan['id_prc_master_barang'];
 
-			$respon = $this->M_masak_gelatin->add($d);
+			$this->M_masak_gelatin->add($d);
 		}
+		$respon = $this->M_masak_gelatin->add_tf($data);
 		if ($respon) {
 			header('location:' . base_url('melting/Masak_gelatin') . '?alert=success&msg=Selamat anda berhasil menambah Bahan Masak Gelatin');
 		} else {
@@ -145,9 +129,50 @@ class Masak_gelatin extends CI_Controller
 		$data['kel_ruang'] = $this->input->post('kel_ruang', TRUE);
 		$data['keb_melter'] = $this->input->post('keb_melter', TRUE);
 		$data['label_bersih'] = $this->input->post('label_bersih', TRUE) ? 'Ada' : 'Tidak Ada';
-		$data['op1'] = $this->input->post('op1', TRUE); 
+		$data['op1'] = $this->input->post('op1', TRUE);
 		$data['op2'] = $this->input->post('op2', TRUE);
 		$data['supervisor'] = $this->input->post('supervisor', TRUE);
+		$bahan_gel = $this->input->post('bahan_gel', TRUE);
+		$bahan_bt  = $this->input->post('bahan_bt', TRUE);
+
+		$this->M_barang_keluar_melting->delete_by_batch_masak($data['batch_masak']);
+		$this->M_masak_gelatin->delete($data['batch_masak']);
+
+		// ===== GELATIN =====
+		if (is_array($bahan_gel) && isset($bahan_gel['id_mm'])) {
+			for ($i = 0; $i < count($bahan_gel['id_mm']); $i++) {
+
+				$this->M_barang_keluar_melting->trans_keluar([
+					'id_mm' => $bahan_gel['id_mm'][$i],
+					'qty' => $bahan_gel['jml_bahan'][$i],
+					'batch_keluar' => $data['batch_masak'],
+				]);
+
+				$this->M_masak_gelatin->add([
+					'batch_masak' => $data['batch_masak'],
+					'id_mm' => $bahan_gel['id_mm'][$i],
+					'jml_bahan' => $bahan_gel['jml_bahan'][$i],
+				]);
+			}
+		}
+
+		// ===== BAHAN TAMBAHAN =====
+		if (is_array($bahan_bt) && isset($bahan_bt['id_mm'])) {
+			for ($i = 0; $i < count($bahan_bt['id_mm']); $i++) {
+
+				$this->M_barang_keluar_melting->trans_keluar([
+					'id_mm' => $bahan_bt['id_mm'][$i],
+					'qty' => $bahan_bt['jml_bahan'][$i],
+					'batch_keluar' => $data['batch_masak'],
+				]);
+				$this->M_masak_gelatin->add([
+					'batch_masak' => $data['batch_masak'],
+					'id_mm' => $bahan_bt['id_mm'][$i],
+					'jml_bahan' => $bahan_bt['jml_bahan'][$i],
+				]);
+			}
+		}
+
 
 		$respon = $this->M_masak_gelatin->update($data);
 		if ($respon) {
@@ -159,10 +184,10 @@ class Masak_gelatin extends CI_Controller
 
 	public function delete($batch_masak)
 	{
-		$ts_ids = $this->M_masak_gelatin->get_by_batch($batch_masak);
-		foreach ($ts_ids as $key => $value) {
-			$this->M_transaksi_melting->delete($value['id_ts_melt']);
-		}
+		$batch_masak = str_replace('-', '/', $batch_masak);
+		$this->M_masak_gelatin->delete_tf($batch_masak);
+
+		$this->M_barang_keluar_melting->delete_by_batch_masak($batch_masak);
 		$respon = $this->M_masak_gelatin->delete($batch_masak);
 
 		if ($respon) {
