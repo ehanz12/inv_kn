@@ -60,8 +60,8 @@ class M_masak_gelatin extends CI_Model
     }
 
     public function add($data) {
-        $sql = "INSERT INTO `tb_mlt_masak_gelatin`( `batch_masak`, `id_mm`, `id_prc_master_barang`, `jml_bahan`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
-        VALUES ('$data[batch_masak]','$data[id_mm]','$data[id_prc_master_barang]','$data[jml_bahan]',NOW(),'".$this->id_user()."','0000-00-00 00:00:00','','0')";
+        $sql = "INSERT INTO `tb_mlt_masak_gelatin`( `batch_masak`, `id_mm`, `jml_bahan`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
+        VALUES ('$data[batch_masak]','$data[id_mm]','$data[jml_bahan]',NOW(),'".$this->id_user()."','0000-00-00 00:00:00','','0')";
         return $this->db->query($sql);
     }
 
@@ -69,7 +69,7 @@ class M_masak_gelatin extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-            UPDATE `tb_mlt_masak_gelatin` 
+            UPDATE `tb_mlt_masak_gelatin_tf` 
             SET `tgl_masak`='$data[tgl_masak]',
                 `shift`='$data[shift]',
                 `batch_masak`='$data[batch_masak]',
@@ -92,7 +92,7 @@ class M_masak_gelatin extends CI_Model
                 `op2`='$data[op2]',
                 `supervisor`='$data[supervisor]',
                 `updated_at`= NOW(),`updated_by`='$id_user' 
-                 WHERE `id_masak_gel`='$data[id_masak_gel]'
+                 WHERE `id_masak_gel_tf`='$data[id_masak_gel]'
         ";
         return $this->db->query($sql);
     }
@@ -117,4 +117,33 @@ class M_masak_gelatin extends CI_Model
         ";
         return $this->db->query($sql);
     }
+
+    public function generate_batch_masak()
+{
+    date_default_timezone_set('Asia/Jakarta');
+
+    $tahun = date('Y'); // 2025
+    $bulan = date('m'); // 12
+
+    // Ambil nomor terakhir di bulan & tahun yang sama
+    $sql = "
+        SELECT 
+            MAX(CAST(SUBSTRING_INDEX(batch_masak, '/', -1) AS UNSIGNED)) AS last_no
+        FROM tb_mlt_masak_gelatin_tf
+        WHERE batch_masak LIKE ?
+    ";
+
+    $like = $tahun . '/' . $bulan . '/%';
+
+    $row = $this->db->query($sql, [$like])->row();
+
+    // Jika belum ada → mulai dari 1
+    $next_no = ($row && $row->last_no) ? $row->last_no + 1 : 1;
+
+    // Format: 2025/12/001
+    $batch_masak = sprintf('%s/%s/%03d', $tahun, $bulan, $next_no);
+
+    return $batch_masak;
+}
+
 }

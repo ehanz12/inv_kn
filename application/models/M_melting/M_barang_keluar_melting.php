@@ -19,7 +19,6 @@ class M_barang_keluar_melting extends CI_Model
         $post_data = array(
             'id_mm' => $data['id_mm'],
             'qty' => $data['qty'],
-            'id_prc_master_barang' => $data['id_prc_master_barang'],
             'batch_keluar' => $data['batch_keluar'],
             'created_by' => $id_user,
             'created_at' => date("Y-m-d H:i:s"),

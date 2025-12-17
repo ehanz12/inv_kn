@@ -4,6 +4,8 @@
     max-height: 200px;
     overflow-x: hidden;
   }
+
+
 </style>
 <!-- [ Main Content ] start -->
 <section class="pcoded-main-container">
@@ -74,7 +76,7 @@
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                   <button type="button" class="btn btn-info btn-square btn-sm" data-toggle="modal" data-target="#view" data-id_masak_gel="<?= $k['id_masak_gel_tf'] ?>" data-tgl_masak="<?= $tgl_masak ?>" data-shift="<?= $k['shift'] ?>" data-batch_masak="<?= $k['batch_masak'] ?>" data-jml_air="<?= $k['jml_air'] ?>" data-temp_pel="<?= $k['temp_pel'] ?>" data-jam_gel="<?= $k['jam_gel'] ?>" data-jam_bt="<?= $k['jam_bt'] ?>" data-mixing1="<?= $k['mixing1'] ?>" data-mixing2="<?= $k['mixing2'] ?>" data-vac1="<?= $k['vac1'] ?>" data-vac2="<?= $k['vac2'] ?>" data-scala_vac="<?= $k['scala_vac'] ?>" data-visco_cps="<?= $k['visco_cps'] ?>" data-visco_c="<?= $k['visco_c'] ?>" data-suhu_ruang="<?= $k['suhu_ruang'] ?>" data-kel_ruang="<?= $k['kel_ruang'] ?>" data-keb_melter="<?= $k['keb_melter'] ?>" data-label_bersih="<?= $k['label_bersih'] ?>" data-op1="<?= $k['op1'] ?>" data-op2="<?= $k['op2'] ?>" data-supervisor="<?= $k['supervisor'] ?>">
-                                    <i class=" feather icon-eye"></i>Detail 
+                                    <i class=" feather icon-eye"></i>Detail
                                   </button>
                                 </div>
                               </td>
@@ -128,7 +130,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="tgl_masak">Tanggal Masak</label>
-                <input type="text" class="form-control datepicker" id="tgl_masak" name="tgl_masak" placeholder="Tanggal Masak" autocomplete="off" required>
+                <input type="text" class="form-control datepicker" id="tgl_masak" name="tgl_masak"  autocomplete="off" readonly>
               </div>
             </div>
             <div class="col-md-4">
@@ -140,7 +142,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="batch_masak">Batch Masak</label>
-                <input type="text" class="form-control text-uppercase" id="batch_masak" name="batch_masak" placeholder="Batch Masak" autocomplete="off" required>
+                <input type="text" class="form-control text-uppercase" id="batch_masak" name="batch_masak" value="<?= $generate_batch_masak ?>" autocomplete="off" readonly>
               </div>
             </div>
           </div>
@@ -255,20 +257,20 @@
               <div class="form-group">
                 <label for="mixing">Mixing</label>
                 <div class="input-group">
-                <input type="text" class="form-control" id="mixing1" name="mixing1" placeholder="00.00" autocomplete="off" required>
-                <input type="text" class="form-control" id="" name="" value="s/d" readonly>
-                <input type="text" class="form-control" id="mixing2" name="mixing2" placeholder="00.00" autocomplete="off" required>
+                  <input type="text" class="form-control" id="mixing1" name="mixing1" placeholder="00.00" autocomplete="off" required>
+                  <input type="text" class="form-control" id="" name="" value="s/d" readonly>
+                  <input type="text" class="form-control" id="mixing2" name="mixing2" placeholder="00.00" autocomplete="off" required>
+                </div>
               </div>
-                  </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="vac">Vaccum</label>
                 <div class="input-group">
-                <input type="text" class="form-control" id="vac1" name="vac1" placeholder="00.00" autocomplete="off" required>
-                <input type="text" class="form-control" id="" name="" value="s/d" readonly>
-                <input type="text" class="form-control" id="vac2" name="vac2" placeholder="00.00" autocomplete="off" required>
-              </div>
+                  <input type="text" class="form-control" id="vac1" name="vac1" placeholder="00.00" autocomplete="off" required>
+                  <input type="text" class="form-control" id="" name="" value="s/d" readonly>
+                  <input type="text" class="form-control" id="vac2" name="vac2" placeholder="00.00" autocomplete="off" required>
+                </div>
               </div>
             </div>
             <div class="col-md-4">
@@ -341,10 +343,19 @@
   </div>
 </div>
 <script type="text/javascript">
+  function todayDMY() {
+  const d = new Date();
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
+}
   $(document).ready(function() {
     $('#add').on('hidden.bs.modal', function() {
       $(this).find('form')[0].reset();
     });
+
+    $('#tgl_masak').val(todayDMY());
 
     uppercase('#op1');
     uppercase('#op2');
@@ -440,54 +451,53 @@
     })
   })
 
-  $(document).ready(function () {
-    $("#jam_gel").keypress(function () {
+  $(document).ready(function() {
+    $("#jam_gel").keypress(function() {
       if (this.value.length == 5) {
         return false;
       }
     })
   })
 
-  $(document).ready(function () {
-    $("#jam_bt").keypress(function () {
+  $(document).ready(function() {
+    $("#jam_bt").keypress(function() {
       if (this.value.length == 5) {
         return false;
       }
     })
   })
 
-  $(document).ready(function () {
-    $("#mixing1").keypress(function () {
+  $(document).ready(function() {
+    $("#mixing1").keypress(function() {
       if (this.value.length == 5) {
         return false;
       }
     })
   })
 
-  $(document).ready(function () {
-    $("#mixing2").keypress(function () {
+  $(document).ready(function() {
+    $("#mixing2").keypress(function() {
       if (this.value.length == 5) {
         return false;
       }
     })
   })
 
-  $(document).ready(function () {
-    $("#vac1").keypress(function () {
+  $(document).ready(function() {
+    $("#vac1").keypress(function() {
       if (this.value.length == 5) {
         return false;
       }
     })
   })
 
-  $(document).ready(function () {
-    $("#vac2").keypress(function () {
+  $(document).ready(function() {
+    $("#vac2").keypress(function() {
       if (this.value.length == 5) {
         return false;
       }
     })
   })
-
 </script>
 
 
@@ -584,20 +594,20 @@
             <div class="form-group">
               <label for="mixing">Mixing</label>
               <div class="input-group">
-              <input type="text" class="form-control" id="v-mixing1" name="mixing1" readonly>
-              <input type="text" class="form-control" id="" name="" Value="s/d" readonly>
-              <input type="text" class="form-control" id="v-mixing2" name="mixing2" readonly>
-            </div>
+                <input type="text" class="form-control" id="v-mixing1" name="mixing1" readonly>
+                <input type="text" class="form-control" id="" name="" Value="s/d" readonly>
+                <input type="text" class="form-control" id="v-mixing2" name="mixing2" readonly>
+              </div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="vac">Vaccum</label>
               <div class="input-group">
-              <input type="text" class="form-control" id="v-vac1" name="vac1" readonly>
-              <input type="text" class="form-control" id="" name="" Value="s/d" readonly>
-              <input type="text" class="form-control" id="v-vac2" name="vac2" readonly>
-            </div>
+                <input type="text" class="form-control" id="v-vac1" name="vac1" readonly>
+                <input type="text" class="form-control" id="" name="" Value="s/d" readonly>
+                <input type="text" class="form-control" id="v-vac2" name="vac2" readonly>
+              </div>
             </div>
           </div>
           <div class="col-md-4">
@@ -777,8 +787,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="<?= base_url() ?>Masak_gelatin/update">
-      <input type="hidden" id="e-id_masak_gel" name="id_masak_gel">
+      <form method="post" action="<?= base_url() ?>melting/Masak_gelatin/update">
+        <input type="hidden" id="e-id_masak_gel" name="id_masak_gel">
         <div class="modal-body">
           <center><label for="pemeriksaan" class="font-weight-bold mt-3">Komposisi Masak Gelatin</label></center>
           <div class="row">
@@ -860,20 +870,20 @@
               <div class="form-group">
                 <label for="mixing">Mixing</label>
                 <div class="input-group">
-                <input type="text" class="form-control" id="e-mixing1" name="mixing1" autocomplete="off" required>
-                <input type="text" class="form-control" id="" name="" Value="s/d" readonly>
-                <input type="text" class="form-control" id="e-mixing2" name="mixing2" autocomplete="off" required>
-              </div>
+                  <input type="text" class="form-control" id="e-mixing1" name="mixing1" autocomplete="off" required>
+                  <input type="text" class="form-control" id="" name="" Value="s/d" readonly>
+                  <input type="text" class="form-control" id="e-mixing2" name="mixing2" autocomplete="off" required>
+                </div>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="vac">Vaccum</label>
                 <div class="input-group">
-                <input type="text" class="form-control" id="e-vac1" name="vac1" autocomplete="off" required>
-                <input type="text" class="form-control" id="" name="" Value="s/d" readonly>
-                <input type="text" class="form-control" id="e-vac2" name="vac2" autocomplete="off" required>
-              </div>
+                  <input type="text" class="form-control" id="e-vac1" name="vac1" autocomplete="off" required>
+                  <input type="text" class="form-control" id="" name="" Value="s/d" readonly>
+                  <input type="text" class="form-control" id="e-vac2" name="vac2" autocomplete="off" required>
+                </div>
               </div>
             </div>
             <div class="col-md-4">
@@ -892,24 +902,24 @@
               </div>
             </div>
             <div class="col-md-4">
-            <div class="form-group">
-              <label for="suhu_ruang">Suhu Ruangan</label>
-              <input type="text" class="form-control" id="e-suhu_ruang" name="suhu_ruang" placeholder="Suhu Ruangan" autocomplete="off" required>
+              <div class="form-group">
+                <label for="suhu_ruang">Suhu Ruangan</label>
+                <input type="text" class="form-control" id="e-suhu_ruang" name="suhu_ruang" placeholder="Suhu Ruangan" autocomplete="off" required>
+              </div>
             </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="kel_ruang">Kelembapan Ruangan</label>
-              <input type="text" class="form-control" id="e-kel_ruang" name="kel_ruang" placeholder="Kelembapan Ruangan" autocomplete="off" required>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="kel_ruang">Kelembapan Ruangan</label>
+                <input type="text" class="form-control" id="e-kel_ruang" name="kel_ruang" placeholder="Kelembapan Ruangan" autocomplete="off" required>
+              </div>
             </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="keb_melter">Kebersihan Melter</label>
-              <input type="text" class="form-control" id="e-keb_melter" name="keb_melter" placeholder="Kebersihan Ruangan" autocomplete="off" required>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="keb_melter">Kebersihan Melter</label>
+                <input type="text" class="form-control" id="e-keb_melter" name="keb_melter" placeholder="Kebersihan Ruangan" autocomplete="off" required>
+              </div>
             </div>
-          </div>
-          <div class="col-md-3">
+            <div class="col-md-3">
               <div class="form-check mr-2">
                 <input class="form-check-input" id="e-label_bersih" name="label_bersih" value="Ada" type="checkbox">
                 <label class="form-check-label">Label Bersih</label>
@@ -1011,30 +1021,54 @@
         },
         success: function(response) {
           var data = response;
-          // alert(JSON.stringify(data))
-          var $id = $('#e-bahan_gel');
-          $id.empty();
-          // $id.append('<option value=0>- Pilih Prioritas Kegiatan -</option>');
+          var $tbody = $('#e-bahan_gel');
+          $tbody.empty();
+
           for (var i = 0; i < data.length; i++) {
-            $id.append(`
-              <tr>
-                <td>
-                  <select class="form-control chosen-select" role="menu" id="e-nama_bahan_gel" name="bahan" required>
-                  <?php
-                  foreach ($res_mm_bhn as $mm) { ?>
-                    <option value="<?= $mm['id_mm'] ?>" data-bloom="<?= $mm['bloom'] ?>" data-no_batch="<?= $mm['no_batch'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_urut'] ?></option>
-                  <?php } ?>
-                </select>
-                </td>
-                <td>` + data[i].bloom + `</td>
-                <td>` + data[i].batch_masak + `</td>
-                <td>` + data[i].jml_bahan + `</td>
-              </tr>
-              `);
-            $('#e-nama_bahan_gel').val(data[i].id_mm)
-            $('#e-nama_bahan_gel').trigger("chosen:updated")
+
+            var row = `
+      <tr>
+        <td>
+          <select class="form-control chosen-select e-nama-bahan-gel" name="bahan_gel[id_mm][]" required>
+            <?php foreach ($res_mm_bhn as $mm) { ?>
+              <option 
+                value="<?= $mm['id_mm'] ?>" 
+                data-bloom="<?= $mm['bloom'] ?>">
+                <?= $mm['nama_barang'] ?> | <?= $mm['no_urut'] ?>
+              </option>
+            <?php } ?>
+          </select>
+        </td>
+
+        <td>
+          <span class="e-bloom">${data[i].bloom}</span>
+        </td>
+
+        <td>${data[i].batch_masak}</td>
+
+        <td>
+          <input 
+            type="number" 
+            class="form-control e-qty" 
+            name="bahan_gel[jml_bahan][]" 
+            value="${data[i].jml_bahan}" 
+            min="0"
+            required>
+        </td>
+      </tr>
+    `;
+
+            $tbody.append(row);
+
+            var $lastRow = $tbody.find('tr:last');
+
+            $lastRow.find('.e-nama-bahan-gel')
+              .val(data[i].id_mm)
+              .chosen()
+              .trigger("chosen:updated");
           }
         }
+
       });
       jQuery.ajax({
         url: "<?= base_url() ?>melting/Masak_gelatin/get_detail_bt",
@@ -1045,30 +1079,60 @@
         },
         success: function(response) {
           var data = response;
-          // alert(JSON.stringify(data))
-          var $id = $('#e-bahan_bt');
-          $id.empty();
-          // $id.append('<option value=0>- Pilih Prioritas Kegiatan -</option>');
+          var $tbody = $('#e-bahan_bt');
+          $tbody.empty();
+
           for (var i = 0; i < data.length; i++) {
-            $id.append(`
-              <tr>
-                <td>
-                  <select class="form-control chosen-select" role="menu" id="e-nama_bahan_bt" name="bahan" required>
-                  <?php
-                  foreach ($res_mm_bhn as $mm) { ?>
-                    <option value="<?= $mm['id_mm'] ?>" data-bloom="<?= $mm['bloom'] ?>" data-no_batch="<?= $mm['no_batch'] ?>"> <?= $mm['nama_barang'] ?> | <?= $mm['no_urut'] ?> </option>
-                  <?php } ?>
-                </select>
-                </td>
-                <td>` + data[i].batch_masak + `</td>
-                <td>` + data[i].jml_bahan + `</td>
-              </tr>
-            `);
-            $('#e-nama_bahan_bt').val(data[i].id_mm)
-            $('#e-nama_bahan_bt').trigger("chosen:updated")
+
+            var row = `
+      <tr>
+        <td>
+          <select class="form-control chosen-select e-nama-bahan-bt" name="bahan_bt[id_mm][]" required>
+            <?php foreach ($res_mm_bhn as $mm) { ?>
+              <option 
+                value="<?= $mm['id_mm'] ?>">
+                <?= $mm['nama_barang'] ?> | <?= $mm['no_urut'] ?>
+              </option>
+            <?php } ?>
+          </select>
+        </td>
+
+        <td>${data[i].batch_masak}</td>
+
+        <td>
+          <input 
+            type="number" 
+            class="form-control e-qty" 
+            name="bahan_bt[jml_bahan][]" 
+            value="${data[i].jml_bahan}" 
+            min="0"
+            required>
+        </td>
+      </tr>
+    `;
+
+            $tbody.append(row);
+
+            var $lastRow = $tbody.find('tr:last');
+
+            $lastRow.find('.e-nama-bahan-bt')
+              .val(data[i].id_mm)
+              .chosen()
+              .trigger("chosen:updated");
           }
         }
+
       });
     });
   })
+
+  $(document).on('change', '.e-nama-bahan-gel', function() {
+    var bloom = $(this).find(':selected').data('bloom');
+    $(this).closest('tr').find('.e-bloom').text(bloom);
+  });
+  $(document).on('input', '.e-qty', function() {
+    if ($(this).val() < 0) {
+      $(this).val(0);
+    }
+  });
 </script>
