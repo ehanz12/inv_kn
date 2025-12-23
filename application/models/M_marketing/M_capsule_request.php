@@ -15,8 +15,8 @@ class M_capsule_Request extends CI_Model
     {
         $sql = "
         SELECT a.*,b.kode_warna_cap,b.warna_cap,c.kode_warna_body,c.warna_body,d.nama_customer,d.kode_customer FROM tb_mkt_capsule_request a
-            LEFT JOIN tb_mlt_kw_cap b ON a.id_kw_cap = b.id_kw_cap
-            LEFT JOIN tb_mlt_kw_body c ON a.id_kw_body = c.id_kw_body
+            LEFT JOIN tb_mkt_master_kw_cap b ON a.id_master_kw_cap = b.id_master_kw_cap
+            LEFT JOIN tb_mkt_master_kw_body c ON a.id_master_kw_body = c.id_master_kw_body
             LEFT JOIN tb_mkt_customer d ON a.id_customer = d.id_customer
             WHERE a.is_deleted = 0 ORDER BY a.created_at ASC";
         return $this->db->query($sql);
@@ -26,8 +26,8 @@ class M_capsule_Request extends CI_Model
     {
         $sql = "
         SELECT a.*,b.kode_warna_cap,b.warna_cap,c.kode_warna_body,c.warna_body,d.nama_customer FROM tb_mkt_capsule_request a
-            LEFT JOIN tb_mlt_kw_cap b ON a.id_kw_cap = b.id_kw_cap
-            LEFT JOIN tb_mlt_kw_body c ON a.id_kw_body = c.id_kw_body
+            LEFT JOIN tb_mkt_kw_cap b ON a.id_mkt_kw_cap = b.id_mkt_kw_cap
+            LEFT JOIN tb_mkt_kw_body c ON a.id_mkt_kw_body = c.id_mkt_kw_body
             LEFT JOIN tb_mkt_customer d ON a.id_customer = d.id_customer
             WHERE a.no_mcr = '$no_mcr' AND a.is_deleted = 0 ORDER BY a.no_mcr ASC";
         return $this->db->query($sql);
@@ -45,8 +45,8 @@ class M_capsule_Request extends CI_Model
     {
         $id_user = $this->id_user();
         $sql = "
-        INSERT INTO `tb_mkt_capsule_request`(`id_customer`, `id_kw_cap`, `id_kw_body`,`tgl_cr`,`no_mcr`,`no_cr`,`size`,`print`,`tinta`, `gravurol`,`qty_cr`,`jenis_box`,`jenis_zak`,`delivery`,`created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
-        VALUES ('$d[id_customer]','$d[id_kw_cap]','$d[id_kw_body]','$d[tgl_cr]','$d[no_mcr]','$d[no_cr]','$d[size]','$d[print]','$d[tinta]','$d[gravurol]','$d[qty_cr]','$d[jenis_box]','$d[jenis_zak]','$d[delivery]',NOW(),'$id_user','0000-00-00 00:00:00','','0')
+        INSERT INTO `tb_mkt_capsule_request`(`id_customer`, `id_mkt_kw_cap`, `id_mkt_kw_body`,`tgl_cr`,`no_mcr`,`no_cr`,`size`,`print`,`tinta`, `gravurol`,`qty_cr`,`jenis_box`,`jenis_zak`,`delivery`,`created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`) 
+        VALUES ('$d[id_customer]','$d[id_mkt_kw_cap]','$d[id_mkt_kw_body]','$d[tgl_cr]','$d[no_mcr]','$d[no_cr]','$d[size]','$d[print]','$d[tinta]','$d[gravurol]','$d[qty_cr]','$d[jenis_box]','$d[jenis_zak]','$d[delivery]',NOW(),'$id_user','0000-00-00 00:00:00','','0')
         ";
 
         return $this->db->query($sql);
@@ -69,8 +69,8 @@ class M_capsule_Request extends CI_Model
         $sql = "
             UPDATE `tb_mkt_schedulemarketing` 
             SET `id_customer`='$data[id_customer]',
-                `id_kw_cap`='$data[id_kw_cap]',
-                `id_kw_body`='$data[id_kw_body]',
+                `id_mkt_kw_cap`='$data[id_mkt_kw_cap]',
+                `id_mkt_kw_body`='$data[id_mkt_kw_body]',
                 `no_cr`='$data[no_cr]',
                 `no_batch`='$data[no_batch]',
                 `tgl_sch`='$data[tgl_sch]',

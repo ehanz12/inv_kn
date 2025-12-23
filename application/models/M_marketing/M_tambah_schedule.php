@@ -32,6 +32,19 @@ class M_tambah_schedule extends CI_Model
         return $this->db->query($sql);
     }
 
+    public function get_cr()
+    {
+        $sql = "SELECT a.id_mkt_schedule, a.id_mkt_kp,a.no_batch,a.sisa, a.id_customer, a.id_master_kw_cap, a.id_master_kw_body, a.no_cr, a.jumlah_prd, a.size_machine, a.mesin_prd, a.is_deleted,
+        b.jumlah_kp, c.nama_customer, d.kode_warna_cap, e.kode_warna_body FROM tb_mkt_schedule a
+        LEFT JOIN tb_mkt_kp b ON a.id_mkt_kp = b.id_mkt_kp
+        LEFT JOIN tb_mkt_master_customer c ON a.id_customer = c.id_customer
+        LEFT JOIN tb_mkt_master_kw_cap d ON a.id_master_kw_cap = d.id_master_kw_cap
+        LEFT JOIN tb_mkt_master_kw_body e ON a.id_master_kw_body = e.id_master_kw_body
+        WHERE a.is_deleted = 0";
+
+        return $this->db->query($sql);
+    }
+
     // Fungsi untuk mendapatkan data KP berdasarkan ID
     public function get_kp_by_id($id_mkt_kp)
     {

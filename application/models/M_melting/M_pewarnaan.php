@@ -15,21 +15,22 @@ class M_pewarnaan extends CI_Model
     {
         // $kode_user = $this->kode_user();
         $sql = "
-        SELECT * FROM tb_mlt_pewarnaan
-        ";
+        SELECT r.*, a.id_mkt_kp,a.no_batch,a.sisa, a.id_customer, a.id_master_kw_cap, a.id_master_kw_body, a.no_cr, a.jumlah_prd, a.size_machine, a.mesin_prd, a.is_deleted,
+        b.jumlah_kp, c.nama_customer, d.kode_warna_cap, e.kode_warna_body, f.nama_operator FROM tb_mlt_pewarnaan r
+        LEFT JOIN tb_mkt_schedule a ON r.id_mkt_schedule = a.id_mkt_schedule
+        LEFT JOIN tb_mkt_kp b ON a.id_mkt_kp = b.id_mkt_kp
+        LEFT JOIN tb_mkt_master_customer c ON a.id_customer = c.id_customer
+        LEFT JOIN tb_mkt_master_kw_cap d ON a.id_master_kw_cap = d.id_master_kw_cap
+        LEFT JOIN tb_mkt_master_kw_body e ON a.id_master_kw_body = e.id_master_kw_body
+        LEFT JOIN tb_user f ON r.id_user = f.id_user
+        WHERE r.is_deleted = 0"; 
 
         return $this->db->query($sql);
     }
 
     public function add($data)
     {
-        $id_user = $this->id_user();
-        $sql = "
-        INSERT INTO `tb_mlt_pewarnaan`(`no_cr`, `batch_kapsul`, `stock_mesin`, `kode_warna`,`juml_gel`,`no_bg`,`recyc`,`juml_ex_gw`,`batch_ex_gw`, `berat_recyc`,`batch_recyc`,`jam_pewar`,`visc`,`juml_akhir`,`no_trans`, `nama_operator`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`)
-        VALUES ('$data[no_cr]','$data[batch_kapsul]','$data[stock_mesin]','$data[kode_warna]','$data[juml_gel]','$data[no_bg]','$data[recyc]','$data[juml_ex_gw]','$data[batch_ex_gw]','$data[berat_recyc]','$data[batch_recyc]','$data[jam_pewar]','$data[visc]','$data[juml_akhir]','$data[no_trans]','$data[nama_operator]','NOW()','$id_user','0000-00-00 00:00:00','$id_user','0')
-        ";
-
-        return $this->db->query($sql);
+        return $this->db->insert('tb_mlt_pewarnaan', $data);
     }
     public function update($data)
     {
@@ -60,7 +61,7 @@ class M_pewarnaan extends CI_Model
     }
 
 
-    public function delete($data)
+    public function delete($id_pewarna)
     {
         $id_user = $this->id_user();
         //$sql = "
@@ -70,7 +71,7 @@ class M_pewarnaan extends CI_Model
         //";
         $sql = "
         DELETE FROM `tb_mlt_pewarnaan`
-         WHERE `id_pewarna`='$data[id_pewarna]'
+         WHERE `id_pewarna`='$id_pewarna'
         ";
         return $this->db->query($sql);
     }

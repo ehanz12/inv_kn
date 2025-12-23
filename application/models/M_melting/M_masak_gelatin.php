@@ -146,4 +146,22 @@ class M_masak_gelatin extends CI_Model
     return $batch_masak;
 }
 
+public function get_gel_by_batch_masak($batch_masak)
+{
+    $sql = "SELECT a.id_masak_gel, a.id_mm, a.batch_masak, a.jml_bahan,a.is_deleted, b.id_prc_master_barang, c.nama_barang,c.bloom,c.jenis_barang FROM tb_mlt_masak_gelatin a
+    LEFT JOIN tb_mlt_melting_masuk b ON a.id_mm = b.id_mm
+    LEFT JOIN tb_prc_master_barang c ON b.id_prc_master_barang = c.id_prc_master_barang
+    WHERE a.is_deleted = 0 AND a.batch_masak = '$batch_masak' AND c.jenis_barang = 'Bahan Baku'";
+
+    return $this->db->query($sql);
+}
+
+public function get_batch()
+{
+    $sql = "SELECT a.batch_masak, a.is_deleted FROM tb_mlt_masak_gelatin_tf a
+    WHERE a.is_deleted = 0";
+
+    return $this->db->query($sql);
+}
+
 }

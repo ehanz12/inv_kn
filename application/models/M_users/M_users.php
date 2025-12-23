@@ -69,4 +69,12 @@ class M_users extends CI_Model
         ";
         return $this->db->query($sql);
     }
+
+    public function get_frm()
+    {
+        $sql = "SELECT id_user, nama_operator, departement, jabatan, is_deleted FROM tb_user
+        WHERE departement = 'forming' AND jabatan = 'supervisor' AND is_deleted = 0";
+
+        return $this->db->query($sql);
+    }
 }

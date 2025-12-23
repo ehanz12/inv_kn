@@ -188,7 +188,7 @@
                   <?php
                   foreach ($res_kodewarna_cap as $kwcap) {
                   ?>
-                    <option value="<?= $kwcap['id_kw_cap'] ?>,<?= $kwcap['kode_warna_cap'] ?>,<?= $kwcap['warna_cap'] ?>"><?= $kwcap['kode_warna_cap'] ?> | <?= $kwcap['warna_cap'] ?> </option>
+                    <option value="<?= $kwcap['id_master_kw_cap'] ?>,<?= $kwcap['kode_warna_cap'] ?>,<?= $kwcap['warna_cap'] ?>"><?= $kwcap['kode_warna_cap'] ?> | <?= $kwcap['warna_cap'] ?> </option>
                   <?php
                   }
                   ?>
@@ -204,7 +204,7 @@
                   <?php
                   foreach ($res_kodewarna_body as $kwbody) {
                   ?>
-                    <option value="<?= $kwbody['id_kw_body'] ?>,<?= $kwbody['kode_warna_body'] ?>,<?= $kwbody['warna_body'] ?>"><?= $kwbody['kode_warna_body'] ?> | <?= $kwbody['warna_body'] ?> </option>
+                    <option value="<?= $kwbody['id_master_kw_body'] ?>,<?= $kwbody['kode_warna_body'] ?>,<?= $kwbody['warna_body'] ?>"><?= $kwbody['kode_warna_body'] ?> | <?= $kwbody['warna_body'] ?> </option>
                   <?php
                   }
                   ?>
