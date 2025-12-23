@@ -115,7 +115,7 @@
 
 <!-- Modal Add -->
 <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Tambah Masak Gelatin</h5>
@@ -153,7 +153,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="bahan_add">Nama Barang</label>
-                <select class="form-control chosen-select" role="menu" id="bahan_add" name="bahan_add" required>
+                <select class="form-control chosen-select" role="menu" id="bahan_add" name="bahan_add">
                   <option value="" disabled selected hidden>- Nama Barang -</option>
                   <?php
                   foreach ($res_mm_bhn as $mm) { ?>
@@ -162,7 +162,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
               <div class="form-group">
                 <label for="bloom_add">Bloom</label>
                 <label for="no_batch_add" style="padding-left: 20%;">No Batch</label>
@@ -178,7 +178,7 @@
               <div class="form-group">
                 <label for="jml_add">Jumlah</label>
                 <div class="input-group">
-                  <input type="number" class="form-control" id="jml_add" name="jml_add" placeholder="Jumlah" autocomplete="off" aria-describedby="validationServer03Feedback" required>
+                  <input type="number" class="form-control" id="jml_add" name="jml_add" placeholder="Jumlah" autocomplete="off" aria-describedby="validationServer03Feedback">
                   <div id="validationServer03Feedback" class="invalid-feedback">
                     Maaf Stok tidak mencukupi.
                   </div>
@@ -212,6 +212,7 @@
               </tfoot>
             </table>
           </div>
+          <center><label for="pemeriksaan" class="font-weight-bold mt-3">Bahan Tambahan</label></center>
 
           <div class="table-responsive">
             <table class="table table-bordered table-sm">
@@ -343,161 +344,151 @@
   </div>
 </div>
 <script type="text/javascript">
-  function todayDMY() {
+function todayDMY() {
   const d = new Date();
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const year = d.getFullYear();
-  return `${day}/${month}/${year}`;
+  return String(d.getDate()).padStart(2,'0') + '/' +
+         String(d.getMonth()+1).padStart(2,'0') + '/' +
+         d.getFullYear();
 }
-  $(document).ready(function() {
-    $('#add').on('hidden.bs.modal', function() {
-      $(this).find('form')[0].reset();
+
+$(document).ready(function () {
+
+  $('#tgl_masak').val(todayDMY());
+
+  let usedItems = []; // <-- SIMPAN ID BARANG YANG SUDAH MASUK
+
+  // =========================
+  // VALIDASI STOK
+  // =========================
+  $('#jml_add').on('keyup change', function () {
+    const stok = parseInt($('#bahan_add option:selected').data('stok') || 0);
+    const jml  = parseInt($(this).val() || 0);
+
+    if (jml <= 0 || jml > stok) {
+      $(this).addClass('is-invalid');
+      $('#simpan').prop('disabled', true);
+    } else {
+      $(this).removeClass('is-invalid');
+      $('#simpan').prop('disabled', false);
+    }
+  });
+
+  // =========================
+  // ISI DATA BARANG
+  // =========================
+  $('#bahan_add').on('change', function () {
+    const opt = $(this).find(':selected');
+    $('#bloom_add').val(opt.data('bloom') || '');
+    $('#no_batch_add').val(opt.data('no_batch') || '');
+    $('#stok_add').val(opt.data('stok') || '');
+  });
+
+  // =========================
+  // TOMBOL INPUT
+  // =========================
+  $('#input').on('click', function () {
+
+    const id_mm   = $('#bahan_add').val();
+    const jml     = parseInt($('#jml_add').val() || 0);
+    console.log(jml)
+    const stok    = parseInt($('#bahan_add option:selected').data('stok') || 0);
+
+    if (!id_mm) {
+      alert('⚠️ Silahkan pilih barang terlebih dahulu');
+      return;
+    }
+
+    if (jml <= 0) {
+      alert('⚠️ Jumlah tidak boleh kosong / 0');
+      return;
+    }
+
+    if (jml > stok) {
+      alert('⚠️ Stok tidak mencukupi');
+      return;
+    }
+
+    if (usedItems.includes(id_mm)) {
+      alert('⚠️ Barang sudah ditambahkan, tidak boleh double');
+      return;
+    }
+
+    usedItems.push(id_mm); // <-- KUNCI BARANG
+
+    const nama_bahan = $('#bahan_add option:selected').text();
+    const bloom      = $('#bahan_add option:selected').data('bloom');
+    const no_batch   = $('#bahan_add option:selected').data('no_batch');
+    const id_prc     = $('#bahan_add option:selected').data('id_prc_master_barang');
+
+    const rowId = 'row_' + id_mm;
+
+    if (bloom && bloom != 0) {
+      $('#insert_bahan').append(`
+        <tr id="${rowId}">
+          <input type="hidden" name="bahan[${id_mm}][id_mm]" value="${id_mm}">
+          <input type="hidden" name="bahan[${id_mm}][id_prc_master_barang]" value="${id_prc}">
+          <input type="hidden" class="jml_gel" name="bahan[${id_mm}][jml_bahan]" value="${jml}">
+          <td>${nama_bahan}</td>
+          <td>${bloom}</td>
+          <td>${no_batch}</td>
+          <td>${jml}</td>
+          <td class="text-right">
+            <a href="#" class="text-danger remove" data-id="${id_mm}">
+              <i class="feather icon-trash-2"></i>
+            </a>
+          </td>
+        </tr>
+      `);
+    } else {
+      $('#bt').append(`
+        <tr id="${rowId}">
+          <input type="hidden" name="bahan[${id_mm}][id_mm]" value="${id_mm}">
+          <input type="hidden" name="bahan[${id_mm}][id_prc_master_barang]" value="${id_prc}">
+          <input type="hidden" name="bahan[${id_mm}][jml_bahan]" value="${jml}">
+          <td>${nama_bahan}</td>
+          <td>${no_batch}</td>
+          <td>${jml}</td>
+          <td class="text-right">
+            <a href="#" class="text-danger remove" data-id="${id_mm}">
+              <i class="feather icon-trash-2"></i>
+            </a>
+          </td>
+        </tr>
+      `);
+    }
+
+    hitungTotal();
+
+    // reset input
+    $('#bahan_add').val('').trigger('chosen:updated');
+    $('#jml_add').val('');
+    $('#bloom_add, #no_batch_add, #stok_add').val('');
+  });
+
+  // =========================
+  // HAPUS BARIS
+  // =========================
+  $(document).on('click', '.remove', function (e) {
+    e.preventDefault();
+    const id = $(this).data('id');
+    usedItems = usedItems.filter(v => v != id);
+    $('#row_' + id).remove();
+    hitungTotal();
+  });
+
+  // =========================
+  // HITUNG TOTAL & AIR
+  // =========================
+  function hitungTotal() {
+    let total = 0;
+    $('.jml_gel').each(function () {
+      total += parseInt($(this).val());
     });
+    $('#total').text(total || '');
+    $('#jml_air').val(total * 2 || '');
+  }
 
-    $('#tgl_masak').val(todayDMY());
-
-    uppercase('#op1');
-    uppercase('#op2');
-    uppercase('#supervisor');
-    checkKoma('#visco_cps');
-
-    $('#jml_add').on('keyup', function() {
-      const stok = parseInt($('#bahan_add').find(':selected').attr('data-stok'))
-      const jml = parseInt($('#jml_add').val())
-
-      if (jml > stok) {
-        $("#jml_add").addClass("is-invalid");
-        $("#simpan").attr("disabled", "disabled");
-      } else {
-        $("#jml_add").removeClass("is-invalid");
-        $("#simpan").removeAttr("disabled");
-      }
-    })
-
-    $('#bahan_add').on('change', function() {
-      const bloom = $(this).find(':selected').attr('data-bloom');
-      const no_batch = $(this).find(':selected').attr('data-no_batch');
-      const stok = $(this).find(':selected').attr('data-stok');
-      $('#bloom_add').val(bloom)
-      $('#no_batch_add').val(no_batch)
-      $('#stok_add').val(stok)
-    });
-
-    $("#input").click(function() {
-      var jumlah_barang = parseInt($("#jumlah_barang").val());
-      var nextform = jumlah_barang + 1;
-      $("#jumlah_barang").val(nextform)
-
-      var id_mm = $("#bahan_add").val();
-      var bloom = $("#bahan_add").find(':selected').attr('data-bloom');
-      var no_batch = $("#bahan_add").find(':selected').attr('data-no_batch');
-      var nama_bahan = $("#bahan_add").find(':selected').text();
-      var id_prc_master_barang = $("#bahan_add").find(':selected').attr('data-id_prc_master_barang');
-      var jml = $("#jml_add").val();
-
-      if (bloom != 0) {
-        $("#insert_bahan").append(`
-          <tr id="tr_${nextform}">
-          <input type="hidden" name="bahan[${nextform}][id_mm]" value="${id_mm}">
-          <input type="hidden" name="bahan[${nextform}][id_prc_master_barang]" value="${id_prc_master_barang}">
-            <td>${nama_bahan}</td>
-            <td>${bloom}</td>
-            <td>${no_batch}</td>
-            <td>${jml}<input type="hidden" class="jml_gel" name="bahan[${nextform}][jml_bahan]" value="${jml}"</td>
-            <td class="text-right"><a href="javascript:void(0)" onclick="remove(${nextform})" class="text-danger"><i class="feather icon-trash-2"></i></a></td>
-          </tr>
-        `);
-      } else {
-        $("#bt").append(`
-          <tr id="tr_${nextform}">
-            <input type="hidden" name="bahan[${nextform}][id_mm]" value="${id_mm}">
-            <input type="hidden" name="bahan[${nextform}][id_prc_master_barang]" value="${id_prc_master_barang}">
-            <td style="width: 30%;">${nama_bahan}</td>
-            <td>${no_batch}</td>
-            <td>${jml}<input type="hidden" name="bahan[${nextform}][jml_bahan]" value="${jml}"</td>
-            <td class="text-right"><a href="javascript:void(0)" onclick="remove2(${nextform})" class="text-danger"><i class="feather icon-trash-2"></i></a></td>
-          </tr>
-        `);
-      }
-
-
-      let total = 0;
-      $('.jml_gel').each((index, elem) => {
-        total += parseInt($(elem).val())
-      })
-      $('#total').text(total)
-
-      let jml_air = 0;
-      jml_air = total * 2;
-      $('#jml_air').val(jml_air);
-
-      remove = function(param) {
-        var p = document.getElementById('insert_bahan');
-        var e = document.getElementById('tr_' + param);
-        p.removeChild(e);
-        let total = 0;
-        $('.jml_gel').each((index, elem) => {
-          total += parseInt($(elem).val())
-        })
-
-        $('#total').text(total === 0 ? "" : total)
-      }
-      remove2 = function(param) {
-        var p = document.getElementById('bt');
-        var e = document.getElementById('tr_' + param);
-        p.removeChild(e);
-      }
-    })
-  })
-
-  $(document).ready(function() {
-    $("#jam_gel").keypress(function() {
-      if (this.value.length == 5) {
-        return false;
-      }
-    })
-  })
-
-  $(document).ready(function() {
-    $("#jam_bt").keypress(function() {
-      if (this.value.length == 5) {
-        return false;
-      }
-    })
-  })
-
-  $(document).ready(function() {
-    $("#mixing1").keypress(function() {
-      if (this.value.length == 5) {
-        return false;
-      }
-    })
-  })
-
-  $(document).ready(function() {
-    $("#mixing2").keypress(function() {
-      if (this.value.length == 5) {
-        return false;
-      }
-    })
-  })
-
-  $(document).ready(function() {
-    $("#vac1").keypress(function() {
-      if (this.value.length == 5) {
-        return false;
-      }
-    })
-  })
-
-  $(document).ready(function() {
-    $("#vac2").keypress(function() {
-      if (this.value.length == 5) {
-        return false;
-      }
-    })
-  })
+});
 </script>
 
 
@@ -804,7 +795,7 @@
                 <label for="batch_masak" style="padding-left: 42%;">Batch Masak</label>
                 <div class="input-group">
                   <input type="text" class="form-control" id="e-shift" name="shift" placeholder="Shift" autocomplete="off" required>
-                  <input type="text" class="form-control" id="e-batch_masak" name="batch_masak" placeholder="Batch Masak" autocomplete="off" required>
+                  <input type="text" class="form-control" id="e-batch_masak" name="batch_masak" placeholder="Batch Masak" autocomplete="off" readonly>
                 </div>
               </div>
             </div>
@@ -845,7 +836,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="jml_air">Jumlah Air (L)</label>
-                <input type="text" class="form-control" id="e-jml_air" name="jml_air" placeholder="Jumlah Air (L)" autocomplete="off" required>
+                <input type="text" class="form-control" id="e-jml_air" name="jml_air" placeholder="Jumlah Air (L)" autocomplete="off" readonly>
               </div>
             </div>
             <div class="col-md-4">
