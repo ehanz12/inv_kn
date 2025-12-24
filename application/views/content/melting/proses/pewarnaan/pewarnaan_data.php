@@ -76,59 +76,59 @@
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                   <button type="button"
-                                      class="btn btn-info btn-square btn-sm btn-detail"
-                                      data-toggle="modal"
-                                      data-target="#view"
-                                      data-id_pewarna="<?= $k['id_pewarna'] ?>"
-                                      data-batch_masak="<?= $k['batch_masak'] ?>"
-                                      data-no_cr="<?= $k['no_cr'] ?>"
-                                      data-no_batch="<?= $k['no_batch'] ?>"
-                                      data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>"
-                                      data-kode_warna_body="<?= $k['kode_warna_body'] ?>"
-                                      data-jml_larut_awal="<?= $k['jml_larut_awal'] ?>"
-                                      data-jml_cutting="<?= $k['jml_cutting'] ?>"
-                                      data-jml_cake="<?= $k['jml_cake'] ?>"
-                                      data-batch_cutting="<?= $k['batch_cutting'] ?>"
-                                      data-batch_cake="<?= $k['batch_cake'] ?>"
-                                      data-nama_customer="<?= $k['nama_customer'] ?>"
-                                      data-jumlah_prd="<?= $k['jumlah_prd'] ?>"
-                                      data-jumlah_kp="<?= $k['jumlah_kp'] ?>"
-                                      data-size_machine="<?= $k['size_machine'] ?>"
-                                      data-mesin_prd="<?= $k['mesin_prd'] ?>"
-                                      data-cek_warna="<?= $k['cek_warna'] ?>"
-                                      data-jam_pw="<?= $k['jam_pw'] ?>"
-                                      data-visco="<?= $k['visco'] ?>"
-                                      data-vac1="<?= $k['vac1'] ?>"
-                                      data-vac2="<?= $k['vac2'] ?>"
-                                      data-tekanan="<?= $k['tekanan'] ?>"
-                                      data-batch_ti02="<?= $k['batch_ti02'] ?>"
-                                      data-batch_r1="<?= $k['batch_r1'] ?>"
-                                      data-batch_r3="<?= $k['batch_r3'] ?>"
-                                      data-batch_y5="<?= $k['batch_y5'] ?>"
-                                      data-batch_b1="<?= $k['batch_b1'] ?>"
-                                      data-batch_y10="<?= $k['batch_y10'] ?>"
-                                      data-silver="<?= $k['silver'] ?>"
-                                      data-bpn="<?= $k['bpn'] ?>"
-                                      data-r_40="<?= $k['r_40'] ?>"
-                                      data-r_102="<?= $k['r_102'] ?>"
-                                      data-ior="<?= $k['ior'] ?>"
-                                      data-ioy="<?= $k['ioy'] ?>"
-                                      data-p_blue="<?= $k['p_blue'] ?>"
-                                      data-p_green="<?= $k['p_green'] ?>"
-                                      data-gold="<?= $k['gold'] ?>"
-                                      data-y6="<?= $k['y6'] ?>"
-                                      data-tgl_tf_mw="<?= $tgl_tf ?>"
-                                      data-tgl_buat_lrt="<?= $tgl_lrt ?>"
-                                      data-shift="<?= $k['mlt_shift'] ?>"
-                                      data-no_fid="<?= $k['no_fid'] ?>"
-                                      data-no_urut="<?= $k['no_urut'] ?>"
-                                      data-kurang="<?= $k['sisa'] ?>"
-                                      data-op1="<?= $k['op1'] ?>"
-                                      data-op2="<?= $k['op2'] ?>"
-                                      data-supervisor="<?= $k['spv'] ?>"
-                                      data-nama_operator="<?= $k['nama_operator'] ?>">
-                                      <i class="feather icon-eye"></i> Detail
-                                    </button>
+                                    class="btn btn-info btn-square btn-sm btn-detail"
+                                    data-toggle="modal"
+                                    data-target="#view"
+                                    data-id_pewarna="<?= $k['id_pewarna'] ?>"
+                                    data-batch_masak="<?= $k['batch_masak'] ?>"
+                                    data-no_cr="<?= $k['no_cr'] ?>"
+                                    data-no_batch="<?= $k['no_batch'] ?>"
+                                    data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>"
+                                    data-kode_warna_body="<?= $k['kode_warna_body'] ?>"
+                                    data-jml_larut_awal="<?= $k['jml_larut_awal'] ?>"
+                                    data-jml_cutting="<?= $k['jml_cutting'] ?>"
+                                    data-jml_cake="<?= $k['jml_cake'] ?>"
+                                    data-batch_cutting="<?= $k['batch_cutting'] ?>"
+                                    data-batch_cake="<?= $k['batch_cake'] ?>"
+                                    data-nama_customer="<?= $k['nama_customer'] ?>"
+                                    data-jumlah_prd="<?= $k['jumlah_prd'] ?>"
+                                    data-jumlah_kp="<?= $k['jumlah_kp'] ?>"
+                                    data-size_machine="<?= $k['size_machine'] ?>"
+                                    data-mesin_prd="<?= $k['mesin_prd'] ?>"
+                                    data-cek_warna="<?= $k['cek_warna'] ?>"
+                                    data-jam_pw="<?= $k['jam_pw'] ?>"
+                                    data-visco="<?= $k['visco'] ?>"
+                                    data-vac1="<?= $k['vac1'] ?>"
+                                    data-vac2="<?= $k['vac2'] ?>"
+                                    data-tekanan="<?= $k['tekanan'] ?>"
+                                    data-batch_ti02="<?= $k['batch_ti02'] ?>"
+                                    data-batch_r1="<?= $k['batch_r1'] ?>"
+                                    data-batch_r3="<?= $k['batch_r3'] ?>"
+                                    data-batch_y5="<?= $k['batch_y5'] ?>"
+                                    data-batch_b1="<?= $k['batch_b1'] ?>"
+                                    data-batch_y10="<?= $k['batch_y10'] ?>"
+                                    data-silver="<?= $k['silver'] ?>"
+                                    data-bpn="<?= $k['bpn'] ?>"
+                                    data-r_40="<?= $k['r_40'] ?>"
+                                    data-r_102="<?= $k['r_102'] ?>"
+                                    data-ior="<?= $k['ior'] ?>"
+                                    data-ioy="<?= $k['ioy'] ?>"
+                                    data-p_blue="<?= $k['p_blue'] ?>"
+                                    data-p_green="<?= $k['p_green'] ?>"
+                                    data-gold="<?= $k['gold'] ?>"
+                                    data-y6="<?= $k['y6'] ?>"
+                                    data-tgl_tf_mw="<?= $tgl_tf ?>"
+                                    data-tgl_buat_lrt="<?= $tgl_lrt ?>"
+                                    data-shift="<?= $k['mlt_shift'] ?>"
+                                    data-no_fid="<?= $k['no_fid'] ?>"
+                                    data-no_urut="<?= $k['no_urut'] ?>"
+                                    data-kurang="<?= $k['sisa'] ?>"
+                                    data-op1="<?= $k['op1'] ?>"
+                                    data-op2="<?= $k['op2'] ?>"
+                                    data-supervisor="<?= $k['spv'] ?>"
+                                    data-nama_operator="<?= $k['nama_operator'] ?>">
+                                    <i class="feather icon-eye"></i> Detail
+                                  </button>
                                 </div>
                               </td>
                               <td class="text-center">
@@ -140,7 +140,6 @@
                                       data-target="#edit"
                                       data-id_pewarna="<?= $k['id_pewarna'] ?>"
                                       data-batch_masak="<?= $k['batch_masak'] ?>"
-                                      data-no_cr="<?= $k['no_cr'] ?>"
                                       data-no_batch="<?= $k['no_batch'] ?>"
                                       data-kode_warna_cap="<?= $k['kode_warna_cap'] ?>"
                                       data-kode_warna_body="<?= $k['kode_warna_body'] ?>"
@@ -185,6 +184,8 @@
                                       data-op1="<?= $k['op1'] ?>"
                                       data-op2="<?= $k['op2'] ?>"
                                       data-supervisor="<?= $k['spv'] ?>"
+                                      data-id_user="<?= $k['id_user'] ?>"
+                                      data-id_mkt_schedule="<?= $k['id_mkt_schedule'] ?>"
                                       data-nama_operator="<?= $k['nama_operator'] ?>">
                                       <i class="feather icon-edit"></i> Edit
                                     </button>
@@ -1012,65 +1013,65 @@
 <script>
   $(document).on('click', '.btn-detail', function() {
 
-   const el = $(this);
+    const el = $(this);
 
     const map = {
-        no_cr: 'd_no_cr',
-        nama_customer: 'd_customer',
-        jumlah_kp: 'd_order',
-        jumlah_prd: 'd_produksi',
-        mesin_prd: 'd_machine',
-        size_machine: 'd_size_machine',
-        kode_warna_cap: 'd_cap',
-        kode_warna_body: 'd_body',
+      no_cr: 'd_no_cr',
+      nama_customer: 'd_customer',
+      jumlah_kp: 'd_order',
+      jumlah_prd: 'd_produksi',
+      mesin_prd: 'd_machine',
+      size_machine: 'd_size_machine',
+      kode_warna_cap: 'd_cap',
+      kode_warna_body: 'd_body',
 
-        jml_larut_awal: 'd_jml_larut',
-        jml_cutting: 'd_cutting',
-        jml_cake: 'd_cake',
-        jam_pw: 'd_jam_pw',
-        vac1: 'd_vac1',
-        vac2: 'd_vac2',
-        visco: 'd_visco',
-        tekanan: 'd_tekanan',
+      jml_larut_awal: 'd_jml_larut',
+      jml_cutting: 'd_cutting',
+      jml_cake: 'd_cake',
+      jam_pw: 'd_jam_pw',
+      vac1: 'd_vac1',
+      vac2: 'd_vac2',
+      visco: 'd_visco',
+      tekanan: 'd_tekanan',
 
-        kurang: 'd_kurang',
-        no_batch: 'd_batch_kp',
-        no_urut: 'd_no_urut',
-        shift: 'd_shift',
-        tgl_tf_mw: 'd_tgl_tf',
-        tgl_buat_lrt: 'd_tgl_lrt',
-        no_fid: 'd_no_fid',
+      kurang: 'd_kurang',
+      no_batch: 'd_batch_kp',
+      no_urut: 'd_no_urut',
+      shift: 'd_shift',
+      tgl_tf_mw: 'd_tgl_tf',
+      tgl_buat_lrt: 'd_tgl_lrt',
+      no_fid: 'd_no_fid',
 
-        keb_melter: 'd_liter',
-        cek_warna: 'd_cek_warna',
-        nama_operator: 'd_forming',
-        batch_cutting: 'd_batch_cutting',
-        batch_cake: 'd_batch_cake',
+      keb_melter: 'd_liter',
+      cek_warna: 'd_cek_warna',
+      nama_operator: 'd_forming',
+      batch_cutting: 'd_batch_cutting',
+      batch_cake: 'd_batch_cake',
 
-        batch_ti02: 'd_batch_ti02',
-        batch_r1: 'd_batch_r1',
-        batch_r3: 'd_batch_r3',
-        batch_y5: 'd_batch_y5',
-        batch_b1: 'd_batch_b1',
-        batch_y10: 'd_batch_y10',
-        silver: 'd_silver',
-        bpn: 'd_bpn',
-        r_40: 'd_r40',
-        r_102: 'd_r102',
-        ior: 'd_ior',
-        ioy: 'd_ioy',
-        p_blue: 'd_p_blue',
-        p_green: 'd_p_green',
-        gold: 'd_gold',
-        y6: 'd_y6',
+      batch_ti02: 'd_batch_ti02',
+      batch_r1: 'd_batch_r1',
+      batch_r3: 'd_batch_r3',
+      batch_y5: 'd_batch_y5',
+      batch_b1: 'd_batch_b1',
+      batch_y10: 'd_batch_y10',
+      silver: 'd_silver',
+      bpn: 'd_bpn',
+      r_40: 'd_r40',
+      r_102: 'd_r102',
+      ior: 'd_ior',
+      ioy: 'd_ioy',
+      p_blue: 'd_p_blue',
+      p_green: 'd_p_green',
+      gold: 'd_gold',
+      y6: 'd_y6',
 
-        op1: 'd_op1',
-        op2: 'd_op2',
-        supervisor: 'd_supervisor'
+      op1: 'd_op1',
+      op2: 'd_op2',
+      supervisor: 'd_supervisor'
     };
 
-    $.each(map, function (dataKey, inputId) {
-        $('#' + inputId).val(el.data(dataKey));
+    $.each(map, function(dataKey, inputId) {
+      $('#' + inputId).val(el.data(dataKey));
     });
 
 
@@ -1105,6 +1106,485 @@
         `);
         });
       }
+    });
+
+  });
+</script>
+
+<div class="modal fade" id="edit" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <form id="formEdit" action="<?= base_url()?>melting/pewarnaan/update" method="POST">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Pewarnaan</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+        <input type="hidden" id="e_id_pewarna" name="id_pewarna">
+          <!-- ================= HEADER ================= -->
+          <div class="row">
+            <div class="col-md-3">
+              <label>NO CR</label>
+              <select class="form-control chosen-select" id="e_no_cr" name="id_mkt_schedule">
+                <option value="" disabled selected hidden>- Pilih No CR -</option>
+                <?php foreach ($res_cr as $cr) :  ?>
+                  <option value="<?= $cr['id_mkt_schedule'] ?>"
+                    data-nama_customer="<?= $cr['nama_customer'] ?>"
+                    data-jumlah_order="<?= $cr['jumlah_kp'] ?>"
+                    data-size_machine="<?= $cr['size_machine'] ?>"
+                    data-jumlah_prd="<?= $cr['jumlah_prd'] ?>"
+                    data-warna_cap="<?= $cr['kode_warna_cap'] ?>"
+                    data-warna_body="<?= $cr['kode_warna_body'] ?>"
+                    data-mesin_prd="<?= $cr['mesin_prd'] ?>"
+                    data-batch_kp="<?= $cr['no_batch'] ?>"
+                    data-kurang="<?= $cr['sisa'] ?>"><?= $cr['no_cr'] ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label>Customer</label>
+              <input type="text" class="form-control" id="e_customer" readonly>
+            </div>
+
+            <div class="col-md-3">
+              <label>Order</label>
+              <input type="text" class="form-control" id="e_order" readonly>
+            </div>
+
+            <div class="col-md-3">
+              <label>Produksi</label>
+              <input type="text" class="form-control" id="e_produksi" readonly>
+            </div>
+
+            <div class="col-md-3">
+              <label>Machine</label>
+              <input type="text" class="form-control" id="e_machine" readonly>
+            </div>
+
+            <div class="col-md-3">
+              <label>Size Machine</label>
+              <input type="text" class="form-control" id="e_size_machine" readonly>
+            </div>
+
+            <div class="col-md-3">
+              <label>Kode Warna</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="e_cap" readonly>
+                <input type="text" class="form-control" id="e_body" readonly>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label>Kurang</label>
+              <input type="text" class="form-control" id="e_kurang" readonly>
+            </div>
+
+            <div class="col-md-3">
+              <label>Batch Kapsule</label>
+              <input type="text" class="form-control" id="e_batch_kp" readonly>
+            </div>
+
+            <div class="col-md-3">
+              <label>No Urut</label>
+              <input type="text" class="form-control" id="e_no_urut" name="no_urut">
+            </div>
+
+            <div class="col-md-3">
+              <label>Shift</label>
+              <input type="text" class="form-control" id="e_shift" name="mlt_shift">
+            </div>
+
+            <div class="col-md-3">
+              <label>Tanggal Transfer</label>
+              <input type="text" class="form-control" id="e_tgl_tf" name="tgl_tf_mw">
+            </div>
+
+            <div class="col-md-3">
+              <label>Tanggal Buat LRT</label>
+              <input type="text" class="form-control" id="e_tgl_lrt" name="tgl_buat_lrt">
+            </div>
+
+            <div class="col-md-3">
+              <label>No Fid</label>
+              <input type="text" class="form-control" id="e_no_fid" name="no_fid">
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- ================= GELATIN ================= -->
+          <h6 class="font-weight-bold text-center">Gelatin</h6>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="e_batch_gel">Batch Gelatin</label>
+                <select class="form-control chosen-select" role="menu" id="e_batch_gel" name="batch_masak">
+                  <option value="" disabled selected hidden>- Nama NO Batch -</option>
+                  <?php foreach ($res_batch as $b) :  ?>
+                    <option value="<?= $b['batch_masak'] ?>"><?= $b['batch_masak'] ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th>Nama Barang</th>
+                  <th>Bloom</th>
+                  <th>No Batch</th>
+                  <th>Qty</th>
+                  <th>Hapus</th>
+                </tr>
+              </thead>
+              <tbody id="edit_batch">
+              </tbody>
+            </table>
+          </div>
+
+          <hr>
+
+          <!-- ================= PROSES ================= -->
+          <div class="row">
+            <div class="col-md-3">
+              <label>Jumlah Larutan (L)</label>
+              <input type="text" class="form-control" id="e_jml_larut" name="jml_larut_awal">
+            </div>
+
+            <div class="col-md-3">
+              <label>Jumlah Cutting (Kg)</label>
+              <input type="text" class="form-control" id="e_cutting" name="jml_cutting">
+            </div>
+
+            <div class="col-md-3">
+              <label>Jumlah Cake (L)</label>
+              <input type="text" class="form-control" id="e_cake" name="jml_cake">
+            </div>
+
+            <div class="col-md-3">
+              <label>Jam Pewarnaan</label>
+              <input type="text" class="form-control" id="e_jam_pw" name="jam_pw">
+            </div>
+
+            <div class="col-md-3">
+              <label>Vacuum</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="e_vac1" name="vac1">
+                <input type="text" class="form-control" value="s/d" readonly>
+                <input type="text" class="form-control" id="e_vac2" name="vac2">
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label>Viscositas</label>
+              <input type="text" class="form-control" id="e_visco" name="visco">
+            </div>
+
+            <div class="col-md-3">
+              <label>Tekanan</label>
+              <input type="text" class="form-control" id="e_tekanan" name="tekanan">
+            </div>
+
+            <div class="col-md-3">
+              <label>Liter</label>
+              <input type="text" class="form-control" id="e_liter" name="liter">
+            </div>
+
+            <div class="col-md-3">
+              <label>Cek Warna</label>
+              <input type="text" class="form-control" id="e_cek_warna" name="cek_warna">
+            </div>
+
+            <div class="col-md-3">
+              <label>Forming</label>
+              <select class="form-control chosen-select" id="e_forming" name="id_user">
+                  <option value="" disabled selected>- Pilih Forming - </option>
+                  <?php foreach ($res_frm as $f): ?>
+                    <option value="<?= $f['id_user'] ?>"><?= $f['nama_operator'] ?></option>
+                  <?php endforeach; ?>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label>Batch Cutting</label>
+              <input type="text" class="form-control" id="e_batch_cutting" name="batch_cutting">
+            </div>
+
+            <div class="col-md-3">
+              <label>Batch Cake</label>
+              <input type="text" class="form-control" id="e_batch_cake" name="batch_cake">
+            </div>
+          </div>
+
+          <hr>
+
+          <h6 class="font-weight-bold text-center">Bahan Pewarna</h6>
+
+          <div class="row">
+            <div class="col-md-3"><label>Batch Ti02</label><input type="text" class="form-control" id="e_batch_ti02" name="batch_ti02"></div>
+            <div class="col-md-3"><label>Batch R1</label><input type="text" class="form-control" id="e_batch_r1" name="batch_r1"></div>
+            <div class="col-md-3"><label>Batch R3</label><input type="text" class="form-control" id="e_batch_r3"name="batch_r3"></div>
+            <div class="col-md-3"><label>Batch Y5</label><input type="text" class="form-control" id="e_batch_y5" name="batch_y5"></div>
+            <div class="col-md-3"><label>Batch B1</label><input type="text" class="form-control" id="e_batch_b1" name="batch_b1"></div>
+            <div class="col-md-3"><label>Batch Y10</label><input type="text" class="form-control" id="e_batch_y10" name="batch_y10"></div>
+            <div class="col-md-3"><label>Silver</label><input type="text" class="form-control" id="e_silver" name="silver"></div>
+            <div class="col-md-3"><label>Bpn</label><input type="text" class="form-control" id="e_bpn" name="bpn"></div>
+            <div class="col-md-3"><label>R. 40</label><input type="text" class="form-control" id="e_r40" name="r_40"></div>
+            <div class="col-md-3"><label>R. 102</label><input type="text" class="form-control" id="e_r102" name="r_102"></div>
+            <div class="col-md-3"><label>IOR</label><input type="text" class="form-control" id="e_ior" name="ior"></div>
+            <div class="col-md-3"><label>IOY</label><input type="text" class="form-control" id="e_ioy" name="ioy"></div>
+            <div class="col-md-3"><label>P. BLUE</label><input type="text" class="form-control" id="e_p_blue" name="p_blue"></div>
+            <div class="col-md-3"><label>P. GREEN</label><input type="text" class="form-control" id="e_p_green" name="p_green"></div>
+            <div class="col-md-3"><label>GOLD</label><input type="text" class="form-control" id="e_gold" name="gold"></div>
+            <div class="col-md-3"><label>Y6</label><input type="text" class="form-control" id="e_y6" name="y6"></div>
+          </div>
+
+          <hr>
+
+          <h6 class="font-weight-bold text-center">Operator</h6>
+
+          <div class="row">
+            <div class="col-md-3">
+              <label>Operator 1</label>
+              <input type="text" class="form-control" id="e_op1" name="op1">
+            </div>
+            <div class="col-md-3">
+              <label>Operator 2</label>
+              <input type="text" class="form-control" id="e_op2" name="op2">
+            </div>
+            <div class="col-md-3">
+              <label>Supervisor</label>
+              <input type="text" class="form-control" id="e_supervisor" name="spv">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary"  onclick="if (! confirm('Apakah Anda Yakin Untuk Menimpan Data Ini? Tolong Untuk Di Check Kembali. Dan Jangan Lupa Untuk Menginputkan Barangnya')) { return false; }">Update</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+>
+
+<script>
+  $(function() {
+
+    /* =====================
+       1. MAPPING DATA → INPUT
+    ====================== */
+    const fieldMap = {
+      nama_customer: 'e_customer',
+      jumlah_kp: 'e_order',
+      jumlah_prd: 'e_produksi',
+      mesin_prd: 'e_machine',
+      size_machine: 'e_size_machine',
+      kode_warna_cap: 'e_cap',
+      kode_warna_body: 'e_body',
+
+      jml_larut_awal: 'e_jml_larut',
+      jml_cutting: 'e_cutting',
+      jml_cake: 'e_cake',
+      jam_pw: 'e_jam_pw',
+      vac1: 'e_vac1',
+      vac2: 'e_vac2',
+      visco: 'e_visco',
+      tekanan: 'e_tekanan',
+
+      kurang: 'e_kurang',
+      no_batch: 'e_batch_kp',
+      no_urut: 'e_no_urut',
+      shift: 'e_shift',
+      tgl_tf_mw: 'e_tgl_tf',
+      tgl_buat_lrt: 'e_tgl_lrt',
+      no_fid: 'e_no_fid',
+
+      keb_melter: 'e_liter',
+      cek_warna: 'e_cek_warna',
+      batch_cutting: 'e_batch_cutting',
+      batch_cake: 'e_batch_cake',
+
+      batch_ti02: 'e_batch_ti02',
+      batch_r1: 'e_batch_r1',
+      batch_r3: 'e_batch_r3',
+      batch_y5: 'e_batch_y5',
+      batch_b1: 'e_batch_b1',
+      batch_y10: 'e_batch_y10',
+      silver: 'e_silver',
+      bpn: 'e_bpn',
+      r_40: 'e_r40',
+      r_102: 'e_r102',
+      ior: 'e_ior',
+      ioy: 'e_ioy',
+      p_blue: 'e_p_blue',
+      p_green: 'e_p_green',
+      gold: 'e_gold',
+      y6: 'e_y6',
+      id_pewarna: 'e_id_pewarna',
+
+      op1: 'e_op1',
+      op2: 'e_op2',
+      supervisor: 'e_supervisor'
+    };
+
+    /* =====================
+       2. CLICK EDIT BUTTON
+    ====================== */
+    $(document).on('click', '.btn-edit', function() {
+      const el = $(this);
+
+      $.each(fieldMap, function(dataKey, inputId) {
+        $('#' + inputId).val(el.data(dataKey));
+      });
+    });
+
+    /* =====================
+       3. CHANGE NO CR
+    ====================== */
+    $('#e_no_cr').on('change', function() {
+      const opt = $(this).find(':selected');
+
+      const autoFill = {
+        e_mkt_customer: opt.data('nama_customer'),
+        e_jml_order: opt.data('jumlah_order'),
+        e_jml_prd: opt.data('jumlah_prd'),
+        e_kurang: opt.data('kurang'),
+        e_size_machine: opt.data('size_machine'),
+        e_machine: opt.data('mesin_prd'),
+        e_cap: opt.data('warna_cap'),
+        e_body: opt.data('warna_body'),
+        e_batch_kp: opt.data('batch_kp')
+      };
+
+      $.each(autoFill, function(id, value) {
+        $('#' + id).val(value);
+      });
+    });
+
+    /* =====================
+       4. MODAL SHOW
+    ====================== */
+    $('#edit').on('show.bs.modal', function(event) {
+      const btn = $(event.relatedTarget);
+      var batch = btn.data('batch_masak')
+      $('#e_no_cr')
+        .val(btn.data('id_mkt_schedule'))
+        .trigger('chosen:updated');
+
+      $('#e_forming')
+      .val(btn.data('id_user'))
+      .trigger('chosen:updated')
+
+      $('#e_batch_gel')
+        .val(btn.data('batch_masak'))
+        .trigger('chosen:updated');
+      $.ajax({
+        url: "<?= base_url('melting/pewarnaan/get_by_batch') ?>",
+        type: "POST",
+        data: {
+          batch_masak: batch
+        },
+        dataType: "json",
+        success: function(res) {
+          $('#edit_batch').empty();
+
+          if (res.length === 0) {
+            alert('Data batch tidak ditemukan');
+            return;
+          }
+
+          res.forEach(function(item, index) {
+
+            let row = `
+    <tr id="row_${index}">
+      <td>${item.nama_barang}</td>
+      <td>${item.bloom}</td>
+      <td>${item.batch_masak}</td>
+      <td>${item.jml_bahan}</td>
+      <td class="text-right">
+        <button type="button" class="btn btn-danger btn-sm"
+          onclick="$('#row_${index}').remove()">X</button>
+      </td>
+    </tr>
+  `;
+
+            $('#edit_batch').append(row);
+          });
+
+        }
+      });
+      $('#e_batch_gel').on('change', function() {
+        const batch = $(this).val();
+
+        $.ajax({
+          url: "<?= base_url('melting/pewarnaan/get_by_batch') ?>",
+          type: "POST",
+          data: {
+            batch_masak: batch
+          },
+          dataType: "json",
+          success: function(res) {
+
+            if (res.length === 0) {
+              alert('Data batch tidak ditemukan');
+              return;
+            }
+
+            res.forEach(function(item, index) {
+
+              let row = `
+    <tr id="row_${index}">
+      <td>${item.nama_barang}</td>
+      <td>${item.bloom}</td>
+      <td>${item.batch_masak}</td>
+      <td>${item.jml_bahan}</td>
+      <td class="text-right">
+        <button type="button" class="btn btn-danger btn-sm"
+          onclick="$('#row_${index}').remove()">X</button>
+      </td>
+    </tr>
+  `;
+
+              $('#edit_batch').append(row);
+            });
+
+
+          }
+        });
+      });
+    });
+    $('#e_no_cr').on('change', function() {
+      const opt = $(this).find(':selected');
+
+      const autoFill = {
+        e_mkt_customer: opt.data('nama_customer'),
+        e_jml_order: opt.data('jumlah_order'),
+        e_jml_prd: opt.data('jumlah_prd'),
+        e_kurang: opt.data('kurang'),
+        e_size_machine: opt.data('size_machine'),
+        e_machine: opt.data('mesin_prd'),
+        e_cap: opt.data('warna_cap'),
+        e_body: opt.data('warna_body'),
+        e_batch_kp: opt.data('batch_kp')
+      };
+
+      $.each(autoFill, function(id, value) {
+        $('#' + id).val(value);
+      });
+
+
     });
 
   });

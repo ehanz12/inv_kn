@@ -23,7 +23,7 @@ class M_pewarnaan extends CI_Model
         LEFT JOIN tb_mkt_master_kw_cap d ON a.id_master_kw_cap = d.id_master_kw_cap
         LEFT JOIN tb_mkt_master_kw_body e ON a.id_master_kw_body = e.id_master_kw_body
         LEFT JOIN tb_user f ON r.id_user = f.id_user
-        WHERE r.is_deleted = 0"; 
+        WHERE r.is_deleted = 0";
 
         return $this->db->query($sql);
     }
@@ -35,30 +35,16 @@ class M_pewarnaan extends CI_Model
     public function update($data)
     {
         $id_user = $this->id_user();
-        $sql = "
-            UPDATE `tb_mlt_pewarnaan` 
-            SET `no_cr`='$data[no_cr]',
-                `batch_kapsul`='$data[batch_kapsul]',
-                `stock_mesin`='$data[stock_mesin]',
-                `kode_warna`='$data[kode_warna]',
-                `juml_gel`='$data[juml_gel]',
-                `no_bg`='$data[no_bg]',
-                `recyc`='$data[recyc]',
-                `juml_ex_gw`='$data[juml_ex_gw]',
-                `batch_ex_gw`='$data[batch_ex_gw]',
-                `berat_recyc`='$data[berat_recyc]',
-                `batch_recyc`='$data[batch_recyc]',
-                `jam_pewar`='$data[jam_pewar]',
-                `visc`='$data[visc]',
-                `juml_akhir`='$data[juml_akhir]',
-                `no_trans`='$data[no_trans]',
-                `nama_operator`='$data[nama_operator]',
-                `updated_at` = NOW(),`updated_by`='$id_user' 
-            WHERE `id_pewarna`='$data[id_pewarna]'
-        ";
-        return $this->db->query($sql);
-        // return $sql;
+
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        $data['updated_by'] = $id_user;
+
+        $this->db->where('id_pewarna', $data['id_pewarna']);
+        unset($data['id_pewarna']);
+
+        return $this->db->update('tb_mlt_pewarnaan', $data);
     }
+
 
 
     public function delete($id_pewarna)
