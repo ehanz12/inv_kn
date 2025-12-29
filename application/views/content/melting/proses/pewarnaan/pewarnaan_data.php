@@ -305,7 +305,7 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label for="no_urut">No Urut</label>
-                <input type="text" class="form-control" id="no_urut" name="no_urut" placeholder="No urut" autocomplete="off" required>
+                <input type="text" class="form-control" id="no_urut" name="no_urut" placeholder="No urut" value="<?= $generate_no_urut ?>" autocomplete="off" readonly>
               </div>
             </div>
             <div class="col-md-3">
@@ -443,112 +443,249 @@
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label for="batch_cutting">Batch Cutting</label>
-                <input type="text" class="form-control text-uppercase" id="batch_cutting" name="batch_cutting" placeholder="Batch Cutting" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_batch_cutting" name="check_batch_cutting">
+                  <label for="check_batch_cutting">
+                    <i class=""></i> Batch Cutting
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control batch_cutting-section" placeholder="Batch Cutting" style="display: none;" id="batch_cutting" name="batch_cutting">
+                </div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label for="batch_cake">Batch Cake</label>
-                <input type="text" class="form-control text-uppercase" id="batch_cake" name="batch_cake" placeholder="Batch Cake" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_batch_cake" name="check_batch_cake">
+                  <label for="check_batch_cake">
+                    <i class=""></i> Batch Cake
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control batch_cake-section" placeholder="Batch Cake" style="display: none;" id="batch_cake" name="batch_cake">
+                </div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label for="batch_ti02">Batch Ti02</label>
-                <input type="text" class="form-control text-uppercase" id="batch_ti02" name="batch_ti02" placeholder="Batch Ti02" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_batch_ti02" name="check_batch_ti02">
+                  <label for="check_batch_ti02">
+                    <i class=""></i> Batch Ti02
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control batch_ti02-section" placeholder="Batch Ti02" style="display: none;" id="batch_ti02" name="batch_ti02">
+                </div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label for="batch_r1">Batch R1</label>
-                <input type="text" class="form-control text-uppercase" id="batch_r1" name="batch_r1" placeholder="Batch R1" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_batch_r1" name="check_batch_r1">
+                  <label for="check_batch_r1">
+                    <i class=""></i> Batch R1
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control batch_r1-section" placeholder="Batch R1" style="display: none;" id="batch_r1" name="batch_r1">
+                </div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label for="batch_r3">Batch R3</label>
-                <input type="text" class="form-control text-uppercase" id="batch_r3" name="batch_r3" placeholder="Batch R3" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_batch_r3" name="check_batch_r3">
+                  <label for="check_batch_r3">
+                    <i class=""></i> Batch R3
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control batch_r3-section" placeholder="Batch R3" style="display: none;" id="batch_r3" name="batch_r3">
+                </div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label for="batch_y5">Batch Y5</label>
-                <input type="text" class="form-control text-uppercase" id="batch_y5" name="batch_y5" placeholder="Batch Y5" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_batch_y5" name="check_batch_y5">
+                  <label for="check_batch_y5">
+                    <i class=""></i> Batch Y5
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control batch_y5-section" placeholder="Batch Y5" style="display: none;" id="batch_y5" name="batch_y5">
+                </div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label for="batch_b1">Batch B1</label>
-                <input type="text" class="form-control text-uppercase" id="batch_b1" name="batch_b1" placeholder="Batch B1" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_batch_b1" name="check_batch_b1">
+                  <label for="check_batch_b1">
+                    <i class=""></i> Batch B1
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control batch_b1-section" placeholder="Batch b1" style="display: none;" id="batch_b1" name="batch_b1">
+                </div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label for="batch_y10">Batch Y10</label>
-                <input type="text" class="form-control text-uppercase" id="batch_y10" name="batch_y10" placeholder="Batch Y10" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_batch_y10" name="check_batch_y10">
+                  <label for="check_batch_y10">
+                    <i class=""></i> Batch Y10
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control batch_y10-section" placeholder="Batch y10" style="display: none;" id="batch_y10" name="batch_y10">
+                </div>
               </div>
             </div>
+
             <div class="col-md-3">
               <div class="form-group">
-                <label for="silver">Silver</label>
-                <input type="text" class="form-control text-uppercase" id="silver" name="silver" placeholder="Silver" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_silver" name="check_silver">
+                  <label for="check_silver">
+                    <i class=""></i> Silver
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control silver-section" placeholder="Silver" style="display: none;" id="silver" name="silver">
+                </div>
               </div>
             </div>
+
             <div class="col-md-3">
               <div class="form-group">
-                <label for="bpn">Bpn</label>
-                <input type="text" class="form-control text-uppercase" id="bpn" name="bpn" placeholder="Bpn" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_bpn" name="check_bpn">
+                  <label for="check_bpn">
+                    <i class=""></i> Bpn
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control bpn-section" placeholder="bpn" style="display: none;" id="bpn" name="bpn">
+                </div>
               </div>
             </div>
+
             <div class="col-md-3">
               <div class="form-group">
-                <label for="r_40">R. 40</label>
-                <input type="text" class="form-control text-uppercase" id="r_40" name="r_40" placeholder="R. 40" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_r_40" name="check_r_40">
+                  <label for="check_r_40">
+                    <i class=""></i> R. 40
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control r_40-section" placeholder="R. 40" style="display: none;" id="r_40" name="r_40">
+                </div>
               </div>
             </div>
+
             <div class="col-md-3">
               <div class="form-group">
-                <label for="r_102">R. 102</label>
-                <input type="text" class="form-control text-uppercase" id="r_102" name="r_102" placeholder="R. 102" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_r_102" name="check_r_102">
+                  <label for="check_r_102">
+                    <i class=""></i> R. 102
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control r_102-section" placeholder="R. 102" style="display: none;" id="r_102" name="r_102">
+                </div>
               </div>
             </div>
+
             <div class="col-md-3">
               <div class="form-group">
-                <label for="ior">IOR</label>
-                <input type="text" class="form-control text-uppercase" id="ior" name="ior" placeholder="IOR" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_ior" name="check_ior">
+                  <label for="check_ior">
+                    <i class=""></i> IOR
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control ior-section" placeholder="IOR" style="display: none;" id="ior" name="ior">
+                </div>
               </div>
             </div>
+
             <div class="col-md-3">
               <div class="form-group">
-                <label for="ioy">IOY</label>
-                <input type="text" class="form-control text-uppercase" id="ioy" name="ioy" placeholder="IOR" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_ioy" name="check_ioy">
+                  <label for="check_ioy">
+                    <i class=""></i> IOY
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control ioy-section" placeholder="IOY" style="display: none;" id="ioy" name="ioy">
+                </div>
               </div>
             </div>
+
             <div class="col-md-3">
               <div class="form-group">
-                <label for="p_blue">P. BLUE</label>
-                <input type="text" class="form-control text-uppercase" id="p_blue" name="p_blue" placeholder="P. BLUE" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_p_blue" name="check_p_blue">
+                  <label for="check_p_blue">
+                    <i class=""></i> P. Blue
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control p_blue-section" placeholder="P. Blue" style="display: none;" id="p_blue" name="p_blue">
+                </div>
               </div>
             </div>
+
             <div class="col-md-3">
               <div class="form-group">
-                <label for="p_green">P. GREEN</label>
-                <input type="text" class="form-control text-uppercase" id="p_green" name="p_green" placeholder="P. GREEN" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_p_green" name="check_p_green">
+                  <label for="check_p_green">
+                    <i class=""></i> P. Green
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control p_green-section" placeholder="P. Green" style="display: none;" id="p_green" name="p_green">
+                </div>
               </div>
             </div>
+
             <div class="col-md-3">
               <div class="form-group">
-                <label for="gold">GOLD</label>
-                <input type="text" class="form-control text-uppercase" id="gold" name="gold" placeholder="GOLD" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_gold" name="check_gold">
+                  <label for="check_gold">
+                    <i class=""></i> Gold
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control gold-section" placeholder="Gold" style="display: none;" id="gold" name="gold">
+                </div>
               </div>
             </div>
+
             <div class="col-md-3">
               <div class="form-group">
-                <label for="y6">Y6</label>
-                <input type="text" class="form-control text-uppercase" id="y6" name="y6" placeholder="Y6" autocomplete="off" required>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="check_y6" name="check_y6">
+                  <label for="check_y6">
+                    <i class=""></i> Y6
+                  </label>
+                </div> 
+                <div class="from-input">
+                  <input type="text" class="form-control y6-section" placeholder="Y6" style="display: none;" id="y6" name="y6">
+                </div>
               </div>
             </div>
+            
             <div class="col-md-3">
               <div class="form-group">
                 <label for="op1">Operator 1</label>
@@ -660,6 +797,167 @@
 
         }
       });
+    });
+
+    $('#check_batch_cutting').change(function () {
+      if ($(this).is(':checked')) {
+          $('.batch_cutting-section').slideDown(300);
+      } else {
+          $('.batch_cutting-section').slideUp(300);
+          $('#batch_cutting').val('');
+      }
+    });
+
+    $('#check_batch_cake').change(function () {
+      if ($(this).is(':checked')) {
+          $('.batch_cake-section').slideDown(300);
+      } else {
+          $('.batch_cake-section').slideUp(300);
+          $('#batch_cake').val('');
+      }
+    });
+
+    $('#check_batch_ti02').change(function () {
+      if ($(this).is(':checked')) {
+          $('.batch_ti02-section').slideDown(300);
+      } else {
+          $('.batch_ti02-section').slideUp(300);
+          $('#batch_ti02').val('');
+      }
+    });
+
+    $('#check_batch_r1').change(function () {
+      if ($(this).is(':checked')) {
+          $('.batch_r1-section').slideDown(300);
+      } else {
+          $('.batch_r1-section').slideUp(300);
+          $('#batch_r1').val('');
+      }
+    });
+
+    $('#check_batch_r3').change(function () {
+      if ($(this).is(':checked')) {
+          $('.batch_r3-section').slideDown(300);
+      } else {
+          $('.batch_r3-section').slideUp(300);
+          $('#batch_r3').val('');
+      }
+    });
+
+    $('#check_batch_y5').change(function () {
+      if ($(this).is(':checked')) {
+          $('.batch_y5-section').slideDown(300);
+      } else {
+          $('.batch_y5-section').slideUp(300);
+          $('#batch_y5').val('');
+      }
+    });
+
+    $('#check_batch_b1').change(function () {
+      if ($(this).is(':checked')) {
+          $('.batch_b1-section').slideDown(300);
+      } else {
+          $('.batch_b1-section').slideUp(300);
+          $('#batch_b1').val('');
+      }
+    });
+
+    $('#check_batch_y10').change(function () {
+      if ($(this).is(':checked')) {
+          $('.batch_y10-section').slideDown(300);
+      } else {
+          $('.batch_y10-section').slideUp(300);
+          $('#batch_y10').val('');
+      }
+    });
+    $('#check_silver').change(function () {
+      if ($(this).is(':checked')) {
+          $('.silver-section').slideDown(300);
+      } else {
+          $('.silver-section').slideUp(300);
+          $('#silver').val('');
+      }
+    });
+
+    $('#check_bpn').change(function () {
+      if ($(this).is(':checked')) {
+          $('.bpn-section').slideDown(300);
+      } else {
+          $('.bpn-section').slideUp(300);
+          $('#bpn').val('');
+      }
+    });
+
+    $('#check_r_40').change(function () {
+      if ($(this).is(':checked')) {
+          $('.r_40-section').slideDown(300);
+      } else {
+          $('.r_40-section').slideUp(300);
+          $('#r_40').val('');
+      }
+    });
+
+    $('#check_r_102').change(function () {
+      if ($(this).is(':checked')) {
+          $('.r_102-section').slideDown(300);
+      } else {
+          $('.r_102-section').slideUp(300);
+          $('#r_102').val('');
+      }
+    });
+
+    $('#check_ior').change(function () {
+      if ($(this).is(':checked')) {
+          $('.ior-section').slideDown(300);
+      } else {
+          $('.ior-section').slideUp(300);
+          $('#ior').val('');
+      }
+    });
+
+    $('#check_ioy').change(function () {
+      if ($(this).is(':checked')) {
+          $('.ioy-section').slideDown(300);
+      } else {
+          $('.ioy-section').slideUp(300);
+          $('#ioy').val('');
+      }
+    });
+
+    $('#check_p_blue').change(function () {
+      if ($(this).is(':checked')) {
+          $('.p_blue-section').slideDown(300);
+      } else {
+          $('.p_blue-section').slideUp(300);
+          $('#p_blue').val('');
+      }
+    });
+
+    $('#check_p_green').change(function () {
+      if ($(this).is(':checked')) {
+          $('.p_green-section').slideDown(300);
+      } else {
+          $('.p_green-section').slideUp(300);
+          $('#p_green').val('');
+      }
+    });
+
+    $('#check_gold').change(function () {
+      if ($(this).is(':checked')) {
+          $('.gold-section').slideDown(300);
+      } else {
+          $('.gold-section').slideUp(300);
+          $('#gold').val('');
+      }
+    });
+
+    $('#check_y6').change(function () {
+      if ($(this).is(':checked')) {
+          $('.y6-section').slideDown(300);
+      } else {
+          $('.y6-section').slideUp(300);
+          $('#y6').val('');
+      }
     });
   })
 </script>
@@ -1115,7 +1413,7 @@
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
 
-      <form id="formEdit" action="<?= base_url()?>melting/pewarnaan/update" method="POST">
+      <form id="formEdit" action="<?= base_url() ?>melting/pewarnaan/update" method="POST">
 
         <div class="modal-header">
           <h5 class="modal-title">Edit Pewarnaan</h5>
@@ -1125,7 +1423,7 @@
         </div>
 
         <div class="modal-body">
-        <input type="hidden" id="e_id_pewarna" name="id_pewarna">
+          <input type="hidden" id="e_id_pewarna" name="id_pewarna">
           <!-- ================= HEADER ================= -->
           <div class="row">
             <div class="col-md-3">
@@ -1305,10 +1603,10 @@
             <div class="col-md-3">
               <label>Forming</label>
               <select class="form-control chosen-select" id="e_forming" name="id_user">
-                  <option value="" disabled selected>- Pilih Forming - </option>
-                  <?php foreach ($res_frm as $f): ?>
-                    <option value="<?= $f['id_user'] ?>"><?= $f['nama_operator'] ?></option>
-                  <?php endforeach; ?>
+                <option value="" disabled selected>- Pilih Forming - </option>
+                <?php foreach ($res_frm as $f): ?>
+                  <option value="<?= $f['id_user'] ?>"><?= $f['nama_operator'] ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
 
@@ -1330,7 +1628,7 @@
           <div class="row">
             <div class="col-md-3"><label>Batch Ti02</label><input type="text" class="form-control" id="e_batch_ti02" name="batch_ti02"></div>
             <div class="col-md-3"><label>Batch R1</label><input type="text" class="form-control" id="e_batch_r1" name="batch_r1"></div>
-            <div class="col-md-3"><label>Batch R3</label><input type="text" class="form-control" id="e_batch_r3"name="batch_r3"></div>
+            <div class="col-md-3"><label>Batch R3</label><input type="text" class="form-control" id="e_batch_r3" name="batch_r3"></div>
             <div class="col-md-3"><label>Batch Y5</label><input type="text" class="form-control" id="e_batch_y5" name="batch_y5"></div>
             <div class="col-md-3"><label>Batch B1</label><input type="text" class="form-control" id="e_batch_b1" name="batch_b1"></div>
             <div class="col-md-3"><label>Batch Y10</label><input type="text" class="form-control" id="e_batch_y10" name="batch_y10"></div>
@@ -1368,7 +1666,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary"  onclick="if (! confirm('Apakah Anda Yakin Untuk Menimpan Data Ini? Tolong Untuk Di Check Kembali. Dan Jangan Lupa Untuk Menginputkan Barangnya')) { return false; }">Update</button>
+          <button type="submit" class="btn btn-primary" onclick="if (! confirm('Apakah Anda Yakin Untuk Menimpan Data Ini? Tolong Untuk Di Check Kembali. Dan Jangan Lupa Untuk Menginputkan Barangnya')) { return false; }">Update</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
 
@@ -1484,8 +1782,8 @@
         .trigger('chosen:updated');
 
       $('#e_forming')
-      .val(btn.data('id_user'))
-      .trigger('chosen:updated')
+        .val(btn.data('id_user'))
+        .trigger('chosen:updated')
 
       $('#e_batch_gel')
         .val(btn.data('batch_masak'))
