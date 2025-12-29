@@ -21,6 +21,7 @@ class Pewarnaan extends CI_Controller
 		$data['res_cr'] = $this->M_tambah_schedule->get_cr()->result_array();
 		$data['res_batch'] = $this->M_masak_gelatin->get_batch()->result_array();
 		$data['res_frm'] = $this->M_users->get_frm()->result_array();
+		$data['generate_no_urut'] = $this->M_pewarnaan->generate_no_urut();
 		$this->template->load('template', 'content/melting/proses/pewarnaan/pewarnaan_data', $data);
 		// print_r($data);
 
@@ -113,7 +114,7 @@ class Pewarnaan extends CI_Controller
 		$data['jam_pw'] = $this->input->post('jam_pw', TRUE);
 		$data['vac1'] = $this->input->post('vac1', TRUE);
 		$data['vac2'] = $this->input->post('vac2', TRUE);
-		$data['visco'] = $this->input->post('visco_cps', TRUE);
+		$data['visco'] = $this->input->post('visco', TRUE);
 		$data['tekanan'] = $this->input->post('tekanan', TRUE);
 		$data['cek_warna'] = $this->input->post('cek_warna', TRUE);
 		$data['id_user'] = $this->input->post('id_user', TRUE);

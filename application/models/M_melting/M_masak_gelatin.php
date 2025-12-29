@@ -125,6 +125,8 @@ class M_masak_gelatin extends CI_Model
     $tahun = date('Y'); // 2025
     $bulan = date('m'); // 12
 
+    $prefix = "MG";
+
     // Ambil nomor terakhir di bulan & tahun yang sama
     $sql = "
         SELECT 
@@ -133,7 +135,7 @@ class M_masak_gelatin extends CI_Model
         WHERE batch_masak LIKE ?
     ";
 
-    $like = $tahun . '/' . $bulan . '/%';
+    $like = $prefix . '-' .   $tahun . '/' . $bulan . '/%';
 
     $row = $this->db->query($sql, [$like])->row();
 
@@ -141,7 +143,7 @@ class M_masak_gelatin extends CI_Model
     $next_no = ($row && $row->last_no) ? $row->last_no + 1 : 1;
 
     // Format: 2025/12/001
-    $batch_masak = sprintf('%s/%s/%03d', $tahun, $bulan, $next_no);
+    $batch_masak = sprintf('%s-%s/%s/%03d', $prefix,$tahun, $bulan, $next_no);
 
     return $batch_masak;
 }

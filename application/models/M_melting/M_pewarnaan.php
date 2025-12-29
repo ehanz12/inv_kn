@@ -62,10 +62,33 @@ class M_pewarnaan extends CI_Model
         return $this->db->query($sql);
     }
 
-    // public function cek_kode_barang($kode_barang){
-    //     $sql = "
-    //         SELECT COUNT(a.kode_barang) count_sj FROM tb_barang a
-    //         WHERE a.kode_barang = '$kode_barang' AND a.is_deleted = 0";
-    //     return $this->db->query($sql);
-    // }
+   public function generate_no_urut()
+{
+    date_default_timezone_set('Asia/Jakarta');
+
+    $tahun = date('Y'); // 2025
+    $bulan = date('m'); // 12
+
+    $prefix = "MW";
+
+    // Ambil nomor terakhir di bulan & tahun yang sama
+    $sql = "
+        SELECT 
+            MAX(CAST(SUBSTRING_INDEX(no_urut, '/', -1) AS UNSIGNED)) AS last_no
+        FROM tb_mlt_pewarnaan
+        WHERE no_urut LIKE ?
+    ";
+
+    $like = $prefix . '-' .   $tahun . '/' . $bulan . '/%';
+
+    $row = $this->db->query($sql, [$like])->row();
+
+    // Jika belum ada → mulai dari 1
+    $next_no = ($row && $row->last_no) ? $row->last_no + 1 : 1;
+
+    // Format: 2025/12/001
+    $no_urut = sprintf('%s-%s/%s/%03d', $prefix,$tahun, $bulan, $next_no);
+
+    return $no_urut;
+}
 }
