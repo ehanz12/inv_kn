@@ -1220,7 +1220,7 @@ $this->view('content/lab/pemeriksaan_bahan_tambahan/titaniumdioxide');
     $(document).ready(function() {
         // Detail Modal
         $('#detail').on('show.bs.modal', function(event) {
-            var data_id_adm_bm = $(event.relatedTarget).data('id_adm_bm')
+            var id_adm_bm = $(event.relatedTarget).data('id_adm_bm')
             var no_surat_jalan = $(event.relatedTarget).data('no_sjl')
             var no_batch = $(event.relatedTarget).data('no_batch')
             var tgl = $(event.relatedTarget).data('tgl')

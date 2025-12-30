@@ -127,33 +127,33 @@
             <label for="level">Departement</label>
             <select class="form-control chosen-select" id="level" name="departement" autocomplete="off" required>
               <option value="" disabled selected hidden> - Pilih Departement - </option>
-              <option value="admin">Admin</option>
-              <option value="accounting">Accounting</option>
+              <option value="Admin">Admin</option>
+              <option value="Accounting">Accounting</option>
               <option value="Gudang Bahan Baku">Gudang Bahan Baku</option>
               <option value="Gudang Distribusi">Gudang Distribusi</option>
-              <option value="lab">Lab</option>
-              <option value="melting">Melting</option>
-              <option value="marketing">Marketing</option>
-              <option value="packing">Packing</option>
-              <option value="utility">Utility</option>
-              <option value="stockkeeper">Stock Keeper</option>
-              <option value="ppic">PPIC</option>
-              <option value="forming">Forming</option>
-              <option value="finishing">Finishing</option>
-              <option value="maintenance">Maintenance</option>
-              <option value="workshop">Workshop</option>
+              <option value="Lab">Lab</option>
+              <option value="Melting">Melting</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Packing">Packing</option>
+              <option value="Utility">Utility</option>
+              <option value="Stockkeeper">Stock Keeper</option>
+              <option value="Ppic">PPIC</option>
+              <option value="Forming">Forming</option>
+              <option value="Finishing">Finishing</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Workshop">Workshop</option>
             </select>
           </div>
           <div class="form-group">
             <label for="jabatan">Jabatan</label>
             <select class="form-control chosen-select" id="jabatan" name="jabatan" autocomplete="off" required>
               <option value="" disabled selected hidden> - Pilih Jabatan - </option>
-              <option value="admin">Admin</option>
-              <option value="operator">Operator</option>
-              <option value="supervisor">Supervisor</option>
-              <option value="manager">Manager</option>
-              <option value="plant_manager">Plant Manager</option>
-              <option value="direktur">Direktur</option>
+              <option value="Admin">Admin</option>
+              <option value="Operator">Operator</option>
+              <option value="Supervisor">Supervisor</option>
+              <option value="Manager">Manager</option>
+              <option value="Plant manager">Plant Manager</option>
+              <option value="Direktur">Direktur</option>
             </select>
           </div>
         </div>
@@ -190,29 +190,29 @@
           <div class="form-group">
             <label for="e_level">Departement</label>
             <select class="form-control chosen-select" id="e_level" name="departement" required>
-              <option value="admin">Admin</option>
-              <option value="accounting">Accounting</option>
-              <option value="gudang_bahan_baku">Gudang Bahan Baku</option>
-              <option value="gudang_distribusi">Gudang Distribusi</option>
-              <option value="lab">Lab</option>
-              <option value="melting">Melting</option>
-              <option value="marketing">Marketing</option>
-              <option value="packing">Packing</option>
-              <option value="utility">Utility</option>
-              <option value="stockkeeper">Stock Keeper</option>
-              <option value="ppic">PPIC</option>
+              <option value="Admin">Admin</option>
+              <option value="Accounting">Accounting</option>
+              <option value="Gudang_bahan_baku">Gudang Bahan Baku</option>
+              <option value="Gudang_distribusi">Gudang Distribusi</option>
+              <option value="Lab">Lab</option>
+              <option value="Melting">Melting</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Packing">Packing</option>
+              <option value="Utility">Utility</option>
+              <option value="Stockkeeper">Stock Keeper</option>
+              <option value="Ppic">PPIC</option>
             </select>
           </div>
           <div class="form-group">
             <label for="e_jabatan">Jabatan</label>
             <select class="form-control chosen-select" id="e_jabatan" name="jabatan" required>
               <option value="" disabled selected hidden> - Pilih Jabatan - </option>
-              <option value="admin">Admin</option>
-              <option value="operator">Operator</option>
-              <option value="supervisor">Supervisor</option>
-              <option value="manager">Manager</option>
-              <option value="plant_manager">Plant Manager</option>
-              <option value="direktur">Direktur</option>
+              <option value="Admin">Admin</option>
+              <option value="Operator">Operator</option>
+              <option value="Supervisor">Supervisor</option>
+              <option value="Manager">Manager</option>
+              <option value="Plant manager">Plant Manager</option>
+              <option value="Direktur">Direktur</option>
             </select>
           </div>
         </div>

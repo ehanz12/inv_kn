@@ -36,6 +36,11 @@ class M_prc_ppb_masterbarang extends CI_Model
         WHERE a.is_deleted = 0 $where ORDER BY kode_barang ASC";
         return $this->db->query($sql);
     }
+    public function get_barang($dept)
+    {
+        $sql = "SELECT * ,(COALESCE(`in`, 0) - COALESCE(`out`, 0)) AS stok FROM tb_prc_master_barang WHERE departement='$dept'";
+        return $this->db->query($sql);
+    }
 
 
     public function update_supplier($data)

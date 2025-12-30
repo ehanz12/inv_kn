@@ -30,21 +30,21 @@
                 <div class="card">
                   <div class="card-header">
                     <h5>Data Rencana Belanja</h5>
-                    <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add">
-                      <i class="feather icon-user-plus"></i>Tambah Rencana Belanja
-                    </button>
-                    <!-- <div class="float-right">
+                    <div class="float-right">
                       <div class="input-group">
+                        <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#add">
+                          <i class="feather icon-user-plus"></i>Tambah Rencana Belanja
+                        </button>
                         <input type="text" id="filter_tgl" value="<?= $tgl == null ? '' : $tgl ?>" class="form-control datepicker" placeholder="Filter Dari Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
                         <input type="text" id="filter_tgl2" value="<?= $tgl2 == null ? '' : $tgl2 ?>" class="form-control datepicker" placeholder="Filter Sampai Tanggal" autocomplete="off" aria-label="Recipient's username" aria-describedby="basic-addon2">
                         <div class="btn-group">
                           <button class="btn btn-secondary btn-sm" id="lihat" type="button">Lihat</button>
                         </div>
                         <div class="btn-group">
-                          <a href="<?= base_url() ?>Purchasing/purchasing_rh/purchasing_rh" style="width: 40px;" class="btn btn-warning"  type="button"><i class="feather icon-refresh-ccw"></i></a>
+                          <a href="<?= base_url() ?>Purchasing/purchasing_rb/purchasing_rb" style="width: 40px;" class="btn btn-warning" type="button"><i class="feather icon-refresh-ccw"></i></a>
                         </div>
                       </div>
-                    </div> -->
+                    </div>
                     <br><br>
                   </div>
                   <div class="card-block table-border-style">
@@ -69,44 +69,43 @@
                           ?>
                             <tr>
                               <th scope="row"><?= $no++ ?></th>
-                                <td><?= $tgl_rb ?></td>
-                                <td class="text-center">
-                                    <span class="btn btn-sm btn-info"
-                                    data-toggle="modal"
-                                    data-target="#detail"
-                                    data-no_rb="<?= $k['no_rb'] ?>"
-                                    data-tgl_rb="<?= $tgl_rb ?>">
-                                        <?= $k['no_rb'] ?>
-                                    </span>
-                                </td>
-
+                              <td><?= $tgl_rb ?></td>
                               <td class="text-center">
-                                <?php if($level == "admin") : ?>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                  <a type="button" 
-                                  class="btn btn-success btn-square btn-sm text-light" 
-                                  href="<?= base_url()?>Purchasing/Purchasing_rb/purchasing_rb/print_rb/<?= str_replace('/', '--', $k['no_rb']) ?>"
-                                  >
-                                  <i class="feather icon-file"></i>Centak
-                                  </a>
-                                </div>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                  <button type="button" 
-                                  class="btn btn-primary btn-square btn-sm text-light" 
+                                <span class="btn btn-sm btn-info"
                                   data-toggle="modal"
-                                  data-target="#edit"
+                                  data-target="#detail"
                                   data-no_rb="<?= $k['no_rb'] ?>"
                                   data-tgl_rb="<?= $tgl_rb ?>">
-                                  <i class="feather icon-file"></i>Edit
-                                  </button>
-                                </div>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                  <a type="button" class="btn btn-danger btn-square text-light btn-sm" href="<?= base_url() ?>purchasing/purchasing_rb/purchasing_rb/delete/<?= str_replace('/', '--', $k['no_rb']) ?>" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
-                                    <i class="feather icon-trash-2"></i>Delete
-                                  </a>
-                                </div>
+                                  <?= $k['no_rb'] ?>
+                                </span>
                               </td>
-                              <?php endif; ?>
+
+                              <td class="text-center">
+                                <?php if ($level == "admin") : ?>
+                                  <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button"
+                                      class="btn btn-success btn-square btn-sm text-light"
+                                      href="<?= base_url() ?>Purchasing/Purchasing_rb/purchasing_rb/print_rb/<?= str_replace('/', '--', $k['no_rb']) ?>">
+                                      <i class="feather icon-file"></i>Centak
+                                    </a>
+                                  </div>
+                                  <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button"
+                                      class="btn btn-primary btn-square btn-sm text-light"
+                                      data-toggle="modal"
+                                      data-target="#edit"
+                                      data-no_rb="<?= $k['no_rb'] ?>"
+                                      data-tgl_rb="<?= $tgl_rb ?>">
+                                      <i class="feather icon-file"></i>Edit
+                                    </button>
+                                  </div>
+                                  <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button" class="btn btn-danger btn-square text-light btn-sm" href="<?= base_url() ?>purchasing/purchasing_rb/purchasing_rb/delete/<?= str_replace('/', '--', $k['no_rb']) ?>" onclick="if (! confirm('Apakah Anda Yakin?')) { return false; }">
+                                      <i class="feather icon-trash-2"></i>Delete
+                                    </a>
+                                  </div>
+                              </td>
+                            <?php endif; ?>
                             </tr>
                           <?php } ?>
                         </tbody>
@@ -124,29 +123,51 @@
 </section>
 
 <script type="text/javascript">
-  $('#export').click(function() {
-    var filter_nama = $('#filter_barang').find(':selected').val();
-    var filter_tgl = $('#filter_tgl').val();
-    var filter_tgl2 = $('#filter_tgl2').val();
+  $(document).ready(function() {
 
-    var newFilterTgl = filter_tgl.split("/")[2] + "-" + filter_tgl.split("/")[1] + "-" + filter_tgl.split("/")[0];
-    var newFilterTgl2 = filter_tgl2.split("/")[2] + "-" + filter_tgl2.split("/")[1] + "-" + filter_tgl2.split("/")[0];
+    $('#lihat').click(function() {
+      var filter_tgl = $('#filter_tgl').val();
+      var filter_tgl2 = $('#filter_tgl2').val();
 
-    if (filter_tgl === '' && filter_tgl2 !== '') {
-      window.location = "<?= base_url() ?>gudang_bahanbaku/Laporan_barang_masuk?alert=warning&msg=dari tanggal belum diisi";
-      alert("Dari tanggal belum diisi")
-    } else if (filter_tgl !== '' && filter_tgl2 === '') {
-      window.location = "<?= base_url() ?>gudang_bahanbaku/Laporan_barang_masuk?alert=warning&msg=sampai tanggal belum diisi";
-    } else {
-      const query = new URLSearchParams({
-        name: filter_nama,
-        date_from: newFilterTgl,
-        date_until: newFilterTgl2
-      });
-      var url = "<?= base_url() ?>gudang_bahanbaku/Laporan_barang_masuk/pdf_laporan_barang_masuk?" + query.toString();
-      window.open(url, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes');
-    }
-  });
+      var newFilterTgl = filter_tgl.split("/")[2] + "-" + filter_tgl.split("/")[1] + "-" + filter_tgl.split("/")[0];
+      var newFilterTgl2 = filter_tgl2.split("/")[2] + "-" + filter_tgl2.split("/")[1] + "-" + filter_tgl2.split("/")[0];
+      if (filter_tgl == '' && filter_tgl2 != '') {
+        window.location = "<?= base_url() ?>purchasing/purchasing_rb/purchasing_rb?alert=warning&msg=dari tanggal belum diisi";
+      } else if (filter_tgl != '' && filter_tgl2 == '') {
+        window.location = "<?= base_url() ?>purchasing/purchasing_rb/purchasing_rb?alert=warning&msg=sampai tanggal belum diisi";
+      } else {
+        const query = new URLSearchParams({
+          date_from: filter_tgl,
+          date_until: filter_tgl2
+        })
+        window.location = "<?= base_url() ?>/purchasing/purchasing_rb/purchasing_rb/index?" + query.toString()
+      }
+    });
+
+    $('#export').click(function() {
+      var filter_nama = $('#filter_barang').find(':selected').val();
+      var filter_tgl = $('#filter_tgl').val();
+      var filter_tgl2 = $('#filter_tgl2').val();
+
+      var newFilterTgl = filter_tgl.split("/")[2] + "-" + filter_tgl.split("/")[1] + "-" + filter_tgl.split("/")[0];
+      var newFilterTgl2 = filter_tgl2.split("/")[2] + "-" + filter_tgl2.split("/")[1] + "-" + filter_tgl2.split("/")[0];
+
+      if (filter_tgl === '' && filter_tgl2 !== '') {
+        window.location = "<?= base_url() ?>gudang_bahanbaku/Laporan_barang_masuk?alert=warning&msg=dari tanggal belum diisi";
+        alert("Dari tanggal belum diisi")
+      } else if (filter_tgl !== '' && filter_tgl2 === '') {
+        window.location = "<?= base_url() ?>gudang_bahanbaku/Laporan_barang_masuk?alert=warning&msg=sampai tanggal belum diisi";
+      } else {
+        const query = new URLSearchParams({
+          name: filter_nama,
+          date_from: newFilterTgl,
+          date_until: newFilterTgl2
+        });
+        var url = "<?= base_url() ?>gudang_bahanbaku/Laporan_barang_masuk/pdf_laporan_barang_masuk?" + query.toString();
+        window.open(url, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes');
+      }
+    });
+  })
 </script>
 
 <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -179,11 +200,11 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="id_prc_rh">Nama barang</label>
-                <select  class="form-control chosen-select" id="id_prc_rh" name="id_prc_rh" placeholder="Form A/C" readonly>
-                    <option value="">-- Pilih Nama Barang --</option>
-                    <?php foreach ($res_barang_rh as $brg) : ?>
-                      <option value="<?= $brg['id_prc_rh'] ?>"><?= $brg['nama_barang'] ?> | <?= $brg['kode_barang'] ?></option>
-                    <?php endforeach; ?>
+                <select class="form-control chosen-select" id="id_prc_rh" name="id_prc_rh" placeholder="Form A/C" readonly>
+                  <option value="">-- Pilih Nama Barang --</option>
+                  <?php foreach ($res_barang_rh as $brg) : ?>
+                    <option value="<?= $brg['id_prc_rh'] ?>"><?= $brg['nama_barang'] ?> | <?= $brg['kode_barang'] ?></option>
+                  <?php endforeach; ?>
                 </select>
               </div>
             </div>
@@ -201,7 +222,7 @@
                   <th class="text-center">Jumlah</th>
                   <th class="text-center">Harga</th>
                   <th class="text-right">Total</th>
-                <th class="text-center">Aksi</th>
+                  <th class="text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody id="a-ppb_barang"></tbody>
@@ -231,55 +252,58 @@
     $('#add').on('show.bs.modal', function(event) {
 
       $(this).find('#tgl_rh').datepicker().on('show.bs.modal', function(event) {
-      event.stopImmediatePropagation();
-    });
+        event.stopImmediatePropagation();
+      });
 
-    // Load barang via AJAX
-    $("#id_prc_rh").change(function () {
-          // Function format Rupiah
-              function formatAngka(angka) {
-                  if (!angka) return 'Rp 0';
-                  
-                  // Convert ke number jika string
-                  var number = parseInt(angka) || 0;
-                  
-                  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-              }
-              function formatRupiah(angka) {
-                  if (!angka) return 'Rp 0';
-                  
-                  // Convert ke number jika string
-                  var number = parseInt(angka) || 0;
-                  
-                  return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-              }
-            let id = $(this).val();
-            let text = $("#id_prc_rh option:selected").text();
+      // Load barang via AJAX
+      $("#id_prc_rh").change(function() {
+        // Function format Rupiah
+        function formatAngka(angka) {
+          if (!angka) return 'Rp 0';
 
-            // Cek duplikat
-            let exists = false;
-            $("input[name='id_prc_rh[]']").each(function () {
-                if ($(this).val() == id) exists = true;
-            });
+          // Convert ke number jika string
+          var number = parseInt(angka) || 0;
 
-            if (exists) {
-                alert("Barang sudah dipilih!");
-                return;
-            }
+          return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
 
-            // Disable option di dropdown
-            $("#id_prc_rh option[value='" + id + "']").prop("disabled", true);
-            $("#id_prc_rh").trigger("chosen:updated");
+        function formatRupiah(angka) {
+          if (!angka) return 'Rp 0';
 
-            // LOAD BARANG VIA AJAX
-            $.ajax({
-                url: "<?= base_url('Purchasing/Purchasing_rb/Purchasing_rb/get_barang_rh') ?>",
-                type: "POST",
-                data: { id_prc_rh: id },
-                dataType: "json",
-                success: function(item) {
+          // Convert ke number jika string
+          var number = parseInt(angka) || 0;
 
-                    let html = `
+          return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+        let id = $(this).val();
+        let text = $("#id_prc_rh option:selected").text();
+
+        // Cek duplikat
+        let exists = false;
+        $("input[name='id_prc_rh[]']").each(function() {
+          if ($(this).val() == id) exists = true;
+        });
+
+        if (exists) {
+          alert("Barang sudah dipilih!");
+          return;
+        }
+
+        // Disable option di dropdown
+        $("#id_prc_rh option[value='" + id + "']").prop("disabled", true);
+        $("#id_prc_rh").trigger("chosen:updated");
+
+        // LOAD BARANG VIA AJAX
+        $.ajax({
+          url: "<?= base_url('Purchasing/Purchasing_rb/Purchasing_rb/get_barang_rh') ?>",
+          type: "POST",
+          data: {
+            id_prc_rh: id
+          },
+          dataType: "json",
+          success: function(item) {
+
+            let html = `
                         <tr data-id="${id}">
                             <input type="hidden" name="id_prc_rh[]" value="${item.id_prc_rh}">
 
@@ -301,23 +325,23 @@
                         </tr>
                     `;
 
-                    $("#a-ppb_barang").append(html);
-                }
-            });
+            $("#a-ppb_barang").append(html);
+          }
         });
-        $(document).on("click", ".remove-row", function () {
-    let id = $(this).data("id");
-
-    // hapus row dari tabel
-    $(this).closest("tr").remove();
-
-    // aktifkan kembali option di dropdown
-    $("#id_prc_rh option[value='" + id + "']").prop("disabled", false);
-    $("#id_prc_rh").trigger("chosen:updated");
-});
-
       });
+      $(document).on("click", ".remove-row", function() {
+        let id = $(this).data("id");
+
+        // hapus row dari tabel
+        $(this).closest("tr").remove();
+
+        // aktifkan kembali option di dropdown
+        $("#id_prc_rh option[value='" + id + "']").prop("disabled", false);
+        $("#id_prc_rh").trigger("chosen:updated");
+      });
+
     });
+  });
 </script>
 
 <div class="modal fade" id="detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -387,47 +411,49 @@
 </div>
 
 <script type="text/javascript">
- $(document).ready(function() {
+  $(document).ready(function() {
     $('#detail').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var no_rb = button.data('no_rb');
-        var tgl_rb = button.data('tgl_rb');
-        var modal = $(this);
-        modal.find('#d-no_rb').val(no_rb);
-        modal.find('#d-tgl_rh').val(tgl_rb);
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var no_rb = button.data('no_rb');
+      var tgl_rb = button.data('tgl_rb');
+      var modal = $(this);
+      modal.find('#d-no_rb').val(no_rb);
+      modal.find('#d-tgl_rh').val(tgl_rb);
 
-        // Function format Rupiah
-        function formatAngka(angka) {
-            if (!angka) return 'Rp 0';
-            
-            // Convert ke number jika string
-            var number = parseInt(angka) || 0;
-            
-            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-        // Function format Rupiah
-        function formatRupiah(angka) {
-            if (!angka) return 'Rp 0';
-            
-            // Convert ke number jika string
-            var number = parseInt(angka) || 0;
-            
-            return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-        // Load barang via AJAX
-        $.ajax({
-            url: "<?= base_url('Purchasing/Purchasing_rb/Purchasing_rb/get_barang_rb') ?>",
-            type: "POST",
-            data: { no_rb : no_rb },
-            dataType: "json",
-            success: function(response) {
-                console.log(no_rb);
-                var $id = $('#v-ppb_barang');
-                $id.empty();
-                
-                if (response && response.length > 0) {
-                    response.forEach(function(item) {
-                        $id.append(`
+      // Function format Rupiah
+      function formatAngka(angka) {
+        if (!angka) return 'Rp 0';
+
+        // Convert ke number jika string
+        var number = parseInt(angka) || 0;
+
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+      // Function format Rupiah
+      function formatRupiah(angka) {
+        if (!angka) return 'Rp 0';
+
+        // Convert ke number jika string
+        var number = parseInt(angka) || 0;
+
+        return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+      // Load barang via AJAX
+      $.ajax({
+        url: "<?= base_url('Purchasing/Purchasing_rb/Purchasing_rb/get_barang_rb') ?>",
+        type: "POST",
+        data: {
+          no_rb: no_rb
+        },
+        dataType: "json",
+        success: function(response) {
+          console.log(no_rb);
+          var $id = $('#v-ppb_barang');
+          $id.empty();
+
+          if (response && response.length > 0) {
+            response.forEach(function(item) {
+              $id.append(`
                             <tr>
                                 <td>${item.kode_barang || ''}</td>
                                 <td>${item.nama_barang || ''}</td>
@@ -440,22 +466,22 @@
                                 <td class="text-right">${formatRupiah(item.total_rh) || '0'}&nbsp;</td>
                             </tr>
                         `);
-                    });
-                } else {
-                    $id.append(`
+            });
+          } else {
+            $id.append(`
                         <tr>
                             <td colspan="9" class="text-center">Tidak ada data barang</td>
                         </tr>
                     `);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("Error:", error);
-                alert("Terjadi kesalahan saat memuat data barang");
-            }
-        });
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error("Error:", error);
+          alert("Terjadi kesalahan saat memuat data barang");
+        }
+      });
     });
-});
+  });
 </script>
 
 <!-- ===========================================
@@ -482,8 +508,8 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label>Tanggal Rencana</label>
-                <input type="text" class="form-control datepicker" 
-                       id="edit_tgl_rb" name="tgl_rb" autocomplete="off" required>
+                <input type="text" class="form-control datepicker"
+                  id="edit_tgl_rb" name="tgl_rb" autocomplete="off" required>
               </div>
             </div>
 
@@ -491,8 +517,8 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label>No Rencana</label>
-                <input type="text" class="form-control" 
-                       id="edit_no_rb" name="no_rb" readonly>
+                <input type="text" class="form-control"
+                  id="edit_no_rb" name="no_rb" readonly>
               </div>
             </div>
 
@@ -500,13 +526,13 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label>Nama Barang</label>
-                <select class="form-control chosen-select" 
-                        id="edit_id_prc_rh" name="edit_id_prc_rh">
+                <select class="form-control chosen-select"
+                  id="edit_id_prc_rh" name="edit_id_prc_rh">
                   <option value="">-- Pilih Nama Barang --</option>
                   <?php foreach ($res_barang_rh as $brg) : ?>
-                      <option value="<?= $brg['id_prc_rh'] ?>">
-                          <?= $brg['nama_barang'] ?> | <?= $brg['kode_barang'] ?>
-                      </option>
+                    <option value="<?= $brg['id_prc_rh'] ?>">
+                      <?= $brg['nama_barang'] ?> | <?= $brg['kode_barang'] ?>
+                    </option>
                   <?php endforeach; ?>
                 </select>
               </div>
@@ -536,8 +562,8 @@
           <div class="row">
             <div class="col-md-4">
               <label>Prc Admin</label>
-              <input type="text" class="form-control" 
-                     value="<?= $this->session->userdata('nama_operator') ?>" readonly>
+              <input type="text" class="form-control"
+                value="<?= $this->session->userdata('nama_operator') ?>" readonly>
             </div>
           </div>
 
@@ -557,58 +583,61 @@
 
 
 <script>
-$(document).ready(function() {
+  $(document).ready(function() {
 
     // === LOAD DATA EDIT ===
-    $("#edit").on("show.bs.modal", function(e){
+    $("#edit").on("show.bs.modal", function(e) {
 
       function formatRupiah(angka) {
-            if (!angka) return 'Rp 0';
-            
-            // Convert ke number jika string
-            var number = parseInt(angka) || 0;
-            
-            return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
+        if (!angka) return 'Rp 0';
+
+        // Convert ke number jika string
+        var number = parseInt(angka) || 0;
+
+        return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+
       function formatAngka(angka) {
-            if (!angka) return 'Rp 0';
-            
-            // Convert ke number jika string
-            var number = parseInt(angka) || 0;
-            
-            return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
+        if (!angka) return 'Rp 0';
 
-        let tgl_rb = $(e.relatedTarget).data("tgl_rb");
-        $("#edit_tgl_rb").val(tgl_rb);
-        let no_rb = $(e.relatedTarget).data("no_rb");
-        $("#edit_no_rb").val(no_rb);
+        // Convert ke number jika string
+        var number = parseInt(angka) || 0;
 
-        $(this).find('#edit_tgl_rb').datepicker().on('show.bs.modal', function(event) {
-          event.stopImmediatePropagation();
-        });
-        // Clear table
-        $("#edit-ppb_barang").html("");
+        return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
 
-        // Clear disabled options
-        $("#edit_id_prc_rh option").prop("disabled", false);
+      let tgl_rb = $(e.relatedTarget).data("tgl_rb");
+      $("#edit_tgl_rb").val(tgl_rb);
+      let no_rb = $(e.relatedTarget).data("no_rb");
+      $("#edit_no_rb").val(no_rb);
 
-        
-        // AJAX load barang lama
-        $.ajax({
-            url: "<?= base_url('Purchasing/Purchasing_rb/Purchasing_rb/get_barang_rb') ?>",
-            type: "POST",
-            data: { no_rb:no_rb },
-            dataType:"json",
-            success:function(data){
+      $(this).find('#edit_tgl_rb').datepicker().on('show.bs.modal', function(event) {
+        event.stopImmediatePropagation();
+      });
+      // Clear table
+      $("#edit-ppb_barang").html("");
 
-                $.each(data, function(i,item){
+      // Clear disabled options
+      $("#edit_id_prc_rh option").prop("disabled", false);
 
-                    // Disable dropdown for existing
-                    $("#edit_id_prc_rh option[value='"+item.id_prc_rh+"']")
-                        .prop("disabled", true);
 
-                    let row = `
+      // AJAX load barang lama
+      $.ajax({
+        url: "<?= base_url('Purchasing/Purchasing_rb/Purchasing_rb/get_barang_rb') ?>",
+        type: "POST",
+        data: {
+          no_rb: no_rb
+        },
+        dataType: "json",
+        success: function(data) {
+
+          $.each(data, function(i, item) {
+
+            // Disable dropdown for existing
+            $("#edit_id_prc_rh option[value='" + item.id_prc_rh + "']")
+              .prop("disabled", true);
+
+            let row = `
                         <tr data-id="${item.id_prc_rh}">
                             <input type="hidden" name="id_prc_rh[]" value="${item.id_prc_rh}">
 
@@ -628,53 +657,55 @@ $(document).ready(function() {
                         </tr>
                     `;
 
-                    $("#edit-ppb_barang").append(row);
-                });
+            $("#edit-ppb_barang").append(row);
+          });
 
-                $("#edit_id_prc_rh").trigger("chosen:updated");
-            }
-        });
+          $("#edit_id_prc_rh").trigger("chosen:updated");
+        }
+      });
 
     });
 
-    
+
     // === ADD BARANG BARU KE EDIT ===
-    $("#edit_id_prc_rh").change(function(){
-      
+    $("#edit_id_prc_rh").change(function() {
+
       function formatRupiah(angka) {
-            if (!angka) return 'Rp 0';
-            
-            // Convert ke number jika string
-            var number = parseInt(angka) || 0;
-            
-            return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-        let id = $(this).val();
+        if (!angka) return 'Rp 0';
 
-        // Check duplicate
-        let exist = false;
-        $("input[name='id_prc_rh[]']").each(function(){
-            if($(this).val() == id) exist = true;
-        });
+        // Convert ke number jika string
+        var number = parseInt(angka) || 0;
 
-        if (exist){
-            alert("Barang ini sudah ada!");
-            return;
-        }
+        return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+      let id = $(this).val();
 
-        // Disable option
-        $("#edit_id_prc_rh option[value='"+id+"']").prop("disabled", true);
-        $("#edit_id_prc_rh").trigger("chosen:updated");
+      // Check duplicate
+      let exist = false;
+      $("input[name='id_prc_rh[]']").each(function() {
+        if ($(this).val() == id) exist = true;
+      });
 
-        // Load barang via AJAX
-        $.ajax({
-            url: "<?= base_url('Purchasing/Purchasing_rb/Purchasing_rb/get_barang_rh') ?>",
-            type: "POST",
-            data: { id_prc_rh:id },
-            dataType: "json",
-            success: function(item){
+      if (exist) {
+        alert("Barang ini sudah ada!");
+        return;
+      }
 
-                let row = `
+      // Disable option
+      $("#edit_id_prc_rh option[value='" + id + "']").prop("disabled", true);
+      $("#edit_id_prc_rh").trigger("chosen:updated");
+
+      // Load barang via AJAX
+      $.ajax({
+        url: "<?= base_url('Purchasing/Purchasing_rb/Purchasing_rb/get_barang_rh') ?>",
+        type: "POST",
+        data: {
+          id_prc_rh: id
+        },
+        dataType: "json",
+        success: function(item) {
+
+          let row = `
                     <tr data-id="${id}">
                         <input type="hidden" name="id_prc_rh[]" value="${item.id_prc_rh}">
 
@@ -694,24 +725,24 @@ $(document).ready(function() {
                     </tr>
                 `;
 
-                $("#edit-ppb_barang").append(row);
-            }
-        });
+          $("#edit-ppb_barang").append(row);
+        }
+      });
 
     });
 
     // === REMOVE ROW (RESTORE DROPDOWN OPTION) ===
-    $(document).on("click",".edit-remove-row",function(){
+    $(document).on("click", ".edit-remove-row", function() {
 
-        let id = $(this).data("id");
+      let id = $(this).data("id");
 
-        $(this).closest("tr").remove();
+      $(this).closest("tr").remove();
 
-        $("#edit_id_prc_rh option[value='"+id+"']")
-            .prop("disabled",false);
+      $("#edit_id_prc_rh option[value='" + id + "']")
+        .prop("disabled", false);
 
-        $("#edit_id_prc_rh").trigger("chosen:updated");
+      $("#edit_id_prc_rh").trigger("chosen:updated");
     });
 
-});
+  });
 </script>

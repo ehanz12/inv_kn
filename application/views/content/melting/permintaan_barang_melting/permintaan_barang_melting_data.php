@@ -252,18 +252,20 @@
             .append('<option value="" disabled selected hidden>- Pilih No Batch & Nama Barang -</option>');
 
           $.each(data, function(i, item) {
-            $('#no_batch_add').append(`
-            <option 
-              value="${item.no_batch}"
-              data-nama_barang="${item.nama_barang}"
-              data-stok="${item.stok}"
-              data-satuan="${item.satuan}"
-              data-id_prc_master_barang="${item.id_prc_master_barang}"
-              data-id_adm_bm="${item.id_adm_bm}"
-            >
-          ${item.nama_barang} | ${item.no_batch}
-            </option>
-          `);
+            if(item.stok != 0) {
+              $('#no_batch_add').append(`
+              <option 
+                value="${item.no_batch}"
+                data-nama_barang="${item.nama_barang}"
+                data-stok="${item.stok}"
+                data-satuan="${item.satuan}"
+                data-id_prc_master_barang="${item.id_prc_master_barang}"
+                data-id_adm_bm="${item.id_adm_bm}"
+              >
+            ${item.nama_barang} | ${item.no_batch}
+              </option>
+            `);
+            }
           });
 
           $('#no_batch_add').trigger("chosen:updated");

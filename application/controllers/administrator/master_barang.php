@@ -27,7 +27,6 @@ class master_barang extends CI_Controller
     $data['nama_barang'] = $nama_barang; // Setel ini sesuai dengan kebutuhan
     $data['jenis_barang'] = $jenis_barang; // Setel ini sesuai dengan kebutuhan
     // Misalnya jika Anda mendapatkan nama barang yang dipilih
-
     // Memuat view dengan data yang diperlukan
     $this->template->load('template', 'content/administrator/master_barang', $data);
 }

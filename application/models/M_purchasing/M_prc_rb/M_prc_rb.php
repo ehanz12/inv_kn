@@ -34,9 +34,24 @@ class M_prc_rb extends CI_Model
         return $this->session->userdata("id_user");
     }
 
-    public function get()
+    public function get($tgl, $tgl2)
     {
-        $sql = "SELECT * FROM tb_prc_rb_tf
+        if ($tgl != null && $tgl2 != null) {
+            $tgl = explode("/", $tgl);
+            $tgl = "$tgl[2]-$tgl[1]-$tgl[0]";
+            $tgl2 = explode("/", $tgl2);
+            $tgl2 = "$tgl2[2]-$tgl2[1]-$tgl2[0]";
+            $where[] = "AND tgl_rb >= '$tgl' AND  tgl_rb <= '$tgl2'";
+        } else if ($tgl ==null && $tgl2 ==null) {
+                $where[] = "";
+        } else {
+            return array();
+        }
+
+
+        $where = implode(" ", $where);
+
+        $sql = "SELECT * FROM tb_prc_rb_tf WHERE is_deleted = 0 $where 
         ORDER BY id_prc_rb_tf ASC";
         return $this->db->query($sql);
     }

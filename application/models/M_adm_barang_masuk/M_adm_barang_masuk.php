@@ -240,11 +240,11 @@ class M_adm_barang_masuk extends CI_Model
     {
         // $kode_user = $this->kode_user();
         $sql = "
-            SELECT a.*,c.kode_barang,c.nama_barang,c.lab_test,c.id_prc_master_supplier,c.satuan,d.nama_supplier, e.no_sjl FROM tb_adm_barang_masuk a
+            SELECT a.*,c.kode_barang,c.nama_barang,c.jenis_barang,c.lab_test,c.id_prc_master_supplier,c.satuan,d.nama_supplier, e.no_sjl FROM tb_adm_barang_masuk a
             LEFT JOIN tb_prc_master_barang c ON a.id_prc_master_barang = c.id_prc_master_barang
             LEFT JOIN tb_prc_master_supplier d ON c.id_prc_master_supplier = d.id_prc_master_supplier
             LEFT JOIN tb_prc_dpb_tf e ON a.no_dpb = e.no_dpb
-            WHERE a.is_deleted = 0 AND a.status_barang = 'Released' OR c.lab_test = 'no'  ORDER BY a.tgl_bm ASC";
+            WHERE a.is_deleted = 0 AND (a.status_barang = 'Released' OR c.lab_test = 'no') AND c.departement='Gudang Bahan Baku'   ORDER BY a.tgl_bm ASC";
         return $this->db->query($sql);
     }
 
