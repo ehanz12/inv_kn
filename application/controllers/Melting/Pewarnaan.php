@@ -44,7 +44,7 @@ class Pewarnaan extends CI_Controller
 		}
 		$data['id_mkt_schedule'] = $this->input->post('id_mkt_schedule', TRUE);
 		$data['batch_masak'] = $this->input->post('batch_gel', TRUE);
-		$data['mlt_shift'] = $this->input->post('mlt-shift', TRUE);
+		$data['mlt_shift'] = $this->input->post('mlt_shift', TRUE);
 		$data['no_urut'] = $this->input->post('no_urut', TRUE);
 		$data['tgl_tf_mw'] = $this->convertDate($this->input->post('tgl_tf_mw', TRUE));
 		$data['tgl_buat_lrt'] = $this->convertDate($this->input->post('tgl_buat_lrt', TRUE));
@@ -103,7 +103,7 @@ class Pewarnaan extends CI_Controller
 		$data['id_pewarna'] = $this->input->post('id_pewarna', TRUE);
 		$data['id_mkt_schedule'] = $this->input->post('id_mkt_schedule', TRUE);
 		$data['batch_masak'] = $this->input->post('batch_masak', TRUE);
-		$data['mlt_shift'] = $this->input->post('mlt-shift', TRUE);
+		$data['mlt_shift'] = $this->input->post('mlt_shift', TRUE);
 		$data['no_urut'] = $this->input->post('no_urut', TRUE);
 		$data['tgl_tf_mw'] = $this->convertDate($this->input->post('tgl_tf_mw', TRUE));
 		$data['tgl_buat_lrt'] = $this->convertDate($this->input->post('tgl_buat_lrt', TRUE));

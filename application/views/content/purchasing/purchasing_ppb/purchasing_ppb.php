@@ -101,6 +101,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                           $jabatan = $this->session->userdata('jabatan');
                           $no = 1;
                           foreach ($result as $k) {
+                            $encoded_no_ppb = urlencode($k['no_ppb']); 
                             $tgl_ppb =  explode('-', $k['tgl_ppb'])[2] . "/" . explode('-', $k['tgl_ppb'])[1] . "/" . explode('-', $k['tgl_ppb'])[0];
                             $tgl_pakai =  explode('-', $k['tgl_pakai'])[2] . "/" . explode('-', $k['tgl_pakai'])[1] . "/" . explode('-', $k['tgl_pakai'])[0];
                             
@@ -158,7 +159,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
                               <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                  <a type="button" class="btn btn-success btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>administrator/ppb/cetak/<?= str_replace('/', '--', $k['no_ppb']) ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); "
+                                  <a type="button" class="btn btn-success btn-square btn-sm text-light" onclick="window.open(`<?= base_url() ?>administrator/ppb/cetak/<?= $encoded_no_ppb  ?>`, 'location=yes,height=700,width=1300,scrollbars=yes,status=yes'); "
                                     >
                                     <i class="feather icon-file"></i>Cetak
                                   </a>
@@ -268,7 +269,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 <!-- Modal Details -->
 <div class="modal fade" id="detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Detail Data PPB - <span id="v-no-ppb-title"></span></h5>

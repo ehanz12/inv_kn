@@ -72,7 +72,7 @@ class Prc_po_supplier extends CI_Controller {
         $kode_prc_po_supplier = $this->input->post('kode_prc_po_supplier', TRUE);
         $row = $this->M_prc_master_supplier->cek_kode_supplier($kode_prc_po_supplier)->row_array();
 
-        if ($row['count_sj']==0) {
+        if ($row['count_sj'] == 0) {
             echo "false";
         } else {
             echo "true";

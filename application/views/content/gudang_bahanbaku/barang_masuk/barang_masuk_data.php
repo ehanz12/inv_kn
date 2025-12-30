@@ -60,6 +60,7 @@
                             // $mfg =  explode('-', $k['mfg'])[2] . "/" . explode('-', $k['mfg'])[1] . "/" . explode('-', $k['mfg'])[0];
                           ?>
                             <tr>
+                              <?php if($k['sisa'] != 0) : ?>
                               <th scope="row"><?= $no++ ?></th>
                               <td><?= $tgl ?></td>
                               <td><?= $k['no_sjl'] ?></td>
@@ -72,6 +73,7 @@
                                 <?= $k['satuan'] ?></td>
                               <td class="text-right"><?= number_format($k['sisa'], 0, ",", ".") ?><?= $k['satuan'] ?></td>
                             </tr>
+                            <?php  endif; ?>
                           <?php } ?>
                         </tbody>
                       </table>

@@ -170,8 +170,9 @@
 
         $("#kode_prc_po_supplier").keyup(function() {
         var kode_prc_po_supplier = $("#kode_prc_po_supplier").val();
+        console.log(kode_prc_po_supplier)
         jQuery.ajax({
-            url: "<?= base_url() ?>Purchasing/prc_ppb/Po_supplier/Prc_po_supplier/cek_kode_supplier/",
+            url: "<?= base_url() ?>Purchasing/prc_ppb/Po_supplier/Prc_po_supplier/cek_kode_supplier",
             dataType: 'text',
             type: "post",
             data: {

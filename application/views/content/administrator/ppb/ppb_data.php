@@ -984,26 +984,27 @@
                   </select>
                 </div>
               </div>
+              <input type="hidden" id="nama_barang">
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="level">Departement</label>
                   <select class="form-control chosen-select" id="level" name="departement" autocomplete="off" required>
                     <option value="" disabled selected hidden> - Pilih Departement - </option>
-                    <option value="admin">Admin</option>
-                    <option value="accounting">Accounting</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Accounting">Accounting</option>
                     <option value="Gudang Bahan Baku">Gudang Bahan Baku</option>
                     <option value="Gudang Distribusi">Gudang Distribusi</option>
-                    <option value="lab">Lab</option>
-                    <option value="melting">Melting</option>
-                    <option value="marketing">Marketing</option>
-                    <option value="packing">Packing</option>
-                    <option value="utility">Utility</option>
-                    <option value="stockkeeper">Stock Keeper</option>
-                    <option value="ppic">PPIC</option>
-                    <option value="forming">Forming</option>
-                    <option value="finishing">Finishing</option>
-                    <option value="maintenance">Maintenance</option>
-                    <option value="workshop">Workshop</option>
+                    <option value="Lab">Lab</option>
+                    <option value="Melting">Melting</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Packing">Packing</option>
+                    <option value="Utility">Utility</option>
+                    <option value="Stockkeeper">Stock Keeper</option>
+                    <option value="Ppic">PPIC</option>
+                    <option value="Forming">Forming</option>
+                    <option value="Finishing">Finishing</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Workshop">Workshop</option>
                   </select>
 
                 </div>
@@ -1029,16 +1030,6 @@
                   <label for="kode_barang">Pilih Barang</label>
                   <select class="form-control chosen-select" id="kode_barang_add" name="kode_barang_add" required>
                     <option disabled selected hidden value="">-Pilih Barang-</option>
-                    <?php foreach ($res_barang as $s) { ?>
-                      <option
-                        data-satuan="<?= $s['satuan'] ?>"
-                        data-spek="<?= $s['spek'] ?>"
-                        data-nama="<?= $s['nama_barang'] ?>"
-                        data-stok="<?= $s['stok'] ?>"
-                        value="<?= $s['kode_barang'] ?>,<?= $s['nama_barang'] ?>,<?= $s['id_prc_master_barang'] ?>">
-                        <?= $s['kode_barang'] ?> | <?= $s['nama_barang'] ?>
-                      </option>
-                    <?php } ?>
                   </select>
                 </div>
               </div>
@@ -1103,7 +1094,7 @@
               </table>
             </div>
 
-            <div class="row">
+            <div class="row mt-4">
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="tgl_pakai">Tanggal Kebutuhan</label>
@@ -1114,7 +1105,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="ket">Keterangan</label>
-                  <input type="text" class="form-control" id="ket" name="ket" placeholder="Keterangan" autocomplete="off" required>
+                  <input type="text" class="form-control" id="ket" name="ket" placeholder="Keterangan" autocomplete="off">
                 </div>
               </div>
 
@@ -1147,6 +1138,19 @@
         return parseInt(angka.toString().replace(/\./g, '').replace(/[^0-9]/g, ''), 10);
       }
 
+      function barangSudahAda(id_barang) {
+        let ada = false;
+
+        $('input[name="id_prc_master_barang[]"]').each(function() {
+          if ($(this).val() == id_barang) {
+            ada = true;
+            return false; // break loop
+          }
+        });
+
+        return ada;
+      }
+
       $('#kode_barang_add').on('change', function() {
         const selected = $(this).find(':selected');
         const satuan = selected.attr('data-satuan');
@@ -1157,7 +1161,7 @@
         $('#satuan').val(satuan).prop('readonly', true);
         $('#spek').val(spek).prop('readonly', true);
         $('#stok').val(stok).prop('readonly', true);
-        $('#nama_barang_add').val(nama_barang);
+        $('#nama_barang').val(nama_barang);
       });
 
       $('#kode_barang_add').on('change', function() {
@@ -1165,7 +1169,7 @@
           $('#satuan').val("").prop('readonly', false);
           $('#spek').val("").prop('readonly', false);
           $('#stok').val("").prop('readonly', false);
-          $('#nama_barang_add').val("");
+          $('#nama_barang').val("");
         }
       });
 
@@ -1174,19 +1178,52 @@
         this.value = new Intl.NumberFormat('id-ID').format(value);
       });
 
-      $('#level').on('change', function (){
+      $('#level').on('change', function() {
         const dept = $(this).val();
-
         $.ajax({
-          url : "<?= base_url('administrator/ppb/get_next_no')?>",
-          type : "POST",
-          data : {departement : dept},
-          dataType : "json",
-          success : function(res) {
+          url: "<?= base_url('administrator/ppb/get_next_no') ?>",
+          type: "POST",
+          data: {
+            departement: dept
+          },
+          dataType: "json",
+          success: function(res) {
             $('#no_ppb').val(res);
           }
         })
+
+        $.ajax({
+          url: "<?= base_url('administrator/ppb/get_barang') ?>",
+          type: "POST",
+          data: {
+            departement: dept
+          },
+          dataType: "json",
+          success: function(data) {
+            $('#kode_barang_add').empty().append('<option value="" disabled selected> -Pilih Barang -</option> ');
+            $.each(data, function(i, item) {
+              $('#kode_barang_add').append(`
+            <option 
+              value="${item.id_prc_master_barang}, ${item.nama_barang}, ${item.kode_barang}"
+              data-kode_barang="${item.kode_barang}"
+              data-spek="${item.spek}"
+              data-satuan="${item.satuan}"
+              data-stok="${item.stok}"
+            >
+              ${item.nama_barang}
+            </option>
+          `);
+            });
+
+            $('#kode_barang_add').trigger("chosen:updated");
+          }
+        })
+
+
+
+
       })
+
 
 
       // Fungsi untuk toggle Nama Direktur field visibility
@@ -1205,7 +1242,7 @@
       // Input button to add items to table
       $('#input').on('click', function() {
         const kode = $('#kode_barang_add').val();
-        const kode_barang = kode.split(",")[0];
+        const kode_barang = kode.split(",")[2];
         const nama_barang = kode.split(",")[1];
         const spek = $('#spek').val();
         const satuan = $('#satuan').val();
@@ -1215,7 +1252,12 @@
         const jumlahInteger = unformatRupiah(jumlahFormatted); // <-- integer murni
 
         const nextform = Date.now();
-        const id_prc_master_barang = kode.split(",")[2];
+        const id_prc_master_barang = kode.split(",")[0];
+         // ❌ CEK DUPLIKASI BARANG
+        if (barangSudahAda(id_prc_master_barang)) {
+          alert('Barang ini sudah ditambahkan ke dalam tabel!');
+          return;
+        }
 
         $('#insert_batch').append(`
         <tr id="tr_${nextform}">
@@ -1287,21 +1329,21 @@
                   <label for="level">Departement</label>
                   <select class="form-control chosen-select" id="e-departement" name="departement" autocomplete="off" required>
                     <option value="" disabled selected hidden> - Pilih Departement - </option>
-                    <option value="admin">Admin</option>
-                    <option value="accounting">Accounting</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Accounting">Accounting</option>
                     <option value="Gudang Bahan Baku">Gudang Bahan Baku</option>
                     <option value="Gudang Distribusi">Gudang Distribusi</option>
-                    <option value="lab">Lab</option>
-                    <option value="melting">Melting</option>
-                    <option value="marketing">Marketing</option>
-                    <option value="packing">Packing</option>
-                    <option value="utility">Utility</option>
-                    <option value="stockkeeper">Stock Keeper</option>
-                    <option value="ppic">PPIC</option>
-                    <option value="forming">Forming</option>
-                    <option value="finishing">Finishing</option>
-                    <option value="maintenance">Maintenance</option>
-                    <option value="workshop">Workshop</option>
+                    <option value="Lab">Lab</option>
+                    <option value="Melting">Melting</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Packing">Packing</option>
+                    <option value="Utility">Utility</option>
+                    <option value="Stockkeeper">Stock Keeper</option>
+                    <option value="Ppic">PPIC</option>
+                    <option value="Forming">Forming</option>
+                    <option value="Finishing">Finishing</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Workshop">Workshop</option>
                   </select>
 
                 </div>
@@ -1324,17 +1366,6 @@
               <div class="col-md-3">
                 <label>Pilih Barang</label>
                 <select class="form-control chosen-select" id="e-kode_barang" name="kode_barang_add">
-                  <option disabled selected hidden>- Pilih Barang -</option>
-                  <?php foreach ($res_barang as $s) { ?>
-                    <option
-                      data-satuan="<?= $s['satuan'] ?>"
-                      data-spek="<?= $s['spek'] ?>"
-                      data-nama="<?= $s['nama_barang'] ?>"
-                      data-stok="<?= $s['stok'] ?>"
-                      value="<?= $s['kode_barang'] ?>,<?= $s['nama_barang'] ?>,<?= $s['id_prc_master_barang'] ?>">
-                      <?= $s['kode_barang'] ?> | <?= $s['nama_barang'] ?>
-                    </option>
-                  <?php } ?>
                 </select>
               </div>
 
@@ -1354,7 +1385,7 @@
 
               <div class="col-md-2">
                 <label>Jumlah Order</label>
-                <input type="number" class="form-control" id="e-jumlah" placeholder="Jumlah" aria-describedby="validationServer03Feedback" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase()" required">
+                <input type="number" class="form-control" id="e-jumlah" placeholder="Jumlah" aria-describedby="validationServer03Feedback" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase()">
                 <div id="validationServer03Feedback" class="invalid-feedback">
                   Maaf Jumlah tidak boleh lebih dari Stock.
                 </div>
@@ -1427,6 +1458,18 @@
         if (!x) return "";
         return new Intl.NumberFormat('id-ID').format(x);
       }
+      function barangSudahAda(id_barang) {
+        let ada = false;
+
+        $('input[name="id_prc_master_barang[]"]').each(function() {
+          if ($(this).val() == id_barang) {
+            ada = true;
+            return false; // break loop
+          }
+        });
+
+        return ada;
+      }
 
       // Format input jumlah saat user mengetik
       $(document).on('input', '.jumlah-format', function() {
@@ -1461,19 +1504,74 @@
         modal.find('#e-tgl_pakai').val(tgl_pakai);
         modal.find('#e-ket').val(ket);
 
-        $('#e-departement').on('change', function (){
-        const dept = $(this).val();
-
         $.ajax({
-          url : "<?= base_url('administrator/ppb/get_next_no')?>",
-          type : "POST",
-          data : {departement : dept},
-          dataType : "json",
-          success : function(res) {
-            $('#e-no_ppb').val(res);
+          url: "<?= base_url('administrator/ppb/get_barang') ?>",
+          type: "POST",
+          data: {
+            departement: dept
+          },
+          dataType: "json",
+          success: function(data) {
+            $('#e-kode_barang').empty().append('<option value="" disabled selected> -Pilih Barang -</option> ');
+            $.each(data, function(i, item) {
+              $('#e-kode_barang').append(`
+            <option 
+              value="${item.id_prc_master_barang}, ${item.nama_barang}, ${item.kode_barang}"
+              data-kode_barang="${item.kode_barang}"
+              data-spek="${item.spek}"
+              data-satuan="${item.satuan}"
+              data-stok="${item.stok}"
+            >
+              ${item.nama_barang}
+            </option>
+          `);
+            });
+
+            $('#e-kode_barang').trigger("chosen:updated");
           }
         })
-      })
+
+        $('#e-departement').on('change', function() {
+          const dept = $(this).val();
+
+          $.ajax({
+            url: "<?= base_url('administrator/ppb/get_next_no') ?>",
+            type: "POST",
+            data: {
+              departement: dept
+            },
+            dataType: "json",
+            success: function(res) {
+              $('#e-no_ppb').val(res);
+            }
+          })
+          $.ajax({
+            url: "<?= base_url('administrator/ppb/get_barang') ?>",
+            type: "POST",
+            data: {
+              departement: dept
+            },
+            dataType: "json",
+            success: function(data) {
+              $('#e-kode_barang').empty().append('<option value="" disabled selected> -Pilih Barang -</option> ');
+              $.each(data, function(i, item) {
+                $('#e-kode_barang').append(`
+            <option 
+              value="${item.id_prc_master_barang}, ${item.nama_barang}, ${item.kode_barang}"
+              data-kode_barang="${item.kode_barang}"
+              data-spek="${item.spek}"
+              data-satuan="${item.satuan}"
+              data-stok="${item.stok}"
+            >
+              ${item.nama_barang}
+            </option>
+          `);
+              });
+
+              $('#e-kode_barang').trigger("chosen:updated");
+            }
+          })
+        })
 
         var $tbody = modal.find('#e-ppb_barang_det');
         $tbody.empty();
@@ -1508,6 +1606,48 @@
           }
         });
       });
+
+      $('#e-departement').on('change', function() {
+        const dept = $(this).val();
+
+        $.ajax({
+          url: "<?= base_url('administrator/ppb/get_next_no') ?>",
+          type: "POST",
+          data: {
+            departement: dept
+          },
+          dataType: "json",
+          success: function(res) {
+            $('#e-no_ppb').val(res);
+          }
+        })
+        $.ajax({
+          url: "<?= base_url('administrator/ppb/get_barang') ?>",
+          type: "POST",
+          data: {
+            departement: dept
+          },
+          dataType: "json",
+          success: function(data) {
+            $('#e-kode_barang').empty().append('<option value="" disabled selected> -Pilih Barang -</option> ');
+            $.each(data, function(i, item) {
+              $('#e-kode_barang').append(`
+            <option 
+              value="${item.id_prc_master_barang}, ${item.nama_barang}, ${item.kode_barang}"
+              data-kode_barang="${item.kode_barang}"
+              data-spek="${item.spek}"
+              data-satuan="${item.satuan}"
+              data-stok="${item.stok}"
+            >
+              ${item.nama_barang}
+            </option>
+          `);
+            });
+
+            $('#e-kode_barang').trigger("chosen:updated");
+          }
+        })
+      })
 
 
       // ==========================
@@ -1569,7 +1709,7 @@
         const val = $('#e-kode_barang').val();
         if (!val) return alert('Pilih barang dulu');
 
-        const [kode, nama, id] = val.split(',');
+        const [id, nama, kode] = val.split(',');
 
         const spek = $('#e-spek').val();
         const satuan = $('#e-satuan').val();
@@ -1579,6 +1719,12 @@
         const jumlahInt = unformatRupiah(jumlahFormatted);
 
         if (jumlahInt <= 0) return alert('Jumlah tidak valid');
+
+         // ❌ CEK DUPLIKASI BARANG (DI SINI TEMPATNYA)
+        if (barangSudahAda(id)) {
+          alert('Barang ini sudah ditambahkan ke dalam tabel!');
+          return;
+        }
 
         $('#e-ppb_barang_det').append(
           rowHTML(kode, nama, spek, satuan, jumlahInt, id, stok)
@@ -1604,7 +1750,7 @@
   </script>
 
   <div class="modal fade" id="detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Detail Data PPB - <span id="v-no-ppb-title"></span></h5>
@@ -1686,7 +1832,7 @@
     $(document).ready(function() {
       $('#detail').on('show.bs.modal', function(event) {
         var jenis_ppb = $(event.relatedTarget).data('jenis_ppb')
-        var form_ppb = $(event.relatedTarget).data('form_ppb')
+        var form_ppb = $(event.relatedTarget).data('jenis_form_ppb')
         var departement = $(event.relatedTarget).data('departement')
         var no_ppb = $(event.relatedTarget).data('no_ppb')
         var tgl_ppb = $(event.relatedTarget).data('tgl_ppb')

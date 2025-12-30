@@ -48,11 +48,11 @@ class M_prc_master_supplier extends CI_Model {
         return $this->db->query($sql);
     }
 
-    public function cek_kode_supplier($kode_prc_po_supplier)
+    public function cek_kode_supplier($kode_supplier)
     {
         $sql = "
-            SELECT COUNT(a.kode_prc_po_supplier) count_sj FROM tb_prc_ppb_supplier a
-            WHERE a.kode_prc_po_supplier = '$kode_prc_po_supplier' AND a.is_deleted = 0";
+            SELECT COUNT(a.kode_supplier) count_sj FROM tb_prc_master_supplier a
+            WHERE a.kode_supplier = '$kode_supplier' AND a.is_deleted = 0";
         return $this->db->query($sql);
     }
 }

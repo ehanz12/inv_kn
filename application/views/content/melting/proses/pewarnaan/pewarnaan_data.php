@@ -289,7 +289,7 @@
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label for="">Kode Warna</label>
+                <label for="">Kode Warna (Cap - Body)</label>
                 <div class="input-group">
                   <input type="text" class="form-control" id="cap" name="cap" placeholder="Cap" autocomplete="off" readonly>
                   <input type="text" class="form-control" id="body" name="body" placeholder="Body" autocomplete="off" readonly>
@@ -310,8 +310,13 @@
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label for="mlt-shift">Shift</label>
-                <input type="number" class="form-control" id="mlt-shift" name="mlt-shift" placeholder="Shift" autocomplete="off" required>
+                <label for="mlt_shift">Shift</label>
+                <select class="form-control chosen-select" id="mlt_shift" name="mlt_shift" placeholder="Shift" autocomplete="off" required>
+                  <option value="" disabled selected>- Pilih Shift -</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
               </div>
             </div>
             <div class="col-md-3">
@@ -355,10 +360,7 @@
               <thead>
                 <tr>
                   <th>Nama Barang</th>
-                  <th>Bloom</th>
                   <th>No Batch</th>
-                  <th>Qty</th>
-                  <th class="text-right">Hapus</th>
                 </tr>
               </thead>
               <tbody id="insert_batch">
@@ -376,7 +378,7 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label for="jml_cutting">Jumlah Cutting (Kg)</label>
-                <input type="number" class="form-control" id="jml_cutting" name="jml_cutting" placeholder="Cutting (Kg)" autocomplete="off" min="80" max="90" required>
+                <input type="number" class="form-control" id="jml_cutting" name="jml_cutting" placeholder="Cutting (Kg)" autocomplete="off" required>
               </div>
             </div>
             <div class="col-md-3">
@@ -448,7 +450,7 @@
                   <label for="check_batch_cutting">
                     <i class=""></i> Batch Cutting
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control batch_cutting-section" placeholder="Batch Cutting" style="display: none;" id="batch_cutting" name="batch_cutting">
                 </div>
@@ -461,7 +463,7 @@
                   <label for="check_batch_cake">
                     <i class=""></i> Batch Cake
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control batch_cake-section" placeholder="Batch Cake" style="display: none;" id="batch_cake" name="batch_cake">
                 </div>
@@ -474,7 +476,7 @@
                   <label for="check_batch_ti02">
                     <i class=""></i> Batch Ti02
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control batch_ti02-section" placeholder="Batch Ti02" style="display: none;" id="batch_ti02" name="batch_ti02">
                 </div>
@@ -487,7 +489,7 @@
                   <label for="check_batch_r1">
                     <i class=""></i> Batch R1
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control batch_r1-section" placeholder="Batch R1" style="display: none;" id="batch_r1" name="batch_r1">
                 </div>
@@ -500,7 +502,7 @@
                   <label for="check_batch_r3">
                     <i class=""></i> Batch R3
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control batch_r3-section" placeholder="Batch R3" style="display: none;" id="batch_r3" name="batch_r3">
                 </div>
@@ -513,7 +515,7 @@
                   <label for="check_batch_y5">
                     <i class=""></i> Batch Y5
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control batch_y5-section" placeholder="Batch Y5" style="display: none;" id="batch_y5" name="batch_y5">
                 </div>
@@ -526,7 +528,7 @@
                   <label for="check_batch_b1">
                     <i class=""></i> Batch B1
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control batch_b1-section" placeholder="Batch b1" style="display: none;" id="batch_b1" name="batch_b1">
                 </div>
@@ -539,7 +541,7 @@
                   <label for="check_batch_y10">
                     <i class=""></i> Batch Y10
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control batch_y10-section" placeholder="Batch y10" style="display: none;" id="batch_y10" name="batch_y10">
                 </div>
@@ -553,7 +555,7 @@
                   <label for="check_silver">
                     <i class=""></i> Silver
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control silver-section" placeholder="Silver" style="display: none;" id="silver" name="silver">
                 </div>
@@ -567,7 +569,7 @@
                   <label for="check_bpn">
                     <i class=""></i> Bpn
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control bpn-section" placeholder="bpn" style="display: none;" id="bpn" name="bpn">
                 </div>
@@ -581,7 +583,7 @@
                   <label for="check_r_40">
                     <i class=""></i> R. 40
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control r_40-section" placeholder="R. 40" style="display: none;" id="r_40" name="r_40">
                 </div>
@@ -595,7 +597,7 @@
                   <label for="check_r_102">
                     <i class=""></i> R. 102
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control r_102-section" placeholder="R. 102" style="display: none;" id="r_102" name="r_102">
                 </div>
@@ -609,7 +611,7 @@
                   <label for="check_ior">
                     <i class=""></i> IOR
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control ior-section" placeholder="IOR" style="display: none;" id="ior" name="ior">
                 </div>
@@ -623,7 +625,7 @@
                   <label for="check_ioy">
                     <i class=""></i> IOY
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control ioy-section" placeholder="IOY" style="display: none;" id="ioy" name="ioy">
                 </div>
@@ -637,7 +639,7 @@
                   <label for="check_p_blue">
                     <i class=""></i> P. Blue
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control p_blue-section" placeholder="P. Blue" style="display: none;" id="p_blue" name="p_blue">
                 </div>
@@ -651,7 +653,7 @@
                   <label for="check_p_green">
                     <i class=""></i> P. Green
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control p_green-section" placeholder="P. Green" style="display: none;" id="p_green" name="p_green">
                 </div>
@@ -665,7 +667,7 @@
                   <label for="check_gold">
                     <i class=""></i> Gold
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control gold-section" placeholder="Gold" style="display: none;" id="gold" name="gold">
                 </div>
@@ -679,13 +681,13 @@
                   <label for="check_y6">
                     <i class=""></i> Y6
                   </label>
-                </div> 
+                </div>
                 <div class="from-input">
                   <input type="text" class="form-control y6-section" placeholder="Y6" style="display: none;" id="y6" name="y6">
                 </div>
               </div>
             </div>
-            
+
             <div class="col-md-3">
               <div class="form-group">
                 <label for="op1">Operator 1</label>
@@ -742,6 +744,45 @@
       $('#batch_kp').val(batch_kp);
     })
 
+
+    $(document).on('input', '#vac1, #vac2', function() {
+
+      // ambil angka saja
+      let val = $(this).val().replace(/\D/g, '');
+
+      // max 4 digit
+      if (val.length > 4) {
+        val = val.substring(0, 4);
+      }
+
+      // auto titik
+      if (val.length >= 3) {
+        val = val.substring(0, 2) + '.' + val.substring(2);
+      }
+
+      $(this).val(val);
+    });
+
+    $(document).on('blur', '#vac1, #vac2', function() {
+
+      let val = $(this).val();
+
+      if (!val.includes('.')) return;
+
+      let parts = val.split('.');
+      let jam = parseInt(parts[0], 10);
+      let menit = parseInt(parts[1] || 0, 10);
+
+      // validasi jam
+      if (isNaN(jam) || jam > 23) jam = 23;
+      if (isNaN(menit) || menit > 59) menit = 59;
+
+      $(this).val(
+        String(jam).padStart(2, '0') + '.' +
+        String(menit).padStart(2, '0')
+      );
+    });
+
     var $body = $('#insert_batch');
     $body.empty();
 
@@ -769,24 +810,10 @@
             let row = `
             <tr id="row_${index}">
               <td>
-                ${item.nama_barang}
+                ${item.nama_barang}  - (Bloom : ${item.bloom})
               </td>
-
-              <td>
-                ${item.bloom}
-              </td>
-
               <td>
                 ${item.batch_masak}
-              </td>
-
-              <td>
-                  ${item.jml_bahan}
-              </td>
-
-              <td class="text-right">
-                <button type="button" class="btn btn-danger btn-sm"
-                  onclick="$('#row_${index}').remove()">X</button>
               </td>
             </tr>
           `;
@@ -799,164 +826,164 @@
       });
     });
 
-    $('#check_batch_cutting').change(function () {
+    $('#check_batch_cutting').change(function() {
       if ($(this).is(':checked')) {
-          $('.batch_cutting-section').slideDown(300);
+        $('.batch_cutting-section').slideDown(300);
       } else {
-          $('.batch_cutting-section').slideUp(300);
-          $('#batch_cutting').val('');
+        $('.batch_cutting-section').slideUp(300);
+        $('#batch_cutting').val('');
       }
     });
 
-    $('#check_batch_cake').change(function () {
+    $('#check_batch_cake').change(function() {
       if ($(this).is(':checked')) {
-          $('.batch_cake-section').slideDown(300);
+        $('.batch_cake-section').slideDown(300);
       } else {
-          $('.batch_cake-section').slideUp(300);
-          $('#batch_cake').val('');
+        $('.batch_cake-section').slideUp(300);
+        $('#batch_cake').val('');
       }
     });
 
-    $('#check_batch_ti02').change(function () {
+    $('#check_batch_ti02').change(function() {
       if ($(this).is(':checked')) {
-          $('.batch_ti02-section').slideDown(300);
+        $('.batch_ti02-section').slideDown(300);
       } else {
-          $('.batch_ti02-section').slideUp(300);
-          $('#batch_ti02').val('');
+        $('.batch_ti02-section').slideUp(300);
+        $('#batch_ti02').val('');
       }
     });
 
-    $('#check_batch_r1').change(function () {
+    $('#check_batch_r1').change(function() {
       if ($(this).is(':checked')) {
-          $('.batch_r1-section').slideDown(300);
+        $('.batch_r1-section').slideDown(300);
       } else {
-          $('.batch_r1-section').slideUp(300);
-          $('#batch_r1').val('');
+        $('.batch_r1-section').slideUp(300);
+        $('#batch_r1').val('');
       }
     });
 
-    $('#check_batch_r3').change(function () {
+    $('#check_batch_r3').change(function() {
       if ($(this).is(':checked')) {
-          $('.batch_r3-section').slideDown(300);
+        $('.batch_r3-section').slideDown(300);
       } else {
-          $('.batch_r3-section').slideUp(300);
-          $('#batch_r3').val('');
+        $('.batch_r3-section').slideUp(300);
+        $('#batch_r3').val('');
       }
     });
 
-    $('#check_batch_y5').change(function () {
+    $('#check_batch_y5').change(function() {
       if ($(this).is(':checked')) {
-          $('.batch_y5-section').slideDown(300);
+        $('.batch_y5-section').slideDown(300);
       } else {
-          $('.batch_y5-section').slideUp(300);
-          $('#batch_y5').val('');
+        $('.batch_y5-section').slideUp(300);
+        $('#batch_y5').val('');
       }
     });
 
-    $('#check_batch_b1').change(function () {
+    $('#check_batch_b1').change(function() {
       if ($(this).is(':checked')) {
-          $('.batch_b1-section').slideDown(300);
+        $('.batch_b1-section').slideDown(300);
       } else {
-          $('.batch_b1-section').slideUp(300);
-          $('#batch_b1').val('');
+        $('.batch_b1-section').slideUp(300);
+        $('#batch_b1').val('');
       }
     });
 
-    $('#check_batch_y10').change(function () {
+    $('#check_batch_y10').change(function() {
       if ($(this).is(':checked')) {
-          $('.batch_y10-section').slideDown(300);
+        $('.batch_y10-section').slideDown(300);
       } else {
-          $('.batch_y10-section').slideUp(300);
-          $('#batch_y10').val('');
+        $('.batch_y10-section').slideUp(300);
+        $('#batch_y10').val('');
       }
     });
-    $('#check_silver').change(function () {
+    $('#check_silver').change(function() {
       if ($(this).is(':checked')) {
-          $('.silver-section').slideDown(300);
+        $('.silver-section').slideDown(300);
       } else {
-          $('.silver-section').slideUp(300);
-          $('#silver').val('');
-      }
-    });
-
-    $('#check_bpn').change(function () {
-      if ($(this).is(':checked')) {
-          $('.bpn-section').slideDown(300);
-      } else {
-          $('.bpn-section').slideUp(300);
-          $('#bpn').val('');
+        $('.silver-section').slideUp(300);
+        $('#silver').val('');
       }
     });
 
-    $('#check_r_40').change(function () {
+    $('#check_bpn').change(function() {
       if ($(this).is(':checked')) {
-          $('.r_40-section').slideDown(300);
+        $('.bpn-section').slideDown(300);
       } else {
-          $('.r_40-section').slideUp(300);
-          $('#r_40').val('');
+        $('.bpn-section').slideUp(300);
+        $('#bpn').val('');
       }
     });
 
-    $('#check_r_102').change(function () {
+    $('#check_r_40').change(function() {
       if ($(this).is(':checked')) {
-          $('.r_102-section').slideDown(300);
+        $('.r_40-section').slideDown(300);
       } else {
-          $('.r_102-section').slideUp(300);
-          $('#r_102').val('');
+        $('.r_40-section').slideUp(300);
+        $('#r_40').val('');
       }
     });
 
-    $('#check_ior').change(function () {
+    $('#check_r_102').change(function() {
       if ($(this).is(':checked')) {
-          $('.ior-section').slideDown(300);
+        $('.r_102-section').slideDown(300);
       } else {
-          $('.ior-section').slideUp(300);
-          $('#ior').val('');
+        $('.r_102-section').slideUp(300);
+        $('#r_102').val('');
       }
     });
 
-    $('#check_ioy').change(function () {
+    $('#check_ior').change(function() {
       if ($(this).is(':checked')) {
-          $('.ioy-section').slideDown(300);
+        $('.ior-section').slideDown(300);
       } else {
-          $('.ioy-section').slideUp(300);
-          $('#ioy').val('');
+        $('.ior-section').slideUp(300);
+        $('#ior').val('');
       }
     });
 
-    $('#check_p_blue').change(function () {
+    $('#check_ioy').change(function() {
       if ($(this).is(':checked')) {
-          $('.p_blue-section').slideDown(300);
+        $('.ioy-section').slideDown(300);
       } else {
-          $('.p_blue-section').slideUp(300);
-          $('#p_blue').val('');
+        $('.ioy-section').slideUp(300);
+        $('#ioy').val('');
       }
     });
 
-    $('#check_p_green').change(function () {
+    $('#check_p_blue').change(function() {
       if ($(this).is(':checked')) {
-          $('.p_green-section').slideDown(300);
+        $('.p_blue-section').slideDown(300);
       } else {
-          $('.p_green-section').slideUp(300);
-          $('#p_green').val('');
+        $('.p_blue-section').slideUp(300);
+        $('#p_blue').val('');
       }
     });
 
-    $('#check_gold').change(function () {
+    $('#check_p_green').change(function() {
       if ($(this).is(':checked')) {
-          $('.gold-section').slideDown(300);
+        $('.p_green-section').slideDown(300);
       } else {
-          $('.gold-section').slideUp(300);
-          $('#gold').val('');
+        $('.p_green-section').slideUp(300);
+        $('#p_green').val('');
       }
     });
 
-    $('#check_y6').change(function () {
+    $('#check_gold').change(function() {
       if ($(this).is(':checked')) {
-          $('.y6-section').slideDown(300);
+        $('.gold-section').slideDown(300);
       } else {
-          $('.y6-section').slideUp(300);
-          $('#y6').val('');
+        $('.gold-section').slideUp(300);
+        $('#gold').val('');
+      }
+    });
+
+    $('#check_y6').change(function() {
+      if ($(this).is(':checked')) {
+        $('.y6-section').slideDown(300);
+      } else {
+        $('.y6-section').slideUp(300);
+        $('#y6').val('');
       }
     });
   })
@@ -1452,12 +1479,12 @@
 
             <div class="col-md-3">
               <label>Order</label>
-              <input type="text" class="form-control" id="e_order" readonly>
+              <input type="text" class="form-control" id="e_jlm_order" readonly>
             </div>
 
             <div class="col-md-3">
               <label>Produksi</label>
-              <input type="text" class="form-control" id="e_produksi" readonly>
+              <input type="text" class="form-control" id="e_jml_prd" readonly>
             </div>
 
             <div class="col-md-3">
@@ -1495,7 +1522,12 @@
 
             <div class="col-md-3">
               <label>Shift</label>
-              <input type="text" class="form-control" id="e_shift" name="mlt_shift">
+              <select  class="form-control chosen-select" id="e_shift" name="mlt_shift">
+                <option value="" disabled selected>- Pilih Shift - </option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
             </div>
 
             <div class="col-md-3">
@@ -1536,10 +1568,7 @@
               <thead>
                 <tr>
                   <th>Nama Barang</th>
-                  <th>Bloom</th>
                   <th>No Batch</th>
-                  <th>Qty</th>
-                  <th>Hapus</th>
                 </tr>
               </thead>
               <tbody id="edit_batch">
@@ -1610,15 +1639,33 @@
               </select>
             </div>
 
-            <div class="col-md-3">
-              <label>Batch Cutting</label>
-              <input type="text" class="form-control" id="e_batch_cutting" name="batch_cutting">
-            </div>
+            <?php
+            $batch = [
+              'batch_cutting' => 'Batch Cutting',
+              'batch_cake' => 'Batch Cake'
+            ];
+            ?>
 
-            <div class="col-md-3">
-              <label>Batch Cake</label>
-              <input type="text" class="form-control" id="e_batch_cake" name="batch_cake">
-            </div>
+            <?php foreach ($batch as $name => $label): ?>
+              <div class="col-md-3">
+                <div class="form-group">
+
+                  <div class="form-check">
+                    <input type="checkbox"
+                      class="form-check-input edit-check"
+                      id="check_<?= $name ?>"
+                      data-target="e_<?= $name ?>">
+                    <label class="form-check-label"><?= $label ?></label>
+                  </div>
+
+                  <input type="text"
+                    class="form-control edit-input"
+                    id="e_<?= $name ?>"
+                    name="<?= $name ?>"
+                    style="display:none;">
+                </div>
+              </div>
+            <?php endforeach; ?>
           </div>
 
           <hr>
@@ -1626,23 +1673,51 @@
           <h6 class="font-weight-bold text-center">Bahan Pewarna</h6>
 
           <div class="row">
-            <div class="col-md-3"><label>Batch Ti02</label><input type="text" class="form-control" id="e_batch_ti02" name="batch_ti02"></div>
-            <div class="col-md-3"><label>Batch R1</label><input type="text" class="form-control" id="e_batch_r1" name="batch_r1"></div>
-            <div class="col-md-3"><label>Batch R3</label><input type="text" class="form-control" id="e_batch_r3" name="batch_r3"></div>
-            <div class="col-md-3"><label>Batch Y5</label><input type="text" class="form-control" id="e_batch_y5" name="batch_y5"></div>
-            <div class="col-md-3"><label>Batch B1</label><input type="text" class="form-control" id="e_batch_b1" name="batch_b1"></div>
-            <div class="col-md-3"><label>Batch Y10</label><input type="text" class="form-control" id="e_batch_y10" name="batch_y10"></div>
-            <div class="col-md-3"><label>Silver</label><input type="text" class="form-control" id="e_silver" name="silver"></div>
-            <div class="col-md-3"><label>Bpn</label><input type="text" class="form-control" id="e_bpn" name="bpn"></div>
-            <div class="col-md-3"><label>R. 40</label><input type="text" class="form-control" id="e_r40" name="r_40"></div>
-            <div class="col-md-3"><label>R. 102</label><input type="text" class="form-control" id="e_r102" name="r_102"></div>
-            <div class="col-md-3"><label>IOR</label><input type="text" class="form-control" id="e_ior" name="ior"></div>
-            <div class="col-md-3"><label>IOY</label><input type="text" class="form-control" id="e_ioy" name="ioy"></div>
-            <div class="col-md-3"><label>P. BLUE</label><input type="text" class="form-control" id="e_p_blue" name="p_blue"></div>
-            <div class="col-md-3"><label>P. GREEN</label><input type="text" class="form-control" id="e_p_green" name="p_green"></div>
-            <div class="col-md-3"><label>GOLD</label><input type="text" class="form-control" id="e_gold" name="gold"></div>
-            <div class="col-md-3"><label>Y6</label><input type="text" class="form-control" id="e_y6" name="y6"></div>
+
+            <?php
+            $bahan = [
+              'batch_ti02' => 'Batch Ti02',
+              'batch_r1'   => 'Batch R1',
+              'batch_r3'   => 'Batch R3',
+              'batch_y5'   => 'Batch Y5',
+              'batch_b1'   => 'Batch B1',
+              'batch_y10'  => 'Batch Y10',
+              'silver'     => 'Silver',
+              'bpn'        => 'Bpn',
+              'r_40'       => 'R. 40',
+              'r_102'      => 'R. 102',
+              'ior'        => 'IOR',
+              'ioy'        => 'IOY',
+              'p_blue'     => 'P. BLUE',
+              'p_green'    => 'P. GREEN',
+              'gold'       => 'GOLD',
+              'y6'         => 'Y6'
+            ];
+            ?>
+
+            <?php foreach ($bahan as $name => $label): ?>
+              <div class="col-md-3">
+                <div class="form-group">
+
+                  <div class="form-check">
+                    <input type="checkbox"
+                      class="form-check-input edit-check"
+                      id="check_<?= $name ?>"
+                      data-target="e_<?= $name ?>">
+                    <label class="form-check-label"><?= $label ?></label>
+                  </div>
+
+                  <input type="text"
+                    class="form-control edit-input"
+                    id="e_<?= $name ?>"
+                    name="<?= $name ?>"
+                    style="display:none;">
+                </div>
+              </div>
+            <?php endforeach; ?>
+
           </div>
+
 
           <hr>
 
@@ -1680,17 +1755,15 @@
 <script>
   $(function() {
 
-    /* =====================
-       1. MAPPING DATA → INPUT
-    ====================== */
+    /* ===============================
+       1. MAP DATA BUTTON → INPUT
+    ================================ */
     const fieldMap = {
-      nama_customer: 'e_customer',
-      jumlah_kp: 'e_order',
-      jumlah_prd: 'e_produksi',
-      mesin_prd: 'e_machine',
-      size_machine: 'e_size_machine',
-      kode_warna_cap: 'e_cap',
-      kode_warna_body: 'e_body',
+      id_pewarna: 'e_id_pewarna',
+      no_urut: 'e_no_urut',
+      tgl_tf_mw: 'e_tgl_tf',
+      tgl_buat_lrt: 'e_tgl_lrt',
+      no_fid: 'e_no_fid',
 
       jml_larut_awal: 'e_jml_larut',
       jml_cutting: 'e_cutting',
@@ -1701,15 +1774,6 @@
       visco: 'e_visco',
       tekanan: 'e_tekanan',
 
-      kurang: 'e_kurang',
-      no_batch: 'e_batch_kp',
-      no_urut: 'e_no_urut',
-      shift: 'e_shift',
-      tgl_tf_mw: 'e_tgl_tf',
-      tgl_buat_lrt: 'e_tgl_lrt',
-      no_fid: 'e_no_fid',
-
-      keb_melter: 'e_liter',
       cek_warna: 'e_cek_warna',
       batch_cutting: 'e_batch_cutting',
       batch_cake: 'e_batch_cake',
@@ -1730,64 +1794,126 @@
       p_green: 'e_p_green',
       gold: 'e_gold',
       y6: 'e_y6',
-      id_pewarna: 'e_id_pewarna',
 
       op1: 'e_op1',
       op2: 'e_op2',
       supervisor: 'e_supervisor'
     };
 
-    /* =====================
-       2. CLICK EDIT BUTTON
-    ====================== */
+    /* ===============================
+       2. TOGGLE CHECKBOX MANUAL
+    ================================ */
+    $('.edit-check').on('change', function() {
+      const target = $('#' + $(this).data('target'));
+
+      if (this.checked) {
+        target.slideDown(200);
+      } else {
+        target.slideUp(200).val('');
+      }
+    });
+
+    /* ===============================
+       3. CLICK BUTTON EDIT
+    ================================ */
     $(document).on('click', '.btn-edit', function() {
-      const el = $(this);
+      const btn = $(this);
 
+      // isi semua input biasa
       $.each(fieldMap, function(dataKey, inputId) {
-        $('#' + inputId).val(el.data(dataKey));
+        $('#' + inputId).val(btn.data(dataKey));
+      });
+
+      // khusus bahan pewarna (checkbox logic)
+      $('.edit-check').each(function() {
+        const targetId = $(this).data('target');
+        const dataKey = targetId.replace('e_', '');
+        const value = btn.data(dataKey);
+
+        if (value && value !== '') {
+          $(this).prop('checked', true);
+          $('#' + targetId).val(value).show();
+        } else {
+          $(this).prop('checked', false);
+          $('#' + targetId).hide().val('');
+        }
       });
     });
 
-    /* =====================
-       3. CHANGE NO CR
-    ====================== */
-    $('#e_no_cr').on('change', function() {
-      const opt = $(this).find(':selected');
-
-      const autoFill = {
-        e_mkt_customer: opt.data('nama_customer'),
-        e_jml_order: opt.data('jumlah_order'),
-        e_jml_prd: opt.data('jumlah_prd'),
-        e_kurang: opt.data('kurang'),
-        e_size_machine: opt.data('size_machine'),
-        e_machine: opt.data('mesin_prd'),
-        e_cap: opt.data('warna_cap'),
-        e_body: opt.data('warna_body'),
-        e_batch_kp: opt.data('batch_kp')
-      };
-
-      $.each(autoFill, function(id, value) {
-        $('#' + id).val(value);
-      });
-    });
-
-    /* =====================
+    /* ===============================
        4. MODAL SHOW
-    ====================== */
+    ================================ */
     $('#edit').on('show.bs.modal', function(event) {
       const btn = $(event.relatedTarget);
-      var batch = btn.data('batch_masak')
       $('#e_no_cr')
         .val(btn.data('id_mkt_schedule'))
         .trigger('chosen:updated');
+      $('#e_shift')
+      .val(btn.data('shift'))
+      .trigger('chosen:updated');
+
+
+      const selected = $('#e_no_cr').find(':selected');
+      const nama_customer = selected.data('nama_customer');
+      const jumlah_kp = selected.data('jumlah_order');
+      const jumlah_prd = selected.data('jumlah_prd');
+      const sisa = selected.data('kurang');
+      const size_machine = selected.data('size_machine');
+      const mesin_prd = selected.data('mesin_prd');
+      const no_batch = selected.data('no_batch');
+      const warna_cap = selected.data('warna_cap');
+      const warna_body = selected.data('warna_body');
+      const batch_kp = selected.data('batch_kp');
+
+
+      $('#e_customer').val(nama_customer);
+      $('#e_jlm_order').val(jumlah_kp);
+      $('#e_jml_prd').val(jumlah_prd);
+      $('#e_kurang').val(sisa);
+      $('#e_size_machine').val(size_machine);
+      $('#e_machine').val(mesin_prd);
+      $('#e_cap').val(warna_cap);
+      $('#e_body').val(warna_body);
+      $('#e_batch_kp').val(batch_kp);
 
       $('#e_forming')
         .val(btn.data('id_user'))
-        .trigger('chosen:updated')
+        .trigger('chosen:updated');
 
       $('#e_batch_gel')
         .val(btn.data('batch_masak'))
         .trigger('chosen:updated');
+
+      loadBatch(btn.data('batch_masak'));
+    });
+
+    $('#e_no_cr').on('change', function() {
+      const selected = $(this).find(':selected');
+      const nama_customer = selected.data('nama_customer');
+      const jumlah_kp = selected.data('jumlah_order');
+      const jumlah_prd = selected.data('jumlah_prd');
+      const sisa = selected.data('kurang');
+      const size_machine = selected.data('size_machine');
+      const mesin_prd = selected.data('mesin_prd');
+      const no_batch = selected.data('no_batch');
+      const warna_cap = selected.data('warna_cap');
+      const warna_body = selected.data('warna_body');
+      const batch_kp = selected.data('batch_kp')
+
+      $('#e_customer').val(nama_customer);
+      $('#e_jlm_order').val(jumlah_kp);
+      $('#e_jml_prd').val(jumlah_prd);
+      $('#e_kurang').val(sisa);
+      $('#e_size_machine').val(size_machine);
+      $('#e_machine').val(mesin_prd);
+      $('#e_cap').val(warna_cap);
+      $('#e_body').val(warna_body);
+      $('#e_batch_kp').val(batch_kp);
+    })
+    /* ===============================
+       5. LOAD GELATIN BY BATCH
+    ================================ */
+    function loadBatch(batch) {
       $.ajax({
         url: "<?= base_url('melting/pewarnaan/get_by_batch') ?>",
         type: "POST",
@@ -1798,91 +1924,63 @@
         success: function(res) {
           $('#edit_batch').empty();
 
-          if (res.length === 0) {
+          if (!res.length) {
             alert('Data batch tidak ditemukan');
             return;
           }
 
-          res.forEach(function(item, index) {
-
-            let row = `
-    <tr id="row_${index}">
-      <td>${item.nama_barang}</td>
-      <td>${item.bloom}</td>
-      <td>${item.batch_masak}</td>
-      <td>${item.jml_bahan}</td>
-      <td class="text-right">
-        <button type="button" class="btn btn-danger btn-sm"
-          onclick="$('#row_${index}').remove()">X</button>
-      </td>
-    </tr>
-  `;
-
-            $('#edit_batch').append(row);
+          res.forEach((item, i) => {
+            $('#edit_batch').append(`
+            <tr id="row_${i}">
+              <td>${item.nama_barang} - (Bloom:${item.bloom})</td>
+              <td>${item.batch_masak}</td>
+            </tr>
+          `);
           });
-
         }
       });
-      $('#e_batch_gel').on('change', function() {
-        const batch = $(this).val();
+    }
 
-        $.ajax({
-          url: "<?= base_url('melting/pewarnaan/get_by_batch') ?>",
-          type: "POST",
-          data: {
-            batch_masak: batch
-          },
-          dataType: "json",
-          success: function(res) {
-
-            if (res.length === 0) {
-              alert('Data batch tidak ditemukan');
-              return;
-            }
-
-            res.forEach(function(item, index) {
-
-              let row = `
-    <tr id="row_${index}">
-      <td>${item.nama_barang}</td>
-      <td>${item.bloom}</td>
-      <td>${item.batch_masak}</td>
-      <td>${item.jml_bahan}</td>
-      <td class="text-right">
-        <button type="button" class="btn btn-danger btn-sm"
-          onclick="$('#row_${index}').remove()">X</button>
-      </td>
-    </tr>
-  `;
-
-              $('#edit_batch').append(row);
-            });
-
-
-          }
-        });
-      });
+    $('#e_batch_gel').on('change', function() {
+      loadBatch($(this).val());
     });
-    $('#e_no_cr').on('change', function() {
-      const opt = $(this).find(':selected');
 
-      const autoFill = {
-        e_mkt_customer: opt.data('nama_customer'),
-        e_jml_order: opt.data('jumlah_order'),
-        e_jml_prd: opt.data('jumlah_prd'),
-        e_kurang: opt.data('kurang'),
-        e_size_machine: opt.data('size_machine'),
-        e_machine: opt.data('mesin_prd'),
-        e_cap: opt.data('warna_cap'),
-        e_body: opt.data('warna_body'),
-        e_batch_kp: opt.data('batch_kp')
-      };
+    $(document).on('input', '#e_vac1, #e_vac2', function() {
 
-      $.each(autoFill, function(id, value) {
-        $('#' + id).val(value);
-      });
+      // ambil angka saja
+      let val = $(this).val().replace(/\D/g, '');
 
+      // max 4 digit
+      if (val.length > 4) {
+        val = val.substring(0, 4);
+      }
 
+      // auto titik
+      if (val.length >= 3) {
+        val = val.substring(0, 2) + '.' + val.substring(2);
+      }
+
+      $(this).val(val);
+    });
+
+    $(document).on('blur', '#e_vac1, #e_vac2', function() {
+
+      let val = $(this).val();
+
+      if (!val.includes('.')) return;
+
+      let parts = val.split('.');
+      let jam = parseInt(parts[0], 10);
+      let menit = parseInt(parts[1] || 0, 10);
+
+      // validasi jam
+      if (isNaN(jam) || jam > 23) jam = 23;
+      if (isNaN(menit) || menit > 59) menit = 59;
+
+      $(this).val(
+        String(jam).padStart(2, '0') + '.' +
+        String(menit).padStart(2, '0')
+      );
     });
 
   });

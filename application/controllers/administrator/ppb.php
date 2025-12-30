@@ -71,6 +71,13 @@ class ppb extends CI_Controller
 
         echo json_encode($no_ppb);
     }
+    public function get_barang()
+    {
+        $dept = $this->input->post('departement', TRUE);
+        $result = $this->M_prc_ppb_masterbarang->get_barang($dept)->result_array();
+
+        echo json_encode($result);
+    }
 
 
 
@@ -237,6 +244,7 @@ class ppb extends CI_Controller
 
     public function cetak($no_ppb)
     {
+         $no_ppb = urldecode($no_ppb);
         // 1️⃣ Load library Dompdf
 
         // 2️⃣ Konfigurasi dasar Dompdf

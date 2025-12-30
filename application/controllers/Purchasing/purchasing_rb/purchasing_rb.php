@@ -37,9 +37,14 @@ class Purchasing_rb extends CI_Controller
 
     public function index($id=null)
     {
-        $data['result'] = $this->M_prc_rb->get()->result_array();
+        $tgl = $this->input->get('date_from');
+        $tgl2 = $this->input->get('date_until');
+        $data['result'] = $this->M_prc_rb->get($tgl, $tgl2)->result_array();
         $data['generate_no_rb'] = $this->M_prc_rb->generate_no_rb();
         $data['res_barang_rh'] = $this->M_prc_rh->res_barang()->result_array();
+
+        $data['tgl'] = $tgl;
+        $data['tgl2'] = $tgl2;
         $this->template->load('template', 'content/purchasing/purchasing_rb/purchasing_rb_data', $data);
     }
     public function get_barang()

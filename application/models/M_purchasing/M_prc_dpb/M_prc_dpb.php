@@ -39,12 +39,29 @@ class M_prc_dpb extends CI_Model
     }
 
 
-    public function get_rb()
+    public function get_rb_belum_tuntas()
     {
-        $sql = "SELECT * FROM tb_prc_rb_tf";
+        $sql = "
+            SELECT 
+                rbtf.no_rb,
+                COUNT(rb.id_prc_rb) AS total_item,
+                COUNT(dpb.id_prc_rb) AS sudah_dipakai
+            FROM tb_prc_rb_tf rbtf
+            JOIN tb_prc_rb rb
+                ON rb.no_rb = rbtf.no_rb
+                AND rb.is_deleted = 0
+            LEFT JOIN tb_prc_dpb dpb
+                ON dpb.id_prc_rb = rb.id_prc_rb
+                AND dpb.is_deleted = 0
+            WHERE rbtf.is_deleted = 0
+            GROUP BY rbtf.no_rb
+            HAVING total_item > sudah_dipakai
+            ORDER BY rbtf.no_rb ASC
+        ";
 
         return $this->db->query($sql);
     }
+
 
     public function generate_no_dpb()
     {
@@ -70,15 +87,38 @@ class M_prc_dpb extends CI_Model
 
     public function data_no_budget($no_rb)
     {
-        $sql = "SELECT a.no_rb, a.is_deleted, b.id_prc_rh, b.id_prc_rb, c.id_prc_ppb, c.jumlah_rh, c.harga_rh, c.total_rh, d.no_budget,e.kode_barang, e.nama_barang, e.spek, e.satuan FROM tb_prc_rb_tf a
-        LEFT JOIN tb_prc_rb b ON a.no_rb = b.no_rb
-        LEFT JOIN tb_prc_rh c ON b.id_prc_rh = c.id_prc_rh
-        LEFT JOIN tb_prc_ppb d ON c.id_prc_ppb = d.id_prc_ppb
-        LEFT JOIN tb_prc_master_barang e ON d.id_prc_master_barang = e.id_prc_master_barang
-        WHERE a.is_deleted = 0 AND a.no_rb = '$no_rb'
+        $sql = "
+            SELECT 
+                b.id_prc_rb,
+                d.no_budget,
+                c.jumlah_rh,
+                c.harga_rh,
+                e.kode_barang,
+                e.nama_barang,
+                e.spek,
+                e.satuan
+            FROM tb_prc_rb_tf a
+            JOIN tb_prc_rb b 
+                ON a.no_rb = b.no_rb
+                AND b.is_deleted = 0
+            JOIN tb_prc_rh c 
+                ON b.id_prc_rh = c.id_prc_rh
+            JOIN tb_prc_ppb d 
+                ON c.id_prc_ppb = d.id_prc_ppb
+            JOIN tb_prc_master_barang e 
+                ON d.id_prc_master_barang = e.id_prc_master_barang
+            LEFT JOIN tb_prc_dpb dpb 
+                ON dpb.id_prc_rb = b.id_prc_rb
+                AND dpb.is_deleted = 0
+            WHERE 
+                a.no_rb = ?
+                AND a.is_deleted = 0
+                AND dpb.id_prc_rb IS NULL
         ";
-        return $this->db->query($sql)->result_array();
+
+        return $this->db->query($sql, [$no_rb])->result_array();
     }
+
 
     public function data_barang_dpb($no_dpb)
     {
@@ -94,7 +134,8 @@ class M_prc_dpb extends CI_Model
     a.jml_ongkir, 
     a.jml_ppn, 
     a.jml_disc,
-    b.id_prc_rh, 
+    b.id_prc_rh,
+    c.harga_rh, 
     c.id_prc_ppb, 
     d.id_prc_master_barang, 
     d.no_budget, 
